@@ -1,5 +1,6 @@
 using GemEnums;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +24,9 @@ public class BoardManager : MonoBehaviour
     [SerializeField] public int initialSeed = 12345;
     protected const int MaxResolveIterations = 100;
     protected System.Random _random;
+
+    private bool _isResolving = false;
+    private int _numMovingGems = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -58,7 +62,7 @@ public class BoardManager : MonoBehaviour
     protected Gem GetRandomGem(int row, int col)
     {
         GameObject gemObj = Instantiate(_gemPrefab, transform);
-        Vector2 gemLocalPos = new Vector2(col * (_cellSize + _spacing), row * (_cellSize + _spacing));
+        Vector2 gemLocalPos = GetGemLocation(row, col);
         gemObj.transform.localPosition = gemLocalPos;
         Gem gem = gemObj.GetComponent<Gem>();
         GemColor color = PlayableGemColor[_random.Next(PlayableGemColor.Length)];
@@ -72,38 +76,29 @@ public class BoardManager : MonoBehaviour
         _random = new System.Random(seed);
     }
 
-    protected bool ResolveMatches()
+    // A function that resolve matches only when board initially generated.
+    protected bool ResolveMatches   ()
     {
         bool hasAnyMatch = false;
 
-        // I want expression that gems spawns and resolved gradually in visual. This code may not be the proper way.
-        for (int iteration = 0; iteration < MaxResolveIterations; iteration++)
+        var matches = FindMatches();
+
+        if(matches.Count == 0)
         {
-            var matches = FindMatches();
-            if (matches.Count == 0)
-            {
-                break;
-            }
-
-            hasAnyMatch = true;
-
-            foreach (var (row, col) in matches)
-            {
-                // @@ TODO: Improve resolving method.
-                // @@ 1) I want to design gravity falling effects
-
-                // resolve gems
-                _gems[row, col].Init(GemColor.None);
-            }
-
-            ApplyGravity();
-            RefillBoard();
-
-            if (iteration == MaxResolveIterations - 1 && FindMatches().Count > 0)
-            {
-                throw new InvalidOperationException("Exceeded maximum resolve iterations. Board may be stuck in a loop.");
-            }
+            return hasAnyMatch;
         }
+
+        hasAnyMatch = true;
+        _isResolving = true;
+
+        foreach (var (row, col) in matches)
+        {
+            // resolve gems
+            ResolveGem(row, col);
+        }
+
+        ApplyGravity();
+        RefillBoard();
 
         return hasAnyMatch;
     }
@@ -112,23 +107,20 @@ public class BoardManager : MonoBehaviour
     {
         for (int col = 0; col < _cols; col++)
         {
-            int writeRow = _rows - 1;
-            for (int row = _rows - 1; row >= 0; row--)
+            int writeRow = 0;
+            for (int row = 0; row < _rows; row++)
             {
-                if (_gems[row, col].color == GemColor.None)
+                if (_gems[row, col] != null)
                 {
-                    if (_gems[row, col].color == GemColor.None)
-                    {
-                        continue;
-                    }
-
                     if (row != writeRow)
                     {
                         _gems[writeRow, col] = _gems[row, col];
-                        _gems[row, col].color = GemColor.None;
+                        _gems[row, col] = null;
+                        StartCoroutine(MoveGem(_gems[writeRow, col], writeRow, col));
+                        _numMovingGems++;
                     }
 
-                    writeRow--;
+                    writeRow++;
                 }
             }
         }
@@ -140,10 +132,12 @@ public class BoardManager : MonoBehaviour
         {
             for (int col = 0; col < _cols; col++)
             {
-                if (_gems[row, col].color == GemColor.None)
+                if (_gems[row, col] == null)
                 {
                     // @@ TODO: It instantiate a new game object but ApplyGravity swap only color.
                     // @@@@@@ Thus, GC remove only top gems and instantiate it to top.
+
+                    // @@ TODO: Add additional logic to refill gravity logic.
                     _gems[row, col] = GetRandomGem(row, col);
                 }
             }
@@ -160,7 +154,7 @@ public class BoardManager : MonoBehaviour
         {
             for (int col = 0; col < _cols; col++)
             {
-                if (_gems[row, col].color == GemColor.None)
+                if (_gems[row, col] == null)
                 {
                     continue;
                 }
@@ -198,5 +192,124 @@ public class BoardManager : MonoBehaviour
         }
 
         return matches;
+    }
+
+    protected IEnumerator MoveGem(Gem gem, int newRow, int newCol)
+    {
+        Vector2 targetLocation = GetGemLocation(newRow, newCol);
+        while (Vector2.Distance(gem.transform.localPosition, targetLocation) > 0.01f)
+        {
+            gem.transform.localPosition = Vector2.Lerp(gem.transform.localPosition, targetLocation, Time.deltaTime);
+            yield return null;
+        }
+
+        gem.transform.localPosition = targetLocation;
+
+        // @@ TODO: Is this okay? Need to check..
+        if(--_numMovingGems >= 0)
+        {
+            _isResolving = false;
+        }
+
+        RequestResolve();
+    }
+
+    protected Vector2 GetGemLocation(int row, int col)
+    {
+        return new Vector2(col * (_cellSize + _spacing), row * (_cellSize + _spacing));
+    }
+
+    protected void ResolveGem(int row, int col)
+    {
+        // @@ TODO: Improve resolving method to look much fancier.
+        // @@ TODO: Implement object pool for gems.
+
+        Destroy(_gems[row, col].gameObject);
+        _gems[row, col] = null;
+    }
+
+    protected bool IsMatchAt(int row, int col)
+    {
+        if (_gems[row, col] == null)
+        {
+            return false;
+        }
+
+        GemColor color = _gems[row, col].color;
+
+        // Horizontal check
+        int count = 1;
+        int c = col - 1;
+        while (c >= 0)
+        {
+            if (_gems[row, c].color == color)
+            {
+                count++;
+                c--;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        c = col + 1;
+        while (c < _cols)
+        {
+            if (_gems[row, c].color == color)
+            {
+                count++;
+                c++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (count >= 3)
+        {
+            return true;
+        }
+
+        // Vertical check
+        count = 1;
+        int r = row - 1;
+        while (r >= 0)
+        {
+            if (_gems[r, col].color == color)
+            {
+                count++;
+                r--;
+            }
+            else 
+            { 
+                break;
+            }
+        }
+
+        r = row + 1;
+        while (r < _rows)
+        {
+            if(_gems[r, col].color == color)
+            {
+                count++;
+                r++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return count >= 3;
+    }
+
+    protected void RequestResolve()
+    {
+        if(!_isResolving)
+        {
+            ResolveMatches();
+        }
     }
 }
