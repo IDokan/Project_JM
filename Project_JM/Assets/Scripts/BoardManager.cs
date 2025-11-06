@@ -1,25 +1,30 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2025 Sinil Kang
+// Project: Project JM - https://github.com/IDokan/Project_JM
+// File: BoardManager.cs
+// Summary: A script for gem board.
+
 using GemEnums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] protected int _rows = 8;
+    public int Rows => _rows;
     [SerializeField] protected int _cols = 8;
+    public int Cols => _cols;
     [SerializeField] protected float _cellSize = 1f;
+    public float CellSize => _cellSize;
     [SerializeField] protected float _spacing = 0.05f;
+    public float Spacing => _spacing;
     [SerializeField] protected GameObject _gemPrefab;
+    [SerializeField] protected float _fallingSpeed = 3f;
     protected Gem[,] _gems;
-
-    protected static readonly GemColor[] PlayableGemColor =
-    {
-        GemColor.Red,
-        GemColor.Green,
-        GemColor.Blue,
-        GemColor.Yellow,
-    };
+    public Gem GemAt(int r, int c) => _gems[r, c];
 
     [SerializeField] public int initialSeed = 12345;
     protected const int MaxResolveIterations = 100;
@@ -28,11 +33,16 @@ public class BoardManager : MonoBehaviour
     private bool _isResolving = false;
     private int _numMovingGems = 0;
 
+    public bool InputEnabled => !_busy;
+    protected bool _busy;
+
+    public bool InBounds(int r, int c) => r >= 0 && r < _rows && c >= 0 && c < _cols;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         GenerateBoard();
-        ResolveMatches();
+        _busy = false;
     }
 
     // Update is called once per frame
@@ -46,6 +56,7 @@ public class BoardManager : MonoBehaviour
         SetRandomSeed(initialSeed);
     }
 
+    // A function that resolve matches only when board initially generated.
     protected void GenerateBoard()
     {
         _gems = new Gem[_rows, _cols];
@@ -55,6 +66,10 @@ public class BoardManager : MonoBehaviour
             for (int c = 0; c < _cols; c++)
             {
                 _gems[r, c] = GetRandomGem(r, c);
+                if (HasMatchAtBeginning(r, c))
+                {
+                    _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(_random, _gems[r, c].color));
+                }
             }
         }
     }
@@ -65,7 +80,7 @@ public class BoardManager : MonoBehaviour
         Vector2 gemLocalPos = GetGemLocation(row, col);
         gemObj.transform.localPosition = gemLocalPos;
         Gem gem = gemObj.GetComponent<Gem>();
-        GemColor color = PlayableGemColor[_random.Next(PlayableGemColor.Length)];
+        GemColor color = GemColorUtility.GetRandomGemColor(_random);
         gem.Init(color);
 
         return gem;
@@ -76,14 +91,13 @@ public class BoardManager : MonoBehaviour
         _random = new System.Random(seed);
     }
 
-    // A function that resolve matches only when board initially generated.
-    protected bool ResolveMatches   ()
+    protected bool ResolveMatches()
     {
         bool hasAnyMatch = false;
 
         var matches = FindMatches();
 
-        if(matches.Count == 0)
+        if (matches.Count == 0)
         {
             return hasAnyMatch;
         }
@@ -117,7 +131,6 @@ public class BoardManager : MonoBehaviour
                         _gems[writeRow, col] = _gems[row, col];
                         _gems[row, col] = null;
                         StartCoroutine(MoveGem(_gems[writeRow, col], writeRow, col));
-                        _numMovingGems++;
                     }
 
                     writeRow++;
@@ -128,17 +141,15 @@ public class BoardManager : MonoBehaviour
 
     protected void RefillBoard()
     {
-        for (int row = 0; row < _rows; row++)
+        for (int col = 0; col < _cols; col++)
         {
-            for (int col = 0; col < _cols; col++)
+            int numRefilledGem = 0;
+            for (int row = 0; row < _rows; row++)
             {
                 if (_gems[row, col] == null)
                 {
-                    // @@ TODO: It instantiate a new game object but ApplyGravity swap only color.
-                    // @@@@@@ Thus, GC remove only top gems and instantiate it to top.
-
-                    // @@ TODO: Add additional logic to refill gravity logic.
-                    _gems[row, col] = GetRandomGem(row, col);
+                    _gems[row, col] = GetRandomGem(_rows + (numRefilledGem++), col);
+                    StartCoroutine(MoveGem(_gems[row, col], row, col));
                 }
             }
         }
@@ -184,7 +195,7 @@ public class BoardManager : MonoBehaviour
                         if (!seen[row + offset, col])
                         {
                             matches.Add((row + offset, col));
-                            seen[row + offset, col] = true; ;
+                            seen[row + offset, col] = true;
                         }
                     }
                 }
@@ -196,17 +207,22 @@ public class BoardManager : MonoBehaviour
 
     protected IEnumerator MoveGem(Gem gem, int newRow, int newCol)
     {
+        _numMovingGems++;
+
+        Vector2 initLocation = gem.transform.localPosition;
         Vector2 targetLocation = GetGemLocation(newRow, newCol);
-        while (Vector2.Distance(gem.transform.localPosition, targetLocation) > 0.01f)
+        float deltaTime = 0f;
+        while (gem != null && Vector2.Distance(gem.transform.localPosition, targetLocation) > 0.01f)
         {
-            gem.transform.localPosition = Vector2.Lerp(gem.transform.localPosition, targetLocation, Time.deltaTime);
+            // @@ TODO: Modify lerp method to look like a real gravity movement.
+            deltaTime += Time.deltaTime * _fallingSpeed;
+            gem.transform.localPosition = Vector2.Lerp(initLocation, targetLocation, deltaTime);
             yield return null;
         }
 
         gem.transform.localPosition = targetLocation;
 
-        // @@ TODO: Is this okay? Need to check..
-        if(--_numMovingGems >= 0)
+        if (--_numMovingGems <= 0)
         {
             _isResolving = false;
         }
@@ -214,9 +230,20 @@ public class BoardManager : MonoBehaviour
         RequestResolve();
     }
 
-    protected Vector2 GetGemLocation(int row, int col)
+    public Vector2 GetGemLocation(int row, int col)
     {
         return new Vector2(col * (_cellSize + _spacing), row * (_cellSize + _spacing));
+    }
+
+    // This function takes only local position according to the board.
+    public Vector2Int GetGemIndex(Vector2 localPosition)
+    {
+        float cellUnit = 1f / (_cellSize + _spacing);
+        int col = Mathf.FloorToInt((localPosition.x + (cellUnit * 0.5f)) * cellUnit);
+        int row = Mathf.FloorToInt((localPosition.y + (cellUnit * 0.5f)) * cellUnit);
+
+        Vector2Int index = new Vector2Int(row, col);
+        return InBounds(index.x, index.y) ? index : new Vector2Int(-1, -1);
     }
 
     protected void ResolveGem(int row, int col)
@@ -228,7 +255,16 @@ public class BoardManager : MonoBehaviour
         _gems[row, col] = null;
     }
 
-    protected bool IsMatchAt(int row, int col)
+    protected void RequestResolve()
+    {
+        if (!_isResolving)
+        {
+            ResolveMatches();
+        }
+    }
+
+    // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)
+    protected bool HasMatchAtBeginning(int row, int col)
     {
         if (_gems[row, col] == null)
         {
@@ -253,20 +289,6 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        c = col + 1;
-        while (c < _cols)
-        {
-            if (_gems[row, c].color == color)
-            {
-                count++;
-                c++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
         if (count >= 3)
         {
             return true;
@@ -282,20 +304,6 @@ public class BoardManager : MonoBehaviour
                 count++;
                 r--;
             }
-            else 
-            { 
-                break;
-            }
-        }
-
-        r = row + 1;
-        while (r < _rows)
-        {
-            if(_gems[r, col].color == color)
-            {
-                count++;
-                r++;
-            }
             else
             {
                 break;
@@ -305,11 +313,21 @@ public class BoardManager : MonoBehaviour
         return count >= 3;
     }
 
-    protected void RequestResolve()
+    public bool TrySwapFrom(Vector2Int index, Vector2Int dir)
     {
-        if(!_isResolving)
+        int targetRow = index.x + dir.y;
+        int targetCol = index.y + dir.x;
+
+        if (InBounds(index.x, index.y) && InBounds(targetRow, targetCol))
         {
-            ResolveMatches();
+            StartCoroutine(MoveGem(_gems[index.x, index.y], targetRow, targetCol));
+            StartCoroutine(MoveGem(_gems[targetRow, targetCol], index.x, index.y));
+
+            (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
+
+            return true;
         }
+
+        return false;
     }
 }

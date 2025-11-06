@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2025 Sinil Kang
+// Project: Project JM - https://github.com/IDokan/Project_JM
+// File: Gem.cs
+// Summary: A script for gem.
+
 using System;
 using UnityEngine;
 using GemEnums;
