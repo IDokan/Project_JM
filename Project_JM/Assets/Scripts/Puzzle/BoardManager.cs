@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright (c) 2025 Sinil Kang
+// Copyright (c) 11/03/2025 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: BoardManager.cs
 // Summary: A script for gem board.
@@ -130,7 +130,7 @@ public class BoardManager : MonoBehaviour
                     {
                         _gems[writeRow, col] = _gems[row, col];
                         _gems[row, col] = null;
-                        StartCoroutine(MoveGem(_gems[writeRow, col], writeRow, col));
+                        MoveGem(_gems[writeRow, col], writeRow, col);
                     }
 
                     writeRow++;
@@ -149,7 +149,7 @@ public class BoardManager : MonoBehaviour
                 if (_gems[row, col] == null)
                 {
                     _gems[row, col] = GetRandomGem(_rows + (numRefilledGem++), col);
-                    StartCoroutine(MoveGem(_gems[row, col], row, col));
+                    MoveGem(_gems[row, col], row, col);
                 }
             }
         }
@@ -205,23 +205,16 @@ public class BoardManager : MonoBehaviour
         return matches;
     }
 
-    protected IEnumerator MoveGem(Gem gem, int newRow, int newCol)
+    protected void MoveGem(Gem gem, int newRow, int newCol)
     {
         _numMovingGems++;
 
-        Vector2 initLocation = gem.transform.localPosition;
         Vector2 targetLocation = GetGemLocation(newRow, newCol);
-        float deltaTime = 0f;
-        while (gem != null && Vector2.Distance(gem.transform.localPosition, targetLocation) > 0.01f)
-        {
-            // @@ TODO: Modify lerp method to look like a real gravity movement.
-            deltaTime += Time.deltaTime * _fallingSpeed;
-            gem.transform.localPosition = Vector2.Lerp(initLocation, targetLocation, deltaTime);
-            yield return null;
-        }
+        gem.GetComponent<GemMover>().EnqueueMove(targetLocation, onComplete: ResolveGemMovement);
+    }
 
-        gem.transform.localPosition = targetLocation;
-
+    protected void ResolveGemMovement()
+    {
         if (--_numMovingGems <= 0)
         {
             _isResolving = false;
@@ -320,8 +313,8 @@ public class BoardManager : MonoBehaviour
 
         if (InBounds(index.x, index.y) && InBounds(targetRow, targetCol))
         {
-            StartCoroutine(MoveGem(_gems[index.x, index.y], targetRow, targetCol));
-            StartCoroutine(MoveGem(_gems[targetRow, targetCol], index.x, index.y));
+            MoveGem(_gems[index.x, index.y], targetRow, targetCol);
+            MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
             (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
 

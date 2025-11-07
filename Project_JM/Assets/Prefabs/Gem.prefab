@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5301395697464518032}
   - component: {fileID: 81970709899125568}
   - component: {fileID: 9112251591757497968}
+  - component: {fileID: 5441730827273079223}
   m_Layer: 0
   m_Name: Gem
   m_TagString: Untagged
@@ -103,4 +104,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d23d61ed2c627c144a398e5db5112dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gem
-  color: 0
+--- !u!114 &5441730827273079223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2919741932444415260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f9ec656731697469998871da50db5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GemMover
+  _defaultDuration: 0.2
+  _epsilon: 0.01
