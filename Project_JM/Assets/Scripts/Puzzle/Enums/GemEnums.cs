@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright (c) 2025 Sinil Kang
+// Copyright (c) 11/04/2025 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GemEnums.cs
 // Summary: A script that has enums for gem.

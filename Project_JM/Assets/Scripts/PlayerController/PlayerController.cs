@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright (c) 2025 Sinil Kang
+// Copyright (c) 11/05/2025 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: PlayerController.cs
 // Summary: A script for universal controller.

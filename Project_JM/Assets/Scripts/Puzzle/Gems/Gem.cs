@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright (c) 2025 Sinil Kang
+// Copyright (c) 11/03/2025 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: Gem.cs
 // Summary: A script for gem.
@@ -8,6 +8,7 @@ using System;
 using UnityEngine;
 using GemEnums;
 
+[RequireComponent(typeof(GemMover))]
 public class Gem : MonoBehaviour
 {
     public GemColor color { get; set; }
@@ -26,6 +27,11 @@ public class Gem : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+
+    }
+
+    public void MoveGem(Vector2 targetLocation)
     {
 
     }
