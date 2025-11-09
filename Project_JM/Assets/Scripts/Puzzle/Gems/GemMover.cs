@@ -46,6 +46,11 @@ public class GemMover : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        ClearQueue();
+    }
+
     // --- Public API ---
 
     /// Enqueue a local position to move to
