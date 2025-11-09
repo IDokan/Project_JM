@@ -5,10 +5,10 @@
 // Summary: A script for gem board.
 
 using GemEnums;
+using MatchEnums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour
@@ -23,6 +23,9 @@ public class BoardManager : MonoBehaviour
     public float Spacing => _spacing;
     [SerializeField] protected GameObject _gemPrefab;
     [SerializeField] protected float _fallingSpeed = 3f;
+
+    [SerializeField] protected MatchEventChannel _matchEvents;
+
     protected Gem[,] _gems;
     public Gem GemAt(int r, int c) => _gems[r, c];
 
@@ -30,7 +33,6 @@ public class BoardManager : MonoBehaviour
     protected const int MaxResolveIterations = 100;
     protected System.Random _random;
 
-    private bool _isResolving = false;
     private int _numMovingGems = 0;
 
     public bool InputEnabled => !_busy;
@@ -103,10 +105,12 @@ public class BoardManager : MonoBehaviour
         }
 
         hasAnyMatch = true;
-        _isResolving = true;
 
         foreach (var (row, col) in matches)
         {
+            // @@ TODO: Implement match logic
+            FireMatchEvent(_gems[row, col].color, 1);
+
             // resolve gems
             ResolveGem(row, col);
         }
@@ -217,10 +221,9 @@ public class BoardManager : MonoBehaviour
     {
         if (--_numMovingGems <= 0)
         {
-            _isResolving = false;
+            ResolveMatches();
         }
 
-        RequestResolve();
     }
 
     public Vector2 GetGemLocation(int row, int col)
@@ -246,14 +249,6 @@ public class BoardManager : MonoBehaviour
 
         Destroy(_gems[row, col].gameObject);
         _gems[row, col] = null;
-    }
-
-    protected void RequestResolve()
-    {
-        if (!_isResolving)
-        {
-            ResolveMatches();
-        }
     }
 
     // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)
@@ -306,6 +301,85 @@ public class BoardManager : MonoBehaviour
         return count >= 3;
     }
 
+    protected bool HasMatchAt(int row, int col)
+    {
+        if (_gems[row, col] == null)
+        {
+            return false;
+        }
+
+        GemColor color = _gems[row, col].color;
+
+        // Horizontal check
+        int count = 1;
+        int c = col - 1;
+        while (c >= 0)
+        {
+            if (_gems[row, c].color == color)
+            {
+                count++;
+                c--;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        c = col + 1;
+
+        while (c < _cols)
+        {
+            if (_gems[row, c].color == color)
+            {
+                count++;
+                c++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (count >= 3)
+        {
+            return true;
+        }
+
+        // Vertical check
+        count = 1;
+        int r = row - 1;
+        while (r >= 0)
+        {
+            if (_gems[r, col].color == color)
+            {
+                count++;
+                r--;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        r = row + 1;
+        while (r < _rows)
+        {
+            if (_gems[r, col].color == color)
+            {
+                count++;
+                r++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return count >= 3;
+    }
+
+    // Return false if player tried pass invalid direction (out of bounds).
     public bool TrySwapFrom(Vector2Int index, Vector2Int dir)
     {
         int targetRow = index.x + dir.y;
@@ -318,9 +392,28 @@ public class BoardManager : MonoBehaviour
 
             (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
 
+            // Restore status before swap if no match found
+            if (HasMatchAt(index.x, index.y) == false && HasMatchAt(targetRow, targetCol) == false)
+            {
+                MoveGem(_gems[index.x, index.y], targetRow, targetCol);
+                MoveGem(_gems[targetRow, targetCol], index.x, index.y);
+
+                (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    protected void FireMatchEvent(GemColor color, int count)
+    {
+        var tier = (MatchTier)Mathf.Clamp(count, 3, 5);
+        _matchEvents.Raise(new MatchEvent
+        {
+            Color = color,
+            Tier = tier
+        });
     }
 }

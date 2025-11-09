@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     // Pointer-drag state
     protected Vector2 _pressScreenPos;
-    protected bool _firedThisDrag;
+    protected bool _firedThisDrag;      // A boolean flag that make sure swap happens only once per one drag.
 
     // Gamepad/keyboard selection
     protected bool _hasSelection;
@@ -186,6 +186,7 @@ public class PlayerController : MonoBehaviour
         _selRow = r; 
         _selCol = c;
 
+        // @@ TODO: Add visual & aural feedback the gem selected.
         // board.HighlightCell(r, c, highlight); // optional visual (outline/ cursor)
     }
 }

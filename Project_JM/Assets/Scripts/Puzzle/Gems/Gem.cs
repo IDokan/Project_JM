@@ -30,9 +30,4 @@ public class Gem : MonoBehaviour
     {
 
     }
-
-    public void MoveGem(Vector2 targetLocation)
-    {
-
-    }
 }
