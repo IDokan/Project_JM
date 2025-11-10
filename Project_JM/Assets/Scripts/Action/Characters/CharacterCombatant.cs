@@ -10,7 +10,6 @@ using UnityEngine;
 public interface ICombatant
 {
     void ReceiveDamage(float damage);
-    Coroutine RunAttackLogic(AttackLogic logic, AttackContext context);
 }
 
 public class CharacterCombatant : MonoBehaviour, ICombatant
@@ -35,6 +34,4 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         Debug.Log($"{displayName} takes {damage} damage");
     }
 
-    public Coroutine RunAttackLogic(AttackLogic logic, AttackContext context)
-        => StartCoroutine(logic.Execute(context));
 }
