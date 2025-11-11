@@ -15,10 +15,10 @@ public class TestAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        Debug.Log($"{ctx.Match.Color} casted {ctx.Match.Tier}tier TestAttack");
+        Debug.Log($"{ctx.Match.Color} casted {ctx.Match.Tier} tier TestAttack");
         int tier = (int)ctx.Match.Tier; // 3/4/5
         int dmg = Mathf.RoundToInt(baseDamage * (1f + (tier - 3) * tierScale));
-        ctx.Target?.ReceiveDamage(dmg);
+        ctx.Target?.TakeDamage(dmg);
         yield break;
     }
 

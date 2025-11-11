@@ -11,11 +11,11 @@ using GemEnums;
 [RequireComponent(typeof(GemMover))]
 public class Gem : MonoBehaviour
 {
-    public GemColor color { get; set; }
+    public GemColor Color { get; set; }
 
     public void Init(GemColor gemColor)
     {
-        color = gemColor;
+        Color = gemColor;
         GetComponent<SpriteRenderer>().color = GemColorUtility.ConvertGemColor(gemColor);
     }
 
