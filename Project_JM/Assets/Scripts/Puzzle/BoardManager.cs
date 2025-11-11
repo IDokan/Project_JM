@@ -29,9 +29,7 @@ public class BoardManager : MonoBehaviour
     protected Gem[,] _gems;
     public Gem GemAt(int r, int c) => _gems[r, c];
 
-    [SerializeField] public int initialSeed = 12345;
     protected const int MaxResolveIterations = 100;
-    protected System.Random _random;
 
     private int _numMovingGems = 0;
 
@@ -55,7 +53,6 @@ public class BoardManager : MonoBehaviour
 
     void Awake()
     {
-        SetRandomSeed(initialSeed);
     }
 
     // A function that resolve matches only when board initially generated.
@@ -70,7 +67,7 @@ public class BoardManager : MonoBehaviour
                 _gems[r, c] = GetRandomGem(r, c);
                 if (HasMatchAtBeginning(r, c))
                 {
-                    _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(_random, _gems[r, c].color));
+                    _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(_gems[r, c].Color));
                 }
             }
         }
@@ -82,35 +79,33 @@ public class BoardManager : MonoBehaviour
         Vector2 gemLocalPos = GetGemLocation(row, col);
         gemObj.transform.localPosition = gemLocalPos;
         Gem gem = gemObj.GetComponent<Gem>();
-        GemColor color = GemColorUtility.GetRandomGemColor(_random);
+        GemColor color = GemColorUtility.GetRandomGemColor();
         gem.Init(color);
 
         return gem;
-    }
-
-    public void SetRandomSeed(int seed)
-    {
-        _random = new System.Random(seed);
     }
 
     protected bool ResolveMatches()
     {
         bool hasAnyMatch = false;
 
-        var matches = FindMatches();
+        var matches = FindMatchedCells();
 
         if (matches.Count == 0)
         {
             return hasAnyMatch;
         }
 
+        var matchTypes = FindMatchTypes();
+        foreach (var (color, tier) in matchTypes)
+        {
+            FireMatchEvent(color, tier);
+        }
+
         hasAnyMatch = true;
 
         foreach (var (row, col) in matches)
         {
-            // @@ TODO: Implement match logic
-            FireMatchEvent(_gems[row, col].color, 1);
-
             // resolve gems
             ResolveGem(row, col);
         }
@@ -159,7 +154,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    protected List<(int Row, int Column)> FindMatches()
+    protected List<(int Row, int Column)> FindMatchedCells()
     {
         var matches = new List<(int, int)>();
 
@@ -176,8 +171,8 @@ public class BoardManager : MonoBehaviour
 
                 // Horizontal check (1x3)
                 if (col <= _cols - 3 &&
-                    _gems[row, col].color == _gems[row, col + 1].color &&
-                    _gems[row, col].color == _gems[row, col + 2].color)
+                    _gems[row, col].Color == _gems[row, col + 1].Color &&
+                    _gems[row, col].Color == _gems[row, col + 2].Color)
                 {
                     for (int offset = 0; offset < 3; offset++)
                     {
@@ -191,8 +186,8 @@ public class BoardManager : MonoBehaviour
 
                 // Vertical check (3x1)
                 if (row <= _rows - 3 &&
-                    _gems[row, col].color == _gems[row + 1, col].color &&
-                    _gems[row, col].color == _gems[row + 2, col].color)
+                    _gems[row, col].Color == _gems[row + 1, col].Color &&
+                    _gems[row, col].Color == _gems[row + 2, col].Color)
                 {
                     for (int offset = 0; offset < 3; offset++)
                     {
@@ -207,6 +202,66 @@ public class BoardManager : MonoBehaviour
         }
 
         return matches;
+    }
+
+    protected List<(GemColor Color, int Tier)> FindMatchTypes()
+    {
+        List<(GemColor Color, int Tier)> result = new List<(GemColor, int)>();
+        var horizontalSeen = new bool[_rows, _cols];
+        var verticalSeen = new bool[_rows, _cols];
+
+        for (int row = 0; row < _rows; row++)
+        {
+            for (int col = 0; col < _cols; col++)
+            {
+                GemColor targetColor = _gems[row, col].Color;
+
+                // Horizontal checks
+                int horizontalCheck = 1;
+
+                // out of bound check && prevent double check
+                // && are they same colors?
+                while (col + horizontalCheck < _cols && horizontalSeen[row, col] == false 
+                    && targetColor == _gems[row, col + horizontalCheck].Color)
+                {
+                    horizontalCheck++;
+                }
+
+                if(horizontalCheck >= 3)
+                {
+                    for(int i = 0; i < horizontalCheck; ++i)
+                    {
+                        horizontalSeen[row, col + i] = true;
+                    }
+
+                    result.Add((targetColor, horizontalCheck));
+                }
+
+
+                // Vertical checks
+                int verticalCheck = 1;
+
+                // out of bound check && prevent double check
+                // && are they same colors?
+                while (row + verticalCheck < _rows && verticalSeen[row, col] == false
+                    && targetColor == _gems[row + verticalCheck, col].Color)
+                {
+                    verticalCheck++;
+                }
+
+                if (verticalCheck >= 3)
+                {
+                    for (int i = 0; i < verticalCheck; ++i)
+                    {
+                        verticalSeen[row + i, col] = true;
+                    }
+
+                    result.Add((targetColor, verticalCheck));
+                }
+            }
+        }
+
+        return result;
     }
 
     protected void MoveGem(Gem gem, int newRow, int newCol)
@@ -259,14 +314,14 @@ public class BoardManager : MonoBehaviour
             return false;
         }
 
-        GemColor color = _gems[row, col].color;
+        GemColor color = _gems[row, col].Color;
 
         // Horizontal check
         int count = 1;
         int c = col - 1;
         while (c >= 0)
         {
-            if (_gems[row, c].color == color)
+            if (_gems[row, c].Color == color)
             {
                 count++;
                 c--;
@@ -287,7 +342,7 @@ public class BoardManager : MonoBehaviour
         int r = row - 1;
         while (r >= 0)
         {
-            if (_gems[r, col].color == color)
+            if (_gems[r, col].Color == color)
             {
                 count++;
                 r--;
@@ -308,14 +363,14 @@ public class BoardManager : MonoBehaviour
             return false;
         }
 
-        GemColor color = _gems[row, col].color;
+        GemColor color = _gems[row, col].Color;
 
         // Horizontal check
         int count = 1;
         int c = col - 1;
         while (c >= 0)
         {
-            if (_gems[row, c].color == color)
+            if (_gems[row, c].Color == color)
             {
                 count++;
                 c--;
@@ -330,7 +385,7 @@ public class BoardManager : MonoBehaviour
 
         while (c < _cols)
         {
-            if (_gems[row, c].color == color)
+            if (_gems[row, c].Color == color)
             {
                 count++;
                 c++;
@@ -351,7 +406,7 @@ public class BoardManager : MonoBehaviour
         int r = row - 1;
         while (r >= 0)
         {
-            if (_gems[r, col].color == color)
+            if (_gems[r, col].Color == color)
             {
                 count++;
                 r--;
@@ -365,7 +420,7 @@ public class BoardManager : MonoBehaviour
         r = row + 1;
         while (r < _rows)
         {
-            if (_gems[r, col].color == color)
+            if (_gems[r, col].Color == color)
             {
                 count++;
                 r++;

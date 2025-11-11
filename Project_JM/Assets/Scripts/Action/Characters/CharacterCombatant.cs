@@ -4,17 +4,18 @@
 // File: CharacterCombatant.cs
 // Summary: A combatant script for action characters.
 
-using System.Collections;
 using UnityEngine;
 
 public interface ICombatant
 {
-    void ReceiveDamage(float damage);
+    void TakeDamage(float damage);
 }
 
 public class CharacterCombatant : MonoBehaviour, ICombatant
 {
-    [SerializeField] protected string displayName;
+    [SerializeField] protected CharacterStatus _status;
+
+    public CharacterStatus Status => _status;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,10 +29,17 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         
     }
 
-    public void ReceiveDamage(float damage)
+    public void TakeDamage(float rawDamage)
     {
-        // @@ TODO: later add HP, armor, UI, etc...
-        Debug.Log($"{displayName} takes {damage} damage");
+        float damage = rawDamage * _status.DamageMultiplier;
+
+        // Critical hit calculation
+        if(_status.CriticalChance > GlobalRNG.Instance.NextFloat() * 100)
+        {
+            damage *= 2;
+        }
+
+        _status.TakeDamage(damage);
     }
 
 }

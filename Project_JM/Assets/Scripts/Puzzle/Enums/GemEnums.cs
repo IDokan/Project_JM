@@ -41,17 +41,17 @@ namespace GemEnums
             }
         }
 
-        public static GemColor GetRandomGemColor(System.Random random)
+        public static GemColor GetRandomGemColor()
         {
-            return PlayableGemColor[random.Next(PlayableGemColor.Length)];
+            return PlayableGemColor[GlobalRNG.Instance.NextInt(PlayableGemColor.Length)];
         }
 
-        public static GemColor GetRandomGemColorExcept(System.Random random, GemColor excludeColor)
+        public static GemColor GetRandomGemColorExcept(GemColor excludeColor)
         {
             GemColor color;
             do
             {
-                color = PlayableGemColor[random.Next(PlayableGemColor.Length)];
+                color = PlayableGemColor[GlobalRNG.Instance.NextInt(PlayableGemColor.Length)];
             }
             while (color == excludeColor);
 
