@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4476003029408211714}
   - component: {fileID: 4122283248884714811}
   - component: {fileID: 8661856663623278153}
+  - component: {fileID: 9101225961540093231}
   m_Layer: 0
   m_Name: PartyRoster
   m_TagString: Untagged
@@ -51,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PartyRoster
   slots:
   - Color: 1
-    Character: {fileID: 7895903033318940374}
+    Character: {fileID: 3415781675458662590}
   - Color: 3
     Character: {fileID: 6993813936956969999}
   - Color: 2
@@ -71,6 +72,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatus
   _baseData: {fileID: 11400000, guid: c614d50cb86fba346a16a1bce288064c, type: 2}
+--- !u!114 &9101225961540093231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3199834345138773119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbec763bea4f4948886e0228e070983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
+  _status: {fileID: 8661856663623278153}
 --- !u!1001 &1117141484020782387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -233,6 +247,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4476003029408211714}
     m_Modifications:
+    - target: {fileID: 1968382616848345547, guid: 712c5649889a5984db027664755b5619, type: 3}
+      propertyPath: _status
+      value: 
+      objectReference: {fileID: 8661856663623278153}
     - target: {fileID: 6459766194020525987, guid: 712c5649889a5984db027664755b5619, type: 3}
       propertyPath: _status
       value: 
@@ -286,14 +304,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 712c5649889a5984db027664755b5619, type: 3}
---- !u!4 &5032705812961699796 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8206000097258643105, guid: 712c5649889a5984db027664755b5619, type: 3}
-  m_PrefabInstance: {fileID: 3762285633751234933}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7895903033318940374 stripped
+--- !u!114 &3415781675458662590 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6459766194020525987, guid: 712c5649889a5984db027664755b5619, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1968382616848345547, guid: 712c5649889a5984db027664755b5619, type: 3}
   m_PrefabInstance: {fileID: 3762285633751234933}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -302,6 +315,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbec763bea4f4948886e0228e070983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
+--- !u!4 &5032705812961699796 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8206000097258643105, guid: 712c5649889a5984db027664755b5619, type: 3}
+  m_PrefabInstance: {fileID: 3762285633751234933}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5171219784067497479
 PrefabInstance:
   m_ObjectHideFlags: 0

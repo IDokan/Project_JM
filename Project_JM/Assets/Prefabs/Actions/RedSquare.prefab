@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8206000097258643105}
   - component: {fileID: 2445017810841484123}
-  - component: {fileID: 6459766194020525987}
+  - component: {fileID: 1968382616848345547}
   m_Layer: 0
   m_Name: RedSquare
   m_TagString: Untagged
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6459766194020525987
+--- !u!114 &1968382616848345547
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,4 +103,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbec763bea4f4948886e0228e070983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
-  displayName: RedSquare
+  _status: {fileID: 0}

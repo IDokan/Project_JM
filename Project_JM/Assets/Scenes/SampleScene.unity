@@ -320,6 +320,7 @@ MonoBehaviour:
   _gemPrefab: {fileID: 2919741932444415260, guid: 4a7c755880a8a2842bec2733420a38d0, type: 3}
   _fallingSpeed: 1
   _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
+  _boardDisableEvents: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
 --- !u!4 &594975001
 Transform:
   m_ObjectHideFlags: 0
@@ -448,6 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcccd887987a7e946afd27fb482ffe86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
+  _enemyAttackChannel: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
   _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
   _attackBook: {fileID: 11400000, guid: 2b8a2dbaddba64f4ca8e769f11a402e6, type: 2}
   _party: {fileID: 1233718908}
@@ -486,6 +488,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4409018762775306443, guid: e4d708c478692164c899f15b28094dc8, type: 3}
+      propertyPath: _attackLogic
+      value: 
+      objectReference: {fileID: 11400000, guid: 4485cde5803c84d45b9b3dc6d28fb795, type: 2}
+    - target: {fileID: 4409018762775306443, guid: e4d708c478692164c899f15b28094dc8, type: 3}
+      propertyPath: _attackChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
+    - target: {fileID: 4409018762775306443, guid: e4d708c478692164c899f15b28094dc8, type: 3}
+      propertyPath: _boardDisableChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
     - target: {fileID: 6164301083414174608, guid: e4d708c478692164c899f15b28094dc8, type: 3}
       propertyPath: m_Name
       value: Boss Square

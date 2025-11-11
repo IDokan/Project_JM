@@ -25,6 +25,10 @@ public class BoardManager : MonoBehaviour
     [SerializeField] protected float _fallingSpeed = 3f;
 
     [SerializeField] protected MatchEventChannel _matchEvents;
+    [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
+
+    protected void OnEnable() => _boardDisableEvents.OnRaised += OnBoardDisabled;
+    protected void OnDisable() => _boardDisableEvents.OnRaised -= OnBoardDisabled;
 
     protected Gem[,] _gems;
     public Gem GemAt(int r, int c) => _gems[r, c];
@@ -104,10 +108,10 @@ public class BoardManager : MonoBehaviour
 
         hasAnyMatch = true;
 
-        foreach (var (row, col) in matches)
+        foreach (var index in matches)
         {
             // resolve gems
-            ResolveGem(row, col);
+            ResolveGem(index.x, index.y);
         }
 
         ApplyGravity();
@@ -154,9 +158,9 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    protected List<(int Row, int Column)> FindMatchedCells()
+    protected List<Vector2Int> FindMatchedCells()
     {
-        var matches = new List<(int, int)>();
+        var matches = new List<Vector2Int>();
 
         var seen = new bool[_rows, _cols];
 
@@ -164,21 +168,24 @@ public class BoardManager : MonoBehaviour
         {
             for (int col = 0; col < _cols; col++)
             {
-                if (_gems[row, col] == null)
+                var gem = _gems[row, col];
+                if (gem == null)
                 {
                     continue;
                 }
 
+                var color = gem.Color;
+
                 // Horizontal check (1x3)
                 if (col <= _cols - 3 &&
-                    _gems[row, col].Color == _gems[row, col + 1].Color &&
-                    _gems[row, col].Color == _gems[row, col + 2].Color)
+                    color == _gems[row, col + 1].Color &&
+                    color == _gems[row, col + 2].Color)
                 {
                     for (int offset = 0; offset < 3; offset++)
                     {
                         if (!seen[row, col + offset])
                         {
-                            matches.Add((row, col + offset));
+                            matches.Add(new Vector2Int(row, col + offset));
                             seen[row, col + offset] = true;
                         }
                     }
@@ -186,14 +193,14 @@ public class BoardManager : MonoBehaviour
 
                 // Vertical check (3x1)
                 if (row <= _rows - 3 &&
-                    _gems[row, col].Color == _gems[row + 1, col].Color &&
-                    _gems[row, col].Color == _gems[row + 2, col].Color)
+                    color == _gems[row + 1, col].Color &&
+                    color == _gems[row + 2, col].Color)
                 {
                     for (int offset = 0; offset < 3; offset++)
                     {
                         if (!seen[row + offset, col])
                         {
-                            matches.Add((row + offset, col));
+                            matches.Add(new Vector2Int(row + offset, col));
                             seen[row + offset, col] = true;
                         }
                     }
@@ -470,5 +477,13 @@ public class BoardManager : MonoBehaviour
             Color = color,
             Tier = tier
         });
+    }
+
+    protected void OnBoardDisabled(IReadOnlyList<Vector2Int> disableIndices)
+    {
+        foreach (var idx in disableIndices)
+        {
+            _gems[idx.x, idx.y].Init(GemColor.None);
+        }
     }
 }

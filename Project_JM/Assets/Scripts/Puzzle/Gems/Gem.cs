@@ -11,7 +11,7 @@ using GemEnums;
 [RequireComponent(typeof(GemMover))]
 public class Gem : MonoBehaviour
 {
-    public GemColor Color { get; set; }
+    public GemColor Color { get; private set; }
 
     public void Init(GemColor gemColor)
     {
