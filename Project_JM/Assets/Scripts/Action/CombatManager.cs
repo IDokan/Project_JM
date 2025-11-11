@@ -12,6 +12,7 @@ using MatchEnums;
 public class CombatManager : MonoBehaviour
 {
     [Header("Wiring")]
+    [SerializeField] protected EnemyAttackEventChannel _enemyAttackChannel;
     [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected AttackBook _attackBook;
     [SerializeField] protected PartyRoster _party;
@@ -19,8 +20,17 @@ public class CombatManager : MonoBehaviour
     [Header("Targeting")]
     [SerializeField] protected CharacterCombatant enemy;    // @@ TODO: Need to implement enemy spawner...
 
-    protected void OnEnable() => _matchEvents.OnRaised += OnMatch;
-    protected void OnDisable() => _matchEvents.OnRaised -= OnMatch;
+    protected void OnEnable()
+    {
+        _matchEvents.OnRaised += OnMatch;
+        _enemyAttackChannel.OnRaised += OnEnemyAttack;
+    }
+
+    protected void OnDisable()
+    {
+        _matchEvents.OnRaised -= OnMatch;
+        _enemyAttackChannel.OnRaised -= OnEnemyAttack;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,6 +46,7 @@ public class CombatManager : MonoBehaviour
 
     protected void OnMatch(MatchEvent matchEvent)
     {
+
         var attacker = _party.Get(matchEvent.Color);
         if (attacker == null)
         {
@@ -60,10 +71,20 @@ public class CombatManager : MonoBehaviour
         var context = new AttackContext
         {
             Attacker = attacker,
-            Target = enemy,
-            Match = matchEvent
+            Target = enemy
         };
 
         StartCoroutine(attackLogic.Execute(context));
+    }
+
+    protected void OnEnemyAttack(AttackLogic logic)
+    {
+        var enemy_context = new AttackContext
+        {
+            Attacker = enemy,
+            Target = _party.GetComponent<ICombatant>()
+        };
+
+        StartCoroutine(logic.Execute(enemy_context));
     }
 }

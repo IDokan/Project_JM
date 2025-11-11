@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 11/07/2025 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
-// File: MatchEventChannel.cs
+// File: AttackLogic.cs
 // Summary: An abstract scriptable object for attack logics.
 
 using UnityEngine;
@@ -12,7 +12,6 @@ public struct AttackContext
 {
     public ICombatant Attacker;
     public ICombatant Target;
-    public MatchEvent Match;
 }
 
 public abstract class AttackLogic : ScriptableObject

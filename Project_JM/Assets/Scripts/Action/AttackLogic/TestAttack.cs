@@ -11,13 +11,11 @@ using UnityEngine;
 public class TestAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 3;
-    [SerializeField] private float tierScale = 1.0f;
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        Debug.Log($"{ctx.Match.Color} casted {ctx.Match.Tier} tier TestAttack");
-        int tier = (int)ctx.Match.Tier; // 3/4/5
-        int dmg = Mathf.RoundToInt(baseDamage * (1f + (tier - 3) * tierScale));
+        Debug.Log($"{ctx.Attacker} attacked {ctx.Target}");
+        int dmg = Mathf.RoundToInt(baseDamage);
         ctx.Target?.TakeDamage(dmg);
         yield break;
     }

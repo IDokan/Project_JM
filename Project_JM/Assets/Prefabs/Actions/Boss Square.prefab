@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5148046626079482820}
   - component: {fileID: 1176053653374777677}
   - component: {fileID: 6721484090919061956}
+  - component: {fileID: 4409018762775306443}
   m_Layer: 0
   m_Name: Boss Square
   m_TagString: Untagged
@@ -118,3 +119,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatus
   _baseData: {fileID: 11400000, guid: 4ef685ffaa4dfdf4aaecf0f58eeeba42, type: 2}
+--- !u!114 &4409018762775306443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164301083414174608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 317b4cc699a0bfc4bb07623fd694f612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackBehaviour
+  _attackChannel: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
+  _attackLogic: {fileID: 11400000, guid: 4485cde5803c84d45b9b3dc6d28fb795, type: 2}
+  _boardDisableChannel: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
+  _boardDisableLogic: {fileID: 11400000, guid: ff86379f41f6c6a40b69b045eda33c52, type: 2}
+  _cooldown: 5
