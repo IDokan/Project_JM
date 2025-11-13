@@ -17,4 +17,9 @@ public struct AttackContext
 public abstract class AttackLogic : ScriptableObject
 {
     public abstract IEnumerator Execute(AttackContext context);
+
+    // Simple getter for attack movement offset
+    public abstract Vector3 GetAttackerMotionOffset();
+    // Simple getter for get attacked movement offset
+    public abstract Vector3 GetTargetMotionOffset();
 }

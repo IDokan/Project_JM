@@ -8,7 +8,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct BoardDisableContext
+{
+    public IBoardInfo BoardInfo;
+}
+
 public abstract class BoardDisableLogic : ScriptableObject
 {
-    public abstract IEnumerator Execute(BoardDisableEventChannel channel);
+    public abstract IEnumerator Execute(BoardDisableContext context);
 }

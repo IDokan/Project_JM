@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MatchEnums;
+using GemEnums;
 
 public class CombatManager : MonoBehaviour
 {
@@ -18,7 +19,9 @@ public class CombatManager : MonoBehaviour
     [SerializeField] protected PartyRoster _party;
 
     [Header("Targeting")]
-    [SerializeField] protected CharacterCombatant enemy;    // @@ TODO: Need to implement enemy spawner...
+    [SerializeField] protected CharacterCombatant _enemy;    // @@ TODO: Need to implement enemy spawner...
+
+    protected ICombatant lastAttackedCharacter;
 
     protected void OnEnable()
     {
@@ -35,7 +38,7 @@ public class CombatManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        lastAttackedCharacter = _party.Get(GemColorUtility.GetRandomGemColor());
     }
 
     // Update is called once per frame
@@ -53,6 +56,8 @@ public class CombatManager : MonoBehaviour
             Debug.LogWarning($"No attacker for {matchEvent.Color}");
             return;
         }
+        // Record last attacked character after NULL check
+        lastAttackedCharacter = attacker;
 
         var attackLogic = _attackBook.Get(matchEvent.Color, matchEvent.Tier);
         if (attackLogic == null)
@@ -61,7 +66,7 @@ public class CombatManager : MonoBehaviour
             return;
         }
 
-        if (enemy == null)
+        if (_enemy == null)
         {
             Debug.LogWarning($"No enemy");
             return;
@@ -71,8 +76,10 @@ public class CombatManager : MonoBehaviour
         var context = new AttackContext
         {
             Attacker = attacker,
-            Target = enemy
+            Target = _enemy
         };
+
+        PlayAttackMotion(context, attackLogic);
 
         StartCoroutine(attackLogic.Execute(context));
     }
@@ -81,10 +88,25 @@ public class CombatManager : MonoBehaviour
     {
         var enemy_context = new AttackContext
         {
-            Attacker = enemy,
-            Target = _party.GetComponent<ICombatant>()
+            Attacker = _enemy,
+            Target = lastAttackedCharacter
         };
 
+        PlayAttackMotion(enemy_context, logic);
+        
         StartCoroutine(logic.Execute(enemy_context));
+    }
+
+    protected void PlayAttackMotion(AttackContext context, AttackLogic logic)
+    {
+        if(context.Attacker is MonoBehaviour attackerObject)
+        {
+            attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(logic.GetAttackerMotionOffset());
+        }
+
+        if (context.Target is MonoBehaviour targetObject)
+        {
+            targetObject.GetComponent<AttackMotion>().PlayAttackMotion(logic.GetTargetMotionOffset());
+        }
     }
 }

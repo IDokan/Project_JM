@@ -11,7 +11,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "JM/Events/Board Disable Event Channel")]
 public class BoardDisableEventChannel : ScriptableObject
 {
-    public event Action<IReadOnlyList<Vector2Int>> OnRaised;
+    public event Action<BoardDisableLogic> OnRaised;
 
-    public void Raise(IReadOnlyList<Vector2Int> disableIndices) => OnRaised?.Invoke(disableIndices);
+    public void Raise(BoardDisableLogic logic) => OnRaised?.Invoke(logic);
 }
