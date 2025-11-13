@@ -11,7 +11,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardManager : MonoBehaviour
+public interface IBoardInfo
+{
+    public int Rows { get; }
+    public int Cols { get; }
+
+    // Returns false if 
+    public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices);
+}
+
+public class BoardManager : MonoBehaviour, IBoardInfo
 {
     [SerializeField] protected int _rows = 8;
     public int Rows => _rows;
@@ -479,11 +488,39 @@ public class BoardManager : MonoBehaviour
         });
     }
 
-    protected void OnBoardDisabled(IReadOnlyList<Vector2Int> disableIndices)
+    protected void OnBoardDisabled(BoardDisableLogic logic)
     {
-        foreach (var idx in disableIndices)
+        var context = new BoardDisableContext
         {
-            _gems[idx.x, idx.y].Init(GemColor.None);
+            BoardInfo = this
+        };
+
+        StartCoroutine(RunBoardDisableAttack(logic, context));
+    }
+
+    protected IEnumerator RunBoardDisableAttack(BoardDisableLogic logic, BoardDisableContext context)
+    {
+        _numMovingGems++;
+        yield return StartCoroutine(logic.Execute(context));
+        ResolveGemMovement();
+    }
+
+    public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices)
+    {
+        var failed = new List<Vector2Int>();
+        foreach (var index in disableIndices)
+        {
+            var Gem = _gems[index.x, index.y];
+            if (Gem.Color != GemColor.None)
+            {
+                _gems[index.x, index.y].Init(GemColor.None);
+            }
+            else
+            {
+                failed.Add(index);
+            }
         }
+
+        return failed;
     }
 }

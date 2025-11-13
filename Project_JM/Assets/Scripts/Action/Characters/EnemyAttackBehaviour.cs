@@ -44,7 +44,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
         while(true)
         {
             Attack();
-            yield return DisableBoard();
 
             yield return wait;
         }
@@ -53,11 +52,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected void Attack()
     {
         _attackChannel.Raise(_attackLogic);
-    }
-
-
-    protected IEnumerator DisableBoard()
-    {
-        yield return (_boardDisableLogic.Execute(_boardDisableChannel));
+        _boardDisableChannel.Raise(_boardDisableLogic);
     }
 }

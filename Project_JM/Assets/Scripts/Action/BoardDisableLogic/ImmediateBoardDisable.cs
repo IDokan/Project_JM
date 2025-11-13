@@ -13,9 +13,9 @@ public class ImmediateBoardDisable : BoardDisableLogic
 {
     [SerializeField] protected List<Vector2Int> disableIndices;
 
-    public override IEnumerator Execute(BoardDisableEventChannel channel)
+    public override IEnumerator Execute(BoardDisableContext context)
     {
-        channel.Raise(disableIndices);
+        context.BoardInfo.DisableGems(disableIndices);
 
         yield break;
     }
