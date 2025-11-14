@@ -7,10 +7,11 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "JM/Combat/AttackLogic/Test Attack")]
+[CreateAssetMenu(menuName = "JM/Combat/AttackLogic/Ally/Test Attack")]
 public class TestAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 3;
+
 
     public override IEnumerator Execute(AttackContext ctx)
     {

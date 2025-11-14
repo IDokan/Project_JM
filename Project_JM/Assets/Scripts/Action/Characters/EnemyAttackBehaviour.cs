@@ -4,7 +4,7 @@
 // File: EnemyAttackBehaviour.cs
 // Summary: A script for enemy combat behaviour.
 
-
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,9 +14,13 @@ public class EnemyAttackBehaviour : MonoBehaviour
     [SerializeField] protected AttackLogic _attackLogic;
     [SerializeField] protected BoardDisableEventChannel _boardDisableChannel;
     [SerializeField] protected BoardDisableLogic _boardDisableLogic;
-    [SerializeField, Min(0.001f)] protected float _cooldown = 5f;
+    [SerializeField, Min(0.001f)] protected float _fallbackCooldown = 5f;
 
     protected Coroutine _loop;
+    protected float _timer;
+    protected float _cooldown;
+
+    public event Action<float, float> OnAttackTimerChanged;
 
     protected void OnEnable()
     {
@@ -24,7 +28,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     }
     protected void OnDisable()
     {
-        if(_loop != null )
+        if (_loop != null)
         {
             StopCoroutine(_loop);
         }
@@ -33,19 +37,31 @@ public class EnemyAttackBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
+    }
+
+    public void DelayAttack(float delay)
+    {
+        UpdateTimer(delay);
     }
 
     // Update is called once per frame
     protected IEnumerator Loop()
     {
-        var wait = new WaitForSeconds(_cooldown );
-
-        while(true)
+        _cooldown = GetCooldown();
+        while (true)
         {
-            Attack();
+            _timer = _cooldown;
 
-            yield return wait;
+            // Countdown
+            while (_timer > 0f)
+            {
+                UpdateTimer(-Time.deltaTime);
+
+                yield return null;
+            }
+
+            Attack();
         }
     }
 
@@ -53,5 +69,21 @@ public class EnemyAttackBehaviour : MonoBehaviour
     {
         _attackChannel.Raise(_attackLogic);
         _boardDisableChannel.Raise(_boardDisableLogic);
+    }
+
+    protected float GetCooldown()
+    {
+        if (_attackLogic is IHasCooldown c)
+        {
+            return c.Cooldown;
+        }
+
+        return _fallbackCooldown;
+    }
+
+    protected void UpdateTimer(float value)
+    {
+        _timer += value;
+        OnAttackTimerChanged?.Invoke(_timer, _cooldown);
     }
 }
