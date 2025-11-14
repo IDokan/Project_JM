@@ -4,6 +4,7 @@
 // File: CharacterStatus.cs
 // Summary: A class to modify status in runtime.
 
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,8 +14,11 @@ public class CharacterStatus : MonoBehaviour
 
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
+    public float maxHP { get; private set; }
     public float DamageMultiplier => _baseData.baseDamageMultiplier;
     public float CriticalChance => _baseData.baseCriticalChance;
+
+    public event Action<float, float> OnHPChanged;
 
 
     public bool IsDead => CurrentHP <= 0f;
@@ -22,11 +26,15 @@ public class CharacterStatus : MonoBehaviour
     protected void Awake()
     {
         CurrentHP = _baseData.baseHP;
+        maxHP = CurrentHP;
     }
 
     public void TakeDamage(float damage)
     {
         CurrentHP = Mathf.Max(0, CurrentHP - damage);
+
+        OnHPChanged?.Invoke(CurrentHP, _baseData.baseHP);
+
         Debug.Log($"{CharacterName} took {damage} damage -> HP {CurrentHP}");
     }
 }
