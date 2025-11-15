@@ -19,6 +19,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected Coroutine _loop;
     protected float _timer;
     protected float _cooldown;
+    public float Cooldown => GetCooldown();
 
     public event Action<float, float> OnAttackTimerChanged;
 

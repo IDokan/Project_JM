@@ -30,7 +30,22 @@ public class AttackCooldownBinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void BindNewAI(EnemyAttackBehaviour newAI)
+    {
+        if (newAI == _boundEnemyAI) return;
+
+        if (_boundEnemyAI != null)
+        {
+            _boundEnemyAI.OnAttackTimerChanged -= UpdateAttackTimer;
+        }
+
+        _boundEnemyAI = newAI;
+        _boundEnemyAI.OnAttackTimerChanged += UpdateAttackTimer;
+
+        UpdateAttackTimer(_boundEnemyAI.Cooldown, _boundEnemyAI.Cooldown);
     }
 
     protected void UpdateAttackTimer(float current, float max)
