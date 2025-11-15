@@ -26,7 +26,7 @@ public class AttackMotion : MonoBehaviour
         Sequence seq = DOTween.Sequence();
         seq.Append(transform.DOLocalMove(target, _moveDuration).SetEase(Ease.OutQuad))
             .AppendInterval(_pauseDuration)
-            .Append(transform.DOLocalMove(originalPosition, _moveDuration).SetEase(Ease.InQuad));
-
+            .Append(transform.DOLocalMove(originalPosition, _moveDuration).SetEase(Ease.InQuad))
+            .SetLink(gameObject);
     }
 }

@@ -22,7 +22,7 @@ public struct AttackEntry
     public AttackLogic logic;
 }
 
-[CreateAssetMenu(fileName = "AttackBook", menuName = "JM/Combat/Attack Book")]
+[CreateAssetMenu(fileName = "AttackBook", menuName = "JM/Data/Attack Book")]
 public class AttackBook : ScriptableObject
 {
     [SerializeField] protected AttackEntry[] entries;

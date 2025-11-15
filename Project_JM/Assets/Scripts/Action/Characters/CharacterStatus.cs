@@ -11,6 +11,7 @@ using UnityEngine;
 public class CharacterStatus : MonoBehaviour
 {
     [SerializeField] protected CharacterStatusData _baseData;
+    [SerializeField] protected CharacterDeathEventChannel _deathEvent;
 
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
@@ -31,10 +32,22 @@ public class CharacterStatus : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        CurrentHP = Mathf.Max(0, CurrentHP - damage);
+        CurrentHP = Mathf.Max(0f, CurrentHP - damage);
 
         OnHPChanged?.Invoke(CurrentHP, _baseData.baseHP);
 
         Debug.Log($"{CharacterName} took {damage} damage -> HP {CurrentHP}");
+
+        if (IsDead)
+        {
+            Die();
+        }
+    }
+
+    protected void Die()
+    {
+        _deathEvent.Raise(this);
+        // Display death motion or anything about death. Instead of immediately deleting it.
+        Destroy(gameObject);
     }
 }

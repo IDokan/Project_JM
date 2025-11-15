@@ -5,7 +5,6 @@
 // Summary: A scriptable object for board disable event channel.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "JM/Events/Board Disable Event Channel")]
