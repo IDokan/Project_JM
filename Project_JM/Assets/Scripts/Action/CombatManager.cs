@@ -4,11 +4,11 @@
 // File: CombatManager.cs
 // Summary: A class to manage whole combat logic.
 
+using GemEnums;
+using MatchEnums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MatchEnums;
-using GemEnums;
 
 public class CombatManager : MonoBehaviour
 {
@@ -84,6 +84,9 @@ public class CombatManager : MonoBehaviour
             Attacker = attacker,
             Target = _enemy
         };
+
+
+        Debug.Log($"Tier {matchEvent.Tier} happened");
 
         PlayAttackMotion(context, attackLogic);
 
