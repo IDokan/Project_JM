@@ -8,7 +8,9 @@ using UnityEngine;
 
 public interface ICombatant
 {
-    void TakeDamage(float damage);
+    void Heal(float healPercentage);
+    void AddShield(float shieldPercentage);
+    void TakeDamage(float damage, DamageMultiplierManager damageMultiplierManager);
 }
 
 public class CharacterCombatant : MonoBehaviour, ICombatant
@@ -29,9 +31,19 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         
     }
 
-    public void TakeDamage(float rawDamage)
+    public void Heal(float healPercentage)
     {
-        float damage = rawDamage * _status.DamageMultiplier;
+        _status.Heal(healPercentage);
+    }
+
+    public void AddShield(float shieldPercentage)
+    {
+        _status.AddShield(shieldPercentage);
+    }
+
+    public void TakeDamage(float rawDamage, DamageMultiplierManager damageMultiplierManager)
+    {
+        float damage = rawDamage * damageMultiplierManager.GetMultiplier;
 
         // Critical hit calculation
         if(_status.CriticalChance > GlobalRNG.Instance.NextFloat() * 100)

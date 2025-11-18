@@ -16,8 +16,7 @@ public class TestAttack : AttackLogic
     public override IEnumerator Execute(AttackContext ctx)
     {
         Debug.Log($"{ctx.Attacker} attacked {ctx.Target}");
-        int dmg = Mathf.RoundToInt(baseDamage);
-        ctx.Target?.TakeDamage(dmg);
+        ctx.Target?.TakeDamage(baseDamage, ctx.DamageMultiplierManager);
         yield break;
     }
 

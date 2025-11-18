@@ -11,7 +11,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "JM/Combat/AttackLogic/Ally/Delay Attack")]
 public class DelayAttack : AttackLogic
 {
-    [SerializeField] protected int baseDamage = 9;
+    [SerializeField] protected int baseDamage = 6;
     [SerializeField] protected float delayAmount = 5;
 
     public override IEnumerator Execute(AttackContext ctx)
@@ -21,7 +21,7 @@ public class DelayAttack : AttackLogic
         {
             enemy.DelayAttack(delayAmount);
         }
-        ctx.Target?.TakeDamage(baseDamage);
+        ctx.Target?.TakeDamage(baseDamage, ctx.DamageMultiplierManager);
 
         yield break;
     }
