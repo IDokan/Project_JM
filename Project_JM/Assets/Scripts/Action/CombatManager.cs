@@ -19,6 +19,8 @@ public class CombatManager : MonoBehaviour
     [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected AttackBook _attackBook;
     [SerializeField] protected PartyRoster _party;
+    [SerializeField] protected DamageMultiplierManager _damageMultiplierManager;
+
 
     [Header("Targeting")]
     [SerializeField] protected CharacterCombatant _enemy;    // @@ TODO: Need to implement enemy spawner...
@@ -82,7 +84,8 @@ public class CombatManager : MonoBehaviour
         var context = new AttackContext
         {
             Attacker = attacker,
-            Target = _enemy
+            Target = _enemy,
+            DamageMultiplierManager = _damageMultiplierManager
         };
 
 
@@ -98,7 +101,8 @@ public class CombatManager : MonoBehaviour
         var enemy_context = new AttackContext
         {
             Attacker = _enemy,
-            Target = lastAttackedCharacter
+            Target = lastAttackedCharacter,
+            DamageMultiplierManager = _damageMultiplierManager
         };
 
         PlayAttackMotion(enemy_context, logic);

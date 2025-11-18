@@ -538,6 +538,7 @@ MonoBehaviour:
   _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
   _attackBook: {fileID: 11400000, guid: 2b8a2dbaddba64f4ca8e769f11a402e6, type: 2}
   _party: {fileID: 1233718908}
+  _damageMultiplierManager: {fileID: 1249410517}
   _enemy: {fileID: 468447738}
 --- !u!4 &1141524971
 Transform:
@@ -576,6 +577,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db51d9973d185547abca64e111762d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatus
+--- !u!1 &1249410516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1249410518}
+  - component: {fileID: 1249410517}
+  m_Layer: 0
+  m_Name: DamageMultiplierManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1249410517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249410516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db87e5669ea7414f854b79ea84d0bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageMultiplierManager
+  _characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  _difficultyCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
+--- !u!4 &1249410518
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249410516}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9, y: -4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1491015152
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -697,6 +744,7 @@ MonoBehaviour:
   _enemyBook: {fileID: 11400000, guid: 2cb3d0cff5fe9d84d98b5e05bbcafa35, type: 2}
   _characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
+  _difficultyCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
 --- !u!4 &1539289463
 Transform:
   m_ObjectHideFlags: 0
@@ -1194,3 +1242,4 @@ SceneRoots:
   - {fileID: 1491015152}
   - {fileID: 1539289463}
   - {fileID: 33780021}
+  - {fileID: 1249410518}

@@ -12,6 +12,8 @@ public struct AttackContext
 {
     public ICombatant Attacker;
     public ICombatant Target;
+
+    public DamageMultiplierManager DamageMultiplierManager;
 }
 
 public interface IHasCooldown

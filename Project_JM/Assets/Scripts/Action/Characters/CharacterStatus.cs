@@ -16,12 +16,13 @@ public class CharacterStatus : MonoBehaviour
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
-    public float DamageMultiplier => _baseData.baseDamageMultiplier;
     public float CriticalChance => _baseData.baseCriticalChance;
 
     public event Action<float, float> OnHPChanged;
+    public event Action<float> OnShieldChanged;
 
-
+    protected float _shield;
+    public float Shield => _shield;
     public bool IsDead => CurrentHP <= 0f;
 
     protected void Awake()
@@ -30,13 +31,38 @@ public class CharacterStatus : MonoBehaviour
         maxHP = CurrentHP;
     }
 
+    public void Initialize(StatusMultiplier multiplier)
+    {
+        CurrentHP = CurrentHP / maxHP * _baseData.baseHP * multiplier.HPMultiplier;
+        maxHP = _baseData.baseHP * multiplier.HPMultiplier;
+        OnHPChanged?.Invoke(CurrentHP, maxHP);
+    }
+
+    // It takes a range of [0, 1]. 1 means 100%
+    public void Heal(float healPercentage)
+    {
+        CurrentHP = Mathf.Min(maxHP, CurrentHP + (maxHP * healPercentage));
+
+        OnHPChanged?.Invoke(CurrentHP, maxHP);
+    }
+
+    public void AddShield(float shieldPercentage)
+    {
+        _shield += Mathf.Max(0f, maxHP * shieldPercentage);
+        OnShieldChanged?.Invoke(_shield);
+    }
+
     public void TakeDamage(float damage)
     {
-        CurrentHP = Mathf.Max(0f, CurrentHP - damage);
+        float calculatedDamage = Mathf.Max(0f, damage - _shield);
+        _shield = 0f;
+        OnShieldChanged?.Invoke(_shield);
 
-        OnHPChanged?.Invoke(CurrentHP, _baseData.baseHP);
+        CurrentHP = Mathf.Max(0f, CurrentHP - calculatedDamage);
 
-        Debug.Log($"{CharacterName} took {damage} damage -> HP {CurrentHP}");
+        OnHPChanged?.Invoke(CurrentHP, maxHP);
+
+        Debug.Log($"{CharacterName} took {calculatedDamage} damage -> HP {CurrentHP}");
 
         if (IsDead)
         {

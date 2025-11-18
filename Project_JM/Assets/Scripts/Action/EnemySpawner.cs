@@ -12,8 +12,12 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
 
+    [SerializeField] protected DifficultyCurves _difficultyCurves;
+
     protected void OnEnable() => _characterDeathEventChannel.OnRaised += OnCharacterDied;
     protected void OnDisable() => _characterDeathEventChannel.OnRaised -= OnCharacterDied;
+
+    protected int _numSpanwed = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,7 +33,11 @@ public class EnemySpawner : MonoBehaviour
 
     protected GameObject SpawnRandomEnemy()
     {
+        _numSpanwed++;
+
         var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), new Vector3(8f, 0.5f, 0f), Quaternion.identity);
+        spawnedEnemy.GetComponent<CharacterStatus>().Initialize(GetDifficultyMultiplier(_numSpanwed));
+
         _enemySpawnedEventChannel.Raise(spawnedEnemy);
         return spawnedEnemy;
     }
@@ -40,5 +48,13 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnRandomEnemy();
         }
+    }
+
+    protected StatusMultiplier GetDifficultyMultiplier(int numSpawned)
+    {
+        StatusMultiplier result;
+        result.HPMultiplier = _difficultyCurves.HPMultiplierCurve.Evaluate(numSpawned) *
+            _difficultyCurves.DamageMultiplierCurve.Evaluate(numSpawned);
+        return result;
     }
 }

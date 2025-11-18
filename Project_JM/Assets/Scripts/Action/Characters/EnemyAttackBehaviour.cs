@@ -18,14 +18,18 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     protected Coroutine _loop;
     protected float _timer;
-    protected float _cooldown;
-    public float Cooldown => GetCooldown();
+    protected float _cooldown { get; private set; }
+    public float Cooldown => _cooldown;
 
     public event Action<float, float> OnAttackTimerChanged;
+
+    protected Coroutine _enrangeRoutine;
+    [SerializeField, Min(10f)] protected float _enrageDelay = 30f;
 
     protected void OnEnable()
     {
         _loop = StartCoroutine(Loop());
+        _enrangeRoutine = StartCoroutine(EnrageAfterDelay());
     }
     protected void OnDisable()
     {
@@ -33,6 +37,15 @@ public class EnemyAttackBehaviour : MonoBehaviour
         {
             StopCoroutine(_loop);
         }
+        if (_enrangeRoutine != null)
+        {
+            StopCoroutine(_enrangeRoutine);
+        }
+    }
+
+    protected void Awake()
+    {
+        _cooldown = GetCooldown();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,7 +62,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
     // Update is called once per frame
     protected IEnumerator Loop()
     {
-        _cooldown = GetCooldown();
         while (true)
         {
             _timer = _cooldown;
@@ -57,6 +69,11 @@ public class EnemyAttackBehaviour : MonoBehaviour
             // Countdown
             while (_timer > 0f)
             {
+                if (_timer >= _cooldown)
+                {
+                    _timer = _cooldown;
+                }
+
                 UpdateTimer(-Time.deltaTime);
 
                 yield return null;
@@ -86,5 +103,18 @@ public class EnemyAttackBehaviour : MonoBehaviour
     {
         _timer += value;
         OnAttackTimerChanged?.Invoke(_timer, _cooldown);
+    }
+
+    protected void Enrange()
+    {
+        _cooldown *= 0.25f;
+        OnAttackTimerChanged?.Invoke(_timer, _cooldown);
+    }
+
+    protected IEnumerator EnrageAfterDelay()
+    {
+        yield return new WaitForSeconds(_enrageDelay);
+
+        Enrange();
     }
 }
