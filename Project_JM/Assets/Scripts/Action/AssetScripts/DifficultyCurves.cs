@@ -12,4 +12,12 @@ public class DifficultyCurves : ScriptableObject
 {
     public AnimationCurve HPMultiplierCurve;
     public AnimationCurve DamageMultiplierCurve;
+
+    public StatusMultiplier GetDifficultyMultiplier(int stage)
+    {
+        StatusMultiplier result;
+        result.HPMultiplier = HPMultiplierCurve.Evaluate(stage) *
+            DamageMultiplierCurve.Evaluate(stage);
+        return result;
+    }
 }

@@ -19,7 +19,7 @@ public class CharacterStatus : MonoBehaviour
     public float CriticalChance => _baseData.baseCriticalChance;
 
     public event Action<float, float> OnHPChanged;
-    public event Action<float> OnShieldChanged;
+    public event Action<float, float> OnShieldChanged;
 
     protected float _shield;
     public float Shield => _shield;
@@ -49,14 +49,14 @@ public class CharacterStatus : MonoBehaviour
     public void AddShield(float shieldPercentage)
     {
         _shield += Mathf.Max(0f, maxHP * shieldPercentage);
-        OnShieldChanged?.Invoke(_shield);
+        OnShieldChanged?.Invoke(_shield, maxHP);
     }
 
     public void TakeDamage(float damage)
     {
         float calculatedDamage = Mathf.Max(0f, damage - _shield);
         _shield = 0f;
-        OnShieldChanged?.Invoke(_shield);
+        OnShieldChanged?.Invoke(_shield, maxHP);
 
         CurrentHP = Mathf.Max(0f, CurrentHP - calculatedDamage);
 
