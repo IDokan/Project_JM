@@ -6,24 +6,29 @@
 
 using UnityEngine;
 
-[RequireComponent(typeof(BarUI))]
 public class BarStatusBinder : MonoBehaviour
 {
     [SerializeField] protected CharacterStatus _boundStatus;
-    protected BarUI _barUI;
+    [SerializeField] protected BarUI _HPbarUI;
+    [SerializeField] protected BarUI _ShieldbarUI;
 
-    protected void OnEnable() => _boundStatus.OnHPChanged += UpdateHP;
-    protected void OnDisable() => _boundStatus.OnHPChanged -= UpdateHP;
-
-    protected void Awake()
+    protected void OnEnable()
     {
-        _barUI = GetComponent<BarUI>();
+        _boundStatus.OnHPChanged += UpdateHP;
+        _boundStatus.OnShieldChanged += UpdateShield;
+    }
+
+    protected void OnDisable()
+    {
+        _boundStatus.OnHPChanged -= UpdateHP;
+        _boundStatus.OnShieldChanged -= UpdateShield;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        UpdateHP(_boundStatus.CurrentHP, _boundStatus.maxHP);
+        UpdateShield(0, _boundStatus.maxHP);
     }
 
     // Update is called once per frame
@@ -39,16 +44,24 @@ public class BarStatusBinder : MonoBehaviour
         if (_boundStatus != null)
         {
             _boundStatus.OnHPChanged -= UpdateHP;
+            _boundStatus.OnShieldChanged -= UpdateShield;
         }
 
         _boundStatus = newStatus;
         _boundStatus.OnHPChanged += UpdateHP;
+        _boundStatus.OnShieldChanged += UpdateShield;
 
         UpdateHP(_boundStatus.CurrentHP, _boundStatus.maxHP);
+        UpdateShield(0, _boundStatus.maxHP);
     }
 
     protected void UpdateHP(float current, float max)
     {
-        _barUI.UpdateValue(current, max);
+        _HPbarUI.UpdateValue(current, max);
+    }
+
+    protected void UpdateShield(float shieldAmount, float max)
+    {
+        _ShieldbarUI.UpdateValue(shieldAmount, max, false);
     }
 }

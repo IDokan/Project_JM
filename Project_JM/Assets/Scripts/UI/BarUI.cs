@@ -6,10 +6,12 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BarUI : MonoBehaviour
 {
     [SerializeField] protected RectTransform _bar;
+    [SerializeField] protected TextMeshProUGUI _text;
 
     protected Vector2 initSize;
     
@@ -30,10 +32,30 @@ public class BarUI : MonoBehaviour
         
     }
 
-    public void UpdateValue(float current, float max)
+    public void UpdateValue(float current, float max, bool displayMaxValue = true)
     {
         float ratio = current / max;
 
         _bar.sizeDelta = new Vector2(initSize.x * ratio, initSize.y);
+
+        if (_text != null)
+        {
+            if (displayMaxValue)
+            {
+                _text.text = $"{Mathf.RoundToInt(current)} / {Mathf.RoundToInt(max)}";
+            }
+            else
+            {
+                if (current <= 0f)
+                {
+                    _text.CrossFadeAlpha(0f, 0.25f, false);
+                }
+                else
+                {
+                    _text.CrossFadeAlpha(1f, 0.1f, false);
+                    _text.text = $"{Mathf.RoundToInt(current)}";
+                }
+            }
+        }
     }
 }

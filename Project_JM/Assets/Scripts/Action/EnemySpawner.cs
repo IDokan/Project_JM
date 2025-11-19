@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
         _numSpanwed++;
 
         var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), new Vector3(8f, 0.5f, 0f), Quaternion.identity);
-        spawnedEnemy.GetComponent<CharacterStatus>().Initialize(GetDifficultyMultiplier(_numSpanwed));
+        spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
         _enemySpawnedEventChannel.Raise(spawnedEnemy);
         return spawnedEnemy;
@@ -48,13 +48,5 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnRandomEnemy();
         }
-    }
-
-    protected StatusMultiplier GetDifficultyMultiplier(int numSpawned)
-    {
-        StatusMultiplier result;
-        result.HPMultiplier = _difficultyCurves.HPMultiplierCurve.Evaluate(numSpawned) *
-            _difficultyCurves.DamageMultiplierCurve.Evaluate(numSpawned);
-        return result;
     }
 }

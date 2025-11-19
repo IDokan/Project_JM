@@ -14,7 +14,6 @@ public class CombatManager : MonoBehaviour
 {
     [Header("Wiring")]
     [SerializeField] protected EnemyAttackEventChannel _enemyAttackChannel;
-    [SerializeField] protected CharacterDeathEventChannel _deathChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
     [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected AttackBook _attackBook;
@@ -31,7 +30,6 @@ public class CombatManager : MonoBehaviour
     {
         _matchEvents.OnRaised += OnMatch;
         _enemyAttackChannel.OnRaised += OnEnemyAttack;
-        _deathChannel.OnRaised += OnCharacterDied;
         _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
     }
 
@@ -39,7 +37,6 @@ public class CombatManager : MonoBehaviour
     {
         _matchEvents.OnRaised -= OnMatch;
         _enemyAttackChannel.OnRaised -= OnEnemyAttack;
-        _deathChannel.OnRaised -= OnCharacterDied;
         _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
     }
 
@@ -121,32 +118,6 @@ public class CombatManager : MonoBehaviour
         {
             targetObject.GetComponent<AttackMotion>().PlayAttackMotion(logic.GetTargetMotionOffset());
         }
-    }
-
-    protected void OnCharacterDied(CharacterStatus stat)
-    {
-        if (stat.TryGetComponent<EnemyTag>(out _))
-        {
-            HandleEnemyDied(stat);
-        }
-        else if(stat.TryGetComponent<AllyTag>(out _))
-        {
-            HandleAllyDied(stat);
-        }
-        else
-        {
-            // CharacterStat must have at least one Tag class.
-        }
-    }
-
-    protected void HandleAllyDied(CharacterStatus stat)
-    {
-        // Need to handle 
-    }
-
-    protected void HandleEnemyDied(CharacterStatus stat)
-    {
-
     }
 
     protected void OnEnemySpawned(GameObject enemy)
