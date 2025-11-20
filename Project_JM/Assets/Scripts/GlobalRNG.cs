@@ -35,6 +35,10 @@ public class GlobalRNG : ScriptableObject
     public int NextInt(int min, int max) => _rng.Next(min, max);
     // Returns [0.0, 1.0)
     public float NextFloat() => (float)_rng.NextDouble();
+    public float NextFloat(float min, float max)
+    {
+        return ((float)_rng.NextDouble() * (max - min)) - min;
+    }
     public void Reseed(int newSeed)
     {
         _seed = newSeed;

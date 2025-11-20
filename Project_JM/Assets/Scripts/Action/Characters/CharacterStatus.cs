@@ -58,6 +58,9 @@ public class CharacterStatus : MonoBehaviour
         _shield = 0f;
         OnShieldChanged?.Invoke(_shield, maxHP);
 
+        // Spawn Damageui slightly above the origin of attacked target
+        DamageUIManager.Instance.SpawnDamage(Mathf.RoundToInt(Mathf.Min(CurrentHP, calculatedDamage)), transform.position + Vector3.up * 1.5f);
+
         CurrentHP = Mathf.Max(0f, CurrentHP - calculatedDamage);
 
         OnHPChanged?.Invoke(CurrentHP, maxHP);
