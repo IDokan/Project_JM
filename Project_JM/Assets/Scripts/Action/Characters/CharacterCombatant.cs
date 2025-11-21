@@ -10,7 +10,7 @@ public interface ICombatant
 {
     void Heal(float healPercentage);
     void AddShield(float shieldPercentage);
-    void TakeDamage(float damage, DamageMultiplierManager damageMultiplierManager);
+    void TakeDamage(float damage, AttackContext attackContext);
 }
 
 public class CharacterCombatant : MonoBehaviour, ICombatant
@@ -41,14 +41,17 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         _status.AddShield(shieldPercentage);
     }
 
-    public void TakeDamage(float rawDamage, DamageMultiplierManager damageMultiplierManager)
+    public void TakeDamage(float rawDamage, AttackContext attackContext)
     {
-        float damage = rawDamage * damageMultiplierManager.GetMultiplier;
+        float damage = rawDamage * attackContext.DamageMultiplierManager.GetMultiplier;
 
         // Critical hit calculation
-        if(_status.CriticalChance > GlobalRNG.Instance.NextFloat() * 100)
+        if (attackContext.Attacker is CharacterCombatant attackerObject)
         {
-            damage *= 2;
+            if (attackerObject.Status.IsCriticalHit())
+            {
+                damage *= 1.5f;
+            }
         }
 
         _status.TakeDamage(damage);

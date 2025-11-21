@@ -21,7 +21,7 @@ public class DelayAttack : AttackLogic
         {
             enemy.DelayAttack(delayAmount);
         }
-        ctx.Target?.TakeDamage(baseDamage, ctx.DamageMultiplierManager);
+        ctx.Target?.TakeDamage(baseDamage, ctx);
 
         yield break;
     }
