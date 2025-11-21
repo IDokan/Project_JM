@@ -18,7 +18,7 @@ public class DamageBuffAttack : AttackLogic
     public override IEnumerator Execute(AttackContext ctx)
     {
         ctx.DamageMultiplierManager.AddTimedBonus(buffAmount, duration);
-        ctx.Target?.TakeDamage(baseDamage, ctx.DamageMultiplierManager);
+        ctx.Target?.TakeDamage(baseDamage, ctx);
 
         yield break;
     }

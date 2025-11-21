@@ -15,7 +15,6 @@ public class CombatManager : MonoBehaviour
     [Header("Wiring")]
     [SerializeField] protected EnemyAttackEventChannel _enemyAttackChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected AttackBook _attackBook;
     [SerializeField] protected PartyRoster _party;
     [SerializeField] protected DamageMultiplierManager _damageMultiplierManager;
@@ -28,14 +27,12 @@ public class CombatManager : MonoBehaviour
 
     protected void OnEnable()
     {
-        _matchEvents.OnRaised += OnMatch;
         _enemyAttackChannel.OnRaised += OnEnemyAttack;
         _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
     }
 
     protected void OnDisable()
     {
-        _matchEvents.OnRaised -= OnMatch;
         _enemyAttackChannel.OnRaised -= OnEnemyAttack;
         _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
     }
@@ -49,12 +46,12 @@ public class CombatManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    protected void OnMatch(MatchEvent matchEvent)
+    // SystemBehaviour calls it
+    public void OnMatch(MatchEvent matchEvent)
     {
-
         var attacker = _party.Get(matchEvent.Color);
         if (attacker == null)
         {
@@ -103,13 +100,13 @@ public class CombatManager : MonoBehaviour
         };
 
         PlayAttackMotion(enemy_context, logic);
-        
+
         StartCoroutine(logic.Execute(enemy_context));
     }
 
     protected void PlayAttackMotion(AttackContext context, AttackLogic logic)
     {
-        if(context.Attacker is MonoBehaviour attackerObject)
+        if (context.Attacker is MonoBehaviour attackerObject)
         {
             attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(logic.GetAttackerMotionOffset());
         }

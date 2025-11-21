@@ -58,4 +58,16 @@ public class BarUI : MonoBehaviour
             }
         }
     }
+
+    public void UpdateValue(float current, float max, string givenText)
+    {
+        float ratio = current / max;
+
+        _bar.sizeDelta = new Vector2(initSize.x * ratio, initSize.y);
+
+        if (_text != null)
+        {
+            _text.text = givenText;
+        }
+    }
 }

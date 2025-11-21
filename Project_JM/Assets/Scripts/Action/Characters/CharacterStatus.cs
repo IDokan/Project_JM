@@ -16,7 +16,7 @@ public class CharacterStatus : MonoBehaviour
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
-    public float CriticalChance => _baseData.baseCriticalChance;
+    public float CriticalChance => _baseData.baseCriticalChance + comboCritBonus + buffCritBonus;
 
     public event Action<float, float> OnHPChanged;
     public event Action<float, float> OnShieldChanged;
@@ -24,6 +24,9 @@ public class CharacterStatus : MonoBehaviour
     protected float _shield;
     public float Shield => _shield;
     public bool IsDead => CurrentHP <= 0f;
+
+    protected float comboCritBonus = 0f;
+    protected float buffCritBonus = 0f;
 
     protected void Awake()
     {
@@ -78,5 +81,25 @@ public class CharacterStatus : MonoBehaviour
         _deathEvent.Raise(this);
         // Display death motion or anything about death. Instead of immediately deleting it.
         Destroy(gameObject);
+    }
+
+    public void SetComboCritBonus(float value)
+    {
+        comboCritBonus = value;
+    }
+
+    public void AddBuffCritBonus(float value)
+    {
+        buffCritBonus += value;
+    }
+
+    public void RemoveBuffCritBonus(float value)
+    {
+        buffCritBonus -= value;
+    }
+
+    public bool IsCriticalHit()
+    {
+        return CriticalChance > GlobalRNG.Instance.NextFloat() * 100;
     }
 }
