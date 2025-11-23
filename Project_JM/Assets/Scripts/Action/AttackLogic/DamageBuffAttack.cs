@@ -11,13 +11,12 @@ using UnityEngine;
 public class DamageBuffAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 9;
-    [SerializeField] protected float duration = 10f;
     [SerializeField] protected float buffAmount = 1.2f;
 
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        ctx.DamageMultiplierManager.AddTimedBonus(buffAmount, duration);
+        ctx.DamageMultiplierManager.AddTimedBonus(buffAmount);
         ctx.Target?.TakeDamage(baseDamage, ctx);
 
         yield break;
