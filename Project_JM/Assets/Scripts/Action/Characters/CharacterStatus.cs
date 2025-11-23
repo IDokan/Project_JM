@@ -16,7 +16,8 @@ public class CharacterStatus : MonoBehaviour
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
-    public float CriticalChance => _baseData.baseCriticalChance + comboCritBonus + buffCritBonus;
+    public float CriticalChance => _baseData.baseCriticalChance + comboCritBonus + buffCritChanceBonus;
+    public float CriticalDamage => _baseData.baseCriticalDamage + buffCritDamageBonus;
 
     public event Action<float, float> OnHPChanged;
     public event Action<float, float> OnShieldChanged;
@@ -26,7 +27,19 @@ public class CharacterStatus : MonoBehaviour
     public bool IsDead => CurrentHP <= 0f;
 
     protected float comboCritBonus = 0f;
-    protected float buffCritBonus = 0f;
+    protected float buffCritChanceBonus = 0f;
+
+    protected float buffCritDamageBonus = 0f;
+
+    protected void OnEnable()
+    {
+        _deathEvent.OnRaised += ClearBuffs;
+    }
+
+    protected void OnDisable()
+    {
+        _deathEvent.OnRaised -= ClearBuffs;
+    }
 
     protected void Awake()
     {
@@ -90,16 +103,37 @@ public class CharacterStatus : MonoBehaviour
 
     public void AddBuffCritBonus(float value)
     {
-        buffCritBonus += value;
+        buffCritChanceBonus += value;
     }
 
     public void RemoveBuffCritBonus(float value)
     {
-        buffCritBonus -= value;
+        buffCritChanceBonus -= value;
+    }
+
+    public void ClearBuffCritBonus()
+    {
+        buffCritChanceBonus = 0f;
     }
 
     public bool IsCriticalHit()
     {
-        return CriticalChance > GlobalRNG.Instance.NextFloat() * 100;
+        return CriticalChance > GlobalRNG.Instance.NextFloat() * 100f;
+    }
+
+    public void AddBuffCritDamage(float value)
+    {
+        buffCritDamageBonus += value;
+    }
+
+    public void ClearBuffCitDamageBonus()
+    {
+        buffCritDamageBonus = 0f;
+    }
+
+    public void ClearBuffs(CharacterStatus stat)
+    {
+        ClearBuffCritBonus();
+        ClearBuffCitDamageBonus();
     }
 }

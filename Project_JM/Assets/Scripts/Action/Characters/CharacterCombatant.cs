@@ -50,7 +50,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         {
             if (attackerObject.Status.IsCriticalHit())
             {
-                damage *= 1.5f;
+                damage *= attackerObject.Status.CriticalDamage;
             }
         }
 
