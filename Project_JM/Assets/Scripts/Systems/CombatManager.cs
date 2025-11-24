@@ -52,6 +52,11 @@ public class CombatManager : MonoBehaviour
     // SystemBehaviour calls it
     public void OnMatch(MatchEvent matchEvent)
     {
+        if (matchEvent.Color == GemColor.None)
+        {
+            return;
+        }
+
         var attacker = _party.Get(matchEvent.Color);
         if (attacker == null)
         {
