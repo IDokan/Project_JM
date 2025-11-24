@@ -11,6 +11,9 @@ public interface ICombatant
     void Heal(float healPercentage);
     void AddShield(float shieldPercentage);
     void TakeDamage(float damage, AttackContext attackContext);
+    void AddBuffCritBonus(float value);
+    void AddBuffCritBonus(float value, float duration);
+    void AddBuffCritDamage(float value);
 }
 
 public class CharacterCombatant : MonoBehaviour, ICombatant
@@ -57,4 +60,18 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         _status.TakeDamage(damage);
     }
 
+    public void AddBuffCritBonus(float value)
+    {
+        _status.AddBuffCritBonus(value);
+    }
+
+    public void AddBuffCritBonus(float value, float duration)
+    {
+        _status.AddBuffCritBonus(value, duration);
+    }
+
+    public void AddBuffCritDamage(float value)
+    {
+        _status.AddBuffCritDamage(value);
+    }
 }

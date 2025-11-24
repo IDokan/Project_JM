@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f61c067832c0264e835a653eaaea37d, type: 3}
-  m_Name: BowmanPowerAttack
-  m_EditorClassIdentifier: Assembly-CSharp::TestAttack
-  baseDamage: 3
+  m_Script: {fileID: 11500000, guid: aebfc6d393439d040b73d2a332694d6d, type: 3}
+  m_Name: BowmanCritDamageBuffAttack
+  m_EditorClassIdentifier: Assembly-CSharp::CritDamageBuffAttack
+  baseDamage: 9
+  buffAmount: 0.3

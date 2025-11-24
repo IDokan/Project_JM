@@ -5,6 +5,7 @@
 // Summary: A manager for combo.
 
 using MatchEnums;
+using GemEnums;
 using System;
 using UnityEngine;
 
@@ -43,13 +44,19 @@ public class ComboManager : MonoBehaviour
     
     public void OnMatch(MatchEvent matchEvent)
     {
+        // Pass if no valid color
+        if (matchEvent.Color == GemColor.None)
+        {
+            return;
+        }
+
         // On Match, increase combo for a duration.
         comboCount += (int)matchEvent.Tier;
         timer = _comboResetTime;
         OnComboUpdated.Invoke(comboCount, timer);
 
         // Increase critical hit chance per combo
-        _partyStatus.SetComboCritBonus(comboCount);
+        _partyStatus.SetComboCritBonus(comboCount / 100f);
     }
 
     public void ResetCombo()
