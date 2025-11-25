@@ -32,7 +32,7 @@ public class ComboManager : MonoBehaviour
     {
         if (comboCount > 0)
         {
-            timer -= Time.deltaTime;
+            timer -= GlobalTimeManager.DeltaTime;
             OnComboUpdated.Invoke(comboCount, timer);
 
             if (timer <= 0f)
