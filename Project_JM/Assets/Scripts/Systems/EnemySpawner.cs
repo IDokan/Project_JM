@@ -4,6 +4,7 @@
 // File: EnemySpawner.cs
 // Summary: A class to spawn enemy.
 
+using System.Collections;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -46,7 +47,14 @@ public class EnemySpawner : MonoBehaviour
     {
         if (stat.TryGetComponent<EnemyTag>(out _))
         {
-            SpawnRandomEnemy();
+            StartCoroutine(SpawnEnemyAfter5Seconds());
         }
+    }
+
+    protected IEnumerator SpawnEnemyAfter5Seconds()
+    {
+        yield return new WaitForSeconds(5f);
+
+        SpawnRandomEnemy();
     }
 }
