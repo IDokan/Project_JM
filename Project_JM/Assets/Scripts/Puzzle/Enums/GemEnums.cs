@@ -57,6 +57,29 @@ namespace GemEnums
 
             return color;
         }
+
+        public static float GetGemColorDamageMultiplier(GemColor[] attackerColor, GemColor[] targetColor)
+        {
+            if (attackerColor == null || targetColor == null ||
+                attackerColor.Length <= 0 || targetColor.Length <= 0)
+            {
+                Debug.LogError("GetGemColorDamageMultiplier: any of given array is null or empty.");
+                return 1f;
+            }
+
+            for (int i = 0; i < attackerColor.Length; i++)
+            {
+                for (int j = 0; j < targetColor.Length; j++)
+                {
+                    if (attackerColor[i] == targetColor[j])
+                    {
+                        return 1.2f;
+                    }
+                }
+            }
+
+            return 0.8f;
+        }
     }
 
 }

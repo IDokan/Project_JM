@@ -126,7 +126,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
         {
             if (!_isStunned)
             {
-                _enrageTimer -= Time.deltaTime;
+                _enrageTimer -= GlobalTimeManager.DeltaTime;
             }
 
             yield return null;
