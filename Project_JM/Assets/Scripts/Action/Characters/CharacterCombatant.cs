@@ -4,10 +4,12 @@
 // File: CharacterCombatant.cs
 // Summary: A combatant script for action characters.
 
+using GemEnums;
 using UnityEngine;
 
 public interface ICombatant
 {
+    GemColor[] Colors { get; }
     void Heal(float healPercentage);
     void AddShield(float shieldPercentage);
     void TakeDamage(float damage, AttackContext attackContext);
@@ -19,8 +21,10 @@ public interface ICombatant
 public class CharacterCombatant : MonoBehaviour, ICombatant
 {
     [SerializeField] protected CharacterStatus _status;
+    [SerializeField] protected GemColor[] _colors;
 
     public CharacterStatus Status => _status;
+    public GemColor[] Colors => _colors;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -52,10 +56,12 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         if (attackContext.Attacker is CharacterCombatant attackerObject)
         {
             if (attackerObject.Status.IsCriticalHit())
-            {
+            { 
                 damage *= attackerObject.Status.CriticalDamage;
             }
         }
+
+        damage *= GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
 
         _status.TakeDamage(damage);
     }
