@@ -13,10 +13,24 @@ public class Gem : MonoBehaviour
 {
     public GemColor Color { get; private set; }
 
+    [Header("Sprite References")]
+    public Sprite redSprite;
+    public Sprite greenSprite;
+    public Sprite blueSprite;
+    public Sprite yellowSprite;
+
     public void Init(GemColor gemColor)
     {
         Color = gemColor;
-        GetComponent<SpriteRenderer>().color = GemColorUtility.ConvertGemColor(gemColor);
+
+        if (Color == GemColor.None)
+        {
+            GetComponent<SpriteRenderer>().color = GemColorUtility.ConvertGemColor(gemColor);
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().sprite = GetSpriteByColor(gemColor);
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,5 +43,17 @@ public class Gem : MonoBehaviour
     void Update()
     {
 
+    }
+
+    protected Sprite GetSpriteByColor(GemColor color)
+    {
+        return color switch
+        {
+            GemColor.Red => redSprite,
+            GemColor.Blue => blueSprite,
+            GemColor.Green => greenSprite,
+            GemColor.Yellow => yellowSprite,
+            _ => null
+        };
     }
 }
