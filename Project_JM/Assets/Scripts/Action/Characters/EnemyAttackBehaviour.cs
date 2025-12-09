@@ -17,14 +17,17 @@ public class EnemyAttackBehaviour : MonoBehaviour
     [SerializeField, Min(0.001f)] protected float _fallbackCooldown = 5f;
 
     protected Coroutine _loop;
-    protected float _timer;
+    protected float _attackTimer;
     protected float _cooldown { get; private set; }
     public float Cooldown => _cooldown;
 
     public event Action<float, float> OnAttackTimerChanged;
 
     protected Coroutine _enrangeRoutine;
+    protected float _enrageTimer;
     [SerializeField, Min(10f)] protected float _enrageDelay = 30f;
+
+    protected bool _isStunned = false;
 
     protected void OnEnable()
     {
@@ -56,7 +59,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     public void DelayAttack(float delay)
     {
-        UpdateTimer(delay);
+        UpdateAttackTimer(delay);
     }
 
     // Update is called once per frame
@@ -64,17 +67,20 @@ public class EnemyAttackBehaviour : MonoBehaviour
     {
         while (true)
         {
-            _timer = _cooldown;
+            _attackTimer = _cooldown;
 
             // Countdown
-            while (_timer > 0f)
+            while (_attackTimer > 0f)
             {
-                if (_timer >= _cooldown)
+                if (!_isStunned)
                 {
-                    _timer = _cooldown;
-                }
+                    if (_attackTimer >= _cooldown)
+                    {
+                        _attackTimer = _cooldown;
+                    }
 
-                UpdateTimer(-Time.deltaTime);
+                    UpdateAttackTimer(-GlobalTimeManager.DeltaTime);
+                }
 
                 yield return null;
             }
@@ -99,22 +105,47 @@ public class EnemyAttackBehaviour : MonoBehaviour
         return _fallbackCooldown;
     }
 
-    protected void UpdateTimer(float value)
+    protected void UpdateAttackTimer(float value)
     {
-        _timer += value;
-        OnAttackTimerChanged?.Invoke(_timer, _cooldown);
+        _attackTimer += value;
+        OnAttackTimerChanged?.Invoke(_attackTimer, _cooldown);
     }
 
-    protected void Enrange()
+    protected void Enrage()
     {
         _cooldown *= 0.25f;
-        OnAttackTimerChanged?.Invoke(_timer, _cooldown);
+        OnAttackTimerChanged?.Invoke(_attackTimer, _cooldown);
     }
 
     protected IEnumerator EnrageAfterDelay()
     {
-        yield return new WaitForSeconds(_enrageDelay);
+        _enrageTimer = _enrageDelay;
 
-        Enrange();
+        // Countdown
+        while (_enrageTimer > 0f)
+        {
+            if (!_isStunned)
+            {
+                _enrageTimer -= GlobalTimeManager.DeltaTime;
+            }
+
+            yield return null;
+        }
+
+        Enrage();
+    }
+
+    public void Stun(float duration)
+    {
+        StartCoroutine(StunRoutine(duration));
+    }
+
+    protected IEnumerator StunRoutine(float duration)
+    {
+        _isStunned = true;
+
+        yield return new WaitForSeconds(duration);
+
+        _isStunned = false;
     }
 }
