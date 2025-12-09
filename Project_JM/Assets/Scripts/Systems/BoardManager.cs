@@ -20,6 +20,7 @@ public interface IBoardInfo
     public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices);
 }
 
+[RequireComponent(typeof(BoardCoverController))]
 public class BoardManager : MonoBehaviour, IBoardInfo
 {
     [SerializeField] protected int _rows = 8;
@@ -34,10 +35,24 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected float _fallingSpeed = 3f;
 
     [SerializeField] protected MatchEventChannel _matchEvents;
+    [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
+    [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
 
-    protected void OnEnable() => _boardDisableEvents.OnRaised += OnBoardDisabled;
-    protected void OnDisable() => _boardDisableEvents.OnRaised -= OnBoardDisabled;
+    protected BoardCoverController boardCoverController;
+
+    protected void OnEnable()
+    {
+        _characterDeathEventChannel.OnRaised += OnAnyoneDied;
+        _boardDisableEvents.OnRaised += OnBoardDisabled;
+        _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
+    }
+    protected void OnDisable()
+    {
+        _characterDeathEventChannel.OnRaised -= OnAnyoneDied;
+        _boardDisableEvents.OnRaised -= OnBoardDisabled;
+        _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
+    }
 
     protected Gem[,] _gems;
     public Gem GemAt(int r, int c) => _gems[r, c];
@@ -56,6 +71,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         GenerateBoard();
         _busy = false;
+
+        boardCoverController = GetComponent<BoardCoverController>();
+        boardCoverController.SetBoardSizeData(_rows, _cols, _cellSize, _spacing);
     }
 
     // Update is called once per frame
@@ -317,9 +335,11 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         // @@ TODO: Improve resolving method to look much fancier.
         // @@ TODO: Implement object pool for gems.
-
-        Destroy(_gems[row, col].gameObject);
-        _gems[row, col] = null;
+        if (_gems[row, col] != null)
+        {
+            Destroy(_gems[row, col].gameObject);
+            _gems[row, col] = null;
+        }
     }
 
     // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)
@@ -451,8 +471,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     }
 
     // Return false if player tried pass invalid direction (out of bounds).
+                        // and if board is busy
     public bool TrySwapFrom(Vector2Int index, Vector2Int dir)
     {
+        if (_busy)
+        {
+            return false;
+        }
+
         int targetRow = index.x + dir.y;
         int targetCol = index.y + dir.x;
 
@@ -522,5 +548,33 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
 
         return failed;
+    }
+
+    protected void OnAnyoneDied(CharacterStatus stat)
+    {
+        _busy = true;
+        boardCoverController.ShowCover();
+    }
+
+    protected void OnEnemySpawned(GameObject gameObject)
+    {
+        _busy = false;
+
+        ClearAndRefillGems();
+
+        boardCoverController.HideCover();
+    }
+
+    protected void ClearAndRefillGems()
+    {
+        for (int r = 0; r < _rows; r++)
+        {
+            for (int c = 0; c < _cols; c++)
+            {
+                ResolveGem(r, c);
+            }
+        }
+
+        GenerateBoard();
     }
 }

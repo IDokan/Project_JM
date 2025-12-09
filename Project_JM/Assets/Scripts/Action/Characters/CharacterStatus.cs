@@ -6,7 +6,26 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+public class TimedModifier
+{
+    public float Multiplier { get; private set; }
+    protected float _timeRemaining;
+
+    public TimedModifier(float multiplier, float duration)
+    {
+        Multiplier = multiplier;
+        _timeRemaining = duration;
+    }
+
+    public bool UpdateTimer(float deltaTime)
+    {
+        _timeRemaining -= deltaTime;
+        return _timeRemaining <= 0f;
+    }
+}
 
 public class CharacterStatus : MonoBehaviour
 {
@@ -16,7 +35,24 @@ public class CharacterStatus : MonoBehaviour
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
-    public float CriticalChance => _baseData.baseCriticalChance;
+    // 0 means 0%, 1 means 100%
+    public float CriticalChance
+    {
+        get
+        {
+            float result = _baseData.baseCriticalChance + comboCritBonus;
+
+            float buffBonus = buffCritChanceBonus;
+            foreach (var m in _critChanceTimedModifiers)
+            {
+                buffBonus += m.Multiplier;
+            }
+
+            return result + buffBonus;
+        }
+    }
+    // 1 means 100%, 1.5 means 150%
+    public float CriticalDamage => _baseData.baseCriticalDamage + buffCritDamageBonus;
 
     public event Action<float, float> OnHPChanged;
     public event Action<float, float> OnShieldChanged;
@@ -25,10 +61,37 @@ public class CharacterStatus : MonoBehaviour
     public float Shield => _shield;
     public bool IsDead => CurrentHP <= 0f;
 
+    protected float comboCritBonus = 0f;
+    protected float buffCritChanceBonus = 0f;
+    protected readonly List<TimedModifier> _critChanceTimedModifiers = new();
+
+    protected float buffCritDamageBonus = 0f;
+
+    protected void OnEnable()
+    {
+        _deathEvent.OnRaised += ClearBuffs;
+    }
+
+    protected void OnDisable()
+    {
+        _deathEvent.OnRaised -= ClearBuffs;
+    }
+
     protected void Awake()
     {
         CurrentHP = _baseData.baseHP;
         maxHP = CurrentHP;
+    }
+
+    void Update()
+    {
+        for (int i = _critChanceTimedModifiers.Count - 1; i >= 0; i--)
+        {
+            if (_critChanceTimedModifiers[i].UpdateTimer(Time.deltaTime))
+            {
+                _critChanceTimedModifiers.RemoveAt(i);
+            }
+        }
     }
 
     public void Initialize(StatusMultiplier multiplier)
@@ -78,5 +141,52 @@ public class CharacterStatus : MonoBehaviour
         _deathEvent.Raise(this);
         // Display death motion or anything about death. Instead of immediately deleting it.
         Destroy(gameObject);
+    }
+
+    public void SetComboCritBonus(float value)
+    {
+        comboCritBonus = value;
+    }
+
+    public void AddBuffCritBonus(float value)
+    {
+        buffCritChanceBonus += value;
+    }
+
+    public void AddBuffCritBonus(float value, float duration)
+    {
+        _critChanceTimedModifiers.Add(new TimedModifier(value, duration));
+    }
+
+    public void RemoveBuffCritBonus(float value)
+    {
+        buffCritChanceBonus -= value;
+    }
+
+    public void ClearBuffCritBonus()
+    {
+        buffCritChanceBonus = 0f;
+        _critChanceTimedModifiers.Clear();
+    }
+
+    public bool IsCriticalHit()
+    {
+        return CriticalChance > GlobalRNG.Instance.NextFloat();
+    }
+
+    public void AddBuffCritDamage(float value)
+    {
+        buffCritDamageBonus += value;
+    }
+
+    public void ClearBuffCitDamageBonus()
+    {
+        buffCritDamageBonus = 0f;
+    }
+
+    public void ClearBuffs(CharacterStatus stat)
+    {
+        ClearBuffCritBonus();
+        ClearBuffCitDamageBonus();
     }
 }

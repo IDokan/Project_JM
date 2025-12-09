@@ -17,7 +17,7 @@ public class HealAttack : AttackLogic
     public override IEnumerator Execute(AttackContext ctx)
     {
         ctx.Attacker.Heal(healPercentage);
-        ctx.Target?.TakeDamage(baseDamage, ctx.DamageMultiplierManager);
+        ctx.Target?.TakeDamage(baseDamage, ctx);
 
         yield break;
     }

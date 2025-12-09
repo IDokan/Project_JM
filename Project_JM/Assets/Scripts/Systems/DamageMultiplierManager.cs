@@ -7,46 +7,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimedModifier
-{
-    public float Multiplier { get; private set; }
-    protected float _timeRemaining;
-
-    public TimedModifier(float multiplier, float duration)
-    {
-        Multiplier = multiplier;
-        _timeRemaining = duration;
-    }
-
-    public bool UpdateTimer(float deltaTime)
-    {
-        _timeRemaining -= deltaTime;
-        return _timeRemaining <= 0f;
-    }
-}
-
 public class DamageMultiplierManager : MonoBehaviour
 {
     [SerializeField] CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] DifficultyCurves _difficultyCurves;
 
-    public float DamageMultiplier { get; protected set; } = 1f;
-    protected readonly List<TimedModifier> _timedModifiers = new();
+    protected float DamageMultiplier = 1f;
     protected int numEnemyDefeated = 0;
+    protected float damageBonus = 1f;
 
-    public float GetMultiplier
-    {
-        get
-        {
-            float result = DamageMultiplier;
-            foreach (var m in _timedModifiers)
-            {
-                result *= m.Multiplier;
-            }
-
-            return result;
-        }
-    }
+    public float GetMultiplier => DamageMultiplier * damageBonus;
 
     protected void OnEnable() => _characterDeathEventChannel.OnRaised += OnCharacterDiedHandle;
     protected void OnDisable() => _characterDeathEventChannel.OnRaised -= OnCharacterDiedHandle;
@@ -62,25 +32,16 @@ public class DamageMultiplierManager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddTimedBonus(float multiplier)
     {
-        for (int i = _timedModifiers.Count - 1; i >= 0; i--)
-        {
-            if (_timedModifiers[i].UpdateTimer(Time.deltaTime))
-            {
-                _timedModifiers.RemoveAt(i);
-            }
-        }
-    }
-
-    public void AddTimedBonus(float multiplier, float duration)
-    {
-        _timedModifiers.Add(new TimedModifier(multiplier, duration));
+        damageBonus *= multiplier;
     }
 
     public void OnCharacterDiedHandle(CharacterStatus status)
     {
+        // Clear damage bonus affeted by buffs whenever characters defeated.
+        damageBonus = 1f;
+
         if (status.TryGetComponent<EnemyTag>(out _))
         {
             ++numEnemyDefeated;

@@ -4,20 +4,27 @@
 // File: CharacterCombatant.cs
 // Summary: A combatant script for action characters.
 
+using GemEnums;
 using UnityEngine;
 
 public interface ICombatant
 {
+    GemColor[] Colors { get; }
     void Heal(float healPercentage);
     void AddShield(float shieldPercentage);
-    void TakeDamage(float damage, DamageMultiplierManager damageMultiplierManager);
+    void TakeDamage(float damage, AttackContext attackContext);
+    void AddBuffCritBonus(float value);
+    void AddBuffCritBonus(float value, float duration);
+    void AddBuffCritDamage(float value);
 }
 
 public class CharacterCombatant : MonoBehaviour, ICombatant
 {
     [SerializeField] protected CharacterStatus _status;
+    [SerializeField] protected GemColor[] _colors;
 
     public CharacterStatus Status => _status;
+    public GemColor[] Colors => _colors;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,17 +48,36 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         _status.AddShield(shieldPercentage);
     }
 
-    public void TakeDamage(float rawDamage, DamageMultiplierManager damageMultiplierManager)
+    public void TakeDamage(float rawDamage, AttackContext attackContext)
     {
-        float damage = rawDamage * damageMultiplierManager.GetMultiplier;
+        float damage = rawDamage * attackContext.DamageMultiplierManager.GetMultiplier;
 
         // Critical hit calculation
-        if(_status.CriticalChance > GlobalRNG.Instance.NextFloat() * 100)
+        if (attackContext.Attacker is CharacterCombatant attackerObject)
         {
-            damage *= 2;
+            if (attackerObject.Status.IsCriticalHit())
+            { 
+                damage *= attackerObject.Status.CriticalDamage;
+            }
         }
+
+        damage *= GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
 
         _status.TakeDamage(damage);
     }
 
+    public void AddBuffCritBonus(float value)
+    {
+        _status.AddBuffCritBonus(value);
+    }
+
+    public void AddBuffCritBonus(float value, float duration)
+    {
+        _status.AddBuffCritBonus(value, duration);
+    }
+
+    public void AddBuffCritDamage(float value)
+    {
+        _status.AddBuffCritDamage(value);
+    }
 }
