@@ -90,7 +90,7 @@ public class CombatManager : MonoBehaviour
 
         Debug.Log($"Tier {matchEvent.Tier} happened");
 
-        PlayAttackMotion(context, attackLogic);
+        PlayAttackMotion(context, matchEvent.Tier);
 
         StartCoroutine(attackLogic.Execute(context));
     }
@@ -104,21 +104,22 @@ public class CombatManager : MonoBehaviour
             DamageMultiplierManager = _damageMultiplierManager
         };
 
-        PlayAttackMotion(enemy_context, logic);
+        PlayAttackMotion(enemy_context, MatchTier.Three);
 
         StartCoroutine(logic.Execute(enemy_context));
     }
 
-    protected void PlayAttackMotion(AttackContext context, AttackLogic logic)
+    protected void PlayAttackMotion(AttackContext context, MatchTier matchTier)
     {
         if (context.Attacker is MonoBehaviour attackerObject)
         {
-            attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(logic.GetAttackerMotionOffset());
+            attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(matchTier);
         }
 
+        // Play hit animation to target.
         if (context.Target is MonoBehaviour targetObject)
         {
-            targetObject.GetComponent<AttackMotion>().PlayAttackMotion(logic.GetTargetMotionOffset());
+            targetObject.GetComponent<AttackMotion>().PlayAttackMotion(matchTier);
         }
     }
 

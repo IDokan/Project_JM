@@ -5,28 +5,47 @@
 // Summary: A script for enemy combat behaviour.
 
 using DG.Tweening;
+using System;
+using MatchEnums;
 using UnityEngine;
 
 public class AttackMotion : MonoBehaviour
 {
-    [SerializeField] protected float _moveDuration = 0.15f;
-    [SerializeField] protected float _pauseDuration = 0.2f;
+    protected Animator animator;
+    [SerializeField] protected string mat3StateName = "match 3";
+    [SerializeField] protected string mat4StateName = "match 4";
+    [SerializeField] protected string mat5StateName = "match 5";
 
     protected Vector3 originalPosition;
 
     protected void Awake()
     {
-        originalPosition = transform.localPosition;
+        if (!animator)
+        {
+            animator = GetComponent<Animator>();
+        }
     }
 
-    public void PlayAttackMotion(Vector3 offset)
+    public void PlayAttackMotion(MatchTier matchTier)
     {
-        Vector3 target = originalPosition + offset;
-        
-        Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOLocalMove(target, _moveDuration).SetEase(Ease.OutQuad))
-            .AppendInterval(_pauseDuration)
-            .Append(transform.DOLocalMove(originalPosition, _moveDuration).SetEase(Ease.InQuad))
-            .SetLink(gameObject);
+        if (animator == null)
+        {
+            return;
+        }
+
+        switch (matchTier)
+        {
+            case MatchTier.Three:
+                animator.Play(mat3StateName, 0, 0f);
+                break;
+            case MatchTier.Four:
+                animator.Play(mat4StateName, 0, 0f);
+                break;
+            case MatchTier.Five:
+                animator.Play(mat5StateName, 0, 0f);
+                break;
+            default:
+                break;
+        }
     }
 }
