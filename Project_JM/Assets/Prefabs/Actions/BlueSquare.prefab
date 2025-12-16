@@ -120,7 +120,7 @@ Transform:
   m_GameObject: {fileID: 1759440730705377471}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.102629, y: 0.83289623, z: 0}
+  m_LocalPosition: {x: -1.102629, y: 0.8328962, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -279,7 +279,7 @@ Transform:
   m_GameObject: {fileID: 4390082565655261981}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.43899465, y: 0.19063139, z: 0}
+  m_LocalPosition: {x: -0.43899465, y: 0.1906314, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -346,8 +346,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7283d394160094b9ae8cb9033f046b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackMotion
-  _moveDuration: 0.15
-  _pauseDuration: 0.2
+  mat3StateName: MageBasicAttack
+  mat4StateName: MageIceShards
+  mat5StateName: MageChronoPulse
 --- !u!95 &6902186543298777927
 Animator:
   serializedVersion: 7
@@ -358,7 +359,7 @@ Animator:
   m_GameObject: {fileID: 6205769448239816264}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 08a50692aecb82f42b7d21e11ef27ce6, type: 2}
+  m_Controller: {fileID: 9100000, guid: fd24ef1996784c044b43b8c34659f1e8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -909,9 +910,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2c5317dcd822fd14f862b829b7c86a15, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5984596394252263847}
-    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2c5317dcd822fd14f862b829b7c86a15, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4895034517427195184}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 2c5317dcd822fd14f862b829b7c86a15, type: 3}
 --- !u!4 &304353734447148325 stripped
 Transform:
@@ -980,28 +978,6 @@ MonoBehaviour:
     showGizmo: 1
   - color: {r: 0, g: 1, b: 0, a: 1}
     showGizmo: 1
---- !u!95 &4895034517427195184
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3863444717499130710}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fd24ef1996784c044b43b8c34659f1e8, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &4598974556073766575 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8239142409956643772, guid: 2c5317dcd822fd14f862b829b7c86a15, type: 3}
