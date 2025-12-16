@@ -182,8 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7283d394160094b9ae8cb9033f046b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackMotion
-  _moveDuration: 0.15
-  _pauseDuration: 0.2
+  mat3StateName: BowmanBasicAttack
+  mat4StateName: BowmanSharpShoot
+  mat5StateName: BowmanExposeWeakPoint
 --- !u!95 &5449052332871281730
 Animator:
   serializedVersion: 7
@@ -392,13 +393,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4417161559052933941}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.34180263, w: 0.9397718}
-  m_LocalPosition: {x: 2.02, y: 0.06, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.35450944, w: 0.93505245}
+  m_LocalPosition: {x: 0.6, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5734652309301303496}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -39.973}
+  m_Father: {fileID: 986390283795798561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -41.527}
 --- !u!212 &4650998690675573885
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -990,12 +991,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2362278399931869651}
+    - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2243731563442668609}
     - targetCorrespondingSourceObject: {fileID: -4087355033152490232, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8582131584933214627}
-    - targetCorrespondingSourceObject: {fileID: 6127738091489295159, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2243731563442668609}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       insertIndex: -1
