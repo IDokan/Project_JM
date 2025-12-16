@@ -116,7 +116,7 @@ public class CombatManager : MonoBehaviour
             attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(matchTier);
         }
 
-        // Play hit animation to target.
+        // @@ TODO: Play hit animation to target.
         if (context.Target is MonoBehaviour targetObject)
         {
             targetObject.GetComponent<AttackMotion>().PlayAttackMotion(matchTier);
