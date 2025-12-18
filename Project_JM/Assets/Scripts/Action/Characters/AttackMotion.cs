@@ -6,46 +6,55 @@
 
 using DG.Tweening;
 using System;
-using MatchEnums;
 using UnityEngine;
 
 public class AttackMotion : MonoBehaviour
 {
-    protected Animator animator;
-    [SerializeField] protected string mat3StateName = "match 3";
-    [SerializeField] protected string mat4StateName = "match 4";
-    [SerializeField] protected string mat5StateName = "match 5";
+    protected Animator _animator;
 
-    protected Vector3 originalPosition;
+    protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
+    protected static readonly int TierInt = Animator.StringToHash("TierInt");
+
+    protected Vector3 _originalPosition;
+    protected Sequence _moveSequence;
 
     protected void Awake()
     {
-        if (!animator)
+        _originalPosition = transform.localPosition;
+
+        if (!_animator)
         {
-            animator = GetComponent<Animator>();
+            _animator = GetComponent<Animator>();
         }
     }
 
-    public void PlayAttackMotion(MatchTier matchTier)
+    public void PlayAttackMotion(int matchTier)
     {
-        if (animator == null)
+        if (_animator == null)
         {
             return;
         }
 
-        switch (matchTier)
+        _animator.SetInteger(TierInt, matchTier);
+
+        _animator.ResetTrigger(AttackTrig);
+        _animator.SetTrigger(AttackTrig);
+    }
+
+    public void Move(Vector3 offset, float moveDuration, float pauseDuration)
+    {
+        // If previous sequence has not finished yet, kill it.
+        if (_moveSequence != null && _moveSequence.IsActive())
         {
-            case MatchTier.Three:
-                animator.Play(mat3StateName, 0, 0f);
-                break;
-            case MatchTier.Four:
-                animator.Play(mat4StateName, 0, 0f);
-                break;
-            case MatchTier.Five:
-                animator.Play(mat5StateName, 0, 0f);
-                break;
-            default:
-                break;
+            _moveSequence.Kill();
         }
+
+        Vector3 target = _originalPosition + offset;
+
+        _moveSequence = DOTween.Sequence();
+        seq.Append(transform.DOLocalMove(target, moveDuration).SetEase(OutQuad))
+            .AppendInterval(pauseDuration)
+            .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(OutQuad))
+            .SetLink(gameObject);
     }
 }
