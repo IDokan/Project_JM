@@ -113,13 +113,13 @@ public class CombatManager : MonoBehaviour
     {
         if (context.Attacker is MonoBehaviour attackerObject)
         {
-            attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(matchTier);
+            attackerObject.GetComponent<AttackMotion>().PlayAttackMotion((int)matchTier);
         }
 
         // @@ TODO: Play hit animation to target.
         if (context.Target is MonoBehaviour targetObject)
         {
-            targetObject.GetComponent<AttackMotion>().PlayAttackMotion(matchTier);
+            targetObject.GetComponent<AttackMotion>().PlayAttackMotion((int)matchTier);
         }
     }
 
