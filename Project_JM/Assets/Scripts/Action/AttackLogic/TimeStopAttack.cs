@@ -23,11 +23,6 @@ public class TimeStopAttack : AttackLogic
         yield break;
     }
 
-    public override Vector3 GetAttackerMotionOffset()
-    {
-        return new Vector3(0f, 8f, 0f);
-    }
-
     public override Vector3 GetTargetMotionOffset()
     {
         return new Vector3(2f, 0f, 0f);

@@ -25,11 +25,6 @@ public class StunAttack : AttackLogic
         yield break;
     }
 
-    public override Vector3 GetAttackerMotionOffset()
-    {
-        return new Vector3(3f, 2f, 0f);
-    }
-
     public override Vector3 GetTargetMotionOffset()
     {
         return new Vector3(2f, -0.5f, 0f);
