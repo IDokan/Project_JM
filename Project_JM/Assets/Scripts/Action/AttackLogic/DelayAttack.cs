@@ -26,11 +26,6 @@ public class DelayAttack : AttackLogic
         yield break;
     }
 
-    public override Vector3 GetAttackerMotionOffset()
-    {
-        return new Vector3(3f, 6f, 0f);
-    }
-
     public override Vector3 GetTargetMotionOffset()
     {
         return new Vector3(1.5f, -1.5f, 0f);

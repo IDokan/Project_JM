@@ -12,6 +12,12 @@ public class AttackMotion : MonoBehaviour
 {
     protected Animator _animator;
 
+    // The durations can be changed in near future
+    //      to display different pause for different attack logics.
+    protected const float _moveDuration = 0.1f;
+    protected const float _pauseDuration = 0.2f;
+
+    protected static readonly int DamagedTrig = Animator.StringToHash("DamagedTrig");
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
     protected static readonly int TierInt = Animator.StringToHash("TierInt");
 
@@ -28,6 +34,19 @@ public class AttackMotion : MonoBehaviour
         }
     }
 
+    public void PlayAttackMotion(Vector3 moveOffset)
+    {
+        if (!_animator)
+        {
+            return;
+        }
+
+        Move(moveOffset, 0.1f, 0.2f);
+
+        _animator.ResetTrigger(AttackTrig);
+        _animator.SetTrigger(AttackTrig);
+    }
+
     public void PlayAttackMotion(int matchTier)
     {
         if (_animator == null)
@@ -41,7 +60,20 @@ public class AttackMotion : MonoBehaviour
         _animator.SetTrigger(AttackTrig);
     }
 
-    public void Move(Vector3 offset, float moveDuration, float pauseDuration)
+    public void PlayDamagedMotion(Vector3 moveOffset)
+    {
+        if (_animator == null)
+        {
+            return;
+        }
+
+        Move(moveOffset, 0.1f, 0.2f);
+
+        _animator.ResetTrigger(DamagedTrig);
+        _animator.SetTrigger(DamagedTrig);
+    }
+
+    protected void Move(Vector3 offset, float moveDuration, float pauseDuration)
     {
         // If previous sequence has not finished yet, kill it.
         if (_moveSequence != null && _moveSequence.IsActive())
@@ -52,9 +84,9 @@ public class AttackMotion : MonoBehaviour
         Vector3 target = _originalPosition + offset;
 
         _moveSequence = DOTween.Sequence();
-        seq.Append(transform.DOLocalMove(target, moveDuration).SetEase(OutQuad))
+        _moveSequence.Append(transform.DOLocalMove(target, moveDuration).SetEase(Ease.OutQuad))
             .AppendInterval(pauseDuration)
-            .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(OutQuad))
+            .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
             .SetLink(gameObject);
     }
 }

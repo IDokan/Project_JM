@@ -90,7 +90,7 @@ public class CombatManager : MonoBehaviour
 
         Debug.Log($"Tier {matchEvent.Tier} happened");
 
-        PlayAttackMotion(context, matchEvent.Tier);
+        PlayAttackMotion(attackLogic, context, matchEvent.Tier);
 
         StartCoroutine(attackLogic.Execute(context));
     }
@@ -104,22 +104,40 @@ public class CombatManager : MonoBehaviour
             DamageMultiplierManager = _damageMultiplierManager
         };
 
-        PlayAttackMotion(enemy_context, MatchTier.Three);
+        PlayAttackMotion(logic, enemy_context, MatchTier.Three);
 
         StartCoroutine(logic.Execute(enemy_context));
     }
 
-    protected void PlayAttackMotion(AttackContext context, MatchTier matchTier)
+    protected void PlayAttackMotion(AttackLogic logic, AttackContext context, MatchTier matchTier)
     {
-        if (context.Attacker is MonoBehaviour attackerObject)
+        var attackerObject = context.Attacker as MonoBehaviour;
+        var targetObject = context.Target as MonoBehaviour;
+
+        if (attackerObject != null)
         {
-            attackerObject.GetComponent<AttackMotion>().PlayAttackMotion((int)matchTier);
+            bool isEnemy = attackerObject.TryGetComponent<EnemyAttackBehaviour>(out _);
+
+            if (isEnemy)
+            {       // Manually move enemy by target characters.
+                Vector3 offset = Vector3.zero;
+
+                if (targetObject != null)
+                {
+                    offset = targetObject.transform.position - attackerObject.transform.localPosition;
+                }
+
+                attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(offset);
+            }
+            else
+            {
+                attackerObject.GetComponent<AttackMotion>().PlayAttackMotion((int)matchTier);
+            }
         }
 
-        // @@ TODO: Play hit animation to target.
-        if (context.Target is MonoBehaviour targetObject)
+        if (targetObject != null)
         {
-            targetObject.GetComponent<AttackMotion>().PlayAttackMotion((int)matchTier);
+            targetObject.GetComponent<AttackMotion>().PlayDamagedMotion(logic.GetTargetMotionOffset());
         }
     }
 
