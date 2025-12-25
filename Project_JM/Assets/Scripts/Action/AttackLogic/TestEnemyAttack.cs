@@ -16,7 +16,6 @@ public class TestEnemyAttack : AttackLogic, IHasCooldown
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        Debug.Log($"{ctx.Attacker} attacked {ctx.Target} by damage {baseDamage}");
         ctx.Target?.TakeDamage(baseDamage, ctx);
         yield break;
     }

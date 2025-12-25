@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1176053653374777677}
   - component: {fileID: 6721484090919061956}
   - component: {fileID: 4409018762775306443}
-  - component: {fileID: 7886235359976977354}
   - component: {fileID: 5405543324218558201}
   - component: {fileID: 3180503826770826874}
+  - component: {fileID: 2704363247957855842}
   m_Layer: 0
   m_Name: SlimeKing
   m_TagString: Untagged
@@ -84,21 +84,6 @@ MonoBehaviour:
   _boardDisableLogic: {fileID: 11400000, guid: ac5b032c8d3399f47831e285f5dcedd3, type: 2}
   _fallbackCooldown: 5
   _enrageDelay: 30
---- !u!114 &7886235359976977354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6164301083414174608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7283d394160094b9ae8cb9033f046b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AttackMotion
-  mat3StateName: match 3
-  mat4StateName: match 4
-  mat5StateName: match 5
 --- !u!114 &5405543324218558201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +118,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2704363247957855842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164301083414174608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5057fb1b880b32942972663fa5e63a61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackMotion
 --- !u!1001 &4210626690412875734
 PrefabInstance:
   m_ObjectHideFlags: 0
