@@ -88,8 +88,6 @@ public class CombatManager : MonoBehaviour
         };
 
 
-        Debug.Log($"Tier {matchEvent.Tier} happened");
-
         PlayAttackMotion(attackLogic, context, matchEvent.Tier);
 
         StartCoroutine(attackLogic.Execute(context));
@@ -116,7 +114,7 @@ public class CombatManager : MonoBehaviour
 
         if (attackerObject != null)
         {
-            bool isEnemy = attackerObject.TryGetComponent<EnemyAttackBehaviour>(out _);
+            bool isEnemy = attackerObject.TryGetComponent<EnemyAttackMotion>(out _);
 
             if (isEnemy)
             {       // Manually move enemy by target characters.
@@ -127,17 +125,26 @@ public class CombatManager : MonoBehaviour
                     offset = targetObject.transform.position - attackerObject.transform.localPosition;
                 }
 
-                attackerObject.GetComponent<AttackMotion>().PlayAttackMotion(offset);
+                attackerObject.GetComponent<EnemyAttackMotion>().PlayAttackMotion(offset);
             }
             else
             {
-                attackerObject.GetComponent<AttackMotion>().PlayAttackMotion((int)matchTier);
+                attackerObject.GetComponent<AttackMotion>().EnqueueAttack(matchTier);
             }
         }
 
         if (targetObject != null)
         {
-            targetObject.GetComponent<AttackMotion>().PlayDamagedMotion(logic.GetTargetMotionOffset());
+            bool isEnemy = targetObject.TryGetComponent<EnemyAttackMotion>(out _);
+
+            if (isEnemy)
+            {
+                targetObject.GetComponent<EnemyAttackMotion>().PlayDamagedMotion(logic.GetTargetMotionOffset());
+            }
+            else
+            {
+                targetObject.GetComponent<AttackMotion>().RequestHurt(logic.GetTargetMotionOffset());
+            }
         }
     }
 
