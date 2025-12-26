@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 1968382616848345547}
   - component: {fileID: 7677070011724910829}
   - component: {fileID: 5112802853265039420}
+  - component: {fileID: 1542600988087688356}
   m_Layer: 0
   m_Name: RedSquare
   m_TagString: Untagged
@@ -381,6 +382,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1542600988087688356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7378609590189185883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60ef0e21c142d8428fb104cc90fd580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackExecutor
+  motion: {fileID: 7677070011724910829}
+  logic3: {fileID: 11400000, guid: 4485cde5803c84d45b9b3dc6d28fb795, type: 2}
+  logic4: {fileID: 11400000, guid: e361be7c4d6371c4db83ca5c7cd2bd15, type: 2}
+  logic5: {fileID: 11400000, guid: f2e6711f5f793cf40836d7c14fff6f7b, type: 2}
+  logicEnemy: {fileID: 0}
 --- !u!1 &7774183868671680934
 GameObject:
   m_ObjectHideFlags: 0

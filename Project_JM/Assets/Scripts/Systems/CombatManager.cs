@@ -15,7 +15,6 @@ public class CombatManager : MonoBehaviour
     [Header("Wiring")]
     [SerializeField] protected EnemyAttackEventChannel _enemyAttackChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] protected AttackBook _attackBook;
     [SerializeField] protected PartyRoster _party;
     [SerializeField] protected DamageMultiplierManager _damageMultiplierManager;
 
@@ -66,13 +65,6 @@ public class CombatManager : MonoBehaviour
         // Record last attacked character after NULL check
         lastAttackedCharacter = attacker;
 
-        var attackLogic = _attackBook.Get(matchEvent.Color, matchEvent.Tier);
-        if (attackLogic == null)
-        {
-            Debug.LogWarning($"No attack logic for {matchEvent.Color} {matchEvent.Tier}");
-            return;
-        }
-
         if (_enemy == null)
         {
             Debug.LogWarning($"No enemy");
@@ -86,11 +78,9 @@ public class CombatManager : MonoBehaviour
             Target = _enemy,
             DamageMultiplierManager = _damageMultiplierManager
         };
+        Debug.Log($"Color {matchEvent.Color} : Tier {matchEvent.Tier} happened");
 
-
-        PlayAttackMotion(attackLogic, context, matchEvent.Tier);
-
-        StartCoroutine(attackLogic.Execute(context));
+        PlayAttackMotion(context, matchEvent.Tier);
     }
 
     protected void OnEnemyAttack(AttackLogic logic)
@@ -102,49 +92,22 @@ public class CombatManager : MonoBehaviour
             DamageMultiplierManager = _damageMultiplierManager
         };
 
-        PlayAttackMotion(logic, enemy_context, MatchTier.Three);
-
-        StartCoroutine(logic.Execute(enemy_context));
+        // @@ TODO: Remove Logic? Where monster's attack logic stored?
+        PlayAttackMotion(enemy_context, null);
     }
 
-    protected void PlayAttackMotion(AttackLogic logic, AttackContext context, MatchTier matchTier)
+    protected void PlayAttackMotion(AttackContext context, MatchTier? matchTier)
     {
         var attackerObject = context.Attacker as MonoBehaviour;
-        var targetObject = context.Target as MonoBehaviour;
+        AttackExecutor executor = attackerObject.GetComponent<AttackExecutor>();
 
-        if (attackerObject != null)
+        if (matchTier.HasValue)
         {
-            bool isEnemy = attackerObject.TryGetComponent<EnemyAttackMotion>(out _);
-
-            if (isEnemy)
-            {       // Manually move enemy by target characters.
-                Vector3 offset = Vector3.zero;
-
-                if (targetObject != null)
-                {
-                    offset = targetObject.transform.position - attackerObject.transform.localPosition;
-                }
-
-                attackerObject.GetComponent<EnemyAttackMotion>().PlayAttackMotion(offset);
-            }
-            else
-            {
-                attackerObject.GetComponent<AttackMotion>().EnqueueAttack(matchTier);
-            }
+            executor.ExecuteAttack(context, matchTier.Value);
         }
-
-        if (targetObject != null)
+        else      // Enemy attack
         {
-            bool isEnemy = targetObject.TryGetComponent<EnemyAttackMotion>(out _);
-
-            if (isEnemy)
-            {
-                targetObject.GetComponent<EnemyAttackMotion>().PlayDamagedMotion(logic.GetTargetMotionOffset());
-            }
-            else
-            {
-                targetObject.GetComponent<AttackMotion>().RequestHurt(logic.GetTargetMotionOffset());
-            }
+            executor.ExecuteEnemyAttack(context);
         }
     }
 

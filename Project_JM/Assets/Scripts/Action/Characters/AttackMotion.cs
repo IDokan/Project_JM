@@ -55,7 +55,6 @@ public class AttackMotion : MonoBehaviour
     protected Coroutine _runner;
 
     protected MatchTier? _currentTier;                    // tier we're currently "in"
-    protected MatchTier? _tierInterruptedByHurt;      // remember which iter to return after hurt.
 
     protected bool _hurtRequested;
     protected int _version;                           // increments to break waits on interrupts
@@ -122,10 +121,6 @@ public class AttackMotion : MonoBehaviour
     public void RequestHurt(Vector3 offset)
     {
         _hurtRequested = true;
-
-        // Remember which tier we were in 
-        // So we can return after hurt.
-        _tierInterruptedByHurt = _currentTier;
 
         // Break any waits immediately.
         _version++;
@@ -230,15 +225,6 @@ public class AttackMotion : MonoBehaviour
         // Wait hurt end event (or another interrupt version bump)
         _hurtDone = false;
         yield return WaitFlagOrInterrupt(() => _hurtDone);
-
-        // After hurt, play Return of interrupted tier if there was one.
-        if (_tierInterruptedByHurt.HasValue)
-        {
-            MatchTier t = _tierInterruptedByHurt.Value;
-            _tierInterruptedByHurt = null;
-
-            yield return PlayReturn(t);
-        }
 
         _state = State.Idle;
         _currentTier = null;
