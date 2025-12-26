@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 3044492464641614860}
   - component: {fileID: 4547157057487302467}
   - component: {fileID: 5449052332871281730}
+  - component: {fileID: 1380073146812465565}
   m_Layer: 0
   m_Name: GreenSquare
   m_TagString: Untagged
@@ -204,6 +205,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1380073146812465565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054816748874019405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60ef0e21c142d8428fb104cc90fd580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackExecutor
+  motion: {fileID: 0}
+  logic3: {fileID: 11400000, guid: 4485cde5803c84d45b9b3dc6d28fb795, type: 2}
+  logic4: {fileID: 11400000, guid: e8830f2d0bd604c4f8fb68bcd9f6054c, type: 2}
+  logic5: {fileID: 11400000, guid: 37d10b1804af2e943a0e48f20d05c61f, type: 2}
+  logicEnemy: {fileID: 0}
 --- !u!1 &3230646844117701683
 GameObject:
   m_ObjectHideFlags: 0
