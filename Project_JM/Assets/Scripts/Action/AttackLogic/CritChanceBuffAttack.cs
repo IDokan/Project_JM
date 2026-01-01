@@ -22,11 +22,6 @@ public class CritChanceBuffAttack : AttackLogic
         yield break;
     }
 
-    public override Vector3 GetAttackerMotionOffset()
-    {
-        return new Vector3(-0.75f, 1.5f, 0f);
-    }
-
     public override Vector3 GetTargetMotionOffset()
     {
         return new Vector3(1f, -0.1f, 0f);
