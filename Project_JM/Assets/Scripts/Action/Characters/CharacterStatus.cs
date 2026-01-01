@@ -128,8 +128,6 @@ public class CharacterStatus : MonoBehaviour
 
         OnHPChanged?.Invoke(CurrentHP, maxHP);
 
-        Debug.Log($"{CharacterName} took {calculatedDamage} damage -> HP {CurrentHP}");
-
         if (IsDead)
         {
             Die();

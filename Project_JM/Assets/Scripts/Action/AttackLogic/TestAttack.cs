@@ -15,14 +15,8 @@ public class TestAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        Debug.Log($"{ctx.Attacker} attacked {ctx.Target}");
         ctx.Target?.TakeDamage(baseDamage, ctx);
         yield break;
-    }
-
-    public override Vector3 GetAttackerMotionOffset()
-    {
-        return new Vector3(3f, 1f, 0f);
     }
 
     public override Vector3 GetTargetMotionOffset()

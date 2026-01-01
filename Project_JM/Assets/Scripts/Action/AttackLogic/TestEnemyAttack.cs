@@ -16,14 +16,8 @@ public class TestEnemyAttack : AttackLogic, IHasCooldown
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        Debug.Log($"{ctx.Attacker} attacked {ctx.Target} by damage {baseDamage}");
         ctx.Target?.TakeDamage(baseDamage, ctx);
         yield break;
-    }
-
-    public override Vector3 GetAttackerMotionOffset()
-    {
-        return new Vector3(-3f, 0.2f, 0f);
     }
 
     public override Vector3 GetTargetMotionOffset()
