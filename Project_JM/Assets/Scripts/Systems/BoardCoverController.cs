@@ -14,8 +14,8 @@ public class BoardCoverController : MonoBehaviour
     [SerializeField] protected float slideDuration = 0.5f;
     [SerializeField] protected float hiddenY = -800f;       // Off-screen bottom
     [SerializeField] protected float shownY = 0f;           // On-screen
-    [SerializeField] protected Vector3 hiddenLocation;
-    [SerializeField] protected Vector3 shownLocation;
+    protected Vector3 _hiddenLocation;
+    protected Vector3 _shownLocation;
 
     protected GameObject _instance;
     protected Tweener _tween;
@@ -24,7 +24,7 @@ public class BoardCoverController : MonoBehaviour
     {
         _instance = Instantiate(coverPrefab, transform);
 
-        _instance.transform.localPosition = hiddenLocation;
+        _instance.transform.localPosition = _hiddenLocation;
     }
 
     public void SetBoardSizeData(int row, int col, float cellSize, float spacing)
@@ -35,10 +35,10 @@ public class BoardCoverController : MonoBehaviour
         Vector3 centerLocation = new Vector3(width / 2f - (gemSize / 2f), height / 2f - (gemSize / 2f), 0f);
 
         _instance.transform.localScale = new Vector3(width, height, 0f);
-        hiddenLocation = new Vector3(centerLocation.x, centerLocation.y + hiddenY, 0f);
-        shownLocation = new Vector3(centerLocation.x, centerLocation.y + shownY, 0f);
+        _hiddenLocation = new Vector3(centerLocation.x, centerLocation.y + hiddenY, 0f);
+        _shownLocation = new Vector3(centerLocation.x, centerLocation.y + shownY, 0f);
 
-        _instance.transform.localPosition = hiddenLocation;
+        _instance.transform.localPosition = _hiddenLocation;
     }
 
     public void ShowCover()
@@ -47,7 +47,7 @@ public class BoardCoverController : MonoBehaviour
 
         Transform t = _instance.transform;
         _tween?.Kill();
-        _tween = t.DOLocalMove(shownLocation, slideDuration)
+        _tween = t.DOLocalMove(_shownLocation, slideDuration)
                  .SetEase(Ease.OutCubic);
     }
 
@@ -57,7 +57,7 @@ public class BoardCoverController : MonoBehaviour
 
         Transform t = _instance.transform;
         _tween?.Kill();
-        _tween = t.DOLocalMove(hiddenLocation, slideDuration)
+        _tween = t.DOLocalMove(_hiddenLocation, slideDuration)
                  .SetEase(Ease.InCubic);
     }
 }
