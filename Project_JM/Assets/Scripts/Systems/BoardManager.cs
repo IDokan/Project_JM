@@ -95,15 +95,17 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         {
             for (int c = 0; c < _cols; c++)
             {
-                _gems[r, c] = GetRandomGem(r, c);
+                _gems[r, c] = GetRandomGemAboveContainer(r, c);
                 if (HasMatchAtBeginning(r, c))
                 {
                     _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(_gems[r, c].Color));
                 }
+                MoveGem(_gems[r, c], r, c);
             }
         }
     }
 
+    // It takes row & col for only gem location.
     protected Gem GetRandomGem(int row, int col)
     {
         GameObject gemObj = Instantiate(_gemPrefab, transform);
@@ -114,6 +116,12 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         gem.Init(color);
 
         return gem;
+    }
+
+    // It takes row & col for only gem location.
+    protected Gem GetRandomGemAboveContainer(int row, int col)
+    {
+        return GetRandomGem(row + _rows, col);
     }
 
     protected bool ResolveMatches()
@@ -312,7 +320,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         {
             ResolveMatches();
         }
-
     }
 
     public Vector2 GetGemLocation(int row, int col)
@@ -553,6 +560,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void OnAnyoneDied(CharacterStatus stat)
     {
         _busy = true;
+
+        StartCoroutine(ClearAndRefillGemsAfterDelay(1f));
+
         boardCoverController.ShowCover();
     }
 
@@ -560,9 +570,13 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         _busy = false;
 
-        ClearAndRefillGems();
-
         boardCoverController.HideCover();
+    }
+
+    protected IEnumerator ClearAndRefillGemsAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ClearAndRefillGems();
     }
 
     protected void ClearAndRefillGems()
