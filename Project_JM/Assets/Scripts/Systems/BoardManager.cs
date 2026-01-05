@@ -344,7 +344,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         // @@ TODO: Implement object pool for gems.
         if (_gems[row, col] != null)
         {
-            Destroy(_gems[row, col].gameObject);
+            _gems[row, col].Resolve();
             _gems[row, col] = null;
         }
     }
