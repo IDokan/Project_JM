@@ -13,6 +13,7 @@ public class GemResolver : MonoBehaviour
     [SerializeField] protected SpriteRenderer shinySP;
     [SerializeField] protected ParticleSystem bubblePS;
     [SerializeField] protected Gem gem;
+    [SerializeField] protected float ResolverLifetime = 1f;
 
     static readonly int TintColorID = Shader.PropertyToID("_TintColor");
 
@@ -48,7 +49,7 @@ public class GemResolver : MonoBehaviour
         main.startColor = color;
         bubblePS.Play(true);
 
-        StartCoroutine(DestroySelf(0.5f));
+        StartCoroutine(DestroySelf(ResolverLifetime));
     }
 
     protected IEnumerator DestroySelf(float delay)
