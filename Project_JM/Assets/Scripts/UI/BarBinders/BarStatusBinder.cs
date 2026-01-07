@@ -62,6 +62,13 @@ public class BarStatusBinder : MonoBehaviour
 
     protected void UpdateShield(float shieldAmount, float max)
     {
-        _ShieldbarUI.UpdateValue(shieldAmount, max, false);
+        if (shieldAmount > _boundStatus.maxHP)
+        {
+            _ShieldbarUI.UpdateValue(shieldAmount, _boundStatus.maxHP, false);
+        }
+        else
+        {
+            _ShieldbarUI.UpdateValue(shieldAmount, max, false);
+        }
     }
 }

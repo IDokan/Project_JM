@@ -286,7 +286,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
   _enemyAttackChannel: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
   _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
-  _attackBook: {fileID: 11400000, guid: 2b8a2dbaddba64f4ca8e769f11a402e6, type: 2}
   _party: {fileID: 0}
   _damageMultiplierManager: {fileID: 6656491438921996846}
   _enemy: {fileID: 0}
@@ -345,12 +344,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 935236977859202638}
     m_Modifications:
     - target: {fileID: 1367495987594621808, guid: bf1aab60bd402bb4aa548a8435701b51, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1367495987594621808, guid: bf1aab60bd402bb4aa548a8435701b51, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1367495987594621808, guid: bf1aab60bd402bb4aa548a8435701b51, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1142.6912
+      value: -1141
       objectReference: {fileID: 0}
     - target: {fileID: 1367495987594621808, guid: bf1aab60bd402bb4aa548a8435701b51, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -584.75867
+      value: -583
       objectReference: {fileID: 0}
     - target: {fileID: 1367495987594621808, guid: bf1aab60bd402bb4aa548a8435701b51, type: 3}
       propertyPath: m_LocalPosition.z

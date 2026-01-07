@@ -199,14 +199,26 @@ public class ParticleBazierMover : MonoBehaviour
             p.velocity = vel;
             p.position = pos;
 
+            float velocitySqrMagnitude = p.velocity.sqrMagnitude;
             // Kill particles if they arrived
-            if (p.velocity.sqrMagnitude <= 0.1f)
+            if (velocitySqrMagnitude <= 0.1f)
             {
                 p.remainingLifetime = 0f;
             }
 
-            controlledParticleSystem.SetParticles(_particles, count);
+            // Update particle's opacity by velocity when they began floating to destination.
+            if (u > 0.5f)
+            {
+                float clampedVelocitySqrMagnitude = Mathf.Clamp01(velocitySqrMagnitude / 20f);
+                byte alpha = (byte)Mathf.RoundToInt(255 * clampedVelocitySqrMagnitude);
+
+                Color32 c = p.startColor;
+                c.a = alpha;
+                p.startColor = c;
+            }
         }
+
+        controlledParticleSystem.SetParticles(_particles, count);
     }
 
     protected Vector3 BezierQuadratic(Vector3 p0, Vector3 p1, Vector3 p2, float t)
