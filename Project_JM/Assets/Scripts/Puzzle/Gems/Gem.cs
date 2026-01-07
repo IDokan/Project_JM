@@ -34,14 +34,16 @@ public class Gem : MonoBehaviour
         }
     }
 
-    public void Resolve()
+    public void Resolve(PartyRoster partyRoster)
     {
-        GameObject resolver = Instantiate(gemResolver);
+        GemResolver resolver = Instantiate(gemResolver).GetComponent<GemResolver>();
 
         resolver.transform.SetPositionAndRotation(transform.position, transform.rotation);
         resolver.transform.localScale = transform.lossyScale;
 
         resolver.GetComponent<GemResolver>().SetGemType(Color);
+
+        resolver.SetTargetTransform(partyRoster.GetCharacterTransform(Color));
 
         Destroy(gameObject);
     }

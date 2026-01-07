@@ -5047,12 +5047,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParticleBazierMover
   controlledParticleSystem: {fileID: 8600526168879950165}
-  target: {fileID: 2110747870894188003}
-  targetPosition: {x: 2.5, y: 0, z: 0}
   delay: 0.5
+  travelTime: 0.8
   stiffness: 12
-  damping: 6
-  outerStiffnessBoost: 1
+  damping: 9
+  endOffsetWeight: 0.05
+  bendScale: 3
 --- !u!1 &8423540921551108864
 GameObject:
   m_ObjectHideFlags: 0
@@ -5102,5 +5102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GemResolver
   shinySP: {fileID: 5773206624577906399}
   bubblePS: {fileID: 8600526168879950165}
+  mover: {fileID: 5447273237006549977}
   gem: {fileID: 1388688878519051161}
-  ResolverLifetime: 5
+  resolverLifetime: 3
+  spriteDisableDelay: 0.1
