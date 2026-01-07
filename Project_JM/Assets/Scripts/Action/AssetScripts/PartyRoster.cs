@@ -6,12 +6,12 @@
 
 using UnityEngine;
 using GemEnums;
+using System.Collections.Generic;
 
 public class PartyRoster : MonoBehaviour
 {
     [System.Serializable]
-    public struct Slot { public GemColor Color; public CharacterCombatant Character; }
-
+    public struct Slot { public GemColor Color; public CharacterCombatant Character; public Transform CharacterTransform; }
     [SerializeField] protected Slot[] slots;
 
     public CharacterCombatant Get(GemColor color)
@@ -21,6 +21,19 @@ public class PartyRoster : MonoBehaviour
             if (slots[i].Color == color)
             {
                 return slots[i].Character;
+            }
+        }
+
+        return null;
+    }
+
+    public Transform GetCharacterTransform(GemColor color)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].Color == color)
+            {
+                return slots[i].CharacterTransform;
             }
         }
 

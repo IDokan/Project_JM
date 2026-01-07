@@ -34,6 +34,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected GameObject _gemPrefab;
     [SerializeField] protected float _fallingSpeed = 3f;
 
+    [SerializeField] protected PartyRoster partyRoster;
     [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
@@ -344,7 +345,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         // @@ TODO: Implement object pool for gems.
         if (_gems[row, col] != null)
         {
-            _gems[row, col].Resolve();
+            _gems[row, col].Resolve(partyRoster);
             _gems[row, col] = null;
         }
     }

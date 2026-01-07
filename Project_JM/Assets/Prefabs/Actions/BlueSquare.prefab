@@ -385,6 +385,37 @@ MonoBehaviour:
   logic4: {fileID: 11400000, guid: 965cd0110c308d948a46e9613a1bb566, type: 2}
   logic5: {fileID: 11400000, guid: 443a4549c7fa3aa49b6dc9e00b12d54e, type: 2}
   logicEnemy: {fileID: 0}
+--- !u!1 &7067878393964800406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2219893476137290648}
+  m_Layer: 0
+  m_Name: MageAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2219893476137290648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067878393964800406}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: 0.03469175, w: 0.9993981}
+  m_LocalPosition: {x: -0.0031097531, y: 0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6909087634221044646}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7378049213932467660
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +509,8 @@ Transform:
   m_LocalPosition: {x: 0.874, y: 0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2219893476137290648}
   m_Father: {fileID: 6218482598320575148}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1918731822429680740

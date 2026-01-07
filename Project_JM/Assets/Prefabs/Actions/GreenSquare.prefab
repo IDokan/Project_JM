@@ -472,6 +472,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &4752501441370072373
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8466185272994952160}
+  m_Layer: 0
+  m_Name: BowmanAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8466185272994952160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4752501441370072373}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.15648174, y: -0.25222242, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4182615001399796242}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6574623204774130288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,6 +1301,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8582131584933214627}
+    - targetCorrespondingSourceObject: {fileID: -6875826091962285587, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8466185272994952160}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       insertIndex: -1
@@ -1409,6 +1443,11 @@ MonoBehaviour:
 --- !u!4 &3575112279980219548 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3099271606464544611, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
+  m_PrefabInstance: {fileID: 1918404487913825279}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4182615001399796242 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -6875826091962285587, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
   m_PrefabInstance: {fileID: 1918404487913825279}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4605376113724545436 stripped

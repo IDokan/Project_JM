@@ -12,9 +12,8 @@ using UnityEngine;
 public class ParticleBazierMover : MonoBehaviour
 {
     [SerializeField] protected ParticleSystem controlledParticleSystem;
-    [SerializeField] protected Transform target;        // @@ TODO: Change it characters later.
-    [SerializeField] protected Vector3 targetPosition = new Vector3(5f, 0f, 0f);
     [SerializeField] protected float delay = 1f;
+    [SerializeField] protected float travelTime = 0.8f;
 
     [Header("Spring (tune these)")]
     [Tooltip("Bigger = pulls harder toward desired position.")]
@@ -23,18 +22,25 @@ public class ParticleBazierMover : MonoBehaviour
     [Tooltip("Bigger = damps motion more quickly (units: 1/sec).")]
     [SerializeField] protected float damping = 12f;
 
-
-    [Header("Optional: make outer particles behave differently (still deterministic)")]
-    [Tooltip("0 = no difference. Positive = outer particles pull harder.")]
-    [SerializeField] private float outerStiffnessBoost = 1f;
-    private float _maxRadius = 1e-6f;
+    [SerializeField] protected float endOffsetWeight;
+    [SerializeField] protected float bendScale = 1f;
 
     protected ParticleSystem.Particle[] _particles;
+    protected Transform target;
+
+    protected struct Info
+    {
+        public Vector3 startPos;
+        public Vector3 offsetFromCenter;
+        public float bend;
+    }
 
     // randomSeed -> cached offset at the moment follow begins
-    protected readonly Dictionary<uint, Vector3> _offsetByID = new(64);
+    protected readonly Dictionary<uint, Info> _infoByID = new(64);
 
     protected Vector3 _centerStart;
+    protected Vector3 _perpendicularAtStart;
+    protected float _moveStartTime;
     protected bool _following;
 
     protected void Awake()
@@ -68,9 +74,43 @@ public class ParticleBazierMover : MonoBehaviour
         EnsureBuffer();
 
         _centerStart = controlledParticleSystem.transform.position;
-        CacheOffsetsFromCenter(_centerStart);
 
+        Vector3 direction = (target.position - _centerStart);
+        if (direction.sqrMagnitude < 1e-8f)
+        {
+            direction = Vector3.right;
+        }
+
+        direction.Normalize();
+        _perpendicularAtStart = new Vector3(-direction.y, direction.x, 0f);
+
+        CacheInfos();
+
+        _moveStartTime = Time.time;
         _following = true;
+    }
+
+    protected void CacheInfos()
+    {
+        _infoByID.Clear();
+
+        int count = controlledParticleSystem.GetParticles(_particles);
+        for (int i = 0; i < count; i++)
+        {
+            uint id = _particles[i].randomSeed;
+
+            Vector3 startPos = _particles[i].position;
+            Vector3 offset = startPos - _centerStart;
+
+            float bend = Vector3.Dot(offset, _perpendicularAtStart) * bendScale;
+
+            _infoByID[id] = new Info
+            {
+                startPos = startPos,
+                offsetFromCenter = offset,
+                bend = bend
+            };
+        }
     }
 
 
@@ -83,29 +123,6 @@ public class ParticleBazierMover : MonoBehaviour
         {
             _particles = new ParticleSystem.Particle[max];
         }
-    }
-
-    protected void CacheOffsetsFromCenter(Vector3 center)
-    {
-        _offsetByID.Clear();
-        _maxRadius = 1e-6f;
-
-        int count = controlledParticleSystem.GetParticles(_particles);
-
-        for (int i = 0; i < count; i++)
-        {
-            uint id = _particles[i].randomSeed;
-            Vector3 offset = _particles[i].position - center;
-
-            _offsetByID[id] = offset;
-            float r = offset.magnitude;
-            if (r > _maxRadius)
-            {
-                _maxRadius = r;
-            }
-        }
-
-        controlledParticleSystem.SetParticles(_particles, count);
     }
 
     protected void LateUpdate()
@@ -123,6 +140,9 @@ public class ParticleBazierMover : MonoBehaviour
 
         EnsureBuffer();
 
+        float u = travelTime <= 1e-6f ? 1f : Mathf.Clamp01((Time.time - _moveStartTime) / travelTime);
+        u = u * u * (3f - 2f * u);
+
         Vector3 targetPos = target.position;
 
         int count = controlledParticleSystem.GetParticles(_particles);
@@ -132,42 +152,72 @@ public class ParticleBazierMover : MonoBehaviour
             ref ParticleSystem.Particle p = ref _particles[i];
             uint id = p.randomSeed;
 
-            if (!_offsetByID.TryGetValue(id, out Vector3 offset))
+            if (!_infoByID.TryGetValue(id, out Info info))
             {
-                offset = p.position - _centerStart;
-                _offsetByID[id] = offset;
+                Vector3 startPos = p.position;
+                Vector3 offset = startPos - _centerStart;
+                float bend = Vector3.Dot(offset, _perpendicularAtStart) * bendScale;
 
-                float r = offset.magnitude;
-                if (r > _maxRadius)
+                info = new Info
                 {
-                    _maxRadius = r;
-                }
+                    startPos = startPos,
+                    offsetFromCenter = offset,
+                    bend = bend,
+                };
+
+                _infoByID[id] = info;
             }
 
-            Vector3 desired = targetPos;
+            Vector3 endPosition = targetPos + info.offsetFromCenter * endOffsetWeight;
+            endPosition.z = p.position.z;
 
-            desired.z = p.position.z;
-
-            float k = stiffness;
-            if (outerStiffnessBoost > 0f)
+            Vector3 direction = endPosition - info.startPos;
+            Vector3 perpendicular;
+            if (direction.sqrMagnitude < 1e-8f)
             {
-                float radius01 = Mathf.Clamp01(offset.magnitude / _maxRadius);
-                k *= (1f + outerStiffnessBoost * radius01);
+                perpendicular = _perpendicularAtStart;
             }
+            else
+            {
+                direction.Normalize();
+                perpendicular = new Vector3(-direction.y, direction.x, 0f);
+            }
+
+            Vector3 control = (info.startPos + endPosition) * 0.5f + perpendicular * info.bend;
+
+            Vector3 guide = BezierQuadratic(info.startPos, control, endPosition, u);
 
             Vector3 pos = p.position;
             Vector3 vel = p.velocity;
 
-            Vector3 to = desired - pos;
+            Vector3 to = guide - pos;
 
-            vel += to * (k * dt);
+            vel += to * (stiffness * dt);
             vel *= Mathf.Exp(-damping * dt);
             pos += vel * dt;
 
             p.velocity = vel;
             p.position = pos;
 
+            // Kill particles if they arrived
+            if (p.velocity.sqrMagnitude <= 0.1f)
+            {
+                p.remainingLifetime = 0f;
+            }
+
             controlledParticleSystem.SetParticles(_particles, count);
         }
+    }
+
+    protected Vector3 BezierQuadratic(Vector3 p0, Vector3 p1, Vector3 p2, float t)
+    {
+        float u = 1f - t;
+
+        return (u * u) * p0 + (2f * u * t) * p1 + (t * t) * p2;
+    }
+
+    public void SetTargetTransform(Transform transform)
+    {
+        target = transform;
     }
 }
