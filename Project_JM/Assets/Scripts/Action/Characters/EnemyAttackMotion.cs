@@ -12,10 +12,12 @@ public class EnemyAttackMotion : MonoBehaviour
 {
     protected Animator _animator;
 
+    public event Action OnHit;
+
     // The durations can be changed in near future
     //      to display different pause for different attack logics.
-    protected const float _moveDuration = 0.1f;
-    protected const float _pauseDuration = 0.2f;
+    [SerializeField] protected float _moveDuration = 0.1f;
+    [SerializeField] protected float _pauseDuration = 0.2f;
 
     protected static readonly int DamagedTrig = Animator.StringToHash("DamagedTrig");
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
@@ -23,6 +25,9 @@ public class EnemyAttackMotion : MonoBehaviour
 
     protected Vector3 _originalPosition;
     protected Sequence _moveSequence;
+
+
+    protected bool _attackDone = true;
 
     protected void Awake()
     {
@@ -41,7 +46,9 @@ public class EnemyAttackMotion : MonoBehaviour
             return;
         }
 
-        Move(moveOffset, 0.1f, 0.2f);
+        _attackDone = false;
+
+        Move(moveOffset, _moveDuration, _pauseDuration, RaiseHit, RaiseAttackEnd);
 
         _animator.ResetTrigger(AttackTrig);
         _animator.SetTrigger(AttackTrig);
@@ -49,18 +56,18 @@ public class EnemyAttackMotion : MonoBehaviour
 
     public void PlayDamagedMotion(Vector3 moveOffset)
     {
-        if (_animator == null)
+        if (_animator == null || _attackDone == false)
         {
             return;
         }
 
-        Move(moveOffset, 0.1f, 0.2f);
+        Move(moveOffset, _moveDuration, _pauseDuration, null, null);
 
         _animator.ResetTrigger(DamagedTrig);
         _animator.SetTrigger(DamagedTrig);
     }
 
-    protected void Move(Vector3 offset, float moveDuration, float pauseDuration)
+    protected void Move(Vector3 offset, float moveDuration, float pauseDuration, Action onReachedTarget, Action onSequenceComplete)
     {
         // If previous sequence has not finished yet, kill it.
         if (_moveSequence != null && _moveSequence.IsActive())
@@ -70,10 +77,23 @@ public class EnemyAttackMotion : MonoBehaviour
 
         Vector3 target = _originalPosition + offset;
 
+        // Call OnHit.Invoke() after the first append ended.
         _moveSequence = DOTween.Sequence();
         _moveSequence.Append(transform.DOLocalMove(target, moveDuration).SetEase(Ease.OutQuad))
+            .AppendCallback(() => onReachedTarget?.Invoke())
             .AppendInterval(pauseDuration)
             .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
+            .OnComplete(()=>onSequenceComplete?.Invoke())
             .SetLink(gameObject);
+    }
+
+    public void RaiseHit()
+    {
+        OnHit?.Invoke();
+    }
+
+    public void RaiseAttackEnd()
+    {
+        _attackDone = true;
     }
 }

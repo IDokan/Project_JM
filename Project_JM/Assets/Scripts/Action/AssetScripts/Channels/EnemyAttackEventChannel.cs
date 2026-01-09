@@ -10,6 +10,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "JM/Events/Enemy Attack Event Channel")]
 public class EnemyAttackEventChannel : ScriptableObject
 {
-    public event Action<AttackLogic> OnRaised;
-    public void Raise(AttackLogic logic) => OnRaised?.Invoke(logic);
+    public event Action OnRaised;
+    public void Raise() => OnRaised?.Invoke();
 }
