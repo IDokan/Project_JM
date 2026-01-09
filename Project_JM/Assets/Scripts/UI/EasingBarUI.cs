@@ -1,22 +1,23 @@
 // SPDX-License-Identifier: MIT
-// Copyright (c) 11/13/2025 Sinil Kang
+// Copyright (c) 01/08/2026 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
-// File: BarUI.cs
-// Summary: A UI type of bar.
+// File: EasingBarUI.cs
+// Summary: A UI type of bar that easing slowly.
 
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
-public class BarUI : BarUIBase
+public class EasingBarUI : BarUIBase
 {
-    [SerializeField] protected RectTransform _bar;
     [SerializeField] protected TextMeshProUGUI _text;
 
-    protected Vector2 initSize;
-    
+    [SerializeField] protected Slider healthSlider;
+    [SerializeField] protected Slider easingHealthSlider;
+    [SerializeField] protected float lerpSpeed = -12f;
+
     protected void Awake()
     {
-        initSize = _bar.rect.size;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,14 +29,23 @@ public class BarUI : BarUIBase
     // Update is called once per frame
     void Update()
     {
-        
+
+        float target = healthSlider.value;
+        float v = easingHealthSlider.value;
+
+        if (Mathf.Abs(v - target) > 0.001f)
+        {
+            float t = 1f - Mathf.Exp(lerpSpeed * Time.deltaTime);
+            easingHealthSlider.value = Mathf.Lerp(v, target, t);
+        }
     }
 
-    protected override void OnUpdateValue(float current, float max, bool displayMaxValue)
+    protected override void OnUpdateValue(float current, float max, bool displayMaxValue = true)
     {
-        float ratio = current / max;
+        healthSlider.maxValue = max;
+        easingHealthSlider.maxValue = max;
 
-        _bar.sizeDelta = new Vector2(initSize.x * ratio, initSize.y);
+        healthSlider.value = current;
 
         if (_text != null)
         {
@@ -60,9 +70,10 @@ public class BarUI : BarUIBase
 
     protected override void OnUpdateValue(float current, float max, string givenText)
     {
-        float ratio = current / max;
+        healthSlider.maxValue = max;
+        easingHealthSlider.maxValue = max;
 
-        _bar.sizeDelta = new Vector2(initSize.x * ratio, initSize.y);
+        healthSlider.value = current;
 
         if (_text != null)
         {

@@ -11,14 +11,12 @@ using UnityEngine;
 public class EnemyAttackBehaviour : MonoBehaviour
 {
     [SerializeField] protected EnemyAttackEventChannel _attackChannel;
-    [SerializeField] protected AttackLogic _attackLogic;
     [SerializeField] protected BoardDisableEventChannel _boardDisableChannel;
     [SerializeField] protected BoardDisableLogic _boardDisableLogic;
-    [SerializeField, Min(0.001f)] protected float _fallbackCooldown = 5f;
+    [SerializeField, Min(0.001f)] protected float _cooldown;
 
     protected Coroutine _loop;
     protected float _attackTimer;
-    protected float _cooldown { get; private set; }
     public float Cooldown => _cooldown;
 
     public event Action<float, float> OnAttackTimerChanged;
@@ -91,18 +89,13 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     protected void Attack()
     {
-        _attackChannel.Raise(_attackLogic);
+        _attackChannel.Raise();
         _boardDisableChannel.Raise(_boardDisableLogic);
     }
 
     protected float GetCooldown()
     {
-        if (_attackLogic is IHasCooldown c)
-        {
-            return c.Cooldown;
-        }
-
-        return _fallbackCooldown;
+        return _cooldown;
     }
 
     protected void UpdateAttackTimer(float value)

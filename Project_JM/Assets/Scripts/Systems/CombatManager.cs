@@ -83,7 +83,7 @@ public class CombatManager : MonoBehaviour
         PlayAttackMotion(context, matchEvent.Tier);
     }
 
-    protected void OnEnemyAttack(AttackLogic logic)
+    protected void OnEnemyAttack()
     {
         var enemy_context = new AttackContext
         {
@@ -92,7 +92,6 @@ public class CombatManager : MonoBehaviour
             DamageMultiplierManager = _damageMultiplierManager
         };
 
-        // @@ TODO: Remove Logic? Where monster's attack logic stored?
         PlayAttackMotion(enemy_context, null);
     }
 

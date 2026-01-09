@@ -16,11 +16,6 @@ public struct AttackContext
     public DamageMultiplierManager DamageMultiplierManager;
 }
 
-public interface IHasCooldown
-{
-    public float Cooldown { get; }
-}
-
 public abstract class AttackLogic : ScriptableObject
 {
     public abstract IEnumerator Execute(AttackContext context);
