@@ -35,7 +35,7 @@ public class EasingBarUI : BarUIBase
 
         if (Mathf.Abs(v - target) > 0.001f)
         {
-            float t = 1f - Mathf.Exp(lerpSpeed * Time.deltaTime);
+            float t = 1f - Mathf.Exp(lerpSpeed * GlobalTimeManager.DeltaTime);
             easingHealthSlider.value = Mathf.Lerp(v, target, t);
         }
     }
