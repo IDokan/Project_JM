@@ -26,6 +26,8 @@ public class EnemyAttackMotion : MonoBehaviour
     protected Vector3 _originalPosition;
     protected Sequence _moveSequence;
 
+    protected float timeScaler = 1f;
+
 
     protected bool _attackDone = true;
 
@@ -37,6 +39,16 @@ public class EnemyAttackMotion : MonoBehaviour
         {
             _animator = GetComponent<Animator>();
         }
+    }
+
+    protected void OnEnable()
+    {
+        GlobalTimeManager.OnScaleChanged += ApplyGlobalTweenScale;
+    }
+
+    protected void OnDisable()
+    {
+        GlobalTimeManager.OnScaleChanged -= ApplyGlobalTweenScale;
     }
 
     public void PlayAttackMotion(Vector3 moveOffset)
@@ -85,6 +97,18 @@ public class EnemyAttackMotion : MonoBehaviour
             .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
             .OnComplete(()=>onSequenceComplete?.Invoke())
             .SetLink(gameObject);
+
+        _moveSequence.timeScale = timeScaler;
+    }
+
+    protected void ApplyGlobalTweenScale(float scale)
+    {
+        timeScaler = scale;
+
+        if (_moveSequence != null && _moveSequence.IsActive())
+        {
+            _moveSequence.timeScale = scale;
+        }
     }
 
     public void RaiseHit()

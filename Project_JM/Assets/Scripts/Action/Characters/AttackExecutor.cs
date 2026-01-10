@@ -97,11 +97,15 @@ public class AttackExecutor : MonoBehaviour
     {
 
         var targetObject = _context.Target as MonoBehaviour;
-        targetObject.GetComponent<EnemyAttackMotion>().PlayDamagedMotion(
-            GetTierLogic(tier).GetTargetMotionOffset()
-            );
 
-        StartCoroutine(GetTierLogic(tier).Execute(_context));
+        if (targetObject != null)
+        {
+            targetObject.GetComponent<EnemyAttackMotion>().PlayDamagedMotion(
+                GetTierLogic(tier).GetTargetMotionOffset()
+                );
+
+            StartCoroutine(GetTierLogic(tier).Execute(_context));
+        }
     }
 
     public void EnemyHandleHit()
@@ -111,9 +115,9 @@ public class AttackExecutor : MonoBehaviour
         if (targetObject != null)
         {
             targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
-        }
 
-        StartCoroutine(logicEnemy.Execute(_context));
+            StartCoroutine(logicEnemy.Execute(_context));
+        }
     }
 
     public AttackLogic GetTierLogic(MatchTier tier) => tier switch

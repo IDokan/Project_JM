@@ -137,7 +137,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     {
         _isStunned = true;
 
-        yield return new WaitForSeconds(duration);
+        yield return GlobalTimeManager.WaitForGlobalSeconds(duration);
 
         _isStunned = false;
     }
