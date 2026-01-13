@@ -4,6 +4,7 @@
 // File: ParticleBazierMover.cs
 // Summary: A script to move particle to a position using Bazier curve.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,9 @@ public class ParticleBazierMover : MonoBehaviour
     [SerializeField] protected float endOffsetWeight;
     [SerializeField] protected float bendScale = 1f;
 
+    public event Action Completed;
+    bool _completedFired = false;
+
     protected ParticleSystem.Particle[] _particles;
     protected Transform target;
 
@@ -41,7 +45,7 @@ public class ParticleBazierMover : MonoBehaviour
     protected Vector3 _centerStart;
     protected Vector3 _perpendicularAtStart;
     protected float _moveStartTime;
-    protected bool _following;
+    protected bool _following = false;
 
     protected void Awake()
     {
@@ -219,6 +223,13 @@ public class ParticleBazierMover : MonoBehaviour
         }
 
         controlledParticleSystem.SetParticles(_particles, count);
+
+        if (_completedFired == false && u >= 1f && controlledParticleSystem.particleCount <= 0)
+        {
+            _completedFired = true;
+            _following = false;
+            Completed?.Invoke();
+        }
     }
 
     protected Vector3 BezierQuadratic(Vector3 p0, Vector3 p1, Vector3 p2, float t)

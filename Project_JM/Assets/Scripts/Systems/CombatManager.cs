@@ -13,6 +13,7 @@ using UnityEngine;
 public class CombatManager : MonoBehaviour
 {
     [Header("Wiring")]
+    [SerializeField] protected GemPowerArrivedEventChannel _gemPowerArrivedChannel;
     [SerializeField] protected EnemyAttackEventChannel _enemyAttackChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
     [SerializeField] protected PartyRoster _party;
@@ -26,12 +27,14 @@ public class CombatManager : MonoBehaviour
 
     protected void OnEnable()
     {
+        _gemPowerArrivedChannel.OnRaised += OnPowerArrived;
         _enemyAttackChannel.OnRaised += OnEnemyAttack;
         _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
     }
 
     protected void OnDisable()
     {
+        _gemPowerArrivedChannel.OnRaised -= OnPowerArrived;
         _enemyAttackChannel.OnRaised -= OnEnemyAttack;
         _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
     }
@@ -49,7 +52,7 @@ public class CombatManager : MonoBehaviour
     }
 
     // SystemBehaviour calls it
-    public void OnMatch(MatchEvent matchEvent)
+    public void OnPowerArrived(MatchEvent matchEvent)
     {
         if (matchEvent.Color == GemColor.None)
         {
