@@ -7,6 +7,7 @@
 using UnityEngine;
 using GemEnums;
 using System.Collections;
+using System;
 
 public class GemResolver : MonoBehaviour
 {
@@ -21,24 +22,38 @@ public class GemResolver : MonoBehaviour
 
     MaterialPropertyBlock _materialPropertyBlock;
 
+    Action<GemColor> _onAbsorbed;
+    bool _absorbedCalled;
+
     protected void Awake()
     {
         _materialPropertyBlock = new MaterialPropertyBlock();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init(GemColor gemColor, Transform target, Action<GemColor> onAbsorbed)
     {
-        
+        _onAbsorbed = onAbsorbed;
+
+        SetGemType(gemColor);
+        mover.SetTargetTransform(target);
+
+        mover.Completed += HandleAbsorbed;
+
+        StartCoroutine(FailSafeAbsorb(3f));
     }
 
-    // Update is called once per frame
-    void Update()
+    protected void HandleAbsorbed()
     {
-        
+        if (_absorbedCalled) return;
+        _absorbedCalled = true;
+
+        mover.Completed -= HandleAbsorbed;
+
+        _onAbsorbed?.Invoke(gem.Color);
+        Destroy(gameObject);
     }
 
-    public void SetGemType(GemColor gemColor)
+    protected void SetGemType(GemColor gemColor)
     {
         gem.Init(gemColor);
 
@@ -52,20 +67,13 @@ public class GemResolver : MonoBehaviour
         bubblePS.Play(true);
 
         StartCoroutine(DisableSprite(spriteDisableDelay));
-        StartCoroutine(DestroySelf(resolverLifetime));
-
     }
 
-    public void SetTargetTransform(Transform transform)
+    protected IEnumerator FailSafeAbsorb(float maxSeconds)
     {
-        mover.SetTargetTransform(transform);
-    }
+        yield return new WaitForSeconds(maxSeconds);
 
-    protected IEnumerator DestroySelf(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        Destroy(gameObject);
+        HandleAbsorbed();
     }
 
     protected IEnumerator DisableSprite(float delay)

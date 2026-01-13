@@ -150,7 +150,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 935236977859202638}
-  - component: {fileID: 1448270320435709076}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -180,21 +179,6 @@ Transform:
   - {fileID: 7784887393510410484}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1448270320435709076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2987994210524115475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e62e4925c0c548469c1c0f106336454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SystemBehaviour
-  _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
-  _combatManager: {fileID: 4490150295464392029}
-  _comboManager: {fileID: 4130428429056873238}
 --- !u!1 &4134523709245377034
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcccd887987a7e946afd27fb482ffe86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
+  _gemPowerArrivedChannel: {fileID: 11400000, guid: 567d58de1386e9e48a14d646b9a01677, type: 2}
   _enemyAttackChannel: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
   _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
   _party: {fileID: 0}
@@ -334,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ca7b8c10f9bb847a8e045ab9d7b461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboManager
+  _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
   _partyStatus: {fileID: 0}
   _comboResetTime: 3
 --- !u!1001 &7087120515144774686
