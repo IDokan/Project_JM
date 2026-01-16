@@ -91,6 +91,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &613816902837162672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2630140606236881579}
+  m_Layer: 0
+  m_Name: ShieldSpawnTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2630140606236881579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613816902837162672}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.12, y: 2.54, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8427448524030969473}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1397037821224708077
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,6 +586,7 @@ GameObject:
   - component: {fileID: 5112802853265039420}
   - component: {fileID: 1542600988087688356}
   - component: {fileID: 6740387624610668219}
+  - component: {fileID: 8647604718751229255}
   m_Layer: 0
   m_Name: RedSquare
   m_TagString: Untagged
@@ -656,6 +688,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlashSpawner
   slashPrefab: {fileID: 6109873826987824313, guid: 5ff0acdac0c188d4a954298c88dc5bb2, type: 3}
   parentTransform: {fileID: 4695411317085473424}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
+--- !u!114 &8647604718751229255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7378609590189185883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e868b54a899a17a41bce538aa8449bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldVFXSpawner
+  shieldPrefab: {fileID: 2675546426703268743, guid: 83fd1604b0c2c2742a611b6c1f3c412b, type: 3}
+  parentTransform: {fileID: 2630140606236881579}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
 --- !u!1 &7774183868671680934
@@ -1234,6 +1282,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4695411317085473424}
+    - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2630140606236881579}
     - targetCorrespondingSourceObject: {fileID: -936791053051759430, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
       insertIndex: 0
       addedObject: {fileID: 6793523610052189957}
