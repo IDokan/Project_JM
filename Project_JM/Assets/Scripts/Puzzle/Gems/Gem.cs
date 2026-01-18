@@ -8,7 +8,6 @@ using System;
 using UnityEngine;
 using GemEnums;
 
-[RequireComponent(typeof(GemMover))]
 public class Gem : MonoBehaviour
 {
     public GemColor Color { get; private set; }
@@ -18,6 +17,8 @@ public class Gem : MonoBehaviour
     public Sprite greenSprite;
     public Sprite blueSprite;
     public Sprite yellowSprite;
+
+    [SerializeField] GameObject gemResolver;
 
     public void Init(GemColor gemColor)
     {
@@ -32,6 +33,22 @@ public class Gem : MonoBehaviour
             GetComponent<SpriteRenderer>().sprite = GetSpriteByColor(gemColor);
         }
     }
+
+    public void Resolve(PartyRoster partyRoster, Action<GemColor> onAbsorbed)
+    {
+        GemResolver resolver = Instantiate(gemResolver).GetComponent<GemResolver>();
+
+        resolver.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        resolver.transform.localScale = transform.lossyScale;
+
+
+        Transform target = partyRoster.GetCharacterTransform(Color);
+        resolver.Init(Color, target, onAbsorbed);
+
+        Destroy(gameObject);
+    }
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

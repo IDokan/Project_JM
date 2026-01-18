@@ -11,7 +11,8 @@ using UnityEngine;
 [RequireComponent(typeof(AttackMotion))]
 public class AttackExecutor : MonoBehaviour
 {
-    private AttackMotion motion;
+    protected AttackMotion motion;
+    protected EnemyAttackMotion enemyMotion;
 
     [Header("Tier Attack Logics (assigned per character)")]
     [SerializeField] private AttackLogic logic3;
@@ -29,6 +30,11 @@ public class AttackExecutor : MonoBehaviour
         {
             motion = GetComponent<AttackMotion>();
         }
+
+        if (enemyMotion == null)
+        {
+            enemyMotion = GetComponent<EnemyAttackMotion>();
+        }
     }
 
     protected void OnEnable()
@@ -37,6 +43,11 @@ public class AttackExecutor : MonoBehaviour
         {
             motion.OnHit += HandleHit;
         }
+
+        if (enemyMotion != null)
+        {
+            enemyMotion.OnHit += EnemyHandleHit;
+        }
     }
 
     protected void OnDisable()
@@ -44,6 +55,11 @@ public class AttackExecutor : MonoBehaviour
         if (motion != null)
         {
             motion.OnHit -= HandleHit;
+        }
+
+        if (enemyMotion != null)
+        {
+            enemyMotion.OnHit -= EnemyHandleHit;
         }
     }
 
@@ -65,7 +81,7 @@ public class AttackExecutor : MonoBehaviour
         _context = context;
 
         var attackerObject = gameObject;
-        var targetObject = context.Target as MonoBehaviour;
+        var targetObject = _context.Target as MonoBehaviour;
 
         Vector3 offset = Vector3.zero;
 
@@ -73,7 +89,6 @@ public class AttackExecutor : MonoBehaviour
         {       // Enemy attacks immediately
             offset = targetObject.transform.position - attackerObject.transform.localPosition;
             attackerObject.GetComponent<EnemyAttackMotion>()?.PlayAttackMotion(offset);
-            targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
         }
 
     }
@@ -82,11 +97,27 @@ public class AttackExecutor : MonoBehaviour
     {
 
         var targetObject = _context.Target as MonoBehaviour;
-        targetObject.GetComponent<EnemyAttackMotion>().PlayDamagedMotion(
-            GetTierLogic(tier).GetTargetMotionOffset()
-            );
 
-        StartCoroutine(GetTierLogic(tier).Execute(_context));
+        if (targetObject != null)
+        {
+            targetObject.GetComponent<EnemyAttackMotion>().PlayDamagedMotion(
+                GetTierLogic(tier).GetTargetMotionOffset()
+                );
+
+            StartCoroutine(GetTierLogic(tier).Execute(_context));
+        }
+    }
+
+    public void EnemyHandleHit()
+    {
+        var targetObject = _context.Target as MonoBehaviour;
+
+        if (targetObject != null)
+        {
+            targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
+
+            StartCoroutine(logicEnemy.Execute(_context));
+        }
     }
 
     public AttackLogic GetTierLogic(MatchTier tier) => tier switch

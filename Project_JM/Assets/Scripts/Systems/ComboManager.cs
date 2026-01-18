@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class ComboManager : MonoBehaviour
 {
+    [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected CharacterStatus _partyStatus;
     [SerializeField] protected float _comboResetTime = 3f;
 
@@ -20,6 +21,17 @@ public class ComboManager : MonoBehaviour
 
     protected int comboCount = 0;
     protected float timer = 0f;
+
+
+    private void OnEnable()
+    {
+        _matchEvents.OnRaised += OnMatch;
+    }
+
+    private void OnDisable()
+    {
+        _matchEvents.OnRaised -= OnMatch;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

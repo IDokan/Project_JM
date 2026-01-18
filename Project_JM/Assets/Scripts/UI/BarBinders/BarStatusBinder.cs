@@ -9,8 +9,8 @@ using UnityEngine;
 public class BarStatusBinder : MonoBehaviour
 {
     [SerializeField] protected CharacterStatus _boundStatus;
-    [SerializeField] protected BarUI _HPbarUI;
-    [SerializeField] protected BarUI _ShieldbarUI;
+    [SerializeField] protected BarUIBase _HPbarUI;
+    [SerializeField] protected BarUIBase _ShieldbarUI;
 
     protected void OnEnable()
     {
@@ -34,7 +34,6 @@ public class BarStatusBinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void BindNewStatus(CharacterStatus newStatus)
@@ -62,6 +61,13 @@ public class BarStatusBinder : MonoBehaviour
 
     protected void UpdateShield(float shieldAmount, float max)
     {
-        _ShieldbarUI.UpdateValue(shieldAmount, max, false);
+        if (shieldAmount > _boundStatus.maxHP)
+        {
+            _ShieldbarUI.UpdateValue(shieldAmount, _boundStatus.maxHP, false);
+        }
+        else
+        {
+            _ShieldbarUI.UpdateValue(shieldAmount, max, false);
+        }
     }
 }
