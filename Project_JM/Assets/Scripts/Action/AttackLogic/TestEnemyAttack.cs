@@ -8,11 +8,9 @@ using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "JM/Combat/AttackLogic/Enemy/Test Enemy Attack")]
-public class TestEnemyAttack : AttackLogic, IHasCooldown
+public class TestEnemyAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 36;
-    [SerializeField] protected float _cooldown = 5f;
-    public float Cooldown => _cooldown;
 
     public override IEnumerator Execute(AttackContext ctx)
     {

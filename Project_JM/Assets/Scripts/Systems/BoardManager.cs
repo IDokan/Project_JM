@@ -34,12 +34,55 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected GameObject _gemPrefab;
     [SerializeField] protected float _fallingSpeed = 3f;
 
+    [SerializeField] protected PartyRoster partyRoster;
     [SerializeField] protected MatchEventChannel _matchEvents;
+    [SerializeField] protected GemPowerArrivedEventChannel _powerArrivedEvents;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
 
     protected BoardCoverController boardCoverController;
+
+
+
+    // Tracks which pending match-groups each gem belongs to.
+    // Key: Gem instance id
+    private readonly Dictionary<int, List<PendingMatchGroup>> _pendingByGemID = new();
+
+
+    protected sealed class PendingMatchGroup
+    {
+        public GemColor Color { get; }
+        public int Required { get; }
+        public bool Completed { get; set; }
+
+        private readonly int[] _allIDs;
+        private readonly HashSet<int> _remainingIDs;
+
+        public PendingMatchGroup(GemColor color, List<int> gemIDs)
+        {
+            Color = color;
+            _allIDs = gemIDs.ToArray();
+            _remainingIDs = new HashSet<int>(_allIDs);
+            Required = _remainingIDs.Count;
+        }
+
+        public bool TryConsume(int gemID) => _remainingIDs.Remove(gemID);
+        public bool IsComplete => _remainingIDs.Count <= 0;
+        public IReadOnlyList<int> AllIDs => _allIDs;
+    }
+
+    protected readonly struct MatchGroup
+    {
+        public readonly GemColor Color;
+        public readonly List<Vector2Int> Cells;
+
+        public MatchGroup(GemColor color, List<Vector2Int> cells)
+        {
+            Color = color;
+            Cells = cells;
+        }
+    }
 
     protected void OnEnable()
     {
@@ -95,15 +138,17 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         {
             for (int c = 0; c < _cols; c++)
             {
-                _gems[r, c] = GetRandomGem(r, c);
+                _gems[r, c] = GetRandomGemAboveContainer(r, c);
                 if (HasMatchAtBeginning(r, c))
                 {
                     _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(_gems[r, c].Color));
                 }
+                MoveGem(_gems[r, c], r, c);
             }
         }
     }
 
+    // It takes row & col for only gem location.
     protected Gem GetRandomGem(int row, int col)
     {
         GameObject gemObj = Instantiate(_gemPrefab, transform);
@@ -116,35 +161,48 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return gem;
     }
 
-    protected bool ResolveMatches()
+    // It takes row & col for only gem location.
+    protected Gem GetRandomGemAboveContainer(int row, int col)
     {
-        bool hasAnyMatch = false;
+        return GetRandomGem(row + _rows, col);
+    }
 
-        var matches = FindMatchedCells();
-
-        if (matches.Count == 0)
+    protected void ResolveMatches()
+    {
+        var groups = FindMatchGroups();
+        if (groups.Count == 0)
         {
-            return hasAnyMatch;
+            return;
         }
 
-        var matchTypes = FindMatchTypes();
-        foreach (var (color, tier) in matchTypes)
+        // Register first
+        RegisterPendingGroups(groups);
+
+        // Immediate match event
+        foreach (var group in groups)
         {
-            FireMatchEvent(color, tier);
+            FireMatchEvent(group.Color, group.Cells.Count);
         }
 
-        hasAnyMatch = true;
+        // Resolve each cell once (union),
+        // but let each gem completion advance multiple groups
+        var toResolve = new HashSet<Vector2Int>();
+        foreach (var group in groups)
+        {
+            foreach (var cell in group.Cells)
+            {
+                toResolve.Add(cell);
+            }
+        }
 
-        foreach (var index in matches)
+        foreach (var cell in toResolve)
         {
             // resolve gems
-            ResolveGem(index.x, index.y);
+            ResolveGem(cell.x, cell.y);
         }
 
         ApplyGravity();
         RefillBoard();
-
-        return hasAnyMatch;
     }
 
     protected void ApplyGravity()
@@ -185,117 +243,156 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
     }
 
-    protected List<Vector2Int> FindMatchedCells()
+    protected List<MatchGroup> FindMatchGroups()
     {
-        var matches = new List<Vector2Int>();
+        var groups = new List<MatchGroup>();
 
-        var seen = new bool[_rows, _cols];
-
-        for (int row = 0; row < _rows; row++)
+        // Horizontal runs
+        for (int row = 0; row < _rows; ++row)
         {
-            for (int col = 0; col < _cols; col++)
+            int col = 0;
+            while (col < _cols)
             {
                 var gem = _gems[row, col];
-                if (gem == null)
+
+                if (gem == null || gem.Color == GemColor.None)
                 {
+                    col++;
                     continue;
                 }
 
                 var color = gem.Color;
+                int start = col;
+                int len = 1;
 
-                // Horizontal check (1x3)
-                if (col <= _cols - 3 &&
-                    color == _gems[row, col + 1].Color &&
-                    color == _gems[row, col + 2].Color)
+                while (start + len < _cols)
                 {
-                    for (int offset = 0; offset < 3; offset++)
+                    var g2 = _gems[row, start + len];
+                    if (g2 == null || g2.Color != color)
                     {
-                        if (!seen[row, col + offset])
-                        {
-                            matches.Add(new Vector2Int(row, col + offset));
-                            seen[row, col + offset] = true;
-                        }
+                        break;
                     }
+
+                    len++;
                 }
 
-                // Vertical check (3x1)
-                if (row <= _rows - 3 &&
-                    color == _gems[row + 1, col].Color &&
-                    color == _gems[row + 2, col].Color)
+                if (len >= 3)
                 {
-                    for (int offset = 0; offset < 3; offset++)
+                    var cells = new List<Vector2Int>(len);
+
+                    for (int i = 0; i < len; i++)
                     {
-                        if (!seen[row + offset, col])
-                        {
-                            matches.Add(new Vector2Int(row + offset, col));
-                            seen[row + offset, col] = true;
-                        }
+                        cells.Add(new Vector2Int(row, start + i));
                     }
+
+                    groups.Add(new MatchGroup(color, cells));
                 }
+
+                // Skip run as much as recorded to groups
+                col = start + len;
             }
         }
 
-        return matches;
+
+        // Vertical runs
+        for (int col = 0; col < _cols; ++col)
+        {
+            int row = 0;
+
+            while (row < _rows)
+            {
+                var gem = _gems[row, col];
+
+                if (gem == null || gem.Color == GemColor.None)
+                {
+                    row++;
+                    continue;
+                }
+
+                var color = gem.Color;
+                int start = row;
+                int len = 1;
+
+                while (start + len < _rows)
+                {
+                    var g2 = _gems[start + len, col];
+                    if (g2 == null || g2.Color != color)
+                    {
+                        break;
+                    }
+                    len++;
+                }
+
+                if (len >= 3)
+                {
+                    var cells = new List<Vector2Int>(len);
+                    for (int i = 0; i < len; ++i)
+                    {
+                        cells.Add(new Vector2Int(start + i, col));
+                    }
+
+                    groups.Add(new MatchGroup(color, cells));
+                }
+
+                row = start + len;
+            }
+        }
+
+        return groups;
     }
 
-    protected List<(GemColor Color, int Tier)> FindMatchTypes()
+    protected void RegisterPendingGroups(List<MatchGroup> groups)
     {
-        List<(GemColor Color, int Tier)> result = new List<(GemColor, int)>();
-        var horizontalSeen = new bool[_rows, _cols];
-        var verticalSeen = new bool[_rows, _cols];
-
-        for (int row = 0; row < _rows; row++)
+        foreach (var group in groups)
         {
-            for (int col = 0; col < _cols; col++)
+            // Capture gem ids NOW (before ResolveGem sets board slot to NULL)
+            var ids = new List<int>(group.Cells.Count);
+
+            foreach (var cell in group.Cells)
             {
-                GemColor targetColor = _gems[row, col].Color;
-
-                // Horizontal checks
-                int horizontalCheck = 1;
-
-                // out of bound check && prevent double check
-                // && are they same colors?
-                while (col + horizontalCheck < _cols && horizontalSeen[row, col] == false 
-                    && targetColor == _gems[row, col + horizontalCheck].Color)
+                var gem = _gems[cell.x, cell.y];
+                if (gem == null || gem.Color == GemColor.None)
                 {
-                    horizontalCheck++;
+                    continue;
                 }
 
-                if(horizontalCheck >= 3)
-                {
-                    for(int i = 0; i < horizontalCheck; ++i)
-                    {
-                        horizontalSeen[row, col + i] = true;
-                    }
+                ids.Add(gem.GetInstanceID());
+            }
 
-                    result.Add((targetColor, horizontalCheck));
+            if (ids.Count == 0)
+            {
+                continue;
+            }
+
+            var pending = new PendingMatchGroup(group.Color, ids);
+
+            foreach (var id in ids)
+            {
+                if (!_pendingByGemID.TryGetValue(id, out var list))
+                {
+                    list = new List<PendingMatchGroup>(2);
+                    _pendingByGemID.Add(id, list);
                 }
 
+                list.Add(pending);
+            }
+        }
+    }
 
-                // Vertical checks
-                int verticalCheck = 1;
+    protected void UnregisterGroup(PendingMatchGroup group)
+    {
+        foreach (var id in group.AllIDs)
+        {
+            if (_pendingByGemID.TryGetValue(id, out var list))
+            {
+                list.Remove(group);
 
-                // out of bound check && prevent double check
-                // && are they same colors?
-                while (row + verticalCheck < _rows && verticalSeen[row, col] == false
-                    && targetColor == _gems[row + verticalCheck, col].Color)
+                if (list.Count == 0)
                 {
-                    verticalCheck++;
-                }
-
-                if (verticalCheck >= 3)
-                {
-                    for (int i = 0; i < verticalCheck; ++i)
-                    {
-                        verticalSeen[row + i, col] = true;
-                    }
-
-                    result.Add((targetColor, verticalCheck));
+                    _pendingByGemID.Remove(id);
                 }
             }
         }
-
-        return result;
     }
 
     protected void MoveGem(Gem gem, int newRow, int newCol)
@@ -312,7 +409,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         {
             ResolveMatches();
         }
-
     }
 
     public Vector2 GetGemLocation(int row, int col)
@@ -333,13 +429,58 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void ResolveGem(int row, int col)
     {
-        // @@ TODO: Improve resolving method to look much fancier.
         // @@ TODO: Implement object pool for gems.
-        if (_gems[row, col] != null)
+        var gem = _gems[row, col];
+
+        if (gem != null)
         {
-            Destroy(_gems[row, col].gameObject);
+            int id = gem.GetInstanceID();
+            gem.Resolve(partyRoster, color => NotifyAbsorbed(color, id));
             _gems[row, col] = null;
         }
+    }
+
+    // @@ TODO: Resolve bug in this code
+    // Bug: It cannot detect gem absorbed correctly on the overlapped matches such as (5vertical X 3 horizontal).
+    public void NotifyAbsorbed(GemColor color, int gemID)
+    {
+        if (!_pendingByGemID.TryGetValue(gemID, out var groups))
+        {
+            // late / unexpected; ignore it
+            return;
+        }
+
+        // One gem can belong to multiple match groups (overlap).
+        for (int i = groups.Count - 1; i >= 0; --i)
+        {
+            var group = groups[i];
+            if (group.Completed)
+            {
+                continue;
+            }
+
+            if (!group.TryConsume(gemID))
+            {
+                continue;
+            }
+
+            if (group.IsComplete)
+            {
+                group.Completed = true;
+
+                var tier = MatchTierUtil.GetMatchTier(group.Required);
+                _powerArrivedEvents.Raise(new MatchEvent
+                {
+                    Color = group.Color,
+                    Tier = tier
+                });
+
+                UnregisterGroup(group);
+            }
+        }
+
+        // This gem id should NEVER be needed again after it "arrived"
+        _pendingByGemID.Remove(gemID);
     }
 
     // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)
@@ -471,7 +612,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     }
 
     // Return false if player tried pass invalid direction (out of bounds).
-                        // and if board is busy
+    // and if board is busy
     public bool TrySwapFrom(Vector2Int index, Vector2Int dir)
     {
         if (_busy)
@@ -506,7 +647,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void FireMatchEvent(GemColor color, int count)
     {
-        var tier = (MatchTier)Mathf.Clamp(count, 3, 5);
+        var tier = MatchTierUtil.GetMatchTier(count);
         _matchEvents.Raise(new MatchEvent
         {
             Color = color,
@@ -553,6 +694,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void OnAnyoneDied(CharacterStatus stat)
     {
         _busy = true;
+
+        StartCoroutine(ClearAndRefillGemsAfterDelay(1f));
+
         boardCoverController.ShowCover();
     }
 
@@ -560,9 +704,13 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         _busy = false;
 
-        ClearAndRefillGems();
-
         boardCoverController.HideCover();
+    }
+
+    protected IEnumerator ClearAndRefillGemsAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ClearAndRefillGems();
     }
 
     protected void ClearAndRefillGems()

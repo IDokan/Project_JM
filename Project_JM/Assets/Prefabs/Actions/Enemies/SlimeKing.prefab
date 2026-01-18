@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2704363247957855842}
   - component: {fileID: 9199706182675902007}
   - component: {fileID: 581450553150658279}
+  - component: {fileID: 4250630186286915403}
   m_Layer: 0
   m_Name: SlimeKing
   m_TagString: Untagged
@@ -34,7 +35,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.06, y: -0.4892, z: 0}
-  m_LocalScale: {x: 3.5972, y: 4.307133, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3260870707143472648}
@@ -81,10 +82,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackBehaviour
   _attackChannel: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
-  _attackLogic: {fileID: 11400000, guid: 1ecf779713ecb9349b8077b0d93f5492, type: 2}
   _boardDisableChannel: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
   _boardDisableLogic: {fileID: 11400000, guid: ac5b032c8d3399f47831e285f5dcedd3, type: 2}
-  _fallbackCooldown: 5
+  _cooldown: 5
   _enrageDelay: 30
 --- !u!114 &5405543324218558201
 MonoBehaviour:
@@ -132,6 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5057fb1b880b32942972663fa5e63a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackMotion
+  _moveDuration: 0.1
+  _pauseDuration: 0.2
 --- !u!114 &9199706182675902007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +162,19 @@ MonoBehaviour:
   logic4: {fileID: 0}
   logic5: {fileID: 0}
   logicEnemy: {fileID: 11400000, guid: 1ecf779713ecb9349b8077b0d93f5492, type: 2}
+--- !u!114 &4250630186286915403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164301083414174608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 916c60983e6eb0d42aa2fa62e8e23692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlobalTimeAnimatorBinder
+  baseSpeed: 1
 --- !u!1001 &4210626690412875734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -171,6 +186,10 @@ PrefabInstance:
     - target: {fileID: -8653719598885068355, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
       propertyPath: m_Name
       value: SlimeKingReal
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
       propertyPath: m_LocalPosition.x

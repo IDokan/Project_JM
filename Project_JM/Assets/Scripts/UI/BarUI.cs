@@ -8,16 +8,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BarUI : MonoBehaviour
+public class BarUI : BarUIBase
 {
-    [SerializeField] protected RectTransform _bar;
-    [SerializeField] protected TextMeshProUGUI _text;
+    [SerializeField] protected Slider slider;
+    [SerializeField] protected TextMeshProUGUI text;
 
-    protected Vector2 initSize;
-    
     protected void Awake()
     {
-        initSize = _bar.rect.size;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,42 +29,42 @@ public class BarUI : MonoBehaviour
         
     }
 
-    public void UpdateValue(float current, float max, bool displayMaxValue = true)
+    protected override void OnUpdateValue(float current, float max, bool displayMaxValue)
     {
-        float ratio = current / max;
+        slider.maxValue = max;
 
-        _bar.sizeDelta = new Vector2(initSize.x * ratio, initSize.y);
+        slider.value = current;
 
-        if (_text != null)
+        if (text != null)
         {
             if (displayMaxValue)
             {
-                _text.text = $"{Mathf.RoundToInt(current)} / {Mathf.RoundToInt(max)}";
+                text.text = $"{Mathf.RoundToInt(current)} / {Mathf.RoundToInt(max)}";
             }
             else
             {
                 if (current <= 0f)
                 {
-                    _text.CrossFadeAlpha(0f, 0.25f, false);
+                    text.CrossFadeAlpha(0f, 0.25f, false);
                 }
                 else
                 {
-                    _text.CrossFadeAlpha(1f, 0.1f, false);
-                    _text.text = $"{Mathf.RoundToInt(current)}";
+                    text.CrossFadeAlpha(1f, 0.1f, false);
+                    text.text = $"{Mathf.RoundToInt(current)}";
                 }
             }
         }
     }
 
-    public void UpdateValue(float current, float max, string givenText)
+    protected override void OnUpdateValue(float current, float max, string givenText)
     {
-        float ratio = current / max;
+        slider.maxValue = max;
 
-        _bar.sizeDelta = new Vector2(initSize.x * ratio, initSize.y);
+        slider.value = current;
 
-        if (_text != null)
+        if (text != null)
         {
-            _text.text = givenText;
+            text.text = givenText;
         }
     }
 }

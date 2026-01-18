@@ -87,7 +87,7 @@ public class CharacterStatus : MonoBehaviour
     {
         for (int i = _critChanceTimedModifiers.Count - 1; i >= 0; i--)
         {
-            if (_critChanceTimedModifiers[i].UpdateTimer(Time.deltaTime))
+            if (_critChanceTimedModifiers[i].UpdateTimer(GlobalTimeManager.DeltaTime))
             {
                 _critChanceTimedModifiers.RemoveAt(i);
             }
