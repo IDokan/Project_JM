@@ -23,6 +23,9 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     [SerializeField] protected CharacterStatus _status;
     [SerializeField] protected GemColor[] _colors;
 
+    [SerializeField] protected GameObject hitBurstPrefab;
+    [SerializeField] protected Transform woundParentTransform;
+
     public CharacterStatus Status => _status;
     public GemColor[] Colors => _colors;
 
@@ -64,6 +67,8 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         damage *= GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
 
         _status.TakeDamage(damage);
+
+        SpawnHitBurstParticle(attackContext);
     }
 
     public void AddBuffCritBonus(float value)
@@ -79,5 +84,30 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     public void AddBuffCritDamage(float value)
     {
         _status.AddBuffCritDamage(value);
+    }
+
+    protected void SpawnHitBurstParticle(AttackContext attackContext)
+    {
+        if (hitBurstPrefab == null || attackContext.HitTransform == null)
+        {
+            return;
+        }
+
+        Vector3 worldHitPos = attackContext.HitTransform.position;
+
+        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, attackContext.HitTransform.rotation);
+        hitBurst.transform.SetParent(woundParentTransform == null ? gameObject.transform : woundParentTransform, true);
+
+        GemColor gemColor;
+        if (attackContext.Attacker.Colors.Length <= 1)
+        {
+            gemColor = attackContext.Attacker.Colors[0];
+        }
+        else
+        {
+            gemColor = attackContext.Attacker.Colors[GlobalRNG.Instance.NextInt(attackContext.Attacker.Colors.Length)];
+        }
+
+        hitBurst.GetComponent<HitBurst>().SetColor(GemColorUtility.ConvertGemColor(gemColor));
     }
 }

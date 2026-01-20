@@ -317,7 +317,8 @@ Transform:
   m_LocalPosition: {x: 0.7487136, y: 1.0077266, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3599723201070594014}
   m_Father: {fileID: 1235182854544133093}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 27.563}
 --- !u!212 &8113324025125240226
@@ -510,6 +511,37 @@ MonoBehaviour:
   m_Iterations: 10
   m_Tolerance: 0.01
   m_Velocity: 0.5
+--- !u!1 &7059913854321125455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3599723201070594014}
+  m_Layer: 0
+  m_Name: SlashHitPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3599723201070594014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7059913854321125455}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.78, y: 0.85, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6793523610052189957}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7067727004071503117
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,6 +656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
   _status: {fileID: 0}
   _colors: 01000000
+  hitBurstPrefab: {fileID: 0}
 --- !u!114 &7677070011724910829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,7 +706,11 @@ MonoBehaviour:
   logic3: {fileID: 11400000, guid: 4485cde5803c84d45b9b3dc6d28fb795, type: 2}
   logic4: {fileID: 11400000, guid: e361be7c4d6371c4db83ca5c7cd2bd15, type: 2}
   logic5: {fileID: 11400000, guid: f2e6711f5f793cf40836d7c14fff6f7b, type: 2}
+  attack3AttackPoint: {fileID: 3599723201070594014}
+  attack4AttackPoint: {fileID: 0}
+  attack5AttackPoint: {fileID: 0}
   logicEnemy: {fileID: 0}
+  attackEnemyAttackPoint: {fileID: 0}
 --- !u!114 &6740387624610668219
 MonoBehaviour:
   m_ObjectHideFlags: 0

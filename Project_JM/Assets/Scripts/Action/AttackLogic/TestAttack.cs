@@ -2,7 +2,7 @@
 // Copyright (c) 11/07/2025 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: TestAttack.cs
-// Summary: A attack logic only for test purpose.
+// Summary: An attack logic only for test purpose.
 
 using System.Collections;
 using UnityEngine;
