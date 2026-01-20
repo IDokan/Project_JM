@@ -55,6 +55,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
   _status: {fileID: 6721484090919061956}
   _colors: 0100000002000000
+  hitBurstPrefab: {fileID: 1771619425334909595, guid: f7beb28b4a3c8fb478a8abc5fe2ba5c1, type: 3}
+  woundParentTransform: {fileID: 6402355911693699624}
 --- !u!114 &6721484090919061956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +163,11 @@ MonoBehaviour:
   logic3: {fileID: 0}
   logic4: {fileID: 0}
   logic5: {fileID: 0}
+  attack3AttackPoint: {fileID: 0}
+  attack4AttackPoint: {fileID: 0}
+  attack5AttackPoint: {fileID: 0}
   logicEnemy: {fileID: 11400000, guid: 1ecf779713ecb9349b8077b0d93f5492, type: 2}
+  attackEnemyAttackPoint: {fileID: 0}
 --- !u!114 &4250630186286915403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +181,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlobalTimeAnimatorBinder
   baseSpeed: 1
+--- !u!1 &8278841814363982062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6402355911693699624}
+  m_Layer: 0
+  m_Name: WoundParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6402355911693699624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8278841814363982062}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3260870707143472648}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4210626690412875734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -233,7 +270,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6402355911693699624}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 4843985084834002234, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
 --- !u!4 &3260870707143472648 stripped

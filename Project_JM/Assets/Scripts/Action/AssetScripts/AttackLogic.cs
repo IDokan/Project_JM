@@ -13,6 +13,8 @@ public struct AttackContext
     public ICombatant Attacker;
     public ICombatant Target;
 
+    public Transform HitTransform;
+
     public DamageMultiplierManager DamageMultiplierManager;
 }
 

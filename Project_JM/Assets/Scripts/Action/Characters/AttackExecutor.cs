@@ -18,9 +18,13 @@ public class AttackExecutor : MonoBehaviour
     [SerializeField] private AttackLogic logic3;
     [SerializeField] private AttackLogic logic4;
     [SerializeField] private AttackLogic logic5;
+    [SerializeField] protected Transform attack3AttackPoint;
+    [SerializeField] protected Transform attack4AttackPoint;
+    [SerializeField] protected Transform attack5AttackPoint;
 
     [Header("Enemy attack logics")]
     [SerializeField] protected AttackLogic logicEnemy;
+    [SerializeField] protected Transform attackEnemyAttackPoint;
 
     protected AttackContext _context;
 
@@ -97,6 +101,13 @@ public class AttackExecutor : MonoBehaviour
     {
 
         var targetObject = _context.Target as MonoBehaviour;
+        _context.HitTransform = tier switch
+        {
+            MatchTier.Three => attack3AttackPoint,
+            MatchTier.Four => attack4AttackPoint,
+            MatchTier.Five => attack5AttackPoint,
+            _ => null
+        };
 
         if (targetObject != null)
         {
@@ -111,6 +122,8 @@ public class AttackExecutor : MonoBehaviour
     public void EnemyHandleHit()
     {
         var targetObject = _context.Target as MonoBehaviour;
+
+        _context.HitTransform = attackEnemyAttackPoint;
 
         if (targetObject != null)
         {
