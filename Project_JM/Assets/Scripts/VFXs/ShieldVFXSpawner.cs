@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class ShieldVFXSpawner : MonoBehaviour
 {
-    [SerializeField] protected ShieldFadeOutPlayer shieldPrefab;
+    [SerializeField] protected GameObject shieldPrefab;
     [SerializeField] protected Transform parentTransform;
     [SerializeField] protected Vector3 localOffset;
     [SerializeField] protected float baseRotatingDeg = 0f;
