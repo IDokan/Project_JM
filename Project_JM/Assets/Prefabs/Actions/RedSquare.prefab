@@ -552,7 +552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2780268373697275344}
   m_Layer: 0
-  m_Name: KnightAnchor
+  m_Name: ShieldAttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -567,7 +567,7 @@ Transform:
   m_GameObject: {fileID: 7067727004071503117}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.14352478, w: 0.9896468}
-  m_LocalPosition: {x: -0.04, y: 0.07, z: 0}
+  m_LocalPosition: {x: 0.71, y: 0.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -619,6 +619,7 @@ GameObject:
   - component: {fileID: 1542600988087688356}
   - component: {fileID: 6740387624610668219}
   - component: {fileID: 8647604718751229255}
+  - component: {fileID: 3557102199850266963}
   m_Layer: 0
   m_Name: RedSquare
   m_TagString: Untagged
@@ -657,6 +658,7 @@ MonoBehaviour:
   _status: {fileID: 0}
   _colors: 01000000
   hitBurstPrefab: {fileID: 0}
+  woundParentTransform: {fileID: 8427448524030969473}
 --- !u!114 &7677070011724910829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,8 +709,8 @@ MonoBehaviour:
   logic4: {fileID: 11400000, guid: e361be7c4d6371c4db83ca5c7cd2bd15, type: 2}
   logic5: {fileID: 11400000, guid: f2e6711f5f793cf40836d7c14fff6f7b, type: 2}
   attack3AttackPoint: {fileID: 3599723201070594014}
-  attack4AttackPoint: {fileID: 0}
-  attack5AttackPoint: {fileID: 0}
+  attack4AttackPoint: {fileID: 2780268373697275344}
+  attack5AttackPoint: {fileID: 2780268373697275344}
   logicEnemy: {fileID: 0}
   attackEnemyAttackPoint: {fileID: 0}
 --- !u!114 &6740387624610668219
@@ -723,7 +725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3ace2368d6c904887ad1072f0063fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlashSpawner
-  slashPrefab: {fileID: 6109873826987824313, guid: 5ff0acdac0c188d4a954298c88dc5bb2, type: 3}
+  prefab: {fileID: 1642782856149984603, guid: 5ff0acdac0c188d4a954298c88dc5bb2, type: 3}
   parentTransform: {fileID: 4695411317085473424}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
@@ -739,8 +741,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e868b54a899a17a41bce538aa8449bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShieldVFXSpawner
-  shieldPrefab: {fileID: 2675546426703268743, guid: 83fd1604b0c2c2742a611b6c1f3c412b, type: 3}
+  prefab: {fileID: 6617004618437957491, guid: 83fd1604b0c2c2742a611b6c1f3c412b, type: 3}
   parentTransform: {fileID: 2630140606236881579}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
+--- !u!114 &3557102199850266963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7378609590189185883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706ac75c76e4d744c8ec66b8f03733d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StunAttackVFXSpawner
+  prefab: {fileID: 8827958994282404177, guid: c3f304fe04fdc7249a3ce0b8d5b1ea7f, type: 3}
+  parentTransform: {fileID: 2780268373697275344}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
 --- !u!1 &7774183868671680934

@@ -331,6 +331,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
   _status: {fileID: 0}
   _colors: 04000000
+  hitBurstPrefab: {fileID: 0}
+  woundParentTransform: {fileID: 4480899460701387632}
 --- !u!114 &2128661580211424012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,7 +382,11 @@ MonoBehaviour:
   logic3: {fileID: 11400000, guid: 4485cde5803c84d45b9b3dc6d28fb795, type: 2}
   logic4: {fileID: 11400000, guid: d60d3f034b9971445b7e53df118a5408, type: 2}
   logic5: {fileID: 11400000, guid: 390ac2f6abb45ac4796745ad39dc63dc, type: 2}
+  attack3AttackPoint: {fileID: 0}
+  attack4AttackPoint: {fileID: 0}
+  attack5AttackPoint: {fileID: 0}
   logicEnemy: {fileID: 0}
+  attackEnemyAttackPoint: {fileID: 0}
 --- !u!1 &5573824307224507408
 GameObject:
   m_ObjectHideFlags: 0
