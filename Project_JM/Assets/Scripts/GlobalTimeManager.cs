@@ -23,14 +23,14 @@ public class GlobalTimeManager : MonoBehaviour
 
     public static float DeltaTime => UnityEngine.Time.deltaTime * Instance.TimeScaler;
 
-    public static float Time => Instance._globalTime;
+    public static float Time => Instance == null ? 0f : Instance._globalTime;
 
     protected Coroutine _timerRoutine;
 
     public static IEnumerator WaitForGlobalSeconds(float seconds)
     {
         float elapsed = 0f;
-        while(elapsed < seconds)
+        while (elapsed < seconds)
         {
             elapsed += DeltaTime;
             yield return null;
