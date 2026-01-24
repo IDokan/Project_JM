@@ -8,16 +8,20 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(StunRepresenter))]
 public class EnemyAttackBehaviour : MonoBehaviour
 {
-    [SerializeField] protected EnemyAttackEventChannel _attackChannel;
-    [SerializeField] protected BoardDisableEventChannel _boardDisableChannel;
-    [SerializeField] protected BoardDisableLogic _boardDisableLogic;
-    [SerializeField, Min(0.001f)] protected float _cooldown;
+    [SerializeField] protected EnemyAttackEventChannel attackChannel;
+    [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
+    [SerializeField] protected BoardDisableLogic boardDisableLogic;
+    [SerializeField] protected StunRepresenter stunRepresenter;
+    [SerializeField, Min(0.001f)] protected float baseCooldown = 5f;
+
+    protected float _currentCooldown;
 
     protected Coroutine _loop;
     protected float _attackTimer;
-    public float Cooldown => _cooldown;
+    public float Cooldown => _currentCooldown;
 
     public event Action<float, float> OnAttackTimerChanged;
 
@@ -26,6 +30,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     [SerializeField, Min(10f)] protected float _enrageDelay = 30f;
 
     protected bool _isStunned = false;
+    protected Coroutine _stunRoutine = null;
 
     protected void OnEnable()
     {
@@ -46,7 +51,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     protected void Awake()
     {
-        _cooldown = GetCooldown();
+        _currentCooldown = baseCooldown;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -65,18 +70,13 @@ public class EnemyAttackBehaviour : MonoBehaviour
     {
         while (true)
         {
-            _attackTimer = _cooldown;
+            _attackTimer = _currentCooldown;
 
             // Countdown
             while (_attackTimer > 0f)
             {
                 if (!_isStunned)
                 {
-                    if (_attackTimer >= _cooldown)
-                    {
-                        _attackTimer = _cooldown;
-                    }
-
                     UpdateAttackTimer(-GlobalTimeManager.DeltaTime);
                 }
 
@@ -89,25 +89,25 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     protected void Attack()
     {
-        _attackChannel.Raise();
-        _boardDisableChannel.Raise(_boardDisableLogic);
+        attackChannel.Raise();
+        boardDisableChannel.Raise(boardDisableLogic);
     }
 
     protected float GetCooldown()
     {
-        return _cooldown;
+        return _currentCooldown;
     }
 
     protected void UpdateAttackTimer(float value)
     {
-        _attackTimer += value;
-        OnAttackTimerChanged?.Invoke(_attackTimer, _cooldown);
+        _attackTimer = Mathf.Clamp(_attackTimer + value, 0f, _currentCooldown);
+        OnAttackTimerChanged?.Invoke(_attackTimer, _currentCooldown);
     }
 
     protected void Enrage()
     {
-        _cooldown *= 0.25f;
-        OnAttackTimerChanged?.Invoke(_attackTimer, _cooldown);
+        _currentCooldown *= 0.25f;
+        OnAttackTimerChanged?.Invoke(_attackTimer, _currentCooldown);
     }
 
     protected IEnumerator EnrageAfterDelay()
@@ -130,12 +130,19 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     public void Stun(float duration)
     {
-        StartCoroutine(StunRoutine(duration));
+        if (_stunRoutine != null)
+        {
+            StopCoroutine(_stunRoutine);
+            _stunRoutine = null;
+        }
+        _stunRoutine = StartCoroutine(StunRoutine(duration));
     }
 
     protected IEnumerator StunRoutine(float duration)
     {
         _isStunned = true;
+
+        stunRepresenter.Stun(duration);
 
         yield return GlobalTimeManager.WaitForGlobalSeconds(duration);
 
