@@ -12,9 +12,19 @@ public class TestAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 3;
 
+    [SerializeField] protected GameObject impactPrefab;
+    [SerializeField] protected Vector3 impactPrefabLocalOffset;
+    [SerializeField] protected float impactPrefabRotationDegree;
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (impactPrefab)
+        {
+            ctx.ImpactAttachPrefab = impactPrefab;
+            ctx.ImpactAttachLocalOffset = impactPrefabLocalOffset;
+            ctx.ImpactAttachAngleOffsetDegree = impactPrefabRotationDegree;
+        }
+
         ctx.Target?.TakeDamage(baseDamage, ctx);
         yield break;
     }
