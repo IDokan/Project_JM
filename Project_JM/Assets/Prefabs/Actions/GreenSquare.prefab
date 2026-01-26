@@ -219,12 +219,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60ef0e21c142d8428fb104cc90fd580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackExecutor
-  logic3: {fileID: 11400000, guid: 4485cde5803c84d45b9b3dc6d28fb795, type: 2}
+  logic3: {fileID: 11400000, guid: 7fe8c91ec2ac5004bb40ec2be994d242, type: 2}
   logic4: {fileID: 11400000, guid: e8830f2d0bd604c4f8fb68bcd9f6054c, type: 2}
   logic5: {fileID: 11400000, guid: 37d10b1804af2e943a0e48f20d05c61f, type: 2}
   attack3AttackPoint: {fileID: 8393799008623314643}
-  attack4AttackPoint: {fileID: 0}
-  attack5AttackPoint: {fileID: 0}
+  attack4AttackPoint: {fileID: 8393799008623314643}
+  attack5AttackPoint: {fileID: 8393799008623314643}
   logicEnemy: {fileID: 0}
   attackEnemyAttackPoint: {fileID: 0}
 --- !u!1 &3230646844117701683
@@ -444,7 +444,7 @@ Transform:
   m_GameObject: {fileID: 5285720965057276501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.866, y: 0.833, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

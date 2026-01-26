@@ -32,13 +32,13 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Heal(float healPercentage)
@@ -59,7 +59,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         if (attackContext.Attacker is CharacterCombatant attackerObject)
         {
             if (attackerObject.Status.IsCriticalHit())
-            { 
+            {
                 damage *= attackerObject.Status.CriticalDamage;
             }
         }
@@ -69,6 +69,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         _status.TakeDamage(damage);
 
         SpawnHitBurstParticle(attackContext);
+        SpawnImpactAttachment(attackContext);
     }
 
     public void AddBuffCritBonus(float value)
@@ -109,5 +110,36 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         }
 
         hitBurst.GetComponent<HitBurst>().SetColor(GemColorUtility.ConvertGemColor(gemColor));
+    }
+
+    protected void SpawnImpactAttachment(AttackContext attackContext)
+    {
+        if (attackContext.ImpactAttachPrefab == null || attackContext.HitTransform == null)
+        {
+            return;
+        }
+
+        // Choose parent: either hit transform (bone/anchor) or woundParentTransform/this
+        Transform parent = (woundParentTransform == null ? transform : woundParentTransform);
+
+        Vector3 spawnPos = attackContext.HitTransform.position;
+        Quaternion spawnRot = Compute2DRotationFromAttackerToHit(attackContext) *
+                              Quaternion.Euler(0f, 0f, attackContext.ImpactAttachAngleOffsetDegree);
+
+        var go = Instantiate(attackContext.ImpactAttachPrefab, spawnPos, spawnRot, parent);
+
+        // Apply local offset if you want it to sink into the body a bit
+        go.transform.localPosition += attackContext.ImpactAttachLocalOffset;
+    }
+
+    private Quaternion Compute2DRotationFromAttackerToHit(AttackContext ctx)
+    {
+        // If you have a better ¡°shot direction¡±, use that instead.
+        var attackerMb = ctx.Attacker as MonoBehaviour;
+        if (attackerMb == null) return Quaternion.identity;
+
+        Vector3 dir = (ctx.HitTransform.position - attackerMb.transform.position);
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        return Quaternion.Euler(0f, 0f, angle);
     }
 }

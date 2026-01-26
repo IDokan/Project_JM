@@ -16,6 +16,10 @@ public struct AttackContext
     public Transform HitTransform;
 
     public DamageMultiplierManager DamageMultiplierManager;
+
+    public GameObject ImpactAttachPrefab;
+    public Vector3 ImpactAttachLocalOffset;
+    public float ImpactAttachAngleOffsetDegree;
 }
 
 public abstract class AttackLogic : ScriptableObject
