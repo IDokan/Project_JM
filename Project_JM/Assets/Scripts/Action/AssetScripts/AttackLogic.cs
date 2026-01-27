@@ -19,7 +19,6 @@ public struct AttackContext
 
     public GameObject ImpactAttachPrefab;
     public Vector3 ImpactAttachLocalOffset;
-    public float ImpactAttachAngleOffsetDegree;
 }
 
 public abstract class AttackLogic : ScriptableObject

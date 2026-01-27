@@ -94,10 +94,8 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             return;
         }
 
-        Vector3 worldHitPos = attackContext.HitTransform.position;
-
-        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, attackContext.HitTransform.rotation);
-        hitBurst.transform.SetParent(woundParentTransform == null ? gameObject.transform : woundParentTransform, true);
+        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, attackContext.HitTransform.rotation,
+            woundParentTransform == null ? gameObject.transform : woundParentTransform);
 
         GemColor gemColor;
         if (attackContext.Attacker.Colors.Length <= 1)
@@ -119,27 +117,13 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             return;
         }
 
-        // Choose parent: either hit transform (bone/anchor) or woundParentTransform/this
         Transform parent = (woundParentTransform == null ? transform : woundParentTransform);
 
         Vector3 spawnPos = attackContext.HitTransform.position;
-        Quaternion spawnRot = Compute2DRotationFromAttackerToHit(attackContext) *
-                              Quaternion.Euler(0f, 0f, attackContext.ImpactAttachAngleOffsetDegree);
 
-        var go = Instantiate(attackContext.ImpactAttachPrefab, spawnPos, spawnRot, parent);
+        var go = Instantiate(attackContext.ImpactAttachPrefab, spawnPos, Quaternion.identity, parent);
 
         // Apply local offset if you want it to sink into the body a bit
         go.transform.localPosition += attackContext.ImpactAttachLocalOffset;
-    }
-
-    private Quaternion Compute2DRotationFromAttackerToHit(AttackContext ctx)
-    {
-        // If you have a better ¡°shot direction¡±, use that instead.
-        var attackerMb = ctx.Attacker as MonoBehaviour;
-        if (attackerMb == null) return Quaternion.identity;
-
-        Vector3 dir = (ctx.HitTransform.position - attackerMb.transform.position);
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        return Quaternion.Euler(0f, 0f, angle);
     }
 }

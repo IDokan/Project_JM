@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 4547157057487302467}
   - component: {fileID: 5449052332871281730}
   - component: {fileID: 1380073146812465565}
+  - component: {fileID: 6179234291424231622}
   m_Layer: 0
   m_Name: GreenSquare
   m_TagString: Untagged
@@ -155,6 +156,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 986390283795798561}
+  - {fileID: 3639564419234054949}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3044492464641614860
@@ -227,6 +229,22 @@ MonoBehaviour:
   attack5AttackPoint: {fileID: 8393799008623314643}
   logicEnemy: {fileID: 0}
   attackEnemyAttackPoint: {fileID: 0}
+--- !u!114 &6179234291424231622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054816748874019405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0c6c89db6472348957b98becdee878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AimPointSpawner
+  prefab: {fileID: 6240843834693849955, guid: 6fcae81700dfd1e459036206a81c1897, type: 3}
+  parentTransform: {fileID: 3639564419234054949}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
 --- !u!1 &3230646844117701683
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +498,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2674108997027104347}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6975959342160580799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3639564419234054949}
+  m_Layer: 0
+  m_Name: AimPointSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3639564419234054949
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6975959342160580799}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.25, y: 5.37, z: 0}
+  m_LocalScale: {x: 2.0833335, y: 2.0833335, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8293642927650067339}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7061104427690899661
 GameObject:

@@ -14,7 +14,6 @@ public class TestAttack : AttackLogic
 
     [SerializeField] protected GameObject impactPrefab;
     [SerializeField] protected Vector3 impactPrefabLocalOffset;
-    [SerializeField] protected float impactPrefabRotationDegree;
 
     public override IEnumerator Execute(AttackContext ctx)
     {
@@ -22,7 +21,6 @@ public class TestAttack : AttackLogic
         {
             ctx.ImpactAttachPrefab = impactPrefab;
             ctx.ImpactAttachLocalOffset = impactPrefabLocalOffset;
-            ctx.ImpactAttachAngleOffsetDegree = impactPrefabRotationDegree;
         }
 
         ctx.Target?.TakeDamage(baseDamage, ctx);
