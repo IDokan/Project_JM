@@ -13,9 +13,12 @@ public class CritChanceBuffAttack : AttackLogic
     [SerializeField] protected int baseDamage = 6;
     [SerializeField] protected float buffAmount = 0.2f;
     [SerializeField] protected float duration = 5f;
+    [SerializeField] protected GameObject impactPrefab;
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        ctx.ImpactAttachPrefab = impactPrefab;
+
         ctx.Attacker?.AddBuffCritBonus(buffAmount, duration);
         ctx.Target?.TakeDamage(baseDamage, ctx);
 

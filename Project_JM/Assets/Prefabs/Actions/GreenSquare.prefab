@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 5449052332871281730}
   - component: {fileID: 1380073146812465565}
   - component: {fileID: 6179234291424231622}
+  - component: {fileID: 4028467580076287491}
   m_Layer: 0
   m_Name: GreenSquare
   m_TagString: Untagged
@@ -157,6 +158,7 @@ Transform:
   m_Children:
   - {fileID: 986390283795798561}
   - {fileID: 3639564419234054949}
+  - {fileID: 519402336522431508}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3044492464641614860
@@ -243,6 +245,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AimPointSpawner
   prefab: {fileID: 6240843834693849955, guid: 6fcae81700dfd1e459036206a81c1897, type: 3}
   parentTransform: {fileID: 3639564419234054949}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
+--- !u!114 &4028467580076287491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054816748874019405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8271db4a0284cdd4bbb44208c4977c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlassCrackedSpawner
+  prefab: {fileID: 4529575052370027368, guid: 35607367d7d7e8a4bad1a659d3df71f9, type: 3}
+  parentTransform: {fileID: 519402336522431508}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
 --- !u!1 &3230646844117701683
@@ -595,6 +613,37 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
   m_Flip: 1
+--- !u!1 &7073998832537538679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 519402336522431508}
+  m_Layer: 0
+  m_Name: GlassCrackedSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &519402336522431508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7073998832537538679}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.38, y: 6.29, z: 0}
+  m_LocalScale: {x: 2.0833335, y: 2.0833335, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8293642927650067339}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8957418501508102622
 GameObject:
   m_ObjectHideFlags: 0
