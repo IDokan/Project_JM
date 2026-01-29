@@ -12,9 +12,12 @@ public class CritDamageBuffAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 9;
     [SerializeField] protected float buffAmount = 0.3f;
+    [SerializeField] protected GameObject impactPrefab;
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        ctx.ImpactAttachPrefab = impactPrefab;
+
         ctx.Attacker?.AddBuffCritDamage(buffAmount);
         ctx.Target?.TakeDamage(baseDamage, ctx);
 

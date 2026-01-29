@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright (c) 01/14/2026 Sinil Kang
+// Copyright (c) 01/26/2026 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: Rotate.cs
 // Summary: A script to rotate an attached object.
@@ -31,7 +31,7 @@ public class Rotate : MonoBehaviour
         float t = 0f;
         while (t < 1f)
         {
-            t += GlobalTimeManager.DeltaTime / seconds;
+            t += Time.deltaTime / seconds;
             float eased = ease.Evaluate(Mathf.Clamp01(t));
 
             Quaternion q = Quaternion.SlerpUnclamped(from, to, eased);
