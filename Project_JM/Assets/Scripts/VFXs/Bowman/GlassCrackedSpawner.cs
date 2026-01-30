@@ -9,5 +9,9 @@ using UnityEngine;
 public class GlassCrackedSpawner : AbstractAnimEventPrefabSpawner<GameObject>
 {
     public void AnimEvent_SpawnGlassCracked()
-        => Spawn();
+    {
+        GameObject gameObject = Spawn();
+
+        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, GlobalRNG.Instance.NextFloat(0f, 360f));
+    }
 }
