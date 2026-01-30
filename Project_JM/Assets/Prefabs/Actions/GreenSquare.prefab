@@ -90,6 +90,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1881969256398716841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3211494379857779700}
+  m_Layer: 0
+  m_Name: T5AimPointSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3211494379857779700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881969256398716841}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.24, y: 6.27, z: 0}
+  m_LocalScale: {x: 2.0833335, y: 2.0833335, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8293642927650067339}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2134806769680410588
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,6 +167,7 @@ GameObject:
   - component: {fileID: 1380073146812465565}
   - component: {fileID: 6179234291424231622}
   - component: {fileID: 4028467580076287491}
+  - component: {fileID: 95242262046404579}
   m_Layer: 0
   m_Name: GreenSquare
   m_TagString: Untagged
@@ -158,6 +190,7 @@ Transform:
   m_Children:
   - {fileID: 986390283795798561}
   - {fileID: 3639564419234054949}
+  - {fileID: 3211494379857779700}
   - {fileID: 519402336522431508}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -261,6 +294,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GlassCrackedSpawner
   prefab: {fileID: 4529575052370027368, guid: 35607367d7d7e8a4bad1a659d3df71f9, type: 3}
   parentTransform: {fileID: 519402336522431508}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
+--- !u!114 &95242262046404579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054816748874019405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648b5309da305804fb408ea26cbd79fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AimPointT5Spawner
+  prefab: {fileID: 6240843834693849955, guid: c27181128776a6f4893cbe667ee797d3, type: 3}
+  parentTransform: {fileID: 3211494379857779700}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
 --- !u!1 &3230646844117701683
