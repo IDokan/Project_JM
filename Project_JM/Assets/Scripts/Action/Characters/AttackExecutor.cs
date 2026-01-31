@@ -99,15 +99,20 @@ public class AttackExecutor : MonoBehaviour
 
     public void HandleHit(MatchTier tier)
     {
-
-        var targetObject = _context.Target as MonoBehaviour;
-        _context.HitTransform = tier switch
+        HandleHitWithTransform(tier, tier switch
         {
             MatchTier.Three => attack3AttackPoint,
             MatchTier.Four => attack4AttackPoint,
             MatchTier.Five => attack5AttackPoint,
             _ => null
-        };
+        });
+    }
+
+    public void HandleHitWithTransform(MatchTier tier, Transform hitTransform)
+    {
+
+        var targetObject = _context.Target as MonoBehaviour;
+        _context.HitTransform = hitTransform;
 
         if (targetObject != null)
         {

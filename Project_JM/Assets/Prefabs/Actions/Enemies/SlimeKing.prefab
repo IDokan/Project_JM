@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 581450553150658279}
   - component: {fileID: 4250630186286915403}
   - component: {fileID: 3517060550137473913}
+  - component: {fileID: 325963819189281011}
   m_Layer: 0
   m_Name: SlimeKing
   m_TagString: Untagged
@@ -228,6 +229,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StunRepresenter
   stunVFXPrefab: {fileID: 6332374602160829938, guid: 7ff76f9283c9e9b4e9d9a90fad2cdba3, type: 3}
   vfxAnchor: {fileID: 1814171220299397263}
+--- !u!61 &325963819189281011
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164301083414174608}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.08258724, y: 2.5189216}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.5691652, y: 4.179623}
+  m_EdgeRadius: 0
 --- !u!1 &7655192076060876005
 GameObject:
   m_ObjectHideFlags: 0
