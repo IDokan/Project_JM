@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 6902186543298777927}
   - component: {fileID: 831270480018136245}
   - component: {fileID: 8955326330715375291}
+  - component: {fileID: 2507497803938146767}
   m_Layer: 0
   m_Name: BlueSquare
   m_TagString: Untagged
@@ -442,6 +443,22 @@ MonoBehaviour:
   muzzle: {fileID: 2219893476137290648}
   muzzleOffset: {x: 0, y: 0, z: 0}
   target: {fileID: 7961020605595789453}
+--- !u!114 &2507497803938146767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6205769448239816264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7982779c7943f714da7ec2cb0df84fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IceMagicCircleSpawner
+  prefab: {fileID: 4456111352934129, guid: 26c78434a2168394e920d2de2a0103f6, type: 3}
+  parentTransform: {fileID: 2219893476137290648}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
 --- !u!1 &7067878393964800406
 GameObject:
   m_ObjectHideFlags: 0
