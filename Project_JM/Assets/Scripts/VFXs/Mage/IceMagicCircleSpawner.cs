@@ -8,6 +8,18 @@ using UnityEngine;
 
 public class IceMagicCircleSpawner : AbstractAnimEventPrefabSpawner<GameObject>
 {
+    [SerializeField] protected GetRandomTransform randomTransform;
+
+    protected void Start()
+    {
+        if(randomTransform == null)
+        {
+            randomTransform = GetComponent<GetRandomTransform>();
+        }
+    }
+
     public void AnimEvent_SpawnMagicCircle()
-        => Spawn();
+    {
+        SpawnAtTransform(randomTransform.RandomTransform());
+    }
 }
