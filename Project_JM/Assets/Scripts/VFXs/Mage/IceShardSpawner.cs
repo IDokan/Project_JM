@@ -13,15 +13,31 @@ public class IceShardSpawner : MonoBehaviour
     [SerializeField] protected float speed = 14f;
     [SerializeField] protected float lifeTime = 1.5f;
 
-    [SerializeField] protected Transform muzzle;
+    [SerializeField] protected GetRandomTransform randomTransform;
     [SerializeField] protected Vector3 muzzleOffset;
-    [SerializeField] protected Transform target;
+    [SerializeField] protected Transform[] targets;
 
 
     public void AnimEvent_SpawnIceShard()
     {
-        if (prefab == null || target == null) return;
+        if (prefab == null)
+        {
+            return;
+        }
+        if (randomTransform == null)
+        {
+            randomTransform = GetComponent<GetRandomTransform>();
+        }
+        if (targets == null || targets.Length <= 0 || targets[0] == null)
+        {
+            return;
+        }
 
+        SpawnIceShard(randomTransform.GetCachedTransform(), targets[Random.Range(0, targets.Length)]);
+    }
+
+    protected void SpawnIceShard(Transform muzzle, Transform target)
+    {
         Transform t = muzzle != null ? muzzle : transform;
         Vector3 spawnPos = t.position + muzzleOffset;
 

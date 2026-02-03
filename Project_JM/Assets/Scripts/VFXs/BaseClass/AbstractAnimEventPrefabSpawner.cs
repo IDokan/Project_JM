@@ -17,14 +17,19 @@ public abstract class AbstractAnimEventPrefabSpawner<TPrefab> : MonoBehaviour
 
     protected TPrefab Spawn()
     {
+        return SpawnAtTransform(parentTransform);
+    }
+
+    protected TPrefab SpawnAtTransform(Transform givenTransform)
+    {
         if (prefab == null)
         {
             return null;
         }
 
-        Transform t = parentTransform ? parentTransform : transform;
+        Transform t = givenTransform ? givenTransform : transform;
 
-        Vector3 pos = t.position + t.TransformVector(localOffset);
+        Vector3 pos = t.position + localOffset;
 
         // Rotate slash 
         Quaternion rot = Quaternion.Euler(0f, 0f, baseRotatingDeg);

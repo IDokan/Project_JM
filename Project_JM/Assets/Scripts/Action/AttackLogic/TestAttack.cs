@@ -11,7 +11,9 @@ using UnityEngine;
 public class TestAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 3;
+    [SerializeField] protected Vector3 targetMotionOffset = new Vector3(0.5f, 0f, 0f);
 
+    [Header("Impact Prefab")]
     [SerializeField] protected GameObject impactPrefab;
     [SerializeField] protected Vector3 impactPrefabLocalOffset;
 
@@ -29,7 +31,7 @@ public class TestAttack : AttackLogic
 
     public override Vector3 GetTargetMotionOffset()
     {
-        return new Vector3(1.5f, 0f, 0f);
+        return targetMotionOffset;
     }
 
     /*
