@@ -18,7 +18,7 @@ public class SelfSpin : MonoBehaviour
     {
         if (initRandomRotation)
         {
-            _angleZ = GlobalRNG.Instance.NextFloat(0, 360);
+            _angleZ = Random.Range(0, 360);
         }
         else
         {
