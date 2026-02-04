@@ -92,7 +92,7 @@ public class RotateStunStars : MonoBehaviour
 
             _phaseRadian[i] = (Mathf.PI * 2f) * (i / (float)starCount);
 
-            _spinOffsetDegree[i] = GlobalRNG.Instance.NextFloat(0f, 360f);
+            _spinOffsetDegree[i] = Random.Range(0f, 360f);
         }
     }
 

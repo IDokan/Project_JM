@@ -12,6 +12,6 @@ public class GlassCrackedSpawner : AbstractAnimEventPrefabSpawner<GameObject>
     {
         GameObject gameObject = Spawn();
 
-        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, GlobalRNG.Instance.NextFloat(0f, 360f));
+        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
     }
 }

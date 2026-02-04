@@ -487,6 +487,7 @@ GameObject:
   - component: {fileID: 8955326330715375291}
   - component: {fileID: 2507497803938146767}
   - component: {fileID: 8651376883748025525}
+  - component: {fileID: 6802745071260690183}
   m_Layer: 0
   m_Name: BlueSquare
   m_TagString: Untagged
@@ -597,10 +598,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceShardSpawner
   prefab: {fileID: 6416626565191940911, guid: d27a4f36eb34b024aa4ebf30ac20ab21, type: 3}
+  randomTransformScript: {fileID: 0}
+  localOffset: {x: 0, y: 0, z: 0}
   speed: 30
   lifeTime: 1.5
-  randomTransform: {fileID: 8651376883748025525}
-  muzzleOffset: {x: 0, y: 0, z: 0}
   targets:
   - {fileID: 7961020605595789453}
   - {fileID: 1725641597663732539}
@@ -640,6 +641,26 @@ MonoBehaviour:
   - {fileID: 8834222142863619560}
   - {fileID: 7451945552459694882}
   - {fileID: 3102365445096497383}
+--- !u!114 &6802745071260690183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6205769448239816264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a1ac94f8146c34aae5f1fefb9e7f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RayFrostSpawner
+  prefab: {fileID: 959559652439339791, guid: b49c7359049e43848a5659cb3e0919aa, type: 3}
+  randomTransformScript: {fileID: 8651376883748025525}
+  localOffset: {x: 0, y: 0, z: 0}
+  targets:
+  - {fileID: 7961020605595789453}
+  - {fileID: 1725641597663732539}
+  - {fileID: 3417478095648439557}
+  - {fileID: 1243366930968186112}
 --- !u!1 &6515542618025100961
 GameObject:
   m_ObjectHideFlags: 0
