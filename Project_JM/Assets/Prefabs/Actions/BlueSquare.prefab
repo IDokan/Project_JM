@@ -598,8 +598,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceShardSpawner
   prefab: {fileID: 6416626565191940911, guid: d27a4f36eb34b024aa4ebf30ac20ab21, type: 3}
-  randomTransformScript: {fileID: 0}
-  localOffset: {x: 0, y: 0, z: 0}
+  randomTransformScript: {fileID: 8651376883748025525}
+  localOffset: {x: 0.5, y: 0, z: 0}
   speed: 30
   lifeTime: 1.5
   targets:
@@ -621,7 +621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IceMagicCircleSpawner
   prefab: {fileID: 4456111352934129, guid: 26c78434a2168394e920d2de2a0103f6, type: 3}
   parentTransform: {fileID: 2219893476137290648}
-  localOffset: {x: -0.5, y: 0, z: 0}
+  localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
   randomTransform: {fileID: 8651376883748025525}
 --- !u!114 &8651376883748025525
@@ -653,9 +653,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a1ac94f8146c34aae5f1fefb9e7f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RayFrostSpawner
-  prefab: {fileID: 959559652439339791, guid: b49c7359049e43848a5659cb3e0919aa, type: 3}
+  prefab: {fileID: 2863471393507618175, guid: a8c81d264ae1acd46be8ccf8d7739c07, type: 3}
   randomTransformScript: {fileID: 8651376883748025525}
   localOffset: {x: 0, y: 0, z: 0}
+  beamPrefab: {fileID: 4984277296483534931, guid: e33dcaf8c358365458d45d0f8254ec59, type: 3}
   targets:
   - {fileID: 7961020605595789453}
   - {fileID: 1725641597663732539}
