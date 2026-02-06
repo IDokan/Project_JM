@@ -852,13 +852,27 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: AnimEvent_SpawnRayofFrost
+    functionName: AnimEvent_SpawnMagicCircle
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.16666667
+    functionName: AnimEvent_SpawnRoFCore
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
+    functionName: AnimEvent_SpawnRoFBeam
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.35
     functionName: AnimEvent_Hit
     data: 
     objectReferenceParameter: {fileID: 0}

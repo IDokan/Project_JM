@@ -8,15 +8,26 @@ using UnityEngine;
 
 public class RayFrostSpawner : AbstractAnimEventPrefabRandomTransformSpawner<GameObject>
 {
-
+    [SerializeField] protected GameObject beamPrefab;
     [SerializeField] protected Transform[] targets;
 
 
-    public void AnimEvent_SpawnRayofFrost()
+    public void AnimEvent_SpawnRoFCore()
     {
-        GameObject rayFrost = Spawn();
+        SpawnPrefab(prefab);
+    }
 
-        Transform target = targets[Random.Range(0, targets.Length)];
+    public void AnimEvent_SpawnRoFBeam()
+    {
+        SpawnPrefab(beamPrefab);
+    }
+
+    protected void SpawnPrefab(GameObject givenPrefab)
+    {
+        GameObject rayFrost = Spawn(givenPrefab);
+
+        //Transform target = targets[Random.Range(0, targets.Length)];
+        Transform target = targets[0];
 
 
         Vector2 direction = new Vector2(1f, 0f);

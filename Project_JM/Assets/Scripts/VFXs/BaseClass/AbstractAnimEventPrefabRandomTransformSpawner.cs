@@ -14,9 +14,9 @@ public abstract class AbstractAnimEventPrefabRandomTransformSpawner<TPrefab> : M
     [SerializeField] protected GetRandomTransform randomTransformScript;
     [SerializeField] protected Vector3 localOffset;
 
-    public TPrefab Spawn(bool isCachedTransform = true)
+    public TPrefab Spawn(TPrefab givenPrefab = null, bool isCachedTransform = true)
     {
-        if (prefab == null)
+        if (prefab == null && givenPrefab == null)
         {
             return null;
         }
@@ -30,6 +30,6 @@ public abstract class AbstractAnimEventPrefabRandomTransformSpawner<TPrefab> : M
 
         Vector3 pos = t.position + localOffset;
 
-        return Instantiate(prefab, pos, Quaternion.identity);
+        return Instantiate(givenPrefab == null ? prefab : givenPrefab, pos, Quaternion.identity);
     }
 }
