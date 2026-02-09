@@ -2,7 +2,7 @@
 // Copyright (c) 01/14/2026 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: FadeOut.cs
-// Summary: A script to spawn shield VFX.
+// Summary: A script to fade object and its children out.
 
 
 using UnityEngine;

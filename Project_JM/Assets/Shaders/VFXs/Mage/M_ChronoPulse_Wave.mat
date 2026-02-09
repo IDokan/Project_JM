@@ -37,14 +37,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _EdgeSoftness: 0.01
-    - _InnerFade: 2
-    - _RingCount: 12
-    - _RingWidth: 0.2
-    - _Speed: 0.6
-    - _WaveAmp: 0.01
+    - _EdgeSoftness: 0.15
+    - _InnerFade: 1.3
+    - _InnerSoftness: 0.2
+    - _Invert: 1
+    - _InvertRotation: 1
+    - _OuterFade: 5
+    - _OuterSoftness: 1
+    - _RingCount: 1
+    - _RingWidth: 0.3
+    - _Speed: 1.5
+    - _WaveAmp: 0.05
     - _WaveAngularFreq: 8
-    - _WaveFreq: 10
+    - _WaveFreq: 5
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

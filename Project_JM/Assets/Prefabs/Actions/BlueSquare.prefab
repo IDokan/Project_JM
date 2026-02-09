@@ -250,6 +250,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1866217187695731592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2867026849123264407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6457100515725460865}
+  m_Layer: 0
+  m_Name: ChronoPulseSpawnTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6457100515725460865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2867026849123264407}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.69, y: 12.08, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1866217187695731592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2966976957613564437
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +519,8 @@ GameObject:
   - component: {fileID: 2507497803938146767}
   - component: {fileID: 8651376883748025525}
   - component: {fileID: 6802745071260690183}
+  - component: {fileID: 4716600558872125081}
+  - component: {fileID: 1288891421847571877}
   m_Layer: 0
   m_Name: BlueSquare
   m_TagString: Untagged
@@ -513,6 +546,7 @@ Transform:
   - {fileID: 1725641597663732539}
   - {fileID: 3417478095648439557}
   - {fileID: 1243366930968186112}
+  - {fileID: 6457100515725460865}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8385931373688579136
@@ -662,6 +696,38 @@ MonoBehaviour:
   - {fileID: 1725641597663732539}
   - {fileID: 3417478095648439557}
   - {fileID: 1243366930968186112}
+--- !u!114 &4716600558872125081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6205769448239816264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d173d2fe2b6a264f981df932c288975, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChronoPulseSpanwer
+  prefab: {fileID: 6225270685005999929, guid: b18f7ee1a9150894f9e292706b203445, type: 3}
+  parentTransform: {fileID: 6457100515725460865}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
+--- !u!114 &1288891421847571877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6205769448239816264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c814cd9c7145ecc44bb62951c5c446f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IceMagicCircleSpawner
+  prefab: {fileID: 4839816764851535498, guid: c39c9bdc14d6fd1408534412c6a6ba90, type: 3}
+  parentTransform: {fileID: 6457100515725460865}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
 --- !u!1 &6515542618025100961
 GameObject:
   m_ObjectHideFlags: 0
