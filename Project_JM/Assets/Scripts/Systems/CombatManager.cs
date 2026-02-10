@@ -22,6 +22,7 @@ public class CombatManager : MonoBehaviour
 
     [Header("Targeting")]
     [SerializeField] protected CharacterCombatant _enemy;    // @@ TODO: Need to implement enemy spawner...
+    public CharacterCombatant Enemy => _enemy;
 
     protected ICombatant lastAttackedCharacter;
 

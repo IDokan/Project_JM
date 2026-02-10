@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 2128661580211424012}
   - component: {fileID: 3104464448260749938}
   - component: {fileID: 2490722363239806062}
+  - component: {fileID: 685402887060116840}
   m_Layer: 0
   m_Name: YellowSquare
   m_TagString: Untagged
@@ -315,6 +316,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4480899460701387632}
+  - {fileID: 4617907936286568150}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &615354426364606362
@@ -387,6 +389,25 @@ MonoBehaviour:
   attack5AttackPoint: {fileID: 0}
   logicEnemy: {fileID: 0}
   attackEnemyAttackPoint: {fileID: 0}
+--- !u!114 &685402887060116840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5114379530251128962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ec6349445493d47b3f3775f219dba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EggAttackSpawner
+  prefab: {fileID: 2814811235818200219, guid: 4c84f734aedf35f48be77cf406b3b82f, type: 3}
+  parentTransform: {fileID: 4617907936286568150}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
+  combatManager: {fileID: 0}
+  clericAttackExecutor: {fileID: 2490722363239806062}
+  speed: 30
 --- !u!1 &5573824307224507408
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +688,37 @@ MonoBehaviour:
   m_Iterations: 10
   m_Tolerance: 0.01
   m_Velocity: 0.5
+--- !u!1 &8483788528215380821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4617907936286568150}
+  m_Layer: 0
+  m_Name: TestEggTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4617907936286568150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483788528215380821}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.89, y: 23.33, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3591951216612200130}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8742456822839229183
 GameObject:
   m_ObjectHideFlags: 0
