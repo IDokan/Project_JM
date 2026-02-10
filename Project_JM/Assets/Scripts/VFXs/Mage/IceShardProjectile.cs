@@ -11,6 +11,7 @@ public class IceShardProjectile : MonoBehaviour
 {
     [SerializeField] protected Rigidbody2D projectileRigidbody;
     [SerializeField] protected LayerMask hitMask;
+    [SerializeField] protected Transform hitTransform;
 
     protected AttackExecutor _mageAttackExecutor;
     protected Vector2 _direction;
@@ -34,13 +35,17 @@ public class IceShardProjectile : MonoBehaviour
         {
             // Consistent & cheap option.
             projectileRigidbody.bodyType = RigidbodyType2D.Kinematic;
+            projectileRigidbody.gravityScale = 0f;
+            projectileRigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            projectileRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
         }
 
     }
 
-    protected void Update()
+    protected void FixedUpdate()
     {
-        transform.position += (Vector3)(_direction * _speed * Time.deltaTime);
+        Vector2 next = projectileRigidbody.position + (_direction * _speed * Time.fixedDeltaTime);
+        projectileRigidbody.MovePosition(next);
 
         // If missed
         if (Time.time >= _dieAt)
@@ -65,7 +70,7 @@ public class IceShardProjectile : MonoBehaviour
 
         _hitOnce = true;
 
-        _mageAttackExecutor.HandleHitWithTransform(MatchTier.Three, transform);
+        _mageAttackExecutor.HandleHitWithTransform(MatchTier.Three, hitTransform);
 
         Destroy(gameObject);
     }

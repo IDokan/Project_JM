@@ -816,6 +816,17 @@ MonoBehaviour:
   _moveRepeatDelay: 0.25
   _moveRepeatRate: 0.12
   _stickDeadZone: 0.25
+--- !u!114 &1775401076 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4490150295464392029, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcccd887987a7e946afd27fb482ffe86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatManager
 --- !u!1 &1798551167
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +998,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.97950983
       objectReference: {fileID: 0}
+    - target: {fileID: 433445117158195291, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
+      propertyPath: combatManager
+      value: 
+      objectReference: {fileID: 1775401076}
     - target: {fileID: 600754575579260623, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.1114524

@@ -27,6 +27,7 @@ public class AttackExecutor : MonoBehaviour
     [SerializeField] protected Transform attackEnemyAttackPoint;
 
     protected AttackContext _context;
+    public AttackContext Context => _context;
 
     protected void Awake()
     {
