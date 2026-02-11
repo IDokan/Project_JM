@@ -15,6 +15,9 @@ public class FlyToTarget : MonoBehaviour
     [SerializeField] protected float _speed = 0f;
     [SerializeField] private float spriteFacingAngleOffset = 0f;
 
+    [Header("AfterImpact")]
+    [SerializeField] protected BrokenEggController brokenEggController;
+
     protected AttackExecutor _clericAttackExecutor;
     protected Transform _target;
     protected bool _initialized;
@@ -89,6 +92,9 @@ public class FlyToTarget : MonoBehaviour
         {
             _clericAttackExecutor.HandleHitWithTransform(MatchTier.Three, hitTransform);
         }
+
+        BrokenEggController brokenEgg = Instantiate(brokenEggController);
+        brokenEgg.Init(transform, _speed);
 
         Destroy(gameObject);
     }
