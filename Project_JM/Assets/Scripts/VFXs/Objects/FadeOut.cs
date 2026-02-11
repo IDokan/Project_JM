@@ -26,6 +26,8 @@ public class FadeOut : MonoBehaviour
         {
             _startAlphas[i] = _spriteRenderers[i] ? _spriteRenderers[i].color.a : 1f;
         }
+
+        UpdateOpacity(0f);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,7 +41,14 @@ public class FadeOut : MonoBehaviour
     {
         _t += Time.deltaTime;
 
-        float p01 = duration <= 0 ? 1f : Mathf.Clamp01(_t / duration);
+        UpdateOpacity(_t);
+    }
+
+
+    protected void UpdateOpacity(float t)
+    {
+
+        float p01 = duration <= 0 ? 1f : Mathf.Clamp01(t / duration);
 
         float progress = progressCurve.Evaluate(p01);
 
@@ -56,7 +65,7 @@ public class FadeOut : MonoBehaviour
             spriteRenderer.color = color;
         }
 
-        if (_t >= duration)
+        if (t >= duration)
         {
             Destroy(gameObject);
         }
