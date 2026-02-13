@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 1633380822693283300}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.16, y: -3.63, z: 0}
-  m_LocalScale: {x: 4, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 882545585382000347}
@@ -108,13 +108,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3049a36980bf10419b712c0a366b8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FadeOut
-  duration: 3
+  duration: 0.3
   progressCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
+      time: -0.004166667
+      value: 0.99523807
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7166672
+      value: 0.99523926
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -249,8 +258,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.2
-      minScalar: 0.6
+      scalar: 0.2
+      minScalar: 0.15
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -805,7 +814,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: -0.5, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 8.5, y: 1, z: 1}
+    m_Scale: {x: 6.25, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -1003,7 +1012,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1681,7 +1690,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 10
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5175,8 +5184,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 1
+      scalar: 0.2
+      minScalar: 0.15
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5731,7 +5740,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0.5, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 8.5, y: 1, z: 1}
+    m_Scale: {x: 6.25, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -5929,7 +5938,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -6607,7 +6616,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 10
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -9894,7 +9903,7 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
 --- !u!1 &7044103170247168574
 GameObject:
   m_ObjectHideFlags: 0
@@ -10061,8 +10070,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 223987079
-  m_SortingLayer: 4
+  m_SortingLayerID: 363406607
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: -2653575425176686398, guid: fb284807f2e883446bb97d32ddc835ba, type: 3}
   m_Color: {r: 1, g: 0.9647059, b: 0, a: 1}
