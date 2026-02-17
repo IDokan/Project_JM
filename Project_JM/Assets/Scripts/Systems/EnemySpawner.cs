@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] protected DifficultyCurves _difficultyCurves;
 
-    [SerializeField] protected Vector3 _spawnPosition;
+    [SerializeField] protected Transform _spawnPosition;
 
     protected void OnEnable() => _characterDeathEventChannel.OnRaised += OnCharacterDied;
     protected void OnDisable() => _characterDeathEventChannel.OnRaised -= OnCharacterDied;
@@ -38,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
     {
         _numSpanwed++;
 
-        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), _spawnPosition, Quaternion.identity);
+        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), _spawnPosition);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
         _enemySpawnedEventChannel.Raise(spawnedEnemy);

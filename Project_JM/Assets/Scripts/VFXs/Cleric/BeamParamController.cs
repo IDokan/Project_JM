@@ -20,6 +20,7 @@ public class BeamParamController : MonoBehaviour
     protected Renderer _renderer;
     protected MaterialPropertyBlock _materialPropertyBlock;
     protected int _powerID;
+    protected int _noiseOffsetID;
     protected float _t;
 
 
@@ -28,6 +29,7 @@ public class BeamParamController : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _materialPropertyBlock = new MaterialPropertyBlock();
         _powerID = Shader.PropertyToID(powerProperty);
+        _noiseOffsetID = Shader.PropertyToID("_NoiseOffset");
     }
 
     // Update is called once per frame
@@ -54,6 +56,7 @@ public class BeamParamController : MonoBehaviour
 
         _renderer.GetPropertyBlock(_materialPropertyBlock);
         _materialPropertyBlock.SetFloat(_powerID, power);
+        _materialPropertyBlock.SetFloat(_noiseOffsetID, Time.time - (int)Time.time);    
         _renderer.SetPropertyBlock(_materialPropertyBlock);
     }
 }
