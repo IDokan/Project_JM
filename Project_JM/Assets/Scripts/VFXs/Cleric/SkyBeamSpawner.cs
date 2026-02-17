@@ -8,6 +8,18 @@ using UnityEngine;
 
 public class SkyBeamSpawner : AbstractAnimEventPrefabSpawner<GameObject>
 {
+    [SerializeField] protected CombatManager _combatManager;
+
     public void AnimEvent_SpawnSkyBeam()
-    => Spawn();
+    {
+        GameObject skyBeam = Spawn();
+
+        if (_combatManager != null)
+        {
+            Transform enemy = _combatManager.Enemy.transform.GetChild(0);
+            skyBeam.transform.SetParent(enemy, worldPositionStays: false);
+            skyBeam.transform.localPosition = Vector3.zero;
+            skyBeam.transform.localRotation = Quaternion.identity;
+        }
+    }
 }
