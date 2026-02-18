@@ -13,7 +13,12 @@ public struct AttackContext
     public ICombatant Attacker;
     public ICombatant Target;
 
+    public Transform HitTransform;
+
     public DamageMultiplierManager DamageMultiplierManager;
+
+    public GameObject ImpactAttachPrefab;
+    public Vector3 ImpactAttachLocalOffset;
 }
 
 public abstract class AttackLogic : ScriptableObject

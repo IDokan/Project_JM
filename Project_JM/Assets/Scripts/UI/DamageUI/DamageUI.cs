@@ -5,7 +5,6 @@
 // Summary: A script for damage UI.
 
 
-using System;
 using TMPro;
 using DG.Tweening;
 using UnityEngine;
@@ -50,8 +49,8 @@ public class DamageUI : MonoBehaviour
         _text.alpha = 1f;
 
         // Randomize
-        float randomX = GlobalRNG.Instance.NextFloat(-50f, 50f);
-        float randomRot = GlobalRNG.Instance.NextFloat(-15f, 15f);
+        float randomX = Random.Range(-50f, 50f);
+        float randomRot = Random.Range(-15f, 15f);
         _rect.rotation = Quaternion.Euler(0, 0, randomRot);
 
         // Animation

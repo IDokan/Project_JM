@@ -2,7 +2,7 @@
 // Copyright (c) 11/07/2025 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: TestAttack.cs
-// Summary: A attack logic only for test purpose.
+// Summary: An attack logic only for test purpose.
 
 using System.Collections;
 using UnityEngine;
@@ -11,17 +11,27 @@ using UnityEngine;
 public class TestAttack : AttackLogic
 {
     [SerializeField] protected int baseDamage = 3;
+    [SerializeField] protected Vector3 targetMotionOffset = new Vector3(0.5f, 0f, 0f);
 
+    [Header("Impact Prefab")]
+    [SerializeField] protected GameObject impactPrefab;
+    [SerializeField] protected Vector3 impactPrefabLocalOffset;
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (impactPrefab)
+        {
+            ctx.ImpactAttachPrefab = impactPrefab;
+            ctx.ImpactAttachLocalOffset = impactPrefabLocalOffset;
+        }
+
         ctx.Target?.TakeDamage(baseDamage, ctx);
         yield break;
     }
 
     public override Vector3 GetTargetMotionOffset()
     {
-        return new Vector3(1.5f, 0f, 0f);
+        return targetMotionOffset;
     }
 
     /*
