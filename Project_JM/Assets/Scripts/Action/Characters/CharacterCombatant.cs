@@ -23,19 +23,22 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     [SerializeField] protected CharacterStatus _status;
     [SerializeField] protected GemColor[] _colors;
 
+    [SerializeField] protected GameObject hitBurstPrefab;
+    [SerializeField] protected Transform woundParentTransform;
+
     public CharacterStatus Status => _status;
     public GemColor[] Colors => _colors;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Heal(float healPercentage)
@@ -56,7 +59,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         if (attackContext.Attacker is CharacterCombatant attackerObject)
         {
             if (attackerObject.Status.IsCriticalHit())
-            { 
+            {
                 damage *= attackerObject.Status.CriticalDamage;
             }
         }
@@ -64,6 +67,9 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         damage *= GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
 
         _status.TakeDamage(damage);
+
+        SpawnHitBurstParticle(attackContext);
+        SpawnImpactAttachment(attackContext);
     }
 
     public void AddBuffCritBonus(float value)
@@ -79,5 +85,45 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     public void AddBuffCritDamage(float value)
     {
         _status.AddBuffCritDamage(value);
+    }
+
+    protected void SpawnHitBurstParticle(AttackContext attackContext)
+    {
+        if (hitBurstPrefab == null || attackContext.HitTransform == null)
+        {
+            return;
+        }
+
+        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, attackContext.HitTransform.rotation,
+            woundParentTransform == null ? gameObject.transform : woundParentTransform);
+
+        GemColor gemColor;
+        if (attackContext.Attacker.Colors.Length <= 1)
+        {
+            gemColor = attackContext.Attacker.Colors[0];
+        }
+        else
+        {
+            gemColor = attackContext.Attacker.Colors[GlobalRNG.Instance.NextInt(attackContext.Attacker.Colors.Length)];
+        }
+
+        hitBurst.GetComponent<HitBurst>().SetColor(GemColorUtility.ConvertGemColor(gemColor));
+    }
+
+    protected void SpawnImpactAttachment(AttackContext attackContext)
+    {
+        if (attackContext.ImpactAttachPrefab == null || attackContext.HitTransform == null)
+        {
+            return;
+        }
+
+        Transform parent = (woundParentTransform == null ? transform : woundParentTransform);
+
+        Vector3 spawnPos = attackContext.HitTransform.position;
+
+        var go = Instantiate(attackContext.ImpactAttachPrefab, spawnPos, Quaternion.identity, parent);
+
+        // Apply local offset if you want it to sink into the body a bit
+        go.transform.localPosition += attackContext.ImpactAttachLocalOffset;
     }
 }
