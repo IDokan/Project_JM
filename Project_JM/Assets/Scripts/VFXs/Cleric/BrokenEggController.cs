@@ -33,8 +33,6 @@ public class BrokenEggController : MonoBehaviour
         Vector3 worldOffset = parentTransform.TransformDirection(offset);
         egg.transform.localPosition += worldOffset;
 
-        egg.transform.SetParent(null);
-
         Rigidbody2D rigidbody = egg.GetComponent<Rigidbody2D>();
 
         if (rigidbody != null)
