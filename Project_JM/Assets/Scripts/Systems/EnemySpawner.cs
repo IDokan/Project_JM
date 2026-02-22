@@ -38,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
     {
         _numSpanwed++;
 
-        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), _spawnPosition);
+        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), _spawnPosition.position, _spawnPosition.rotation);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
         _enemySpawnedEventChannel.Raise(spawnedEnemy);
