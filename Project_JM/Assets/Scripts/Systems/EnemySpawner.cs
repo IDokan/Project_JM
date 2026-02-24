@@ -17,6 +17,9 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] protected Transform _spawnPosition;
 
+    [SerializeField] protected float spawnDelay = 4f;
+    [SerializeField] protected float dispatchEventChannelDelay = 1f;
+
     protected void OnEnable() => _characterDeathEventChannel.OnRaised += OnCharacterDied;
     protected void OnDisable() => _characterDeathEventChannel.OnRaised -= OnCharacterDied;
 
@@ -41,21 +44,30 @@ public class EnemySpawner : MonoBehaviour
         var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), _spawnPosition.position, _spawnPosition.rotation);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
-        _enemySpawnedEventChannel.Raise(spawnedEnemy);
+        StartCoroutine(DispatchSpawnEventChannelAfterDelay(spawnedEnemy, dispatchEventChannelDelay));
+
         return spawnedEnemy;
+    }
+
+    protected IEnumerator DispatchSpawnEventChannelAfterDelay(GameObject enemy, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        enemy.GetComponent<EnemyActivation>()?.EnableScripts();
+        _enemySpawnedEventChannel.Raise(enemy);
     }
 
     protected void OnCharacterDied(CharacterStatus stat)
     {
         if (stat.TryGetComponent<EnemyTag>(out _))
         {
-            StartCoroutine(SpawnEnemyAfter5Seconds());
+            StartCoroutine(SpawnEnemyAfterDelay());
         }
     }
 
-    protected IEnumerator SpawnEnemyAfter5Seconds()
+    protected IEnumerator SpawnEnemyAfterDelay()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(spawnDelay);
 
         SpawnRandomEnemy();
     }

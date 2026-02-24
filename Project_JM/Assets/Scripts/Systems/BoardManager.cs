@@ -723,6 +723,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             }
         }
 
+        _numMovingGems = 0;
+
         GenerateBoard();
     }
 }
