@@ -139,9 +139,17 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             for (int c = 0; c < _cols; c++)
             {
                 _gems[r, c] = GetRandomGemAboveContainer(r, c);
-                if (HasMatchAtBeginning(r, c))
+
+                List<GemColor> excludeColors = new List<GemColor>();
+                while (HasMatchAtBeginning(r, c))
                 {
-                    _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(_gems[r, c].Color));
+                    GemColor currentColor = _gems[r, c].Color;
+                    if (excludeColors.Contains(currentColor) == false)
+                    {
+                        excludeColors.Add(currentColor);
+                    }
+
+                    _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(excludeColors.ToArray()));
                 }
                 MoveGem(_gems[r, c], r, c);
             }
@@ -255,7 +263,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             {
                 var gem = _gems[row, col];
 
-                if (gem == null || gem.Color == GemColor.None)
+                if (gem == null)
                 {
                     col++;
                     continue;
@@ -303,7 +311,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             {
                 var gem = _gems[row, col];
 
-                if (gem == null || gem.Color == GemColor.None)
+                if (gem == null)
                 {
                     row++;
                     continue;
@@ -432,10 +440,31 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         // @@ TODO: Implement object pool for gems.
         var gem = _gems[row, col];
 
+        if (gem == null)
+        {
+            return;
+        }
+
+        if (gem.Color == GemColor.None)
+        {
+            ResolveGemNoTarget(row, col);
+            return;
+        }
+
+
+        int id = gem.GetInstanceID();
+        gem.Resolve(partyRoster, color => NotifyAbsorbed(color, id));
+        _gems[row, col] = null;
+    }
+
+    protected void ResolveGemNoTarget(int row, int col)
+    {
+        // @@ TODO: Implement object pool for gems.
+        var gem = _gems[row, col];
+
         if (gem != null)
         {
-            int id = gem.GetInstanceID();
-            gem.Resolve(partyRoster, color => NotifyAbsorbed(color, id));
+            gem.ResolveNoTarget();
             _gems[row, col] = null;
         }
     }
@@ -719,7 +748,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         {
             for (int c = 0; c < _cols; c++)
             {
-                ResolveGem(r, c);
+                ResolveGemNoTarget(r, c);
             }
         }
 

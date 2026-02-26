@@ -48,6 +48,18 @@ public class Gem : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void ResolveNoTarget()
+    {
+        GemResolver resolver = Instantiate(gemResolver).GetComponent<GemResolver>();
+
+        resolver.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        resolver.transform.localScale = transform.lossyScale;
+
+        resolver.InitNoTarget(Color);
+
+        Destroy(gameObject);
+    }
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

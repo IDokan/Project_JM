@@ -35,6 +35,8 @@ using UnityEngine;
 
 public class AttackMotion : MonoBehaviour
 {
+    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+
     protected Animator _animator;
     protected Transform _kockbackRoot;
 
@@ -90,6 +92,22 @@ public class AttackMotion : MonoBehaviour
         {
             _kockbackRoot = transform;
             _originalPosition = _kockbackRoot.localPosition;
+        }
+    }
+
+    protected void OnEnable()
+    {
+        if (characterDeathEventChannel != null)
+        {
+            characterDeathEventChannel.OnRaised += OnCharacterDied;
+        }
+    }
+
+    protected void OnDisable()
+    {
+        if (characterDeathEventChannel != null)
+        {
+            characterDeathEventChannel.OnRaised -= OnCharacterDied;
         }
     }
 
@@ -356,6 +374,13 @@ public class AttackMotion : MonoBehaviour
         }
     }
 
+    protected void ClearPendingAttacks()
+    {
+        _pendingThreeTier = 0;
+        _pendingFourTier = 0;
+        _pendingFiveTier = 0;
+    }
+
     protected static bool IsHigher(MatchTier a, MatchTier b) => (int)a > (int)b;
 
     protected void EnsureRunner()
@@ -394,5 +419,20 @@ public class AttackMotion : MonoBehaviour
             .AppendInterval(pauseDuration)
             .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
             .SetLink(gameObject);
+    }
+
+    protected void OnCharacterDied(CharacterStatus characterStat)
+    {
+        if (characterStat.TryGetComponent<EnemyTag>(out _))
+        {
+            ClearPendingAttacks();
+            
+            //@@TODO: Play walking motion immediately?
+        }
+
+        if (characterStat.TryGetComponent<AllyTag>(out _))
+        {
+            //@@TODO: Play sad motion?
+        }
     }
 }

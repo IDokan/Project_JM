@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class ParallaxLayer : MonoBehaviour
 {
-    [Range(0f, 10f)] public float parallaxFactor = 0.3f; // Stuck to world, 1 = follows camera, >1 = faster
+    [Range(0f, 2f)] public float parallaxFactor = 0.3f;     // 1 on camera; 0.1f slower than cam; 2 fater than cam
 
     [SerializeField] protected Transform cameraTransform;
 
