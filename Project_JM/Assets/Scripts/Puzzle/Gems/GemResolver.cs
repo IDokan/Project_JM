@@ -15,8 +15,9 @@ public class GemResolver : MonoBehaviour
     [SerializeField] protected ParticleSystem bubblePS;
     [SerializeField] protected ParticleBazierMover mover;
     [SerializeField] protected Gem gem;
-    [SerializeField] protected float resolverLifetime = 1f;
     [SerializeField] protected float spriteDisableDelay = 0.1f;
+
+    [SerializeField] protected float resolverLifetime = 4f;
 
     static readonly int TintColorID = Shader.PropertyToID("_TintColor");
 
@@ -39,7 +40,16 @@ public class GemResolver : MonoBehaviour
 
         mover.Completed += HandleAbsorbed;
 
-        StartCoroutine(FailSafeAbsorb(3f));
+        StartCoroutine(FailSafeAbsorb(resolverLifetime));
+    }
+
+    public void InitNoTarget(GemColor gemColor)
+    {
+        SetGemType(gemColor);
+
+        mover.enabled = false;
+
+        StartCoroutine(DestroyAfterDelay(resolverLifetime));
     }
 
     protected void HandleAbsorbed()
@@ -80,5 +90,12 @@ public class GemResolver : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         shinySP.gameObject.SetActive(false);
+    }
+
+    protected IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        Destroy(gameObject);
     }
 }

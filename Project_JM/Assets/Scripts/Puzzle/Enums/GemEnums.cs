@@ -5,6 +5,7 @@
 // Summary: A script that has enums for gem.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GemEnums
@@ -46,16 +47,27 @@ namespace GemEnums
             return PlayableGemColor[GlobalRNG.Instance.NextInt(PlayableGemColor.Length)];
         }
 
-        public static GemColor GetRandomGemColorExcept(GemColor excludeColor)
+        public static GemColor GetRandomGemColorExcept(params GemColor[] excludeColors)
         {
-            GemColor color;
-            do
-            {
-                color = PlayableGemColor[GlobalRNG.Instance.NextInt(PlayableGemColor.Length)];
-            }
-            while (color == excludeColor);
+            HashSet<GemColor> exclude = (excludeColors == null || excludeColors.Length == 0)
+                ? null
+                : new HashSet<GemColor>(excludeColors);
 
-            return color;
+            List<GemColor> allowed = new List<GemColor>(PlayableGemColor.Length);
+            for (int i = 0; i < PlayableGemColor.Length; ++i)
+            {
+                GemColor c = PlayableGemColor[i];
+                if (exclude == null || exclude.Contains(c) == false)
+                {
+                    allowed.Add(c);
+                }
+            }
+
+            if (allowed.Count <= 0)
+            {
+                return GemColor.None;
+            }
+            return allowed[GlobalRNG.Instance.NextInt(allowed.Count)];
         }
 
         public static float GetGemColorDamageMultiplier(GemColor[] attackerColor, GemColor[] targetColor)

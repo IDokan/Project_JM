@@ -14,6 +14,6 @@ public class EggAttackSpawner : AbstractAnimEventPrefabSpawner<FlyToTarget>
     public void AnimEvent_SpawnEgg()
     {
         FlyToTarget egg = Spawn();
-        egg.Init(clericAttackExecutor, combatManager.Enemy.transform);
+        egg.Init(clericAttackExecutor, combatManager.EnemyTransform);
     }
 }

@@ -23,6 +23,7 @@ public class CombatManager : MonoBehaviour
     [Header("Targeting")]
     [SerializeField] protected CharacterCombatant _enemy;    // @@ TODO: Need to implement enemy spawner...
     public CharacterCombatant Enemy => _enemy;
+    public Transform EnemyTransform => Enemy != null ? Enemy.transform : null;
 
     protected ICombatant lastAttackedCharacter;
 
@@ -89,6 +90,11 @@ public class CombatManager : MonoBehaviour
 
     protected void OnEnemyAttack()
     {
+        if (lastAttackedCharacter == null)
+        {
+            return;
+        }
+
         var enemy_context = new AttackContext
         {
             Attacker = _enemy,
