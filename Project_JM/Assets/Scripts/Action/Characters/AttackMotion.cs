@@ -8,7 +8,6 @@ using DG.Tweening;
 using MatchEnums;
 using System;
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
 
 /// <summary>
@@ -109,7 +108,7 @@ public class AttackMotion : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("CharacterDeathEventChannel is null", this)
+            Debug.LogWarning("CharacterDeathEventChannel is null", this);
         }
         if (enemySpawnedEventChannel != null)
         {
@@ -117,7 +116,7 @@ public class AttackMotion : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("EnemySpawnedEventChannel is null", this)
+            Debug.LogWarning("EnemySpawnedEventChannel is null", this);
         }
     }
 
