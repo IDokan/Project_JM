@@ -8,6 +8,7 @@ using DG.Tweening;
 using MatchEnums;
 using System;
 using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 
 /// <summary>
@@ -36,6 +37,7 @@ using UnityEngine;
 public class AttackMotion : MonoBehaviour
 {
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+    [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
 
     protected Animator _animator;
     protected Transform _kockbackRoot;
@@ -49,6 +51,8 @@ public class AttackMotion : MonoBehaviour
     protected static readonly int ApproachTrig = Animator.StringToHash("ApproachTrig");
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
     protected static readonly int ReturnTrig = Animator.StringToHash("ReturnTrig");
+    protected static readonly int WalkBool = Animator.StringToHash("WalkBool");
+
     protected static readonly int TierInt = Animator.StringToHash("TierInt");
 
     public event Action<MatchTier> OnHit;
@@ -59,6 +63,7 @@ public class AttackMotion : MonoBehaviour
     protected MatchTier? _currentTier;                    // tier we're currently "in"
 
     protected bool _hurtRequested;
+    protected bool _walkRequested;
     protected int _version;                           // increments to break waits on interrupts
 
     protected bool _attackedSinceApproach;
@@ -69,13 +74,14 @@ public class AttackMotion : MonoBehaviour
         Approaching,
         Attacking,
         Returning,
-        Hurting
+        Hurting,
+        Walking,
     }
 
     protected State _state = State.Idle;
 
     // Flags set by animation events.
-    protected bool _approachDone, _attackDone, _returnDone, _hurtDone;
+    protected bool _approachDone, _attackDone, _returnDone, _hurtDone, _walkDone;
     protected MatchTier _executingTierForHit;
 
     protected Sequence _knockbackSequence;
@@ -101,6 +107,18 @@ public class AttackMotion : MonoBehaviour
         {
             characterDeathEventChannel.OnRaised += OnCharacterDied;
         }
+        else
+        {
+            Debug.LogWarning("CharacterDeathEventChannel is null", this)
+        }
+        if (enemySpawnedEventChannel != null)
+        {
+            enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
+        }
+        else
+        {
+            Debug.LogWarning("EnemySpawnedEventChannel is null", this)
+        }
     }
 
     protected void OnDisable()
@@ -108,6 +126,10 @@ public class AttackMotion : MonoBehaviour
         if (characterDeathEventChannel != null)
         {
             characterDeathEventChannel.OnRaised -= OnCharacterDied;
+        }
+        if (enemySpawnedEventChannel != null)
+        {
+            enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
         }
     }
 
@@ -152,6 +174,13 @@ public class AttackMotion : MonoBehaviour
     {
         while (true)
         {
+            // 0) In idle, play walking animation when requested
+            if (_walkRequested && _state == State.Idle)
+            {
+                yield return HandleWalk();
+                continue;
+            }
+
             // 1) Hurt has absolute priority
             if (_hurtRequested)
             {
@@ -322,6 +351,8 @@ public class AttackMotion : MonoBehaviour
         _animator.ResetTrigger(AttackTrig);
         _animator.ResetTrigger(ReturnTrig);
         _animator.ResetTrigger(DamagedTrig);
+        _animator.ResetTrigger(WalkBool);
+        _animator.SetBool(WalkBool, false);
     }
 
     protected bool HasPending() => _pendingThreeTier > 0 || _pendingFourTier > 0 || _pendingFiveTier > 0;
@@ -426,13 +457,38 @@ public class AttackMotion : MonoBehaviour
         if (characterStat.TryGetComponent<EnemyTag>(out _))
         {
             ClearPendingAttacks();
-            
-            //@@TODO: Play walking motion immediately?
+
+            _walkRequested = true;
+            EnsureRunner();
         }
 
         if (characterStat.TryGetComponent<AllyTag>(out _))
         {
             //@@TODO: Play sad motion?
         }
+    }
+
+    protected IEnumerator HandleWalk()
+    {
+        _state = State.Walking;
+
+        _walkRequested = false;
+
+
+        ResetCombatTriggers();
+        _animator.SetBool(WalkBool, true);
+
+        _walkDone = false;
+        yield return WaitFlagOrInterrupt(() => _walkDone);
+
+        _animator.SetBool(WalkBool, false);
+
+        _state = State.Idle;
+        _currentTier = null;
+    }
+
+    protected void OnEnemySpawned(GameObject enemy)
+    {
+        _walkDone = true;
     }
 }
