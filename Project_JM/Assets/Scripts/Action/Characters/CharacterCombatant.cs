@@ -55,16 +55,23 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     {
         float damage = rawDamage * attackContext.DamageMultiplierManager.GetMultiplier;
 
+        bool isCritical = false;
         // Critical hit calculation
         if (attackContext.Attacker is CharacterCombatant attackerObject)
         {
-            if (attackerObject.Status.IsCriticalHit())
+            isCritical = attackerObject.Status.IsCriticalHit();
+            if (isCritical)
             {
                 damage *= attackerObject.Status.CriticalDamage;
             }
         }
 
-        damage *= GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
+        float colorDamageMultiplier = GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
+        damage *= colorDamageMultiplier;
+
+
+        // Spawn Damageui slightly above the origin of attacked target
+        DamageUIManager.Instance.SpawnDamage(Mathf.RoundToInt(Mathf.Min(_status.CurrentHP, Mathf.Max(damage - _status.Shield, 0f))), attackContext, isCritical, colorDamageMultiplier);
 
         _status.TakeDamage(damage);
 
