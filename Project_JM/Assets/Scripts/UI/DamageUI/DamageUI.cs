@@ -8,6 +8,7 @@
 using TMPro;
 using DG.Tweening;
 using UnityEngine;
+using GemEnums;
 
 public class DamageUI : MonoBehaviour
 {
@@ -34,8 +35,11 @@ public class DamageUI : MonoBehaviour
         
     }
 
-    public void Show(int amount, Vector3 screenPos)
+    public void Show(int amount, AttackContext context, bool isCritical, float sizeMultiplier)
     {
+
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(context.HitTransform.position) - transform.position;
+
         _rect.anchoredPosition = screenPos;
 
         if (amount <= 0)
@@ -44,9 +48,29 @@ public class DamageUI : MonoBehaviour
         }
         else
         {
+
             _text.text = amount.ToString();
+
+
+            if (isCritical)
+            {
+                 _text.text += "<size=65%>!!</size>";
+            }
         }
         _text.alpha = 1f;
+        if (context.Attacker is Component c)
+        {
+            if (c.TryGetComponent<EnemyTag>(out _))
+            {
+                _text.color = GemColorUtility.ConvertGemColor(GemColor.None);
+            }
+            else
+            {
+                _text.color = GemColorUtility.ConvertGemColor(context.Attacker.Colors[0]);
+            }
+        }
+
+        _text.fontSize *= sizeMultiplier;
 
         // Randomize
         float randomX = Random.Range(-50f, 50f);
