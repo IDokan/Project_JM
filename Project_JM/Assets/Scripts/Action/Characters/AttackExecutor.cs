@@ -8,7 +8,6 @@ using MatchEnums;
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(AttackMotion))]
 public class AttackExecutor : MonoBehaviour
 {
     protected AttackMotion motion;
@@ -92,7 +91,7 @@ public class AttackExecutor : MonoBehaviour
 
         if (attackerObject != null && targetObject != null)
         {       // Enemy attacks immediately
-            offset = targetObject.transform.position - attackerObject.transform.localPosition;
+            offset = targetObject.transform.position - attackerObject.transform.position;
             attackerObject.GetComponent<EnemyAttackMotion>()?.PlayAttackMotion(offset);
         }
 

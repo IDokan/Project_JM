@@ -70,7 +70,7 @@ public class DamageUI : MonoBehaviour
             }
         }
 
-        _text.fontSize *= sizeMultiplier;
+        _text.fontSize *= isCritical ? 2f * sizeMultiplier : sizeMultiplier;
 
         // Randomize
         float randomX = Random.Range(-50f, 50f);
@@ -80,8 +80,11 @@ public class DamageUI : MonoBehaviour
         // Animation
         Sequence seq = DOTween.Sequence();
         seq.Append(_rect.DOAnchorPos(_rect.anchoredPosition + new Vector2(randomX, 80f), _lifetime))
-           .Join(_text.DOFade(0f, _lifetime))
-           .Join(_rect.DOScale(1.2f, 0.2f).SetEase(Ease.OutBack))
+           .Join(_text.DOFade(0f, _lifetime).SetEase(Ease.InCubic))
+           .Join(
+            _rect.DOScale(1.2f, _lifetime / 4f).SetEase(Ease.OutBack)
+            .OnComplete(()=>_rect.DOScale(0.8f, _lifetime * 3f / 4f))
+            )
            .AppendInterval(0.2f)
            .OnComplete(() =>
            {
