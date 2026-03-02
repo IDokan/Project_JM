@@ -26,19 +26,17 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     [SerializeField] protected GameObject hitBurstPrefab;
     [SerializeField] protected Transform woundParentTransform;
 
+    [SerializeField] protected FlashSpriteUsingMaterial flashSprite;
+
     public CharacterStatus Status => _status;
     public GemColor[] Colors => _colors;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        if (flashSprite == null)
+        {
+            flashSprite = GetComponent<FlashSpriteUsingMaterial>();
+        }
     }
 
     public void Heal(float healPercentage)
@@ -74,6 +72,11 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         DamageUIManager.Instance.SpawnDamage(Mathf.RoundToInt(Mathf.Min(_status.CurrentHP, Mathf.Max(damage - _status.Shield, 0f))), attackContext, isCritical, colorDamageMultiplier);
 
         _status.TakeDamage(damage);
+
+        if(flashSprite != null)
+        {
+            flashSprite.Flash();
+        }
 
         SpawnHitBurstParticle(attackContext);
         SpawnImpactAttachment(attackContext);
