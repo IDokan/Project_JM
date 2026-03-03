@@ -19,6 +19,11 @@ public class FlashSpriteUsingMaterial : MonoBehaviour
         {
             flashMaterial = GetComponentInChildren<SpriteRenderer>()?.material;
         }
+
+        if (flashMaterial != null)
+        {
+            flashMaterial.SetFloat("_FlashAmount", 0);
+        }
     }
 
 

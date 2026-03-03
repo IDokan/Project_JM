@@ -12,8 +12,6 @@ using UnityEngine;
 public class EnemyAttackBehaviour : MonoBehaviour
 {
     [SerializeField] protected EnemyAttackEventChannel attackChannel;
-    [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
-    [SerializeField] protected BoardDisableLogic boardDisableLogic;
     [SerializeField] protected StunRepresenter stunRepresenter;
     [SerializeField, Min(0.001f)] protected float baseCooldown = 5f;
 
@@ -90,7 +88,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected void Attack()
     {
         attackChannel.Raise();
-        boardDisableChannel.Raise(boardDisableLogic);
     }
 
     protected float GetCooldown()

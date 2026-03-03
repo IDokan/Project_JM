@@ -93,7 +93,9 @@ MonoBehaviour:
   _characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
   _difficultyCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
-  _spawnPosition: {x: 7.4, y: -4, z: 0}
+  _spawnPosition: {fileID: 0}
+  spawnDelay: 4
+  dispatchEventChannelDelay: 1
 --- !u!1 &1389493428556137630
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 935236977859202638}
+  - component: {fileID: 8348092773870949786}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -179,6 +182,20 @@ Transform:
   - {fileID: 7784887393510410484}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8348092773870949786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2987994210524115475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d8c92beb5934c4ebf39f04fb3ca0a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParallaxLayer
+  parallaxFactor: 1
+  cameraTransform: {fileID: 0}
 --- !u!1 &4134523709245377034
 GameObject:
   m_ObjectHideFlags: 0
