@@ -24,6 +24,10 @@ public class AttackExecutor : MonoBehaviour
     [Header("Enemy attack logics")]
     [SerializeField] protected AttackLogic logicEnemy;
     [SerializeField] protected Transform attackEnemyAttackPoint;
+    [SerializeField] protected BoardDisableLogic boardDisableLogic;
+
+
+    [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
 
     protected AttackContext _context;
     public AttackContext Context => _context;
@@ -135,6 +139,9 @@ public class AttackExecutor : MonoBehaviour
             targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
 
             StartCoroutine(logicEnemy.Execute(_context));
+            boardDisableChannel.Raise(boardDisableLogic);
+
+            Camera.main.GetComponent<CameraShake>()?.Shake();
         }
     }
 

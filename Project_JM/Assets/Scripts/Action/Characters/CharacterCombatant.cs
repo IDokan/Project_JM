@@ -68,12 +68,20 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         damage *= colorDamageMultiplier;
 
 
+        // Multiply its size by 2 when the attacker is an enemy && not blocked
+        int calculatedDamage = Mathf.RoundToInt(Mathf.Min(_status.CurrentHP, Mathf.Max(damage - _status.Shield, 0f)));
+        if (calculatedDamage > 0 &&
+            attackContext.Attacker is MonoBehaviour attackerMB &&
+            attackerMB.TryGetComponent<EnemyTag>(out _))
+        {
+            colorDamageMultiplier *= 2f;
+        }
         // Spawn Damageui slightly above the origin of attacked target
-        DamageUIManager.Instance.SpawnDamage(Mathf.RoundToInt(Mathf.Min(_status.CurrentHP, Mathf.Max(damage - _status.Shield, 0f))), attackContext, isCritical, colorDamageMultiplier);
+        DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, colorDamageMultiplier);
 
         _status.TakeDamage(damage);
 
-        if(flashSprite != null)
+        if (flashSprite != null)
         {
             flashSprite.Flash();
         }
@@ -108,13 +116,17 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             woundParentTransform == null ? gameObject.transform : woundParentTransform);
 
         GemColor gemColor;
-        if (attackContext.Attacker.Colors.Length <= 1)
+        if (attackContext.Attacker is MonoBehaviour mb
+            && mb.TryGetComponent<AllyTag>(out _))
         {
             gemColor = attackContext.Attacker.Colors[0];
         }
         else
         {
-            gemColor = attackContext.Attacker.Colors[GlobalRNG.Instance.NextInt(attackContext.Attacker.Colors.Length)];
+            gemColor = GemColor.None;
+
+            // Magnify hit effect of enemy attacks
+            hitBurst.transform.localScale *= 2f;
         }
 
         hitBurst.GetComponent<HitBurst>().SetColor(GemColorUtility.ConvertGemColor(gemColor));

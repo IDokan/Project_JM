@@ -17,6 +17,10 @@ public class DamageUI : MonoBehaviour
     protected TextMeshProUGUI _text;
     protected RectTransform _rect;
 
+    protected bool _isBlocked = false;
+    public bool IsBlocked { get; protected set; }
+
+
     protected void Awake()
     {
         _rect = GetComponent<RectTransform>();
@@ -45,6 +49,7 @@ public class DamageUI : MonoBehaviour
         if (amount <= 0)
         {
             _text.text = $"Blocked!";
+            _isBlocked = true;
         }
         else
         {

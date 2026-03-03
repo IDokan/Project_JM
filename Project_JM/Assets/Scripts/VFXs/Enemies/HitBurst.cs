@@ -9,6 +9,7 @@ using UnityEngine;
 public class HitBurst : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer[] spriteRenderers;
+    [SerializeField] protected SpriteRenderer outlineSpriteRenderer;
     [SerializeField] protected ParticleSystem[] particleSystems;
 
     protected void Awake()
@@ -45,6 +46,11 @@ public class HitBurst : MonoBehaviour
 
             var main = particleSystem.main;
             main.startColor = color;
+        }
+
+        if (color == Color.black && outlineSpriteRenderer != null)
+        {
+            outlineSpriteRenderer.color = color;
         }
     }
 }

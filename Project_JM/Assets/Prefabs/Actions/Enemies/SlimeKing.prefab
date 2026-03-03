@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 624635024937205403}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.48, y: -0.4, z: 0}
+  m_LocalPosition: {x: 0.48, y: -0.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -91,7 +91,7 @@ MonoBehaviour:
   _colors: 0100000002000000
   hitBurstPrefab: {fileID: 1771619425334909595, guid: f7beb28b4a3c8fb478a8abc5fe2ba5c1, type: 3}
   woundParentTransform: {fileID: 6402355911693699624}
-  flashSprite: {fileID: 0}
+  flashSprite: {fileID: 1051967404695388042}
 --- !u!114 &6721484090919061956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,8 +119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackBehaviour
   attackChannel: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
-  boardDisableChannel: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
-  boardDisableLogic: {fileID: 11400000, guid: ac5b032c8d3399f47831e285f5dcedd3, type: 2}
   stunRepresenter: {fileID: 3517060550137473913}
   baseCooldown: 5
   _enrageDelay: 30
@@ -208,6 +206,8 @@ MonoBehaviour:
   attack5AttackPoint: {fileID: 0}
   logicEnemy: {fileID: 11400000, guid: 1ecf779713ecb9349b8077b0d93f5492, type: 2}
   attackEnemyAttackPoint: {fileID: 501299713766119273}
+  boardDisableLogic: {fileID: 11400000, guid: ac5b032c8d3399f47831e285f5dcedd3, type: 2}
+  boardDisableChannel: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
 --- !u!114 &4250630186286915403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,7 +462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
       propertyPath: m_LocalPosition.x

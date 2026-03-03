@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4122283248884714811}
   - component: {fileID: 8661856663623278153}
   - component: {fileID: 6553061434730044119}
+  - component: {fileID: 2133629925333757571}
   m_Layer: 0
   m_Name: PartyRoster
   m_TagString: Untagged
@@ -89,6 +90,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f158a5ba0c5316a4283f9fa1dcf5dfc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllyTag
+--- !u!114 &2133629925333757571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3199834345138773119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d8c92beb5934c4ebf39f04fb3ca0a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParallaxLayer
+  parallaxFactor: 1
+  cameraTransform: {fileID: 0}
 --- !u!1001 &1117141484020782387
 PrefabInstance:
   m_ObjectHideFlags: 0

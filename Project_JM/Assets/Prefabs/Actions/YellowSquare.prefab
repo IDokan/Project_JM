@@ -5287,6 +5287,7 @@ GameObject:
   - component: {fileID: 5065457281409484710}
   - component: {fileID: 7345929778065005517}
   - component: {fileID: 266107498383828663}
+  - component: {fileID: 3725089692956984012}
   m_Layer: 0
   m_Name: YellowSquare
   m_TagString: Untagged
@@ -5332,8 +5333,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
   _status: {fileID: 0}
   _colors: 04000000
-  hitBurstPrefab: {fileID: 0}
+  hitBurstPrefab: {fileID: 1771619425334909595, guid: f7beb28b4a3c8fb478a8abc5fe2ba5c1, type: 3}
   woundParentTransform: {fileID: 4480899460701387632}
+  flashSprite: {fileID: 0}
 --- !u!114 &2128661580211424012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5390,6 +5392,8 @@ MonoBehaviour:
   attack5AttackPoint: {fileID: 4020042565660199558}
   logicEnemy: {fileID: 0}
   attackEnemyAttackPoint: {fileID: 0}
+  boardDisableLogic: {fileID: 0}
+  boardDisableChannel: {fileID: 0}
 --- !u!114 &685402887060116840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5470,6 +5474,18 @@ MonoBehaviour:
   parentTransform: {fileID: 7819907440989543674}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+--- !u!114 &3725089692956984012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5114379530251128962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f158a5ba0c5316a4283f9fa1dcf5dfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AllyTag
 --- !u!1 &5573824307224507408
 GameObject:
   m_ObjectHideFlags: 0
