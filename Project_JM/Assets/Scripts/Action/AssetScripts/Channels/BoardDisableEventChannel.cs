@@ -7,10 +7,22 @@
 using System;
 using UnityEngine;
 
+public enum BoardDisablePhase
+{
+    Preview,
+    Commit,
+}
+
+public struct BoardDisableEventContext
+{
+    public BoardDisablePhase boardDisablePhase;
+    public BoardDisableLogic boardDisableLogic;
+}
+
 [CreateAssetMenu(menuName = "JM/Events/Board Disable Event Channel")]
 public class BoardDisableEventChannel : ScriptableObject
 {
-    public event Action<BoardDisableLogic> OnRaised;
+    public event Action<BoardDisableEventContext> OnRaised;
 
-    public void Raise(BoardDisableLogic logic) => OnRaised?.Invoke(logic);
+    public void Raise(BoardDisableEventContext context) => OnRaised?.Invoke(context);
 }
