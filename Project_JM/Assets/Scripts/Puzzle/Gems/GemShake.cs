@@ -13,6 +13,8 @@ public class GemShake : MonoBehaviour
     [SerializeField] protected float frequency = 25f; // Shakes per second
     [SerializeField] protected float lerpSpeed = 25f;
 
+    public bool IsShaking => _routine != null;
+
     protected Vector3 _originLocalPosition = new Vector3(0f, 0f, 0f);
     protected Coroutine _routine = null;
 
@@ -20,7 +22,6 @@ public class GemShake : MonoBehaviour
 
     public void Awake()
     {
-        StartShake();
     }
 
     public void StartShake()

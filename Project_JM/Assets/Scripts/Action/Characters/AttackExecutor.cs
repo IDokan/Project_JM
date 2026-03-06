@@ -71,6 +71,18 @@ public class AttackExecutor : MonoBehaviour
         }
     }
 
+    protected void Start()
+    {
+        if (boardDisableChannel != null)
+        {
+            boardDisableChannel.Raise(new BoardDisableEventContext
+            {
+                boardDisablePhase = BoardDisablePhase.Preview,
+                boardDisableLogic = boardDisableLogic
+            });
+        }
+    }
+
     public void ExecuteAttack(AttackContext context, MatchTier matchTier)
     {
         _context = context;
@@ -139,7 +151,18 @@ public class AttackExecutor : MonoBehaviour
             targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
 
             StartCoroutine(logicEnemy.Execute(_context));
-            boardDisableChannel.Raise(boardDisableLogic);
+
+            boardDisableChannel.Raise(new BoardDisableEventContext
+            {
+                boardDisablePhase = BoardDisablePhase.Commit,
+                boardDisableLogic = boardDisableLogic
+            });
+
+            boardDisableChannel.Raise(new BoardDisableEventContext
+            {
+                boardDisablePhase = BoardDisablePhase.Preview,
+                boardDisableLogic = boardDisableLogic
+            });
 
             Camera.main.GetComponent<CameraShake>()?.Shake();
         }

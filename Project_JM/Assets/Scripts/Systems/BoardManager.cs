@@ -16,6 +16,9 @@ public interface IBoardInfo
     public int Rows { get; }
     public int Cols { get; }
 
+
+    public bool CanBeDisable(Vector2Int index);
+
     // Returns false if 
     public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices);
 }
@@ -40,6 +43,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
+
+    [SerializeField] protected GameObject _gemDisableFXPrefab;
 
     protected BoardCoverController boardCoverController;
 
@@ -106,6 +111,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     public bool InputEnabled => !_busy;
     protected bool _busy;
+
+    protected readonly HashSet<GameObject> _disableFXs = new ();
+    protected readonly HashSet<Vector2Int> _disableIndices = new();
+    protected readonly HashSet<GemShake> _activeShakes = new();
 
     public bool InBounds(int r, int c) => r >= 0 && r < _rows && c >= 0 && c < _cols;
 
@@ -407,6 +416,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         _numMovingGems++;
 
+        ApplyShaking(newRow, newCol, gem);
+
         Vector2 targetLocation = GetGemLocation(newRow, newCol);
         gem.GetComponent<GemMover>().EnqueueMove(targetLocation, onComplete: ResolveGemMovement);
     }
@@ -469,8 +480,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
     }
 
-    // @@ TODO: Resolve bug in this code
-    // Bug: It cannot detect gem absorbed correctly on the overlapped matches such as (5vertical X 3 horizontal).
     public void NotifyAbsorbed(GemColor color, int gemID)
     {
         if (!_pendingByGemID.TryGetValue(gemID, out var groups))
@@ -657,6 +666,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             MoveGem(_gems[index.x, index.y], targetRow, targetCol);
             MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
+            // Swap
             (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
 
             // Restore status before swap if no match found
@@ -684,21 +694,71 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         });
     }
 
-    protected void OnBoardDisabled(BoardDisableLogic logic)
+    protected void OnBoardDisabled(BoardDisableEventContext context)
+    {
+
+        switch (context.boardDisablePhase)
+        {
+            case BoardDisablePhase.Preview:
+                SpawnTileDisableEffect(context.boardDisableLogic);
+                break;
+            case BoardDisablePhase.Commit:
+                StartCoroutine(RunBoardDisableAttack(context.boardDisableLogic));
+                break;
+
+
+            default:
+                break;
+        }
+    }
+
+    protected void SpawnTileDisableEffect(BoardDisableLogic logic)
+    {
+        ClearDisableEffects();
+
+        // Spawn disable effect to the location queried by logic.
+        var context = new BoardDisableContext
+        {
+            BoardInfo = this
+        };
+        IReadOnlyList<Vector2Int> indices = logic.PreviewGemWillDisabled(context);
+        for (int i = 0; i < indices.Count; i++)
+        {
+            Vector2Int index = indices[i];
+            _disableIndices.Add(index);
+
+            GameObject fx = Instantiate(_gemDisableFXPrefab, transform);
+            fx.transform.localPosition = GetGemLocation(index.x, index.y);
+            _disableFXs.Add(fx);
+
+
+            ApplyShaking(index.x, index.y);
+        }
+
+    }
+
+    protected IEnumerator RunBoardDisableAttack(BoardDisableLogic logic)
     {
         var context = new BoardDisableContext
         {
             BoardInfo = this
         };
 
-        StartCoroutine(RunBoardDisableAttack(logic, context));
-    }
-
-    protected IEnumerator RunBoardDisableAttack(BoardDisableLogic logic, BoardDisableContext context)
-    {
         _numMovingGems++;
         yield return StartCoroutine(logic.Execute(context));
         ResolveGemMovement();
+    }
+
+
+    public bool CanBeDisable(Vector2Int index)
+    {
+        // If gem board is not initialized, there are no disabled gems => all cells can be disable.
+        if (_gems == null)
+        {
+            return true;
+        }
+        var gem = _gems[index.x, index.y];
+        return gem != null ? (gem.Color != GemColor.None) : false;
     }
 
     public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices)
@@ -709,6 +769,12 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             var Gem = _gems[index.x, index.y];
             if (Gem.Color != GemColor.None)
             {
+                GemShake gemShake = _gems[index.x, index.y]?.GetComponentInChildren<GemShake>();
+                gemShake.StopShake();
+                if(_activeShakes.Contains(gemShake))
+                {
+                    _activeShakes.Remove(gemShake);
+                }
                 _gems[index.x, index.y].Init(GemColor.None);
             }
             else
@@ -744,6 +810,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void ClearAndRefillGems()
     {
+        ClearDisableEffects();
+
         for (int r = 0; r < _rows; r++)
         {
             for (int c = 0; c < _cols; c++)
@@ -755,5 +823,62 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         _numMovingGems = 0;
 
         GenerateBoard();
+    }
+
+    protected void ApplyShaking(int row, int col, Gem gem = null)
+    {
+        ApplyShaking(new Vector2Int(row, col), gem);
+    }
+
+    protected void ApplyShaking(Vector2Int index, Gem gem = null)
+    {
+        if (_gems == null)
+        {
+            return;
+        }
+
+        if (gem == null)
+        {
+            gem = _gems[index.x, index.y];
+        }
+
+        GemShake gemShake = gem.GetComponentInChildren<GemShake>();
+
+        if (gemShake == null)
+        {
+            return;
+        }
+
+        if (_disableIndices.Contains(index))
+        {
+            gemShake.StartShake();
+            _activeShakes.Add(gemShake);
+        }
+        else
+        {
+            gemShake.StopShake();
+            _activeShakes.Remove(gemShake);
+        }
+    }
+
+    protected void ClearDisableEffects()
+    {
+        foreach (GameObject go in _disableFXs)
+        {
+            if (go)
+            {
+                Destroy(go);
+            }
+        }
+        _disableFXs.Clear();
+        _disableIndices.Clear();
+        foreach (GemShake gs in _activeShakes)
+        {
+            if (gs)
+            {
+                gs.StopShake();
+            }
+        }
+        _activeShakes.Clear();
     }
 }

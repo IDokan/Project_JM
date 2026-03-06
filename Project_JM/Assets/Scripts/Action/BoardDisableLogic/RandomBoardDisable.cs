@@ -14,36 +14,41 @@ public class RandomBoardDisable : BoardDisableLogic
     [SerializeField] protected int _numDisableGems;
     protected int russianRouletteMax = 10;
 
+    protected List<Vector2Int> _indicesWillDisabled = new List<Vector2Int>();
+
+    public override IReadOnlyList<Vector2Int> PreviewGemWillDisabled(BoardDisableContext context)
+    {
+        var boardInfo = context.BoardInfo;
+
+        _indicesWillDisabled.Clear();
+
+        int maxTries = russianRouletteMax * _numDisableGems;
+        int tries = 0;
+
+        while (_indicesWillDisabled.Count < _numDisableGems && tries++ < maxTries)
+        {
+            Vector2Int index = RandomIndex(boardInfo);
+            if (boardInfo.CanBeDisable(index) &&
+                _indicesWillDisabled.Contains(index) == false)
+            {
+                _indicesWillDisabled.Add(index);
+            }
+        }
+        return _indicesWillDisabled.ToArray();
+    }
+
     public override IEnumerator Execute(BoardDisableContext context)
     {
-        int size = _numDisableGems;
-        int russianRoulette = russianRouletteMax;
-        var boardInfo = context.BoardInfo;
-        do
-        {
-            var failedList = boardInfo.DisableGems(
-                RandomIndices(size, boardInfo)
-                );
-
-            size = failedList.Count;
-            
-            russianRoulette--;
-            // Do again if any index failed or...
-        } while (size > 0 && russianRoulette > 0);
+        context.BoardInfo.DisableGems(_indicesWillDisabled);
 
         yield break;
     }
 
-    protected IReadOnlyList<Vector2Int> RandomIndices(int sizeIndices, IBoardInfo boardInfo)
+    protected Vector2Int RandomIndex(IBoardInfo boardInfo)
     {
-        var list = new List<Vector2Int>(sizeIndices);
-        for (int i = 0; i < sizeIndices; i++)
-        {
-            int row = GlobalRNG.Instance.NextInt(boardInfo.Rows);
-            int col = GlobalRNG.Instance.NextInt(boardInfo.Cols);
-            list.Add(new Vector2Int(row, col));
-        }
+        int row = GlobalRNG.Instance.NextInt(boardInfo.Rows);
+        int col = GlobalRNG.Instance.NextInt(boardInfo.Cols);
 
-        return list;
+        return new Vector2Int(row, col);
     }
 }

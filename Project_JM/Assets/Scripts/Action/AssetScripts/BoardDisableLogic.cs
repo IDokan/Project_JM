@@ -15,5 +15,6 @@ public struct BoardDisableContext
 
 public abstract class BoardDisableLogic : ScriptableObject
 {
+    public abstract IReadOnlyList<Vector2Int> PreviewGemWillDisabled(BoardDisableContext context);
     public abstract IEnumerator Execute(BoardDisableContext context);
 }
