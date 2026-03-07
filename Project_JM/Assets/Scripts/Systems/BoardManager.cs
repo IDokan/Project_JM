@@ -416,8 +416,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         _numMovingGems++;
 
-        ApplyShaking(newRow, newCol, gem);
-
         Vector2 targetLocation = GetGemLocation(newRow, newCol);
         gem.GetComponent<GemMover>().EnqueueMove(targetLocation, onComplete: ResolveGemMovement);
     }
@@ -730,9 +728,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             GameObject fx = Instantiate(_gemDisableFXPrefab, transform);
             fx.transform.localPosition = GetGemLocation(index.x, index.y);
             _disableFXs.Add(fx);
-
-
-            ApplyShaking(index.x, index.y);
         }
 
     }
@@ -769,12 +764,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             var Gem = _gems[index.x, index.y];
             if (Gem.Color != GemColor.None)
             {
-                GemShake gemShake = _gems[index.x, index.y]?.GetComponentInChildren<GemShake>();
-                gemShake.StopShake();
-                if(_activeShakes.Contains(gemShake))
-                {
-                    _activeShakes.Remove(gemShake);
-                }
                 _gems[index.x, index.y].Init(GemColor.None);
             }
             else
@@ -861,17 +850,18 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
     }
 
-    protected void ClearDisableEffects()
+    protected void DisableShaking(int row, int col)
     {
-        foreach (GameObject go in _disableFXs)
+        GemShake gemShake = _gems[row, col]?.GetComponentInChildren<GemShake>();
+        gemShake.StopShake();
+        if (_activeShakes.Contains(gemShake))
         {
-            if (go)
-            {
-                Destroy(go);
-            }
+            _activeShakes.Remove(gemShake);
         }
-        _disableFXs.Clear();
-        _disableIndices.Clear();
+    }
+
+    protected void ClearShakingEffects()
+    {
         foreach (GemShake gs in _activeShakes)
         {
             if (gs)
@@ -880,5 +870,26 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             }
         }
         _activeShakes.Clear();
+    }
+
+    protected void ClearDisableEffects()
+    {
+        foreach (GameObject go in _disableFXs)
+        {
+            if (go)
+            {
+                FadeOnSpawnAndDeath fadeScript = go.GetComponent<FadeOnSpawnAndDeath>();
+                if (fadeScript != null)
+                {
+                    fadeScript.FadeOutAndDestroy();
+                }
+                else
+                {
+                    Destroy(go);
+                }
+            }
+        }
+        _disableFXs.Clear();
+        _disableIndices.Clear();
     }
 }
