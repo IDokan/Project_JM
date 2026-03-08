@@ -89,6 +89,30 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
     }
 
+    protected struct MatchCheckResult
+    {
+        public int HorizontalCount;
+        public int VerticalCount;
+
+        public List<Vector2Int> HorizontalIndices;
+        public List<Vector2Int> VerticalIndices;
+
+        public bool HasMatch => HorizontalCount >= 3 || VerticalCount >= 3;
+
+        public MatchCheckResult(int horizontalCount, int verticalCount, List<Vector2Int> horizontalIndices, List<Vector2Int> verticalIndices)
+        {
+            HorizontalCount = horizontalCount;
+            VerticalCount = verticalCount;
+            HorizontalIndices = horizontalIndices;
+            VerticalIndices = verticalIndices;
+        }
+
+        public static MatchCheckResult Empty()
+        {
+            return new MatchCheckResult(0, 0, new List<Vector2Int>(), new List<Vector2Int>());
+        }
+    }
+
     protected void OnEnable()
     {
         _characterDeathEventChannel.OnRaised += OnAnyoneDied;
@@ -162,6 +186,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 }
                 MoveGem(_gems[r, c], r, c);
             }
+        }
+
+        // @@ TODO: Remove the below code and apply shakings when there are no movements after 4 seconds from the last movement.
+        ClearShakingEffects();
+        List<Vector2Int> hintIndices = FindHintIndices();
+        foreach (Vector2Int index in  hintIndices)
+        {
+            ApplyShaking(index);
         }
     }
 
@@ -519,7 +551,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         _pendingByGemID.Remove(gemID);
     }
 
-    // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)
+    // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)\
+    // Instead of only beginning, it is for total inspection.
     protected bool HasMatchAtBeginning(int row, int col)
     {
         if (_gems[row, col] == null)
@@ -665,7 +698,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
             // Swap
-            (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
+            SwapGems(index.x, index.y, targetRow, targetCol);
 
             // Restore status before swap if no match found
             if (HasMatchAt(index.x, index.y) == false && HasMatchAt(targetRow, targetCol) == false)
@@ -673,7 +706,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 MoveGem(_gems[index.x, index.y], targetRow, targetCol);
                 MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
-                (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
+                SwapGems(index.x, index.y, targetRow, targetCol);
             }
 
             return true;
@@ -838,16 +871,18 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             return;
         }
 
-        if (_disableIndices.Contains(index))
+        // @@ TODO: Remove shaking effects when they moved.
+        // @@ TODO: Remove commented out lines.
+        //if (_disableIndices.Contains(index))
         {
             gemShake.StartShake();
             _activeShakes.Add(gemShake);
         }
-        else
-        {
-            gemShake.StopShake();
-            _activeShakes.Remove(gemShake);
-        }
+        //else
+        //{
+        //    gemShake.StopShake();
+        //    _activeShakes.Remove(gemShake);
+        //}
     }
 
     protected void DisableShaking(int row, int col)
@@ -891,5 +926,147 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
         _disableFXs.Clear();
         _disableIndices.Clear();
+    }
+
+    protected void SwapGems(int row1, int col1, int row2, int col2)
+    {
+        (_gems[row1, col1], _gems[row2, col2]) = (_gems[row2, col2], _gems[row1, col1]);
+    }
+
+    protected List<Vector2Int> FindHintIndices()
+    {
+        List<Vector2Int> result = new();
+
+        for (int i = 0; i < _rows - 1; i++)
+        {
+            for (int j = 0; j < _cols - 1; j++)
+            {
+                // Try swap and find if it has match
+
+                SwapGems(i, j, i, j + 1);
+                MatchCheckResult horizontalSwapResult = GetMatchAt(i, j);
+                if (horizontalSwapResult.HasMatch)
+                {
+                    SwapGems(i, j, i, j + 1);
+                    result.Add(new Vector2Int(i, j + 1));
+                    result.AddRange(horizontalSwapResult.HorizontalIndices);
+                    result.AddRange(horizontalSwapResult.VerticalIndices);
+                    return result;
+                }
+                MatchCheckResult horizontalSwapResult2 = GetMatchAt(i, j + 1);
+                if (horizontalSwapResult2.HasMatch)
+                {
+                    SwapGems(i, j, i, j + 1);
+                    result.Add(new Vector2Int(i, j));
+                    result.AddRange(horizontalSwapResult2.HorizontalIndices);
+                    result.AddRange(horizontalSwapResult2.VerticalIndices);
+                    return result;
+                }
+                SwapGems(i, j, i, j + 1);
+
+                SwapGems(i, j, i + 1, j);
+                MatchCheckResult verticalSwapResult = GetMatchAt(i, j);
+                if (verticalSwapResult.HasMatch)
+                {
+                    SwapGems(i, j, i + 1, j);
+                    result.Add(new Vector2Int(i + 1, j));
+                    result.AddRange(verticalSwapResult.HorizontalIndices);
+                    result.AddRange(verticalSwapResult.VerticalIndices);
+                    return result;
+                }
+                MatchCheckResult verticalSwapResult2 = GetMatchAt(i + 1, j);
+                if (verticalSwapResult.HasMatch)
+                {
+                    SwapGems(i, j, i + 1, j);
+                    result.Add(new Vector2Int(i, j));
+                    result.AddRange(verticalSwapResult2.HorizontalIndices);
+                    result.AddRange(verticalSwapResult2.VerticalIndices);
+                    return result;
+                }
+                SwapGems(i, j, i + 1, j);
+            }
+        }
+
+        return result;
+    }
+
+    // Warning: the result indices does not contain (row, col)
+    protected MatchCheckResult GetMatchAt(int row, int col)
+    {
+        MatchCheckResult result = MatchCheckResult.Empty();
+
+        if (!InBounds(row, col) || _gems[row, col] == null)
+        {
+            return result;
+        }
+
+        GemColor color = _gems[row, col].Color;
+
+        // Horizontal check
+        result.HorizontalCount = 1;
+        int c = col - 1;
+        while (c >= 0)
+        {
+            if (_gems[row, c].Color == color)
+            {
+                result.HorizontalCount++;
+                result.HorizontalIndices.Add(new Vector2Int(row, c));
+                c--;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        c = col + 1;
+
+        while (c < _cols)
+        {
+            if (_gems[row, c].Color == color)
+            {
+                result.HorizontalCount++;
+                result.HorizontalIndices.Add(new Vector2Int(row, c));
+                c++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        // Vertical check
+        result.VerticalCount = 1;
+        int r = row - 1;
+        while (r >= 0)
+        {
+            if (_gems[r, col].Color == color)
+            {
+                result.VerticalCount++;
+                result.VerticalIndices.Add(new Vector2Int(r, col));
+                r--;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        r = row + 1;
+        while (r < _rows)
+        {
+            if (_gems[r, col].Color == color)
+            {
+                result.VerticalCount++;
+                result.VerticalIndices.Add(new Vector2Int(r, col));
+                r++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return result;
     }
 }
