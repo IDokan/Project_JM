@@ -9,6 +9,7 @@ using MatchEnums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public interface IBoardInfo
@@ -45,6 +46,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
 
     [SerializeField] protected GameObject _gemDisableFXPrefab;
+
+    // Hint delay starts from user's input
+    [Header("Hint")]
+    [SerializeField] protected float hintDelay = 4f;
 
     protected BoardCoverController boardCoverController;
 
@@ -113,6 +118,12 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
     }
 
+    protected struct HintResult
+    {
+        public bool Found;
+        public List<Vector2Int> Indices;
+    }
+
     protected void OnEnable()
     {
         _characterDeathEventChannel.OnRaised += OnAnyoneDied;
@@ -136,9 +147,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     public bool InputEnabled => !_busy;
     protected bool _busy;
 
-    protected readonly HashSet<GameObject> _disableFXs = new ();
-    protected readonly HashSet<Vector2Int> _disableIndices = new();
-    protected readonly HashSet<GemShake> _activeShakes = new();
+    protected readonly HashSet<GameObject> _disableFXs = new();
+    protected readonly List<List<Vector2Int>> _hintIndexList = new();
+
+    protected Coroutine _hintRoutine = null;
 
     public bool InBounds(int r, int c) => r >= 0 && r < _rows && c >= 0 && c < _cols;
 
@@ -186,14 +198,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 }
                 MoveGem(_gems[r, c], r, c);
             }
-        }
-
-        // @@ TODO: Remove the below code and apply shakings when there are no movements after 4 seconds from the last movement.
-        ClearShakingEffects();
-        List<Vector2Int> hintIndices = FindHintIndices();
-        foreach (Vector2Int index in  hintIndices)
-        {
-            ApplyShaking(index);
         }
     }
 
@@ -243,6 +247,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 toResolve.Add(cell);
             }
         }
+
+        // If there was a gem that marked as hint, stop them and its group.
+        StopShaking(toResolve);
+        StartHintRoutine();
 
         foreach (var cell in toResolve)
         {
@@ -756,7 +764,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         for (int i = 0; i < indices.Count; i++)
         {
             Vector2Int index = indices[i];
-            _disableIndices.Add(index);
 
             GameObject fx = Instantiate(_gemDisableFXPrefab, transform);
             fx.transform.localPosition = GetGemLocation(index.x, index.y);
@@ -792,6 +799,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices)
     {
         var failed = new List<Vector2Int>();
+
+        StopShaking(disableIndices);
+
         foreach (var index in disableIndices)
         {
             var Gem = _gems[index.x, index.y];
@@ -814,12 +824,16 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         StartCoroutine(ClearAndRefillGemsAfterDelay(1f));
 
+        StopHintRoutine();
+
         boardCoverController.ShowCover();
     }
 
     protected void OnEnemySpawned(GameObject gameObject)
     {
         _busy = false;
+
+        StartHintRoutine();
 
         boardCoverController.HideCover();
     }
@@ -847,64 +861,87 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         GenerateBoard();
     }
 
-    protected void ApplyShaking(int row, int col, Gem gem = null)
-    {
-        ApplyShaking(new Vector2Int(row, col), gem);
-    }
-
-    protected void ApplyShaking(Vector2Int index, Gem gem = null)
+    protected void StartShaking(List<Vector2Int> hintIndices)
     {
         if (_gems == null)
         {
             return;
         }
 
-        if (gem == null)
+        foreach (Vector2Int index in hintIndices)
         {
-            gem = _gems[index.x, index.y];
+            Gem gem = _gems[index.x, index.y];
+            if (gem == null)
+            {
+                continue;
+            }
+
+            GemShake gemShake = gem.GetComponentInChildren<GemShake>();
+
+            if (gemShake == null)
+            {
+                return;
+            }
+
+            gemShake.StartShake();
         }
 
-        GemShake gemShake = gem.GetComponentInChildren<GemShake>();
+        _hintIndexList.Add(hintIndices);
+    }
 
-        if (gemShake == null)
+    protected void StopShaking(IEnumerable<Vector2Int> indexEnumerable)
+    {
+        HashSet<Vector2Int> target = new HashSet<Vector2Int>(indexEnumerable);
+
+        bool ShouldRemove(List<Vector2Int> inner)
+        {
+            return inner.Any(item => target.Contains(item));
+        }
+
+        List<List<Vector2Int>> removedIndices = _hintIndexList.Where(ShouldRemove).ToList();
+
+        foreach (List<Vector2Int> indices in removedIndices)
+        {
+            StopShaking(indices);
+        }
+    }
+
+    protected void StopShaking(List<Vector2Int> indices)
+    {
+        if (_gems == null)
         {
             return;
         }
 
-        // @@ TODO: Remove shaking effects when they moved.
-        // @@ TODO: Remove commented out lines.
-        //if (_disableIndices.Contains(index))
+        foreach (Vector2Int index in indices)
         {
-            gemShake.StartShake();
-            _activeShakes.Add(gemShake);
-        }
-        //else
-        //{
-        //    gemShake.StopShake();
-        //    _activeShakes.Remove(gemShake);
-        //}
-    }
+            Gem gem = _gems[index.x, index.y];
 
-    protected void DisableShaking(int row, int col)
-    {
-        GemShake gemShake = _gems[row, col]?.GetComponentInChildren<GemShake>();
-        gemShake.StopShake();
-        if (_activeShakes.Contains(gemShake))
-        {
-            _activeShakes.Remove(gemShake);
+            if (gem == null)
+            {
+                continue;
+            }
+
+            GemShake gemShake = gem.GetComponentInChildren<GemShake>();
+
+            if (gemShake == null)
+            {
+                continue;
+            }
+
+            gemShake.StopShake();
         }
+
+        _hintIndexList.Remove(indices);
     }
 
     protected void ClearShakingEffects()
     {
-        foreach (GemShake gs in _activeShakes)
+        foreach (List<Vector2Int> hintIndices in _hintIndexList)
         {
-            if (gs)
-            {
-                gs.StopShake();
-            }
+            StopShaking(hintIndices);
         }
-        _activeShakes.Clear();
+        _hintIndexList.Clear();
     }
 
     protected void ClearDisableEffects()
@@ -925,7 +962,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             }
         }
         _disableFXs.Clear();
-        _disableIndices.Clear();
     }
 
     protected void SwapGems(int row1, int col1, int row2, int col2)
@@ -935,59 +971,33 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected List<Vector2Int> FindHintIndices()
     {
-        List<Vector2Int> result = new();
-
-        for (int i = 0; i < _rows - 1; i++)
+        for (int i = 0; i < _rows; i++)
         {
-            for (int j = 0; j < _cols - 1; j++)
+            for (int j = 0; j < _cols; j++)
             {
                 // Try swap and find if it has match
 
-                SwapGems(i, j, i, j + 1);
-                MatchCheckResult horizontalSwapResult = GetMatchAt(i, j);
-                if (horizontalSwapResult.HasMatch)
+                if (i + 1 < _rows)
                 {
-                    SwapGems(i, j, i, j + 1);
-                    result.Add(new Vector2Int(i, j + 1));
-                    result.AddRange(horizontalSwapResult.HorizontalIndices);
-                    result.AddRange(horizontalSwapResult.VerticalIndices);
-                    return result;
+                    HintResult rowHintResult = FindHintFromSwap(i, j, i + 1, j);
+                    if (rowHintResult.Found)
+                    {
+                        return rowHintResult.Indices;
+                    }
                 }
-                MatchCheckResult horizontalSwapResult2 = GetMatchAt(i, j + 1);
-                if (horizontalSwapResult2.HasMatch)
-                {
-                    SwapGems(i, j, i, j + 1);
-                    result.Add(new Vector2Int(i, j));
-                    result.AddRange(horizontalSwapResult2.HorizontalIndices);
-                    result.AddRange(horizontalSwapResult2.VerticalIndices);
-                    return result;
-                }
-                SwapGems(i, j, i, j + 1);
 
-                SwapGems(i, j, i + 1, j);
-                MatchCheckResult verticalSwapResult = GetMatchAt(i, j);
-                if (verticalSwapResult.HasMatch)
+                if (j + 1 < _cols)
                 {
-                    SwapGems(i, j, i + 1, j);
-                    result.Add(new Vector2Int(i + 1, j));
-                    result.AddRange(verticalSwapResult.HorizontalIndices);
-                    result.AddRange(verticalSwapResult.VerticalIndices);
-                    return result;
+                    HintResult colHintResult = FindHintFromSwap(i, j, i, j + 1);
+                    if (colHintResult.Found)
+                    {
+                        return colHintResult.Indices;
+                    }
                 }
-                MatchCheckResult verticalSwapResult2 = GetMatchAt(i + 1, j);
-                if (verticalSwapResult.HasMatch)
-                {
-                    SwapGems(i, j, i + 1, j);
-                    result.Add(new Vector2Int(i, j));
-                    result.AddRange(verticalSwapResult2.HorizontalIndices);
-                    result.AddRange(verticalSwapResult2.VerticalIndices);
-                    return result;
-                }
-                SwapGems(i, j, i + 1, j);
             }
         }
 
-        return result;
+        return new List<Vector2Int>();
     }
 
     // Warning: the result indices does not contain (row, col)
@@ -1068,5 +1078,117 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
 
         return result;
+    }
+
+    protected HintResult FindHintFromSwap(int row1, int col1, int row2, int col2)
+    {
+        SwapGems(row1, col1, row2, col2);
+
+        try
+        {
+            if (IsShaking(row1, col1) == false)
+            {
+
+                MatchCheckResult result1 = GetMatchAt(row1, col1);
+                if (result1.HasMatch)
+                {
+                    return new HintResult
+                    {
+                        Found = true,
+                        Indices = BuildHintIndices(row2, col2, result1)
+                    };
+                }
+            }
+
+
+            if (IsShaking(row2, col2) == false)
+            {
+                MatchCheckResult result2 = GetMatchAt(row2, col2);
+                if (result2.HasMatch)
+                {
+                    return new HintResult
+                    {
+                        Found = true,
+                        Indices = BuildHintIndices(row1, col1, result2)
+                    };
+                }
+            }
+        }
+        finally
+        {
+            SwapGems(row1, col1, row2, col2);
+        }
+
+        return new HintResult
+        {
+            Found = false,
+            Indices = null
+        };
+    }
+
+    protected List<Vector2Int> BuildHintIndices(int movedGemRow, int movedGemCol, MatchCheckResult matchCheck)
+    {
+        List<Vector2Int> result = new();
+        Vector2Int movedIndex = new Vector2Int(movedGemRow, movedGemCol);
+
+        result.Add(movedIndex);
+        result.AddRange(matchCheck.HorizontalIndices);
+        result.AddRange(matchCheck.VerticalIndices);
+
+        return result;
+    }
+
+    protected void StartHintRoutine()
+    {
+        if (_hintRoutine != null)
+        {
+            StopHintRoutine();
+        }
+
+        _hintRoutine = StartCoroutine(HintRoutine(hintDelay));
+    }
+
+    protected void StopHintRoutine()
+    {
+        StopCoroutine(_hintRoutine);
+        _hintRoutine = null;
+    }
+
+    protected IEnumerator HintRoutine(float hintDelay)
+    {
+        yield return new WaitForSeconds(hintDelay);
+
+        _hintRoutine = null;
+
+        List<Vector2Int> hintIndices = FindHintIndices();
+        if (hintIndices.Count > 0)
+        {
+            StartShaking(hintIndices);
+
+            StartHintRoutine();
+        }
+    }
+
+    protected bool IsShaking(int r, int c)
+    {
+        if (_gems == null)
+        {
+            return false;
+        }
+
+        Gem gem = _gems[r, c];
+        if (gem == null)
+        {
+            return false;
+        }
+
+        GemShake gemShake = gem.GetComponentInChildren<GemShake>();
+
+        if (gemShake == null)
+        {
+            return false;
+        }
+
+        return gemShake.IsShaking;
     }
 }
