@@ -14,14 +14,20 @@ public class BarStatusBinder : MonoBehaviour
 
     protected void OnEnable()
     {
-        _boundStatus.OnHPChanged += UpdateHP;
-        _boundStatus.OnShieldChanged += UpdateShield;
+        if (_boundStatus != null)
+        {
+            _boundStatus.OnHPChanged += UpdateHP;
+            _boundStatus.OnShieldChanged += UpdateShield;
+        }
     }
 
     protected void OnDisable()
     {
-        _boundStatus.OnHPChanged -= UpdateHP;
-        _boundStatus.OnShieldChanged -= UpdateShield;
+        if (_boundStatus != null)
+        {
+            _boundStatus.OnHPChanged -= UpdateHP;
+            _boundStatus.OnShieldChanged -= UpdateShield;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

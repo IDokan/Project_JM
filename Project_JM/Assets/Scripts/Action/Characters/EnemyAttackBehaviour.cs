@@ -26,6 +26,9 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected Coroutine _enrangeRoutine;
     protected float _enrageTimer;
     [SerializeField, Min(10f)] protected float _enrageDelay = 30f;
+    public float EnrageDelay => _enrageDelay;
+
+    public event Action<float, float> OnEnrageTimeChanged;
 
     protected bool _isStunned = false;
     protected Coroutine _stunRoutine = null;
@@ -110,6 +113,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected IEnumerator EnrageAfterDelay()
     {
         _enrageTimer = _enrageDelay;
+        OnEnrageTimeChanged?.Invoke(_enrageTimer, _enrageDelay);
 
         // Countdown
         while (_enrageTimer > 0f)
@@ -117,11 +121,13 @@ public class EnemyAttackBehaviour : MonoBehaviour
             if (!_isStunned)
             {
                 _enrageTimer -= GlobalTimeManager.DeltaTime;
+                OnEnrageTimeChanged?.Invoke(_enrageTimer, _enrageDelay);
             }
 
             yield return null;
         }
 
+        OnEnrageTimeChanged?.Invoke(0, _enrageDelay);
         Enrage();
     }
 
