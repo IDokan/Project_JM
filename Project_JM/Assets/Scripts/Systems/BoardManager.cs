@@ -148,7 +148,15 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected bool _busy;
 
     protected readonly HashSet<GameObject> _disableFXs = new();
-    protected readonly List<List<Vector2Int>> _hintIndexList = new();
+
+    protected struct ShakingData
+    {
+        public Vector2Int index;
+        public GemColor gemColor;
+        public GemShake shaker;
+    }
+
+    protected readonly List<List<ShakingData>> _shakingDataContainer = new();
 
     protected Coroutine _hintRoutine = null;
 
@@ -868,6 +876,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             return;
         }
 
+        List<ShakingData> shakingData = new();
         foreach (Vector2Int index in hintIndices)
         {
             Gem gem = _gems[index.x, index.y];
@@ -884,64 +893,65 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             }
 
             gemShake.StartShake();
+
+            shakingData.Add(new ShakingData
+            {
+                index = index,
+                gemColor = gem.Color,
+                shaker = gemShake
+            });
         }
 
-        _hintIndexList.Add(hintIndices);
+        _shakingDataContainer.Add(shakingData);
+
+    }
+
+    protected void StopShaking(Vector2Int index)
+    {
+        StopShaking(new[] { index });
     }
 
     protected void StopShaking(IEnumerable<Vector2Int> indexEnumerable)
     {
         HashSet<Vector2Int> target = new HashSet<Vector2Int>(indexEnumerable);
 
-        bool ShouldRemove(List<Vector2Int> inner)
+        bool ShouldRemove(List<ShakingData> inner)
         {
-            return inner.Any(item => target.Contains(item));
+            return inner.Any(item => target.Contains(item.index));
         }
 
-        List<List<Vector2Int>> removedIndices = _hintIndexList.Where(ShouldRemove).ToList();
+        List<List<ShakingData>> removedData = _shakingDataContainer.Where(ShouldRemove).ToList();
 
-        foreach (List<Vector2Int> indices in removedIndices)
+        foreach (List<ShakingData> data in removedData)
         {
-            StopShaking(indices);
+            StopShaking(data);
         }
+
+        VerifyShakings();
     }
 
-    protected void StopShaking(List<Vector2Int> indices)
+    protected void StopShaking(List<ShakingData> removedData)
     {
         if (_gems == null)
         {
             return;
         }
 
-        foreach (Vector2Int index in indices)
+        foreach (ShakingData data in removedData)
         {
-            Gem gem = _gems[index.x, index.y];
-
-            if (gem == null)
-            {
-                continue;
-            }
-
-            GemShake gemShake = gem.GetComponentInChildren<GemShake>();
-
-            if (gemShake == null)
-            {
-                continue;
-            }
-
-            gemShake.StopShake();
+            data.shaker?.StopShake();
         }
 
-        _hintIndexList.Remove(indices);
+        _shakingDataContainer.Remove(removedData);
     }
 
     protected void ClearShakingEffects()
     {
-        foreach (List<Vector2Int> hintIndices in _hintIndexList)
+        foreach (List<ShakingData> shakingData in _shakingDataContainer)
         {
-            StopShaking(hintIndices);
+            StopShaking(shakingData);
         }
-        _hintIndexList.Clear();
+        _shakingDataContainer.Clear();
     }
 
     protected void ClearDisableEffects()
@@ -962,6 +972,43 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             }
         }
         _disableFXs.Clear();
+    }
+
+    protected void VerifyShakings()
+    {
+        HashSet<List<ShakingData>> invalidData = new();
+
+        foreach (List<ShakingData> shakingData in _shakingDataContainer)
+        {
+            bool isInvalid = false;
+
+            for (int i = 0; i < shakingData.Count; i++)
+            {
+                ShakingData data = shakingData[i];
+
+                Gem gem = _gems[data.index.x, data.index.y];
+                // If gem became different when marked as hint (started to shake)
+                if (gem == null || data.gemColor != gem.Color)
+                {
+                    isInvalid = true;
+                    break;
+                }
+            }
+
+            if (isInvalid)
+            {
+                foreach (ShakingData data in shakingData)
+                {
+                    data.shaker?.StopShake();
+                }
+                invalidData.Add(shakingData);
+            }
+        }
+
+        if (invalidData.Count > 0)
+        {
+            _shakingDataContainer.RemoveAll(item => invalidData.Contains(item));
+        }
     }
 
     protected void SwapGems(int row1, int col1, int row2, int col2)
