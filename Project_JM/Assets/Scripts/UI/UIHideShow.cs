@@ -2,7 +2,7 @@
 // Copyright (c) 03/09/2026 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM 
 // File: UIHideShow.cs
-// Summary: A script to bind enrage time to a slider bar.
+// Summary: A script to hide and show serialized objects.
 
 using UnityEngine;
 

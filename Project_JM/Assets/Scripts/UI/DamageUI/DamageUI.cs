@@ -9,34 +9,49 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine;
 using GemEnums;
+using UnityEngine.UI;
 
 public class DamageUI : MonoBehaviour
 {
     [SerializeField] protected float _lifetime = 1.2f;
+    [SerializeField] protected TextMeshProUGUI text;
+    [SerializeField] protected GameObject shieldObject;
 
-    protected TextMeshProUGUI _text;
+    protected Image shieldImage = null;
     protected RectTransform _rect;
-
-    protected bool _isBlocked = false;
-    public bool IsBlocked { get; protected set; }
 
 
     protected void Awake()
     {
         _rect = GetComponent<RectTransform>();
-        _text = GetComponent<TextMeshProUGUI>();
+        if (text == null)
+        {
+            text = GetComponent<TextMeshProUGUI>();
+        }
+    }
+
+    protected void OnEnable()
+    {
+        shieldObject.SetActive(false);
+        if (shieldImage != null)
+        {
+            Color shieldImageColor = shieldImage.color;
+            shieldImageColor.a = 1f;
+            shieldImage.color = shieldImageColor;
+            shieldImage = null;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Show(int amount, AttackContext context, bool isCritical, float sizeMultiplier)
@@ -48,34 +63,33 @@ public class DamageUI : MonoBehaviour
 
         if (amount <= 0)
         {
-            _text.text = $"Blocked!";
-            _isBlocked = true;
+            shieldObject.SetActive(true);
+            shieldImage = shieldObject.GetComponent<Image>();
         }
-        else
+
+        text.text = amount.ToString();
+
+
+        if (isCritical)
         {
-
-            _text.text = amount.ToString();
-
-
-            if (isCritical)
-            {
-                 _text.text += "<size=65%>!!</size>";
-            }
+            text.text += "<size=65%>!!</size>";
         }
-        _text.alpha = 1f;
+
+
+        text.alpha = 1f;
         if (context.Attacker is Component c)
         {
             if (c.TryGetComponent<EnemyTag>(out _))
             {
-                _text.color = GemColorUtility.ConvertGemColor(GemColor.None);
+                text.color = GemColorUtility.ConvertGemColor(GemColor.None);
             }
             else
             {
-                _text.color = GemColorUtility.ConvertGemColor(context.Attacker.Colors[0]);
+                text.color = GemColorUtility.ConvertGemColor(context.Attacker.Colors[0]);
             }
         }
 
-        _text.fontSize *= isCritical ? 2f * sizeMultiplier : sizeMultiplier;
+        text.fontSize *= isCritical ? 2f * sizeMultiplier : sizeMultiplier;
 
         // Randomize
         float randomX = Random.Range(-50f, 50f);
@@ -85,10 +99,17 @@ public class DamageUI : MonoBehaviour
         // Animation
         Sequence seq = DOTween.Sequence();
         seq.Append(_rect.DOAnchorPos(_rect.anchoredPosition + new Vector2(randomX, 80f), _lifetime))
-           .Join(_text.DOFade(0f, _lifetime).SetEase(Ease.InCubic))
-           .Join(
+           .Join(text.DOFade(0f, _lifetime).SetEase(Ease.InCubic));
+
+
+        if (shieldImage != null)
+        {
+            seq.Join(shieldImage.DOFade(0f, _lifetime).SetEase(Ease.InCubic));
+        }
+
+        seq.Join(
             _rect.DOScale(1.2f, _lifetime / 4f).SetEase(Ease.OutBack)
-            .OnComplete(()=>_rect.DOScale(0.8f, _lifetime * 3f / 4f))
+            .OnComplete(() => _rect.DOScale(0.8f, _lifetime * 3f / 4f))
             )
            .AppendInterval(0.2f)
            .OnComplete(() =>

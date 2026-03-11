@@ -16,6 +16,8 @@ public class EasingBarUI : BarUIBase
     [SerializeField] protected Slider easingHealthSlider;
     [SerializeField] protected float lerpSpeed = -12f;
 
+    [SerializeField] protected UIHideShow uiHideShow = null;
+
     protected void Awake()
     {
     }
@@ -63,7 +65,20 @@ public class EasingBarUI : BarUIBase
                 {
                     _text.CrossFadeAlpha(1f, 0.1f, false);
                     _text.text = $"{Mathf.RoundToInt(current)}";
+
                 }
+            }
+        }
+
+        if (uiHideShow != null)
+        {
+            if (current <= 0)
+            {
+                uiHideShow.HideObjects();
+            }
+            else
+            {
+                uiHideShow.ShowObjects();
             }
         }
     }
@@ -74,6 +89,19 @@ public class EasingBarUI : BarUIBase
         easingHealthSlider.maxValue = max;
 
         healthSlider.value = current;
+
+
+        if (uiHideShow != null)
+        {
+            if (current <= 0)
+            {
+                uiHideShow.HideObjects();
+            }
+            else
+            {
+                uiHideShow.ShowObjects();
+            }
+        }
 
         if (_text != null)
         {
