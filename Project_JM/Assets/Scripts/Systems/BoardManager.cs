@@ -44,6 +44,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
+    [SerializeField] protected IntroEventChannel introEventChannel;
 
     [SerializeField] protected GameObject _gemDisableFXPrefab;
 
@@ -129,12 +130,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         _characterDeathEventChannel.OnRaised += OnAnyoneDied;
         _boardDisableEvents.OnRaised += OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
+        introEventChannel.OnRaised += OnIntroEvent;
     }
     protected void OnDisable()
     {
         _characterDeathEventChannel.OnRaised -= OnAnyoneDied;
         _boardDisableEvents.OnRaised -= OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
+        introEventChannel.OnRaised -= OnIntroEvent;
     }
 
     protected Gem[,] _gems;
@@ -165,11 +168,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GenerateBoard();
-        _busy = false;
-
         boardCoverController = GetComponent<BoardCoverController>();
         boardCoverController.SetBoardSizeData(_rows, _cols, _cellSize, _spacing);
+
+        //EnableCover();
     }
 
     // Update is called once per frame
@@ -517,6 +519,11 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void ResolveGemNoTarget(int row, int col)
     {
         // @@ TODO: Implement object pool for gems.
+        if (_gems == null)
+        {
+            return;
+        }
+
         var gem = _gems[row, col];
 
         if (gem != null)
@@ -827,6 +834,11 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     }
 
     protected void OnAnyoneDied(CharacterStatus stat)
+    {
+        EnableCover();
+    }
+
+    protected void EnableCover()
     {
         _busy = true;
 
@@ -1197,7 +1209,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void StopHintRoutine()
     {
-        StopCoroutine(_hintRoutine);
+        if (_hintRoutine != null)
+        {
+            StopCoroutine(_hintRoutine);
+        }
         _hintRoutine = null;
     }
 
@@ -1237,5 +1252,13 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
 
         return gemShake.IsShaking;
+    }
+
+    protected void OnIntroEvent(IntroSequencePhase phase)
+    {
+        if (phase == IntroSequencePhase.BoardMoveEnd)
+        {
+            EnableCover();
+        }
     }
 }

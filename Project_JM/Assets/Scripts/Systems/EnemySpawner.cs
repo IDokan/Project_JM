@@ -12,6 +12,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] protected EnemyBook _enemyBook;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
+    [SerializeField] protected IntroEventChannel introEventChannel;
 
     [SerializeField] protected DifficultyCurves _difficultyCurves;
 
@@ -20,22 +21,18 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] protected float spawnDelay = 4f;
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
 
-    protected void OnEnable() => _characterDeathEventChannel.OnRaised += OnCharacterDied;
-    protected void OnDisable() => _characterDeathEventChannel.OnRaised -= OnCharacterDied;
+    protected void OnEnable()
+    {
+        _characterDeathEventChannel.OnRaised += OnCharacterDied;
+        introEventChannel.OnRaised += OnIntroEvent;
+    }
+    protected void OnDisable()
+    {
+        _characterDeathEventChannel.OnRaised -= OnCharacterDied;
+        introEventChannel.OnRaised -= OnIntroEvent;
+    }
 
     protected int _numSpanwed = 0;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     protected GameObject SpawnRandomEnemy()
     {
@@ -61,14 +58,27 @@ public class EnemySpawner : MonoBehaviour
     {
         if (stat.TryGetComponent<EnemyTag>(out _))
         {
-            StartCoroutine(SpawnEnemyAfterDelay());
+            SpawnEnemyAfterDelay();
         }
     }
 
-    protected IEnumerator SpawnEnemyAfterDelay()
+    public void SpawnEnemyAfterDelay()
+    {
+        StartCoroutine(SpawnEnemyAfterDelayRoutine());
+    }
+
+    protected IEnumerator SpawnEnemyAfterDelayRoutine()
     {
         yield return new WaitForSeconds(spawnDelay);
 
         SpawnRandomEnemy();
+    }
+
+    protected void OnIntroEvent(IntroSequencePhase phase)
+    {
+        if (phase == IntroSequencePhase.PartyMoveEnd)
+        {
+            SpawnEnemyAfterDelay();
+        }
     }
 }
