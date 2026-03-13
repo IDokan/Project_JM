@@ -27,7 +27,7 @@ public class BoardCoverController : MonoBehaviour
         _instance.transform.localPosition = _hiddenLocation;
     }
 
-    public void SetBoardSizeData(int row, int col, float cellSize, float spacing)
+    public void SetBoardSizeData(int row, int col, float cellSize, float spacing, bool startsHide = false)
     {
         float gemSize = (cellSize + spacing);
         float width = col * gemSize;
@@ -38,7 +38,7 @@ public class BoardCoverController : MonoBehaviour
         _hiddenLocation = new Vector3(centerLocation.x, centerLocation.y + hiddenY, 0f);
         _shownLocation = new Vector3(centerLocation.x, centerLocation.y + shownY, 0f);
 
-        _instance.transform.localPosition = _hiddenLocation;
+        _instance.transform.localPosition = startsHide ? _hiddenLocation : _shownLocation;
     }
 
     public void ShowCover()

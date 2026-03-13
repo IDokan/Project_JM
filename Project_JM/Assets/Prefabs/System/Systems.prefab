@@ -92,6 +92,7 @@ MonoBehaviour:
   _enemyBook: {fileID: 11400000, guid: 2cb3d0cff5fe9d84d98b5e05bbcafa35, type: 2}
   _characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
+  introEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   _difficultyCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
   _spawnPosition: {fileID: 0}
   spawnDelay: 4
@@ -180,6 +181,7 @@ Transform:
   - {fileID: 734571064594701759}
   - {fileID: 6233101372431340110}
   - {fileID: 7784887393510410484}
+  - {fileID: 8966201012242255051}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8348092773870949786
@@ -196,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxLayer
   parallaxFactor: 1
   cameraTransform: {fileID: 0}
+  followMode: 1
 --- !u!1 &4134523709245377034
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,6 +342,71 @@ MonoBehaviour:
   _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
   _partyStatus: {fileID: 0}
   _comboResetTime: 3
+--- !u!1 &9033511896242580566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8966201012242255051}
+  - component: {fileID: 2655240604946002307}
+  m_Layer: 0
+  m_Name: CombatIntroManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8966201012242255051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9033511896242580566}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 935236977859202638}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2655240604946002307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9033511896242580566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dc80b08814df34f86360ab8af8f8af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatIntroManager
+  introEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  partyTransform: {fileID: 0}
+  partyStartPosition: {x: -11.76, y: -2.69, z: 0}
+  partyArrivalPosition: {x: 3.24, y: -2.69, z: 0}
+  boardTransform: {fileID: 935236977859202638}
+  boardStartPosition: {x: 1124.691, y: 580.7587, z: 0}
+  boardArrivalPosition: {x: 1133.691, y: 580.7587, z: 0}
+  uiTransforms:
+  - {fileID: 0}
+  - {fileID: 0}
+  uiStartPositions:
+  - {x: 0, y: -400, z: 0}
+  - {x: 0, y: 400, z: 0}
+  uiArrivalPositions:
+  - {x: 0, y: -550, z: 0}
+  - {x: 0, y: 550, z: 0}
+  partyMoveDuration: 5
+  boardMoveDelay: 2
+  boardMoveDuration: 3
+  uiMoveDelay: 5.5
+  uiMoveDuration: 1
 --- !u!1001 &7087120515144774686
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ using System.Collections;
 public class CameraMover : MonoBehaviour
 {
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+    [SerializeField] protected IntroEventChannel introEventChannel;
 
     [SerializeField] protected float moveDelay = 1f;
     [SerializeField] protected float moveDistance = 9f;
@@ -18,22 +19,31 @@ public class CameraMover : MonoBehaviour
     protected void OnEnable()
     {
         characterDeathEventChannel.OnRaised += OnCharacterDied;
+
+        if (introEventChannel != null)
+        {
+            introEventChannel.OnRaised += OnIntroEvent;
+        }
     }
 
     protected void OnDisable()
     {
         characterDeathEventChannel.OnRaised -= OnCharacterDied;
+        if (introEventChannel != null)
+        {
+            introEventChannel.OnRaised -= OnIntroEvent;
+        }
     }
 
     protected void OnCharacterDied(CharacterStatus stat)
     {
         if (stat.TryGetComponent<EnemyTag>(out _))
         {
-            Move(moveDistance, moveDuration);
+            Move(moveDistance, moveDuration, moveDelay);
         }
     }
 
-    public Coroutine Move(float distance, float seconds)
+    public Coroutine Move(float distance, float seconds, float moveDelay)
     {
         Vector3 start = transform.position;
         Vector3 end = start + distance * Vector3.right;
@@ -60,5 +70,13 @@ public class CameraMover : MonoBehaviour
         }
 
         transform.position = end;
+    }
+
+    protected void OnIntroEvent(IntroSequencePhase phase)
+    {
+        if (phase == IntroSequencePhase.PartyMoveEnd)
+        {
+            Move(moveDistance / moveDuration * (moveDuration + moveDelay), moveDuration + moveDelay, 0);
+        }
     }
 }

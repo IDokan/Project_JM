@@ -8,9 +8,17 @@ using UnityEngine;
 
 public class ParallaxLayer : MonoBehaviour
 {
+    public enum FollowMode
+    {
+        Manual,
+        Parallax
+    }
+
     [Range(0f, 2f)] public float parallaxFactor = 0.3f;     // 1 on camera; 0.1f slower than cam; 2 fater than cam
 
     [SerializeField] protected Transform cameraTransform;
+    [SerializeField] protected FollowMode followMode = FollowMode.Parallax;
+
 
     protected Vector3 _startPos;
     protected float _startCamX;
@@ -22,12 +30,16 @@ public class ParallaxLayer : MonoBehaviour
             cameraTransform = Camera.main.transform;
         }
 
-        _startPos = transform.position;
-        _startCamX = cameraTransform.position.x;
+        CacheParallaxOrigin();
     }
 
     void LateUpdate()
     {
+        if (followMode != FollowMode.Parallax)
+        {
+            return;
+        }
+
         float camDeltaX = cameraTransform.position.x - _startCamX;
 
         transform.position = new Vector3(
@@ -35,5 +47,22 @@ public class ParallaxLayer : MonoBehaviour
             _startPos.y,
             _startPos.z
             );
+    }
+
+    public void SetManualMode()
+    {
+        followMode = FollowMode.Manual;
+    }
+
+    public void SetParallaxMode()
+    {
+        CacheParallaxOrigin();
+        followMode = FollowMode.Parallax;
+    }
+
+    protected void CacheParallaxOrigin()
+    {
+        _startPos = transform.position;
+        _startCamX = cameraTransform.position.x;
     }
 }

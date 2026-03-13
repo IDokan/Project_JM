@@ -132,6 +132,11 @@ public class AttackMotion : MonoBehaviour
         }
     }
 
+    protected void Start()
+    {
+        StartWalk();
+    }
+
     public void EnqueueAttack(int tier)
     {
         switch (tier)
@@ -457,14 +462,19 @@ public class AttackMotion : MonoBehaviour
         {
             ClearPendingAttacks();
 
-            _walkRequested = true;
-            EnsureRunner();
+            StartWalk();
         }
 
         if (characterStat.TryGetComponent<AllyTag>(out _))
         {
             //@@TODO: Play sad motion?
         }
+    }
+
+    protected void StartWalk()
+    {
+        _walkRequested = true;
+        EnsureRunner();
     }
 
     protected IEnumerator HandleWalk()
