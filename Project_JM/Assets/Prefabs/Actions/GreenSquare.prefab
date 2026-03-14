@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 2134806769680410588}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.98789155, w: -0.15514585}
-  m_LocalPosition: {x: -1.0731335, y: 0.354444, z: 0}
+  m_LocalPosition: {x: -1.073133, y: 0.354444, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -420,7 +420,7 @@ Transform:
   m_GameObject: {fileID: 3893248538316871906}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.68493164, w: 0.7286074}
-  m_LocalPosition: {x: 1.8440537, y: 1.9554563, z: 0}
+  m_LocalPosition: {x: 1.8440537, y: 1.955456, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1011,12 +1011,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4405851450781303021, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_BoneTransforms.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4405851450781303021, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: 'm_BoneTransforms.Array.data[0]'
       value: 
-      objectReference: {fileID: 5905084452174259606}
+      objectReference: {fileID: 1291317230056479359}
     - target: {fileID: -4405851450781303021, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: 'm_BoneTransforms.Array.data[1]'
       value: 
@@ -1469,7 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.6463234e-29
-  m_labelHash: 5.878249e-16
+  m_labelHash: 3.0997532e-27
   m_SpriteKey: 0
   m_SpriteHash: 270061216
 --- !u!4 &986390283795798561 stripped
@@ -1505,7 +1505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.2684659e-34
-  m_labelHash: 5.878249e-16
+  m_labelHash: 3.0997532e-27
   m_SpriteKey: 0
   m_SpriteHash: 815377828
 --- !u!4 &1847436386779317784 stripped
@@ -1588,7 +1588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.877808e-33
-  m_labelHash: 5.878249e-16
+  m_labelHash: 3.0997532e-27
   m_SpriteKey: 0
   m_SpriteHash: 962340163
 --- !u!4 &5905084452174259606 stripped

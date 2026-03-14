@@ -51,6 +51,7 @@ public class AttackMotion : MonoBehaviour
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
     protected static readonly int ReturnTrig = Animator.StringToHash("ReturnTrig");
     protected static readonly int WalkBool = Animator.StringToHash("WalkBool");
+    protected static readonly int DiedBool = Animator.StringToHash("DiedBool");
 
     protected static readonly int TierInt = Animator.StringToHash("TierInt");
 
@@ -63,6 +64,7 @@ public class AttackMotion : MonoBehaviour
 
     protected bool _hurtRequested;
     protected bool _walkRequested;
+    protected bool _died = false;
     protected int _version;                           // increments to break waits on interrupts
 
     protected bool _attackedSinceApproach;
@@ -75,6 +77,7 @@ public class AttackMotion : MonoBehaviour
         Returning,
         Hurting,
         Walking,
+        Died,
     }
 
     protected State _state = State.Idle;
@@ -178,6 +181,12 @@ public class AttackMotion : MonoBehaviour
     {
         while (true)
         {
+            if (_died)
+            {
+                HandleDie();
+                break;
+            }
+
             // 0) In idle, play walking animation when requested
             if (_walkRequested && _state == State.Idle)
             {
@@ -467,7 +476,8 @@ public class AttackMotion : MonoBehaviour
 
         if (characterStat.TryGetComponent<AllyTag>(out _))
         {
-            //@@TODO: Play sad motion?
+            _died = true;
+            EnsureRunner();
         }
     }
 
@@ -500,4 +510,15 @@ public class AttackMotion : MonoBehaviour
     {
         _walkDone = true;
     }
+
+    protected void HandleDie()
+    {
+        _state = State.Died;
+
+        ResetCombatTriggers();
+        _animator.SetBool(DiedBool, true);
+
+        _currentTier = null;
+    }
+
 }

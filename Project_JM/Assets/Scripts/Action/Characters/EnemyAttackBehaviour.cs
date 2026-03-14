@@ -12,6 +12,8 @@ using UnityEngine;
 public class EnemyAttackBehaviour : MonoBehaviour
 {
     [SerializeField] protected EnemyAttackEventChannel attackChannel;
+    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+
     [SerializeField] protected StunRepresenter stunRepresenter;
     [SerializeField, Min(0.001f)] protected float baseCooldown = 5f;
 
@@ -37,17 +39,15 @@ public class EnemyAttackBehaviour : MonoBehaviour
     {
         _loop = StartCoroutine(Loop());
         _enrangeRoutine = StartCoroutine(EnrageAfterDelay());
+
+        characterDeathEventChannel.OnRaised += OnDied;
     }
     protected void OnDisable()
     {
-        if (_loop != null)
-        {
-            StopCoroutine(_loop);
-        }
-        if (_enrangeRoutine != null)
-        {
-            StopCoroutine(_enrangeRoutine);
-        }
+        StopRoutines();
+
+
+        characterDeathEventChannel.OnRaised -= OnDied;
     }
 
     protected void Awake()
@@ -150,5 +150,29 @@ public class EnemyAttackBehaviour : MonoBehaviour
         yield return GlobalTimeManager.WaitForGlobalSeconds(duration);
 
         _isStunned = false;
+    }
+
+    void StopRoutines()
+    {
+        if (_loop != null)
+        {
+            StopCoroutine(_loop);
+            _loop = null;
+        }
+        if (_enrangeRoutine != null)
+        {
+            StopCoroutine(_enrangeRoutine);
+            _enrangeRoutine = null;
+        }
+        if (_stunRoutine != null)
+        {
+            StopCoroutine(_stunRoutine);
+            _stunRoutine = null;
+        }
+    }
+
+    protected void OnDied(CharacterStatus stat)
+    {
+        StopRoutines();
     }
 }
