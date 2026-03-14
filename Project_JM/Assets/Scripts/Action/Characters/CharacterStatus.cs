@@ -134,8 +134,6 @@ public class CharacterStatus : MonoBehaviour
     protected void Die()
     {
         _deathEvent.Raise(this);
-        // Display death motion or anything about death. Instead of immediately deleting it.
-        Destroy(gameObject);
     }
 
     public void SetComboCritBonus(float value)

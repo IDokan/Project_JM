@@ -170,8 +170,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         boardCoverController = GetComponent<BoardCoverController>();
         boardCoverController.SetBoardSizeData(_rows, _cols, _cellSize, _spacing);
-
-        //EnableCover();
     }
 
     // Update is called once per frame
