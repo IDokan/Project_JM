@@ -14,6 +14,9 @@ public class EnemyAttackMotion : MonoBehaviour
 
     public event Action OnHit;
 
+    [Header("Wiring")]
+    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+
     // The durations can be changed in near future
     //      to display different pause for different attack logics.
     [SerializeField] protected float _moveDuration = 0.1f;
@@ -44,11 +47,13 @@ public class EnemyAttackMotion : MonoBehaviour
     protected void OnEnable()
     {
         GlobalTimeManager.OnScaleChanged += ApplyGlobalTweenScale;
+        characterDeathEventChannel.OnRaised += OnCharacterDied;
     }
 
     protected void OnDisable()
     {
         GlobalTimeManager.OnScaleChanged -= ApplyGlobalTweenScale;
+        characterDeathEventChannel.OnRaised -= OnCharacterDied;
     }
 
     public void PlayAttackMotion(Vector3 moveOffset)
@@ -119,5 +124,17 @@ public class EnemyAttackMotion : MonoBehaviour
     public void RaiseAttackEnd()
     {
         _attackDone = true;
+    }
+
+
+    protected void OnCharacterDied(CharacterStatus characterStat)
+    {
+        if (characterStat.TryGetComponent<EnemyTag>(out _))
+        {
+            if (_moveSequence != null && _moveSequence.IsActive())
+            {
+                _moveSequence.Kill();
+            }
+        }
     }
 }

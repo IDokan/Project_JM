@@ -13,38 +13,39 @@ using UnityEngine;
 public class CombatManager : MonoBehaviour
 {
     [Header("Wiring")]
-    [SerializeField] protected GemPowerArrivedEventChannel _gemPowerArrivedChannel;
-    [SerializeField] protected EnemyAttackEventChannel _enemyAttackChannel;
-    [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] protected PartyRoster _party;
-    [SerializeField] protected DamageMultiplierManager _damageMultiplierManager;
+    [SerializeField] protected GemPowerArrivedEventChannel gemPowerArrivedChannel;
+    [SerializeField] protected EnemyAttackEventChannel enemyAttackChannel;
+    [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
+    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+    [SerializeField] protected PartyRoster party;
+    [SerializeField] protected DamageMultiplierManager damageMultiplierManager;
 
-
-    [Header("Targeting")]
-    [SerializeField] protected CharacterCombatant _enemy;    // @@ TODO: Need to implement enemy spawner...
+    protected CharacterCombatant _enemy;    // @@ TODO: Need to implement enemy spawner...
     public CharacterCombatant Enemy => _enemy;
     public Transform EnemyTransform => Enemy != null ? Enemy.transform : null;
 
-    protected ICombatant lastAttackedCharacter;
+    protected ICombatant _lastAttackedCharacter;
 
     protected void OnEnable()
     {
-        _gemPowerArrivedChannel.OnRaised += OnPowerArrived;
-        _enemyAttackChannel.OnRaised += OnEnemyAttack;
-        _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
+        gemPowerArrivedChannel.OnRaised += OnPowerArrived;
+        enemyAttackChannel.OnRaised += OnEnemyAttack;
+        enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
+        characterDeathEventChannel.OnRaised += OnAnyoneDied;
     }
 
     protected void OnDisable()
     {
-        _gemPowerArrivedChannel.OnRaised -= OnPowerArrived;
-        _enemyAttackChannel.OnRaised -= OnEnemyAttack;
-        _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
+        gemPowerArrivedChannel.OnRaised -= OnPowerArrived;
+        enemyAttackChannel.OnRaised -= OnEnemyAttack;
+        enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
+        characterDeathEventChannel.OnRaised -= OnAnyoneDied;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        lastAttackedCharacter = _party.Get(GemColorUtility.GetRandomGemColor());
+        _lastAttackedCharacter = party.Get(GemColorUtility.GetRandomGemColor());
     }
 
     // Update is called once per frame
@@ -56,19 +57,19 @@ public class CombatManager : MonoBehaviour
     // SystemBehaviour calls it
     public void OnPowerArrived(MatchEvent matchEvent)
     {
-        if (matchEvent.Color == GemColor.None)
+        if (matchEvent.Color == GemColor.None || party == null)
         {
             return;
         }
 
-        var attacker = _party.Get(matchEvent.Color);
+        var attacker = party.Get(matchEvent.Color);
         if (attacker == null)
         {
             Debug.LogWarning($"No attacker for {matchEvent.Color}");
             return;
         }
         // Record last attacked character after NULL check
-        lastAttackedCharacter = attacker;
+        _lastAttackedCharacter = attacker;
 
         if (_enemy == null)
         {
@@ -81,7 +82,7 @@ public class CombatManager : MonoBehaviour
         {
             Attacker = attacker,
             Target = _enemy,
-            DamageMultiplierManager = _damageMultiplierManager
+            DamageMultiplierManager = damageMultiplierManager
         };
         Debug.Log($"Color {matchEvent.Color} : Tier {matchEvent.Tier} happened");
 
@@ -90,7 +91,7 @@ public class CombatManager : MonoBehaviour
 
     protected void OnEnemyAttack()
     {
-        if (lastAttackedCharacter == null)
+        if (_lastAttackedCharacter == null)
         {
             return;
         }
@@ -98,8 +99,8 @@ public class CombatManager : MonoBehaviour
         var enemy_context = new AttackContext
         {
             Attacker = _enemy,
-            Target = lastAttackedCharacter,
-            DamageMultiplierManager = _damageMultiplierManager
+            Target = _lastAttackedCharacter,
+            DamageMultiplierManager = damageMultiplierManager
         };
 
         PlayAttackMotion(enemy_context, null);
@@ -123,5 +124,18 @@ public class CombatManager : MonoBehaviour
     protected void OnEnemySpawned(GameObject enemy)
     {
         _enemy = enemy.GetComponent<CharacterCombatant>();
+    }
+
+    protected void OnAnyoneDied(CharacterStatus stat)
+    {
+        if (stat.TryGetComponent<EnemyTag>(out _))
+        {
+            _enemy = null;
+        }
+        else
+        {
+            party = null;
+        }
+
     }
 }

@@ -104,6 +104,11 @@ public class CharacterStatus : MonoBehaviour
     // It takes a range of [0, 1]. 1 means 100%
     public void Heal(float healPercentage)
     {
+        if (IsDead)
+        {
+            return;
+        }
+
         CurrentHP = Mathf.Min(maxHP, CurrentHP + (maxHP * healPercentage));
 
         OnHPChanged?.Invoke(CurrentHP, maxHP);
@@ -111,12 +116,22 @@ public class CharacterStatus : MonoBehaviour
 
     public void AddShield(float shieldPercentage)
     {
+        if (IsDead)
+        {
+            return;
+        }
+
         _shield += Mathf.Max(0f, maxHP * shieldPercentage);
         OnShieldChanged?.Invoke(_shield, maxHP);
     }
 
     public void TakeDamage(float damage)
     {
+        if (IsDead)
+        {
+            return;
+        }
+
         float calculatedDamage = Mathf.Max(0f, damage - _shield);
         _shield = 0f;
         OnShieldChanged?.Invoke(_shield, maxHP);

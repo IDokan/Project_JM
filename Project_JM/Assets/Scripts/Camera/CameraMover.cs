@@ -16,6 +16,8 @@ public class CameraMover : MonoBehaviour
     [SerializeField] protected float moveDistance = 9f;
     [SerializeField] protected float moveDuration = 3f;
 
+    [SerializeField] protected float introMoveDuration = 1f;
+
     protected void OnEnable()
     {
         characterDeathEventChannel.OnRaised += OnCharacterDied;
@@ -76,7 +78,7 @@ public class CameraMover : MonoBehaviour
     {
         if (phase == IntroSequencePhase.PartyMoveEnd)
         {
-            Move(moveDistance / moveDuration * (moveDuration + moveDelay), moveDuration + moveDelay, 0);
+            Move(moveDistance * introMoveDuration / moveDuration, introMoveDuration, 0);
         }
     }
 }

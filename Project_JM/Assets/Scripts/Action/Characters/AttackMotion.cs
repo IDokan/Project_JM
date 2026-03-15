@@ -65,6 +65,7 @@ public class AttackMotion : MonoBehaviour
     protected bool _hurtRequested;
     protected bool _walkRequested;
     protected bool _died = false;
+    protected bool Inturrupted => _hurtRequested || _died;
     protected int _version;                           // increments to break waits on interrupts
 
     protected bool _attackedSinceApproach;
@@ -316,7 +317,7 @@ public class AttackMotion : MonoBehaviour
 
 
         yield return WaitFlagOrInterrupt(() => _approachDone);
-        if (_hurtRequested) yield break;
+        if (Inturrupted) yield break;
     }
 
     protected IEnumerator PlayAttack(MatchTier tier)
@@ -331,7 +332,7 @@ public class AttackMotion : MonoBehaviour
 
         yield return WaitFlagOrInterrupt(() => _attackDone);
         _attackedSinceApproach = true;
-        if (_hurtRequested) yield break;
+        if (Inturrupted) yield break;
     }
 
     protected IEnumerator PlayReturn(MatchTier tier)
@@ -344,7 +345,7 @@ public class AttackMotion : MonoBehaviour
         _animator.SetTrigger(ReturnTrig);
 
         yield return WaitFlagOrInterrupt(() => _returnDone);
-        if (_hurtRequested) yield break;
+        if (Inturrupted) yield break;
 
         _state = State.Idle;
     }
@@ -352,7 +353,7 @@ public class AttackMotion : MonoBehaviour
     protected IEnumerator WaitFlagOrInterrupt(Func<bool> flag)
     {
         int v = _version;
-        while (!flag() && v == _version && !_hurtRequested)
+        while (!flag() && v == _version && !Inturrupted)
         {
             yield return null;
         }
