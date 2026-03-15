@@ -64,12 +64,12 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemyAfterDelay()
     {
-        StartCoroutine(SpawnEnemyAfterDelayRoutine());
+        StartCoroutine(SpawnEnemyAfterDelayRoutine(spawnDelay));
     }
 
-    protected IEnumerator SpawnEnemyAfterDelayRoutine()
+    protected IEnumerator SpawnEnemyAfterDelayRoutine(float delay)
     {
-        yield return new WaitForSeconds(spawnDelay);
+        yield return new WaitForSeconds(delay);
 
         SpawnRandomEnemy();
     }
@@ -78,7 +78,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (phase == IntroSequencePhase.PartyMoveEnd)
         {
-            SpawnEnemyAfterDelay();
+            SpawnRandomEnemy();
         }
     }
 }
