@@ -39,6 +39,10 @@ public class CombatIntroManager : MonoBehaviour
     [SerializeField] protected float uiMoveDuration = 1f;
 
 
+    [SerializeField] protected float introSkipTimeScale = 3f;
+    protected bool _isInIntro = false;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -56,6 +60,8 @@ public class CombatIntroManager : MonoBehaviour
         {
             StartCoroutine(UIRoutine());
         }
+
+        _isInIntro = true;
     }
 
     protected IEnumerator IntroRoutine()
@@ -105,7 +111,7 @@ public class CombatIntroManager : MonoBehaviour
         boardParallaxLayer.SetParallaxMode();
 
         introEventChannel.Raise(IntroSequencePhase.BoardMoveEnd);
-        
+
     }
 
     protected IEnumerator UIRoutine()
@@ -134,6 +140,32 @@ public class CombatIntroManager : MonoBehaviour
         {
             RectTransform uiTransform = uiTransforms[i];
             uiTransform.anchoredPosition = uiArrivalPositions[i];
+        }
+
+        IntroEnd();
+    }
+
+    public void IncreaseTimeSpeedInIntro()
+    {
+        if (_isInIntro)
+        {
+            Time.timeScale = introSkipTimeScale;
+        }
+    }
+
+    public void DecreaseTimeSpeedInIntro()
+    {
+        if (_isInIntro)
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
+    protected void IntroEnd()
+    {
+        _isInIntro = false;
+        {
+            Time.timeScale = 1f;
         }
     }
 }

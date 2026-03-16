@@ -316,6 +316,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ca7b8c10f9bb847a8e045ab9d7b461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboManager
+--- !u!114 &442059123 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2655240604946002307, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dc80b08814df34f86360ab8af8f8af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatIntroManager
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,6 +711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _board: {fileID: 594975000}
+  combatIntroManager: {fileID: 442059123}
   _cam: {fileID: 519420031}
   point: {fileID: 6606404916258401310, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   press: {fileID: 351169737856641189, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}

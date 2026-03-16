@@ -15,9 +15,10 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] protected BoardManager _board;
+    [SerializeField] protected CombatIntroManager combatIntroManager;
     [SerializeField] protected Camera _cam;
 
-    [Header("Actions (drag from Controls.inpujtactions)")]
+    [Header("Actions (drag from Controls.input actions)")]
     public InputActionReference point;
     public InputActionReference press;
     public InputActionReference move;
@@ -76,6 +77,8 @@ public class PlayerController : MonoBehaviour
     // ------- Pointer events --------
     protected void OnPressStarted(InputAction.CallbackContext _)
     {
+        combatIntroManager.IncreaseTimeSpeedInIntro();
+
         if (!_board.InputEnabled) return;
 
         _pressScreenPos = point.action.ReadValue<Vector2>();
@@ -91,6 +94,8 @@ public class PlayerController : MonoBehaviour
 
     protected void OnPressCanceled(InputAction.CallbackContext _)
     {
+        combatIntroManager.DecreaseTimeSpeedInIntro();
+
         _selRow = INVALID;
         _selCol = INVALID;
         _firedThisDrag = false;
