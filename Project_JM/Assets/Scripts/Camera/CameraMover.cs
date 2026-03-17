@@ -9,8 +9,7 @@ using System.Collections;
 
 public class CameraMover : MonoBehaviour
 {
-    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
-    [SerializeField] protected IntroEventChannel introEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     [SerializeField] protected float moveDelay = 1f;
     [SerializeField] protected float moveDistance = 9f;
@@ -20,28 +19,17 @@ public class CameraMover : MonoBehaviour
 
     protected void OnEnable()
     {
-        characterDeathEventChannel.OnRaised += OnCharacterDied;
-
-        if (introEventChannel != null)
+        if (transitionEventChannel != null)
         {
-            introEventChannel.OnRaised += OnIntroEvent;
+            transitionEventChannel.OnRaised += OnTransitionEvent;
         }
     }
 
     protected void OnDisable()
     {
-        characterDeathEventChannel.OnRaised -= OnCharacterDied;
-        if (introEventChannel != null)
+        if (transitionEventChannel != null)
         {
-            introEventChannel.OnRaised -= OnIntroEvent;
-        }
-    }
-
-    protected void OnCharacterDied(CharacterStatus stat)
-    {
-        if (stat.TryGetComponent<EnemyTag>(out _))
-        {
-            Move(moveDistance, moveDuration, moveDelay);
+            transitionEventChannel.OnRaised -= OnTransitionEvent;
         }
     }
 
@@ -74,11 +62,15 @@ public class CameraMover : MonoBehaviour
         transform.position = end;
     }
 
-    protected void OnIntroEvent(IntroSequencePhase phase)
+    protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == IntroSequencePhase.PartyMoveEnd)
+        if (phase == TransitionPhase.IntroPartyMoveEnd)
         {
             Move(moveDistance * introMoveDuration / moveDuration, introMoveDuration, 0);
+        }
+        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            Move(moveDistance, moveDuration, moveDelay);
         }
     }
 }

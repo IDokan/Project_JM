@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] protected EnemyBook _enemyBook;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] protected IntroEventChannel introEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     [SerializeField] protected DifficultyCurves _difficultyCurves;
 
@@ -23,13 +23,11 @@ public class EnemySpawner : MonoBehaviour
 
     protected void OnEnable()
     {
-        _characterDeathEventChannel.OnRaised += OnCharacterDied;
-        introEventChannel.OnRaised += OnIntroEvent;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
     protected void OnDisable()
     {
-        _characterDeathEventChannel.OnRaised -= OnCharacterDied;
-        introEventChannel.OnRaised -= OnIntroEvent;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     protected int _numSpanwed = 0;
@@ -54,14 +52,6 @@ public class EnemySpawner : MonoBehaviour
         _enemySpawnedEventChannel.Raise(enemy);
     }
 
-    protected void OnCharacterDied(CharacterStatus stat)
-    {
-        if (stat.TryGetComponent<EnemyTag>(out _))
-        {
-            SpawnEnemyAfterDelay();
-        }
-    }
-
     public void SpawnEnemyAfterDelay()
     {
         StartCoroutine(SpawnEnemyAfterDelayRoutine(spawnDelay));
@@ -74,11 +64,15 @@ public class EnemySpawner : MonoBehaviour
         SpawnRandomEnemy();
     }
 
-    protected void OnIntroEvent(IntroSequencePhase phase)
+    protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == IntroSequencePhase.PartyMoveEnd)
+        if (phase == TransitionPhase.IntroPartyMoveEnd)
         {
             SpawnRandomEnemy();
+        }
+        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            SpawnEnemyAfterDelay();
         }
     }
 }

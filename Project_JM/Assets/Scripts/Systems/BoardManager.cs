@@ -44,7 +44,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
-    [SerializeField] protected IntroEventChannel introEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     [SerializeField] protected GameObject _gemDisableFXPrefab;
 
@@ -130,14 +130,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         _characterDeathEventChannel.OnRaised += OnAnyoneDied;
         _boardDisableEvents.OnRaised += OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
-        introEventChannel.OnRaised += OnIntroEvent;
+        transitionEventChannel.OnRaised += TransitionEvent;
     }
     protected void OnDisable()
     {
         _characterDeathEventChannel.OnRaised -= OnAnyoneDied;
         _boardDisableEvents.OnRaised -= OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
-        introEventChannel.OnRaised -= OnIntroEvent;
+        transitionEventChannel.OnRaised -= TransitionEvent;
     }
 
     protected Gem[,] _gems;
@@ -147,7 +147,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     private int _numMovingGems = 0;
 
-    public bool InputEnabled => !_busy;
+    public bool InputEnabled => !_busy && _gems != null;
     protected bool _busy;
 
     protected readonly HashSet<GameObject> _disableFXs = new();
@@ -231,7 +231,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void ResolveMatches()
     {
         var groups = FindMatchGroups();
-        if (groups.Count == 0)
+        if (groups.Count == 0 || _busy)
         {
             return;
         }
@@ -1252,9 +1252,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return gemShake.IsShaking;
     }
 
-    protected void OnIntroEvent(IntroSequencePhase phase)
+    protected void TransitionEvent(TransitionPhase phase)
     {
-        if (phase == IntroSequencePhase.BoardMoveEnd)
+        if (phase == TransitionPhase.IntroBoardMoveEnd)
         {
             EnableCover();
         }
