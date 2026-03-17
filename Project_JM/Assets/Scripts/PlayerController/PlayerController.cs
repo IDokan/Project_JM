@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] protected BoardManager _board;
-    [SerializeField] protected CombatIntroManager combatIntroManager;
+    [SerializeField] protected TransitionManager transitionManager;
     [SerializeField] protected Camera _cam;
 
     [Header("Actions (drag from Controls.input actions)")]
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
     // ------- Pointer events --------
     protected void OnPressStarted(InputAction.CallbackContext _)
     {
-        combatIntroManager.IncreaseTimeSpeedInIntro();
+        transitionManager.BeginSkipHold();
 
         if (!_board.InputEnabled) return;
 
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
     protected void OnPressCanceled(InputAction.CallbackContext _)
     {
-        combatIntroManager.DecreaseTimeSpeedInIntro();
+        transitionManager.EndSkipHold();
 
         _selRow = INVALID;
         _selCol = INVALID;
@@ -193,5 +193,10 @@ public class PlayerController : MonoBehaviour
 
         // @@ TODO: Add visual & aural feedback the gem selected.
         // board.HighlightCell(r, c, highlight); // optional visual (outline/ cursor)
+    }
+
+    public Vector2 GetCurrentFollowPoint()
+    {
+        return point.action.ReadValue<Vector2>();
     }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 03/11/2026 Sinil Kang
 // Project: Project JM - https://github.com/IDokan/Project_JM
-// File: CombatIntroManager.cs
+// File: CombatIntroController.cs
 // Summary: A script to manage combat intro logic.
 //                      Combat intro conducts below tasks:
 //                                          1. Move party to an arrival position.
@@ -11,10 +11,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class CombatIntroManager : MonoBehaviour
+public class CombatIntroController : TransitionController
 {
 
-    [SerializeField] protected IntroEventChannel introEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     [Header("Party Positions")]
     [SerializeField] protected Transform partyTransform;
@@ -39,13 +39,11 @@ public class CombatIntroManager : MonoBehaviour
     [SerializeField] protected float uiMoveDuration = 1f;
 
 
-    [SerializeField] protected float introSkipTimeScale = 3f;
-    protected bool _isInIntro = false;
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        RaiseStarted();
+
         if (partyTransform != null)
         {
             StartCoroutine(IntroRoutine());
@@ -60,8 +58,6 @@ public class CombatIntroManager : MonoBehaviour
         {
             StartCoroutine(UIRoutine());
         }
-
-        _isInIntro = true;
     }
 
     protected IEnumerator IntroRoutine()
@@ -85,16 +81,12 @@ public class CombatIntroManager : MonoBehaviour
 
         partyParallaxLayer.SetParallaxMode();
 
-        introEventChannel.Raise(IntroSequencePhase.PartyMoveEnd);
+        transitionEventChannel.Raise(TransitionPhase.IntroPartyMoveEnd);
     }
 
     protected IEnumerator BoardRoutine()
     {
-        ParallaxLayer boardParallaxLayer = boardTransform.GetComponent<ParallaxLayer>();
-
-        boardParallaxLayer.SetManualMode();
-
-        boardTransform.position = boardStartPosition;
+        boardTransform.localPosition = boardStartPosition;
 
         yield return new WaitForSeconds(boardMoveDelay);
 
@@ -102,15 +94,13 @@ public class CombatIntroManager : MonoBehaviour
         while (t < boardMoveDuration)
         {
             t += Time.deltaTime;
-            boardTransform.position = Vector3.Lerp(boardStartPosition, boardArrivalPosition, t / boardMoveDuration);
+            boardTransform.localPosition = Vector3.Lerp(boardStartPosition, boardArrivalPosition, t / boardMoveDuration);
             yield return null;
         }
 
-        boardTransform.position = boardArrivalPosition;
+        boardTransform.localPosition = boardArrivalPosition;
 
-        boardParallaxLayer.SetParallaxMode();
-
-        introEventChannel.Raise(IntroSequencePhase.BoardMoveEnd);
+        transitionEventChannel.Raise(TransitionPhase.IntroBoardMoveEnd);
 
     }
 
@@ -142,30 +132,6 @@ public class CombatIntroManager : MonoBehaviour
             uiTransform.anchoredPosition = uiArrivalPositions[i];
         }
 
-        IntroEnd();
-    }
-
-    public void IncreaseTimeSpeedInIntro()
-    {
-        if (_isInIntro)
-        {
-            Time.timeScale = introSkipTimeScale;
-        }
-    }
-
-    public void DecreaseTimeSpeedInIntro()
-    {
-        if (_isInIntro)
-        {
-            Time.timeScale = 1f;
-        }
-    }
-
-    protected void IntroEnd()
-    {
-        _isInIntro = false;
-        {
-            Time.timeScale = 1f;
-        }
+        RaiseCompleted();
     }
 }
