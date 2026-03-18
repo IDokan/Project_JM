@@ -10,9 +10,15 @@ using UnityEngine;
 
 public enum TransitionPhase
 {
+    IntroTransitionBegin,
     IntroPartyMoveEnd,
     IntroBoardMoveEnd,
     MiddleTransitionStarts,
+    MiddleTransitionEnd,
+    EndTransitionBegin,
+    EndPartyMoveEnd,
+    EndEnemyMoveEnd,
+    EndBoardMoveEnd,
 }
 
 [CreateAssetMenu(menuName = "JM/Events/TransitionEventChannel")]

@@ -31,33 +31,36 @@ public class CombatIntroController : TransitionController
     [SerializeField] protected Vector3[] uiStartPositions;
     [SerializeField] protected Vector3[] uiArrivalPositions;
 
+    [Header("Menu position")]
+    [SerializeField] protected RectTransform menuTransform;
+    [SerializeField] protected Vector3 menuStartPosition;
+    [SerializeField] protected Vector3 menuArrivalPosition;
+
     [Header("Timing")]
     [SerializeField] protected float partyMoveDuration = 5f;
     [SerializeField] protected float boardMoveDelay = 4f;
     [SerializeField] protected float boardMoveDuration = 2f;
     [SerializeField] protected float uiMoveDelay = 5.5f;
     [SerializeField] protected float uiMoveDuration = 1f;
+    [SerializeField] protected float menuMoveDuration = 0.5f;
 
+    protected Vector3 partyStartOffsetToCamera;
+    protected Vector3 partyArrivalOffsetToCamera;
+
+    bool _isInTransition = false;
+
+    protected void Awake()
+    {
+        Transform cameraTransform = Camera.main.transform;
+        partyStartOffsetToCamera = partyStartPosition - cameraTransform.position;
+        partyArrivalOffsetToCamera = partyArrivalPosition - cameraTransform.position;
+        // Since Board is under an object that contains ParallaxLayout script, no need to find offset.
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        RaiseStarted();
-
-        if (partyTransform != null)
-        {
-            StartCoroutine(IntroRoutine());
-        }
-
-        if (boardTransform != null)
-        {
-            StartCoroutine(BoardRoutine());
-        }
-
-        if (uiTransforms.Length > 0 && uiArrivalPositions.Length == uiTransforms.Length)
-        {
-            StartCoroutine(UIRoutine());
-        }
+        StartIntroTransition();
     }
 
     protected IEnumerator IntroRoutine()
@@ -66,18 +69,20 @@ public class CombatIntroController : TransitionController
 
         partyParallaxLayer.SetManualMode();
 
-        partyTransform.position = partyStartPosition;
+        Camera camera = Camera.main;
+        partyTransform.position = camera.transform.position + partyStartOffsetToCamera;
+        Vector3 destination = camera.transform.position + partyArrivalOffsetToCamera;
 
         float t = 0f;
         while (t < partyMoveDuration)
         {
             t += Time.deltaTime;
 
-            partyTransform.position = Vector3.Lerp(partyStartPosition, partyArrivalPosition, t / partyMoveDuration);
+            partyTransform.position = Vector3.Lerp(partyStartPosition, destination, t / partyMoveDuration);
 
             yield return null;
         }
-        partyTransform.position = partyArrivalPosition;
+        partyTransform.position = destination;
 
         partyParallaxLayer.SetParallaxMode();
 
@@ -132,6 +137,61 @@ public class CombatIntroController : TransitionController
             uiTransform.anchoredPosition = uiArrivalPositions[i];
         }
 
+        _isInTransition = false;
         RaiseCompleted();
+    }
+
+    public void StartIntroTransition()
+    {
+        if (_isInTransition)
+        {
+            return;
+        }
+
+        _isInTransition = true;
+        RaiseStarted();
+        transitionEventChannel.Raise(TransitionPhase.IntroTransitionBegin);
+
+        if (partyTransform != null)
+        {
+            StartCoroutine(IntroRoutine());
+        }
+
+        if (boardTransform != null)
+        {
+            StartCoroutine(BoardRoutine());
+        }
+
+        if (uiTransforms.Length > 0 && uiArrivalPositions.Length == uiTransforms.Length)
+        {
+            StartCoroutine(UIRoutine());
+        }
+
+        if (menuTransform != null)
+        {
+            StartCoroutine(MenuRoutine());
+        }
+    }
+
+    protected IEnumerator MenuRoutine()
+    {
+        if (menuTransform.gameObject.activeSelf == false)
+        {
+            yield break;
+        }
+
+        menuTransform.anchoredPosition = menuStartPosition;
+
+        float t = 0f;
+        while (t < menuMoveDuration)
+        {
+            t += Time.deltaTime;
+
+            menuTransform.anchoredPosition = Vector2.Lerp(menuStartPosition, menuArrivalPosition, t / menuMoveDuration);
+            yield return null;
+        }
+
+        menuTransform.anchoredPosition = menuArrivalPosition;
+        menuTransform.gameObject.SetActive(false);
     }
 }

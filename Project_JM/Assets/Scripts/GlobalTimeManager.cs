@@ -14,7 +14,7 @@ public class GlobalTimeManager : MonoBehaviour
 
     public static event Action<float> OnScaleChanged;
 
-    [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     protected float DefaultScaler = 1f;
     protected float TimeScaler = 1f;
@@ -39,12 +39,12 @@ public class GlobalTimeManager : MonoBehaviour
 
     void OnEnable()
     {
-        _characterDeathEventChannel.OnRaised += EndRoutine;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
 
     void OnDisable()
     {
-        _characterDeathEventChannel.OnRaised -= EndRoutine;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     protected void Awake()
@@ -61,7 +61,7 @@ public class GlobalTimeManager : MonoBehaviour
 
     public void SetTimer(float newScaler, float duration)
     {
-        EndRoutine(null);
+        EndRoutine();
 
         _timerRoutine = StartCoroutine(ScaleRoutine(newScaler, duration));
     }
@@ -78,11 +78,24 @@ public class GlobalTimeManager : MonoBehaviour
         _timerRoutine = null;
     }
 
-    protected void EndRoutine(CharacterStatus stat)
+    protected void EndRoutine()
     {
         if (_timerRoutine != null)
         {
             StopCoroutine(_timerRoutine);
+
+            TimeScaler = DefaultScaler;
+            OnScaleChanged?.Invoke(TimeScaler);
+            _timerRoutine = null;
+        }
+    }
+
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.MiddleTransitionStarts ||
+            phase == TransitionPhase.EndTransitionBegin)
+        {
+            EndRoutine();
         }
     }
 }

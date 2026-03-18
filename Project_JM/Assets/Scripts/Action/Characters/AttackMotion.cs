@@ -37,6 +37,7 @@ public class AttackMotion : MonoBehaviour
 {
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     protected Animator _animator;
     protected Transform _kockbackRoot;
@@ -122,6 +123,14 @@ public class AttackMotion : MonoBehaviour
         {
             Debug.LogWarning("EnemySpawnedEventChannel is null", this);
         }
+        if (transitionEventChannel)
+        {
+            transitionEventChannel.OnRaised += OnTransitionEvent;
+        }
+        else
+        {
+            Debug.LogWarning("TransitionEventChannel is null", this);
+        }
     }
 
     protected void OnDisable()
@@ -134,11 +143,10 @@ public class AttackMotion : MonoBehaviour
         {
             enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
         }
-    }
-
-    protected void Start()
-    {
-        StartWalk();
+        if (transitionEventChannel)
+        {
+            transitionEventChannel.OnRaised -= OnTransitionEvent;
+        }
     }
 
     public void EnqueueAttack(int tier)
@@ -436,6 +444,15 @@ public class AttackMotion : MonoBehaviour
         }
     }
 
+    protected void StopRunner()
+    {
+        if (_runner != null)
+        {
+            StopCoroutine(_runner);
+            _runner = null;
+        }
+    }
+
     // Animation Events (called from clips) ------------------------
     public void AnimEvent_ApproachEnd() => _approachDone = true;
 
@@ -522,4 +539,37 @@ public class AttackMotion : MonoBehaviour
         _currentTier = null;
     }
 
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin)
+        {
+            Clear();
+            StartWalk();
+        }
+    }
+
+    protected void Clear()
+    {
+        ClearPendingAttacks();
+        _hurtRequested = false;
+        _walkRequested = false;
+        _died = false;
+        _version = 0;
+        _attackedSinceApproach = false;
+
+        _state = State.Idle;
+
+        _approachDone = false;
+        _attackDone = false;
+        _returnDone = false;
+        _hurtDone = false;
+        _walkDone = false;
+
+        ResetCombatTriggers();
+
+        _animator.SetBool(WalkBool, false);
+        _animator.SetBool(DiedBool, false);
+
+        StopRunner();
+    }
 }

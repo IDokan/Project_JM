@@ -132,10 +132,5 @@ public class CombatManager : MonoBehaviour
         {
             _enemy = null;
         }
-        else
-        {
-            party = null;
-        }
-
     }
 }

@@ -44,6 +44,8 @@ public class MiddleTransitionController : TransitionController
 
         yield return new WaitForSeconds(middleTransitionDuration);
 
+        transitionEventChannel.Raise(TransitionPhase.MiddleTransitionEnd);
+
         RaiseCompleted();
     }
 }

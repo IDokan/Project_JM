@@ -31,6 +31,7 @@ public class CharacterStatus : MonoBehaviour
 {
     [SerializeField] protected CharacterStatusData _baseData;
     [SerializeField] protected CharacterDeathEventChannel _deathEvent;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
@@ -69,18 +70,34 @@ public class CharacterStatus : MonoBehaviour
 
     protected void OnEnable()
     {
-        _deathEvent.OnRaised += ClearBuffs;
+        if (_deathEvent != null)
+        {
+            _deathEvent.OnRaised += ClearBuffs;
+        }
+        else
+        {
+            Debug.LogWarning("CharacterDeathEventChannel is null", this);
+        }
+
+        if (transitionEventChannel != null)
+        {
+            transitionEventChannel.OnRaised += OnTransitionEvent;
+        }
+        else
+        {
+            Debug.LogWarning("TransitionEventChannel is null", this);
+        }
     }
 
     protected void OnDisable()
     {
         _deathEvent.OnRaised -= ClearBuffs;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     protected void Awake()
     {
-        CurrentHP = _baseData.baseHP;
-        maxHP = CurrentHP;
+        Clear();
     }
 
     void Update()
@@ -196,5 +213,37 @@ public class CharacterStatus : MonoBehaviour
     {
         ClearBuffCritBonus();
         ClearBuffCitDamageBonus();
+    }
+
+    protected void Clear()
+    {
+        CurrentHP = _baseData.baseHP;
+        maxHP = CurrentHP;
+
+        OnHPChanged?.Invoke(CurrentHP, maxHP);
+
+        _shield = 0f;
+        OnShieldChanged?.Invoke(_shield, maxHP);
+    }
+
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin)
+        {
+            Clear();
+        }
+        else if (IsDestroyConditionOnTransitionEvent(phase))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    protected bool IsDestroyConditionOnTransitionEvent(TransitionPhase phase)
+    {
+        return 
+            (phase == TransitionPhase.EndEnemyMoveEnd && TryGetComponent<EnemyTag>(out _))
+            ||
+            (phase == TransitionPhase.MiddleTransitionEnd && IsDead)
+            ;
     }
 }
