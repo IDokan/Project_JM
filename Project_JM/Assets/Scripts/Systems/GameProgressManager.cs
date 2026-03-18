@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class GameProgressManager : MonoBehaviour
 {
-
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterDeathEventChannel _deathChannel;
     [SerializeField] protected DifficultyCurves _curves;
     [SerializeField] protected CharacterStatus _partyStatus;
@@ -17,24 +17,38 @@ public class GameProgressManager : MonoBehaviour
 
     protected void OnEnable()
     {
-        _deathChannel.OnRaised += OnCharacterDied;
+        if (_deathChannel != null)
+        {
+            _deathChannel.OnRaised += OnCharacterDied;
+        }
+        else
+        {
+            Debug.LogWarning("CharacterDeathEventChannel is null", this);
+        }
+
+        if (transitionEventChannel != null)
+        {
+            transitionEventChannel.OnRaised += OnTransitionEvent;
+        }
+        else
+        {
+            Debug.LogWarning("TransitionEventChannel is null", this);
+        }
     }
 
     protected void OnDisable()
     {
         _deathChannel.OnRaised -= OnCharacterDied;
+
+        if (transitionEventChannel != null)
+        {
+            transitionEventChannel.OnRaised -= OnTransitionEvent;
+        }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Clear()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        numEnemyDefeated = 0;
     }
 
     protected void OnCharacterDied(CharacterStatus stat)
@@ -62,5 +76,13 @@ public class GameProgressManager : MonoBehaviour
     {
         ++numEnemyDefeated;
         _partyStatus.Initialize(_curves.GetDifficultyMultiplier(numEnemyDefeated));
+    }
+
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin)
+        {
+            Clear();
+        }
     }
 }

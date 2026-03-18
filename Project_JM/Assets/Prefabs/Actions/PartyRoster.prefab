@@ -78,6 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatus
   _baseData: {fileID: 11400000, guid: c614d50cb86fba346a16a1bce288064c, type: 2}
   _deathEvent: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
 --- !u!114 &6553061434730044119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxLayer
   parallaxFactor: 1
   cameraTransform: {fileID: 0}
+  followMode: 1
 --- !u!1001 &1117141484020782387
 PrefabInstance:
   m_ObjectHideFlags: 0

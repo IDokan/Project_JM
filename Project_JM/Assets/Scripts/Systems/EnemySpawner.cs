@@ -16,10 +16,13 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] protected DifficultyCurves _difficultyCurves;
 
-    [SerializeField] protected Transform _spawnPosition;
+    [SerializeField] protected Vector3 _spawnPosition;
 
     [SerializeField] protected float spawnDelay = 4f;
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
+
+    protected Vector3 spawnOffsetToCamera;
+    protected int _numSpanwed = 0;
 
     protected void OnEnable()
     {
@@ -30,13 +33,22 @@ public class EnemySpawner : MonoBehaviour
         transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
-    protected int _numSpanwed = 0;
+    protected void Awake()
+    {
+        spawnOffsetToCamera = _spawnPosition - Camera.main.transform.position;
+    }
+
+    protected void Clear()
+    {
+        _numSpanwed = 0;
+    }
 
     protected GameObject SpawnRandomEnemy()
     {
         _numSpanwed++;
 
-        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), _spawnPosition.position, _spawnPosition.rotation);
+        Vector3 spawnPosition = spawnOffsetToCamera + Camera.main.transform.position;
+        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), spawnPosition, Quaternion.identity);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
         StartCoroutine(DispatchSpawnEventChannelAfterDelay(spawnedEnemy, dispatchEventChannelDelay));
@@ -73,6 +85,10 @@ public class EnemySpawner : MonoBehaviour
         else if (phase == TransitionPhase.MiddleTransitionStarts)
         {
             SpawnEnemyAfterDelay();
+        }
+        else if(phase == TransitionPhase.IntroTransitionBegin)
+        {
+            Clear();
         }
     }
 }

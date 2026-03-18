@@ -42,7 +42,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected GemPowerArrivedEventChannel _powerArrivedEvents;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
@@ -127,17 +126,15 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void OnEnable()
     {
-        _characterDeathEventChannel.OnRaised += OnAnyoneDied;
         _boardDisableEvents.OnRaised += OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
-        transitionEventChannel.OnRaised += TransitionEvent;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
     protected void OnDisable()
     {
-        _characterDeathEventChannel.OnRaised -= OnAnyoneDied;
         _boardDisableEvents.OnRaised -= OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
-        transitionEventChannel.OnRaised -= TransitionEvent;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     protected Gem[,] _gems;
@@ -831,16 +828,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return failed;
     }
 
-    protected void OnAnyoneDied(CharacterStatus stat)
-    {
-        EnableCover();
-    }
-
-    protected void EnableCover()
+    protected void EnableCover(bool refillGems = true)
     {
         _busy = true;
 
-        StartCoroutine(ClearAndRefillGemsAfterDelay(1f));
+        if (refillGems)
+        {
+            StartCoroutine(ClearAndRefillGemsAfterDelay(1f));
+        }
 
         StopHintRoutine();
 
@@ -865,6 +860,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void ClearAndRefillGems()
     {
         ClearDisableEffects();
+        ClearShakingEffects();
 
         for (int r = 0; r < _rows; r++)
         {
@@ -959,7 +955,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         foreach (List<ShakingData> shakingData in _shakingDataContainer)
         {
-            StopShaking(shakingData);
+            foreach (ShakingData data in shakingData)
+            {
+                data.shaker?.StopShake();
+            }
         }
         _shakingDataContainer.Clear();
     }
@@ -1252,11 +1251,13 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return gemShake.IsShaking;
     }
 
-    protected void TransitionEvent(TransitionPhase phase)
+    protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == TransitionPhase.IntroBoardMoveEnd)
+        if (phase == TransitionPhase.IntroTransitionBegin ||
+            phase == TransitionPhase.MiddleTransitionStarts ||
+            phase == TransitionPhase.EndTransitionBegin)
         {
-            EnableCover();
+            EnableCover(phase != TransitionPhase.EndTransitionBegin);
         }
     }
 }
