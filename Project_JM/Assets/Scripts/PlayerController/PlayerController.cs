@@ -38,9 +38,9 @@ public class PlayerController : MonoBehaviour
     protected bool _hasSelection;
     protected float _nextMoveTime;
 
-    protected int _selRow, _selCol;
+    protected int _selRow = INVALID, _selCol = INVALID;
 
-    static private int INVALID = -1;
+    private const int INVALID = -1;
 
     protected void OnEnable()
     {
@@ -54,6 +54,19 @@ public class PlayerController : MonoBehaviour
         press.action.canceled += OnPressCanceled;
         confirm.action.performed += OnConfirm;
         move.action.performed += OnMovePerformed;
+    }
+
+    protected void OnDisable()
+    {
+        press.action.started -= OnPressStarted;
+        press.action.canceled -= OnPressCanceled;
+        confirm.action.performed -= OnConfirm;
+        move.action.performed -= OnMovePerformed;
+
+        point.action.Disable();
+        press.action.Disable();
+        move.action.Disable();
+        confirm.action.Disable();
     }
 
     // Update is called once per frame
