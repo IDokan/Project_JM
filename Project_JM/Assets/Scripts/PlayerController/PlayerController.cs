@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] protected float _moveRepeatRate = 0.12f;
     [SerializeField] protected float _stickDeadZone = 0.25f;
 
+    [Header("Interaction VFX")]
+    [SerializeField] protected ClickVFXSpawner clickVFXSpawner;
+
     // Pointer-drag state
     protected Vector2 _pressScreenPos;
     protected bool _firedThisDrag;      // A boolean flag that make sure swap happens only once per one drag.
@@ -77,7 +80,7 @@ public class PlayerController : MonoBehaviour
         // Pointer drag : once threshold exceeded, decide a 4-way dir and trigger one swap
         if (_board.InBounds(_selRow, _selCol) && !_firedThisDrag && press.action.IsPressed())
         {
-            Vector2 delta = point.action.ReadValue<Vector2>() - _pressScreenPos;
+            Vector2 delta = GetCurrentFollowPoint() - _pressScreenPos;
             if (delta.magnitude >= _dragTresholdPixels)
             {
                 Vector2Int dir = Decide4Way(delta);
@@ -92,17 +95,25 @@ public class PlayerController : MonoBehaviour
     {
         transitionManager.BeginSkipHold();
 
-        if (!_board.InputEnabled) return;
+        if (!_board.InputEnabled)
+        {
+            clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
+            return;
+        }
 
-        _pressScreenPos = point.action.ReadValue<Vector2>();
+
+        _pressScreenPos = GetCurrentFollowPoint();
         var index = GemIndexUnderCursor(_pressScreenPos);
         if (!_board.InBounds(index.x, index.y))
         {
+            clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
             return;
         }
         _firedThisDrag = false;
 
         SetSelection(index.x, index.y, true);
+
+        clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint(), _board.GetGemColor(index));
     }
 
     protected void OnPressCanceled(InputAction.CallbackContext _)
@@ -201,7 +212,7 @@ public class PlayerController : MonoBehaviour
     protected void SetSelection(int r, int c, bool highlight)
     {
         _hasSelection = true;
-        _selRow = r; 
+        _selRow = r;
         _selCol = c;
 
         // @@ TODO: Add visual & aural feedback the gem selected.
