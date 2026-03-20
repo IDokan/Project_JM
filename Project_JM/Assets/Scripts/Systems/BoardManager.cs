@@ -489,6 +489,16 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return InBounds(index.x, index.y) ? index : new Vector2Int(-1, -1);
     }
 
+    public GemColor GetGemColor(Vector2Int index)
+    {
+        if (_gems == null || !InBounds(index.x, index.y))
+        {
+            return GemColor.None;
+        }
+
+        return _gems[index.x, index.y].Color;
+    }
+
     protected void ResolveGem(int row, int col)
     {
         // @@ TODO: Implement object pool for gems.

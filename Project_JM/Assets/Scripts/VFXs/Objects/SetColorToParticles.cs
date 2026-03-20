@@ -19,12 +19,12 @@ public class SetColorToParticles : MonoBehaviour
         }
     }
 
-    protected void SetColor(GemColor gemColor)
+    public void SetColor(GemColor gemColor)
     {
         SetColor(GemColorUtility.ConvertGemColor(gemColor));
     }
 
-    protected void SetColor(Color color)
+    public void SetColor(Color color)
     {
         foreach (var particleSystem in particleSystems)
         {

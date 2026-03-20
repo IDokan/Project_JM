@@ -42,9 +42,9 @@ namespace GemEnums
             }
         }
 
-        public static GemColor GetRandomGemColor()
+        public static GemColor GetRandomGemColor(bool isUsingSystemRand = false)
         {
-            return PlayableGemColor[GlobalRNG.Instance.NextInt(PlayableGemColor.Length)];
+            return PlayableGemColor[RandomInt(PlayableGemColor.Length, isUsingSystemRand)];
         }
 
         public static GemColor GetRandomGemColorExcept(params GemColor[] excludeColors)
@@ -67,7 +67,22 @@ namespace GemEnums
             {
                 return GemColor.None;
             }
-            return allowed[GlobalRNG.Instance.NextInt(allowed.Count)];
+            return allowed[RandomInt(allowed.Count, false)];
+        }
+
+        public static GemColor GetRandomGemColorExcept(GemColor colorExclude, bool isUsingSystemRand = false)
+        {
+            List<GemColor> allowed = new List<GemColor>(PlayableGemColor.Length);
+            for (int i = 0; i < PlayableGemColor.Length; ++i)
+            {
+                GemColor c = PlayableGemColor[i];
+                if (c != colorExclude)
+                {
+                    allowed.Add(c);
+                }
+            }
+
+            return allowed[RandomInt(allowed.Count, isUsingSystemRand)];
         }
 
         public static float GetGemColorDamageMultiplier(GemColor[] attackerColor, GemColor[] targetColor)
@@ -91,6 +106,25 @@ namespace GemEnums
             }
 
             return 0.8f;
+        }
+
+        public static int RandomInt(int max, bool isUsingSystemRand)
+        {
+            return isUsingSystemRand ?
+                UnityEngine.Random.Range(0, max) : GlobalRNG.Instance.NextInt(max);
+        }
+
+        public static GemColor GetNextGemColor(GemColor gemColor)
+        {
+            for (int i = 0; i < PlayableGemColor.Length; i++)
+            {
+                if (gemColor == PlayableGemColor[i])
+                {
+                    return PlayableGemColor[(i + 1) % PlayableGemColor.Length];
+                }
+            }
+
+            return PlayableGemColor[0];
         }
     }
 

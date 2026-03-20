@@ -65,42 +65,32 @@ public class UIFollowPoint : MonoBehaviour
             canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : uiCamera,
             out localPoint);
 
-        if (success)
+        if (success == false)
         {
-            uiTransform.anchoredPosition = localPoint;
-
-            Vector3[] corners = new Vector3[4];
-            uiTransform.GetWorldCorners(corners);
-
-            // corners:
-            // 0 = bottom-left
-            // 1 = top-left
-            // 2 = top-right
-            // 3 = bottom-right     (clock-wise)
-
-            float offsetX = 0f;
-            float offsetY = 0f;
-
-            if (corners[0].x < 0f)
-            {
-                offsetX = -corners[0].x;
-            }
-            else if (corners[2].x > Screen.width)
-            {
-                offsetX = Screen.width - corners[2].x;
-            }
-
-
-            if (corners[0].y < 0f)
-            {
-                offsetY = -corners[0].y;
-            }
-            else if(corners[2].y > Screen.height) 
-            {
-                offsetY = Screen.height - corners[2].y;
-            }
-
-            uiTransform.position += new Vector3(offsetX, offsetY, 0f);
+            return;
         }
+
+        uiTransform.anchoredPosition = ClampAnchoredPosition(canvasTransform, localPoint);
+    }
+
+    // Since old codes that clamp the UI using GetWorldCorners it not appropriate from canvas using Screen Space - Camera,
+    // Created a whole new function that manually calculates each corners. 
+    protected Vector2 ClampAnchoredPosition(RectTransform canvasRectTransform, Vector2 targetAnchoredPos)
+    {
+        Vector2 canvasSize = canvasRectTransform.rect.size;
+        Vector2 uiSize = uiTransform.rect.size;
+
+        Vector2 pivot = uiTransform.pivot;
+
+        float minX = -canvasSize.x * 0.5f + uiSize.x * pivot.x;
+        float maxX = canvasSize.x * 0.5f - uiSize.x * (1f - pivot.x);
+
+        float minY = -canvasSize.y * 0.5f + uiSize.y * pivot.y;
+        float maxY = canvasSize.y * 0.5f - uiSize.y * (1f - pivot.y);
+
+        targetAnchoredPos.x = Mathf.Clamp(targetAnchoredPos.x, minX, maxX);
+        targetAnchoredPos.y = Mathf.Clamp(targetAnchoredPos.y, minY, maxY);
+
+        return targetAnchoredPos;
     }
 }
