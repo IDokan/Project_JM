@@ -698,6 +698,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &710038372 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1387215370364407558, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 757ecaced9031f248b89ad6739735094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlight
 --- !u!114 &1104298762 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2655240604946002307, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -829,6 +840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _board: {fileID: 594975000}
+  gemSelectionHighlight: {fileID: 710038372}
   transitionManager: {fileID: 1986252045}
   _cam: {fileID: 519420031}
   point: {fileID: 6606404916258401310, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
@@ -838,7 +850,9 @@ MonoBehaviour:
   _dragTresholdPixels: 16
   _moveRepeatDelay: 0.25
   _moveRepeatRate: 0.12
-  _stickDeadZone: 0.25
+  _stickDeadZone: 0.75
+  _swapRepeatRate: 0.4
+  _holdingRepeatDelay: 0.8
   clickVFXSpawner: {fileID: 1754810534}
 --- !u!114 &1754810534
 MonoBehaviour:

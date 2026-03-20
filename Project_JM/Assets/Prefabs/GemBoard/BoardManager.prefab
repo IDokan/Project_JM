@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 1367495987594621808}
   - component: {fileID: 4202452729555105499}
   - component: {fileID: 5489374677128354126}
+  - component: {fileID: 8150076651621727000}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -146,7 +147,6 @@ MonoBehaviour:
   _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
   _powerArrivedEvents: {fileID: 11400000, guid: 567d58de1386e9e48a14d646b9a01677, type: 2}
   _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
-  _characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   _boardDisableEvents: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   _gemDisableFXPrefab: {fileID: 4349974960750324187, guid: a6f1135dafdef5549b84ad68c1141750, type: 3}
@@ -167,6 +167,20 @@ MonoBehaviour:
   slideDuration: 0.5
   hiddenY: 10.5
   shownY: 0.175
+--- !u!114 &8150076651621727000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7342104600010321755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 757ecaced9031f248b89ad6739735094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlight
+  selectionHighlightPrefab: {fileID: 3098297233451540460, guid: 0a4f5c34083e7f14ba06854bf0ba8c0b, type: 3}
+  boardManager: {fileID: 4202452729555105499}
 --- !u!1 &7469514949075606743
 GameObject:
   m_ObjectHideFlags: 0
