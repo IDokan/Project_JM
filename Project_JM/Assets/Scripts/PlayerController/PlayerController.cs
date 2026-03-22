@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] protected float _moveRepeatRate = 0.12f;
     [SerializeField] protected float _stickDeadZone = 0.25f;
     [SerializeField] protected float _swapRepeatRate = 0.4f;
-    [SerializeField] protected float _holdingRepeatDelay = 0.6f;
+    [SerializeField] protected float _holdingRepeatDelay = 0.8f;
 
     [Header("Interaction VFX")]
     [SerializeField] protected ClickVFXSpawner clickVFXSpawner;
@@ -43,7 +43,10 @@ public class PlayerController : MonoBehaviour
     // Gamepad/keyboard selection
     protected bool _hasSelection;
     protected float _nextMoveTime;
+    protected float _nextMoveHoldTime;
+    protected Vector2Int _lastMovedDirection;
     protected float _nextSwapTime;
+    protected float _nextSwapHoldTime;
 
     protected int _selRow = INVALID, _selCol = INVALID;
 
@@ -91,10 +94,18 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_board.InputEnabled) return;
+        if (!_board.InputEnabled)
+        {
+            return;
+        }
 
         if (_isPadMode)
         {
+            if (_lastMovedDirection == Vector2Int.zero)
+            {
+                return;
+            }
+
             // Keyboard & Gamepad mode
             HoldingMoveAction();
         }
@@ -177,6 +188,8 @@ public class PlayerController : MonoBehaviour
 
         if (direction.sqrMagnitude < _stickDeadZone * _stickDeadZone)
         {
+            _lastMovedDirection = Vector2Int.zero;
+
             Debug.LogWarning("Skipped by stick dead zone", this);
             return;
         }
@@ -254,10 +267,23 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+
+        Vector2Int directionInt = Decide4Way(direction);
+
+        if (directionInt == _lastMovedDirection)
+        {
+            // Skip movements to the same direction
+            Debug.LogWarning("directionInt == _lastMovedDirection", this);
+            return;
+        }
+
+
+        bool hasMoved = false;
+
         // Move repeat delay needs to be larger than double time of gem moving duration.
         _nextMoveTime = Time.time + (_hasSelection ? _moveRepeatRate : _moveRepeatDelay);
 
-        Vector2Int directionInt = Decide4Way(direction);
+
         if (!_hasSelection)
         {   // Init, nothing has selected.
 
@@ -265,6 +291,8 @@ public class PlayerController : MonoBehaviour
             int r = Mathf.Clamp(_board.Rows / 2, 0, _board.Rows - 1);
             int c = Mathf.Clamp(_board.Cols / 2, 0, _board.Cols - 1);
             SetSelection(r, c);
+
+            hasMoved = true;
         }
         else
         {
@@ -275,11 +303,19 @@ public class PlayerController : MonoBehaviour
             {
                 // Move cursor
                 SetSelection(nr, nc);
+
+                hasMoved = true;
             }
             else
             {
                 // @@ TODO: Add feedback this is invalid and impossible.
             }
+        }
+
+        if (hasMoved)
+        {
+            _nextMoveHoldTime = Time.time + _holdingRepeatDelay;
+            _lastMovedDirection = directionInt;
         }
     }
 
@@ -294,40 +330,46 @@ public class PlayerController : MonoBehaviour
         }
 
         _nextSwapTime = Time.time + _swapRepeatRate;
+        _nextSwapHoldTime = Time.time + _holdingRepeatDelay;
 
         Vector2Int directionInt = Decide4Way(direction);
 
         // Try swapping gems
         _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), directionInt);
-        Debug.LogWarning("Swap performed!", this);
+
     }
 
     protected void HoldingMoveAction()
     {
-        // @@ TODO: Implement holding logic. Needs to establish it over solid foundation.
-        //if (Time.time < _nextHoldingActionTime)
-        if (Time.time > 0f)
+        if (Time.time > _nextMoveHoldTime)
         {
+            if (_isMoveHolding)
+            {
+                int nr = _selRow + _lastMovedDirection.y;
+                int nc = _selCol + _lastMovedDirection.x;
+                if (_board.InBounds(nr, nc))
+                {
+                    // Move cursor
+                    SetSelection(nr, nc);
+                    _nextMoveHoldTime = Time.time + _moveRepeatRate;
+                }
+            }
+
             return;
         }
 
-        Vector2Int directionInt = Decide4Way(move.action.ReadValue<Vector2>());
 
-        if (_isConfirmPressing && _isMoveHolding)
-        {
-            // Try swapping gems
-            _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), directionInt);
-            Debug.LogWarning("Swap performed during holding!", this);
-        }
-        else if (_isMoveHolding)
-        {
-            int nr = _selRow + directionInt.y;
-            int nc = _selCol + directionInt.x;
-            if (_board.InBounds(nr, nc))
-            {
-                // Move cursor
-                SetSelection(nr, nc);
-            }
-        }
+        //if (Time.time > _nextSwapHoldTime)
+        //{
+        //    if (_isConfirmPressing && _isMoveHolding)
+        //    {
+        //        Vector2Int directionInt = Decide4Way(move.action.ReadValue<Vector2>());
+        //        // Try swapping gems
+        //        _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), directionInt);
+
+        //        _nextSwapHoldTime = Time.time + _swapRepeatRate;
+        //    }
+        //    return;
+        //}
     }
 }
