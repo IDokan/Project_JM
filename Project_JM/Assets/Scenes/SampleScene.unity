@@ -698,17 +698,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &710038372 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1387215370364407558, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
-  m_PrefabInstance: {fileID: 5760348805556038935}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757ecaced9031f248b89ad6739735094, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlight
 --- !u!114 &1104298762 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2655240604946002307, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -758,6 +747,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d8c92beb5934c4ebf39f04fb3ca0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxLayer
+--- !u!114 &1485710722 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1651022712360218429, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0e406a2a8b5d54499ae203dcdcf252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlightManager
 --- !u!4 &1687414569 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4476003029408211714, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
@@ -840,7 +840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _board: {fileID: 594975000}
-  gemSelectionHighlight: {fileID: 710038372}
+  gemSelectionHighlightManager: {fileID: 1485710722}
   transitionManager: {fileID: 1986252045}
   _cam: {fileID: 519420031}
   point: {fileID: 6606404916258401310, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
@@ -848,8 +848,7 @@ MonoBehaviour:
   move: {fileID: 6220676511678275663, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   confirm: {fileID: 3153855486089574250, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   _dragTresholdPixels: 16
-  _moveRepeatDelay: 0.25
-  _moveRepeatRate: 0.12
+  _moveRepeatRate: 0.1
   _stickDeadZone: 0.25
   _swapRepeatRate: 0.4
   _holdingRepeatDelay: 0.8
@@ -2147,7 +2146,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 1448270320435709076, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects:
     - {fileID: 1771287436350047106, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
     m_AddedGameObjects: []

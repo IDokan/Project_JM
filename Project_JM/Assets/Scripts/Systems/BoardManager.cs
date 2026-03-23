@@ -1080,13 +1080,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         // Horizontal check
         result.HorizontalCount = 1;
+        List<Vector2Int> horizontalMatchIndices = new List<Vector2Int>();
         int c = col - 1;
         while (c >= 0)
         {
             if (_gems[row, c].Color == color)
             {
                 result.HorizontalCount++;
-                result.HorizontalIndices.Add(new Vector2Int(row, c));
+                horizontalMatchIndices.Add(new Vector2Int(row, c));
                 c--;
             }
             else
@@ -1102,7 +1103,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             if (_gems[row, c].Color == color)
             {
                 result.HorizontalCount++;
-                result.HorizontalIndices.Add(new Vector2Int(row, c));
+                horizontalMatchIndices.Add(new Vector2Int(row, c));
                 c++;
             }
             else
@@ -1111,15 +1112,21 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             }
         }
 
+        if (result.HorizontalCount >= 3)
+        {
+            result.HorizontalIndices.AddRange(horizontalMatchIndices);
+        }
+
         // Vertical check
         result.VerticalCount = 1;
+        List<Vector2Int> verticalMatchIndices = new List<Vector2Int>();
         int r = row - 1;
         while (r >= 0)
         {
             if (_gems[r, col].Color == color)
             {
                 result.VerticalCount++;
-                result.VerticalIndices.Add(new Vector2Int(r, col));
+                verticalMatchIndices.Add(new Vector2Int(r, col));
                 r--;
             }
             else
@@ -1134,13 +1141,18 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             if (_gems[r, col].Color == color)
             {
                 result.VerticalCount++;
-                result.VerticalIndices.Add(new Vector2Int(r, col));
+                verticalMatchIndices.Add(new Vector2Int(r, col));
                 r++;
             }
             else
             {
                 break;
             }
+        }
+
+        if (result.VerticalCount >= 3)
+        {
+            result.VerticalIndices.AddRange(verticalMatchIndices);
         }
 
         return result;

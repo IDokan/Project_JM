@@ -8,31 +8,16 @@ using UnityEngine;
 
 public class GemSelectionHighlight : MonoBehaviour
 {
-    [SerializeField] protected GameObject selectionHighlightPrefab;
+    [SerializeField] protected GameObject arrowParent;
+    [SerializeField] protected GameObject topArrow;
+    [SerializeField] protected GameObject leftArrow;
+    [SerializeField] protected GameObject bottomArrow;
+    [SerializeField] protected GameObject rightArrow;
 
-    [SerializeField] protected BoardManager boardManager;
 
-    protected GameObject highlightObject = null;
 
-    protected void Awake()
+    protected void Start()
     {
-        if (selectionHighlightPrefab == null)
-        {
-            Debug.LogWarning("A prefab to highlight where is selected is NULL", this);
-        }
 
-        if (boardManager == null)
-        {
-            boardManager = GetComponent<BoardManager>();
-        }
-    }
-
-    public void HighlightCell(int row, int col)
-    {
-        if (highlightObject == null)
-        {
-            highlightObject = Instantiate(selectionHighlightPrefab, transform);
-        }
-        highlightObject.transform.localPosition = boardManager.GetGemLocation(row, col);
     }
 }
