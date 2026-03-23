@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 1367495987594621808}
   - component: {fileID: 4202452729555105499}
   - component: {fileID: 5489374677128354126}
-  - component: {fileID: 8150076651621727000}
+  - component: {fileID: 8409098911008119587}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -167,7 +167,7 @@ MonoBehaviour:
   slideDuration: 0.5
   hiddenY: 10.5
   shownY: 0.175
---- !u!114 &8150076651621727000
+--- !u!114 &8409098911008119587
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,9 +176,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7342104600010321755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757ecaced9031f248b89ad6739735094, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e0e406a2a8b5d54499ae203dcdcf252, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlight
+  m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlightManager
   selectionHighlightPrefab: {fileID: 3098297233451540460, guid: 0a4f5c34083e7f14ba06854bf0ba8c0b, type: 3}
   boardManager: {fileID: 4202452729555105499}
 --- !u!1 &7469514949075606743

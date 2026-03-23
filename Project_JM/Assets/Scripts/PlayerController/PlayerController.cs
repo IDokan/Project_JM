@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] protected BoardManager _board;
-    [SerializeField] protected GemSelectionHighlight gemSelectionHighlight;
+    [SerializeField] protected GemSelectionHighlightManager gemSelectionHighlightManager;
     [SerializeField] protected TransitionManager transitionManager;
     [SerializeField] protected Camera _cam;
 
@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Tuning")]
     [SerializeField] protected float _dragTresholdPixels = 16f;
-    [SerializeField] protected float _moveRepeatDelay = 0.25f;
     [SerializeField] protected float _moveRepeatRate = 0.12f;
     [SerializeField] protected float _stickDeadZone = 0.25f;
     [SerializeField] protected float _swapRepeatRate = 0.4f;
@@ -46,7 +45,6 @@ public class PlayerController : MonoBehaviour
     protected float _nextMoveHoldTime;
     protected Vector2Int _lastMovedDirection;
     protected float _nextSwapTime;
-    protected float _nextSwapHoldTime;
 
     protected int _selRow = INVALID, _selCol = INVALID;
 
@@ -162,26 +160,25 @@ public class PlayerController : MonoBehaviour
         _firedThisDrag = false;
     }
 
-
+    // Stick started latching
     protected void OnMoveStarted(InputAction.CallbackContext _)
     {
         _isMoveHolding = true;
     }
 
+    // Stick placed idle position.
     protected void OnMoveCanceled(InputAction.CallbackContext _)
     {
         _isMoveHolding = false;
+
+        _lastMovedDirection = Vector2Int.zero;
+        _nextMoveTime = 0f;
     }
 
+    // At everytime stick value has changed,
     // ------- Gamepad \ Keyboard ---------
     protected void OnMovePerformed(InputAction.CallbackContext context)
     {
-        if (!_board.InputEnabled)
-        {
-            return;
-        }
-
-
         _isPadMode = true;
 
         Vector2 direction = context.ReadValue<Vector2>();
@@ -190,18 +187,34 @@ public class PlayerController : MonoBehaviour
         {
             _lastMovedDirection = Vector2Int.zero;
 
-            Debug.LogWarning("Skipped by stick dead zone", this);
             return;
         }
 
+        // Since this function invoked everytime stick updated, skip all actions that quried by the same direction.
+        Vector2Int directionInt = Decide4Way(direction);
 
-        if (_isConfirmPressing)
+        if (directionInt == _lastMovedDirection)
         {
-            SwapGem(direction);
+            // Skip movements to the same direction
+            return;
         }
-        else
+
+        bool isPerformed = false;
+
+        if (_isConfirmPressing && _board.InputEnabled)
         {
-            SelectGem(direction);
+            isPerformed = SwapGem(directionInt);
+        }
+        else        // Enabled gem selection act when board disabled.
+        {
+            // It is very dangerous because below lines executed even _board _gems is null.
+            isPerformed = SelectGem(directionInt);
+        }
+
+        if (isPerformed)
+        {
+            _lastMovedDirection = directionInt;
+            _nextMoveHoldTime = Time.time + _holdingRepeatDelay;
         }
     }
 
@@ -240,7 +253,7 @@ public class PlayerController : MonoBehaviour
         _selRow = r;
         _selCol = c;
 
-        gemSelectionHighlight.HighlightCell(_selRow, _selCol);
+        gemSelectionHighlightManager.HighlightCell(_selRow, _selCol);
     }
 
     protected void ClearSelection()
@@ -249,7 +262,7 @@ public class PlayerController : MonoBehaviour
         _selRow = INVALID;
         _selCol = INVALID;
 
-        gemSelectionHighlight.HighlightCell(_selRow, _selCol);
+        gemSelectionHighlightManager.HighlightCell(_selRow, _selCol);
     }
 
     public Vector2 GetCurrentFollowPoint()
@@ -257,31 +270,18 @@ public class PlayerController : MonoBehaviour
         return point.action.ReadValue<Vector2>();
     }
 
-    protected void SelectGem(Vector2 direction)
+    protected bool SelectGem(Vector2Int direction)
     {
         // Throttle repeats
-        if (_hasSelection && Time.time < _nextMoveTime)
+        if (Time.time < _nextMoveTime)
         {
             // Checks _hasSelection because response immediately for the first selection interaction
-            Debug.LogWarning("Skipped by response time not satisfied", this);
-            return;
+            return false;
         }
 
-
-        Vector2Int directionInt = Decide4Way(direction);
-
-        if (directionInt == _lastMovedDirection)
-        {
-            // Skip movements to the same direction
-            Debug.LogWarning("directionInt == _lastMovedDirection", this);
-            return;
-        }
-
-
-        bool hasMoved = false;
 
         // Move repeat delay needs to be larger than double time of gem moving duration.
-        _nextMoveTime = Time.time + (_hasSelection ? _moveRepeatRate : _moveRepeatDelay);
+        _nextMoveTime = Time.time + _moveRepeatRate;
 
 
         if (!_hasSelection)
@@ -292,19 +292,19 @@ public class PlayerController : MonoBehaviour
             int c = Mathf.Clamp(_board.Cols / 2, 0, _board.Cols - 1);
             SetSelection(r, c);
 
-            hasMoved = true;
+            return true;
         }
         else
         {
             // Typical case, move cursor or try swapping gems
-            int nr = _selRow + directionInt.y;
-            int nc = _selCol + directionInt.x;
+            int nr = _selRow + direction.y;
+            int nc = _selCol + direction.x;
             if (_board.InBounds(nr, nc))
             {
                 // Move cursor
                 SetSelection(nr, nc);
 
-                hasMoved = true;
+                return true;
             }
             else
             {
@@ -312,64 +312,58 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (hasMoved)
-        {
-            _nextMoveHoldTime = Time.time + _holdingRepeatDelay;
-            _lastMovedDirection = directionInt;
-        }
+        return false;
     }
 
-    protected void SwapGem(Vector2 direction)
+    protected bool SwapGem(Vector2Int direction)
     {
         // Throttle repeats
         if (!_hasSelection || Time.time < _nextSwapTime)
         {
             // Checks _hasSelection because response immediately for the first selection interaction
             Debug.LogWarning("Tried swapping not selected. OR Skipped by response time not satisfied.", this);
-            return;
+            return false;
         }
 
         _nextSwapTime = Time.time + _swapRepeatRate;
-        _nextSwapHoldTime = Time.time + _holdingRepeatDelay;
-
-        Vector2Int directionInt = Decide4Way(direction);
 
         // Try swapping gems
-        _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), directionInt);
+        _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), direction);
 
+        return true;
     }
 
     protected void HoldingMoveAction()
     {
-        if (Time.time > _nextMoveHoldTime)
+        if (Time.time < _nextMoveHoldTime)
         {
-            if (_isMoveHolding)
-            {
-                int nr = _selRow + _lastMovedDirection.y;
-                int nc = _selCol + _lastMovedDirection.x;
-                if (_board.InBounds(nr, nc))
-                {
-                    // Move cursor
-                    SetSelection(nr, nc);
-                    _nextMoveHoldTime = Time.time + _moveRepeatRate;
-                }
-            }
+            return;
+        }
+
+        if (_isConfirmPressing)
+        {
+            _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), _lastMovedDirection);
+
+            _nextMoveHoldTime = Time.time + _swapRepeatRate;
 
             return;
         }
 
+        if (_isMoveHolding)
+        {
+            int nr = _selRow + _lastMovedDirection.y;
+            int nc = _selCol + _lastMovedDirection.x;
+            if (_board.InBounds(nr, nc))
+            {
+                // Move cursor
+                SetSelection(nr, nc);
+                _nextMoveHoldTime = Time.time + _moveRepeatRate;
+            }
+        }
 
-        //if (Time.time > _nextSwapHoldTime)
-        //{
-        //    if (_isConfirmPressing && _isMoveHolding)
-        //    {
-        //        Vector2Int directionInt = Decide4Way(move.action.ReadValue<Vector2>());
-        //        // Try swapping gems
-        //        _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), directionInt);
+        return;
 
-        //        _nextSwapHoldTime = Time.time + _swapRepeatRate;
-        //    }
-        //    return;
-        //}
+
+
     }
 }
