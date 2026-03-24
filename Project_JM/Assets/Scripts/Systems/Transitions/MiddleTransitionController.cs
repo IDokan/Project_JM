@@ -17,7 +17,6 @@ public class MiddleTransitionController : TransitionController
 
     [SerializeField] protected float middleTransitionDuration = 5f;
 
-
     protected void OnEnable()
     {
         characterDeathEventChannel.OnRaised += OnAnyoneDied;
@@ -32,20 +31,23 @@ public class MiddleTransitionController : TransitionController
     {
         if (stat.TryGetComponent<EnemyTag>(out _))
         {
-            StartCoroutine(MiddleTransitionRoutine());
+            RequestTransitionStart(BeginMiddleTransition);
         }
+    }
+
+    protected void BeginMiddleTransition()
+    {
+        StartCoroutine(MiddleTransitionRoutine());
     }
 
     protected IEnumerator MiddleTransitionRoutine()
     {
-        RaiseStarted();
-
         transitionEventChannel.Raise(TransitionPhase.MiddleTransitionStarts);
 
         yield return new WaitForSeconds(middleTransitionDuration);
 
         transitionEventChannel.Raise(TransitionPhase.MiddleTransitionEnd);
 
-        RaiseCompleted();
+        CompleteTransition();
     }
 }

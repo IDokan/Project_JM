@@ -232,16 +232,23 @@ public class CharacterStatus : MonoBehaviour
         {
             Clear();
         }
-        else if (IsDestroyConditionOnTransitionEvent(phase))
+        else if (IsEnemyDestroyConditionOnTransitionEvent(phase))
         {
             Destroy(gameObject);
         }
     }
 
-    protected bool IsDestroyConditionOnTransitionEvent(TransitionPhase phase)
+    protected bool IsEnemyDestroyConditionOnTransitionEvent(TransitionPhase phase)
     {
+        bool isEnemy = TryGetComponent<EnemyTag>(out _);
+
+        if (!isEnemy)
+        {   // Do not destroy party roster object
+            return false;
+        }
+
         return 
-            (phase == TransitionPhase.EndEnemyMoveEnd && TryGetComponent<EnemyTag>(out _))
+            (phase == TransitionPhase.EndEnemyMoveEnd)
             ||
             (phase == TransitionPhase.MiddleTransitionEnd && IsDead)
             ;

@@ -24,6 +24,8 @@ public class EnemySpawner : MonoBehaviour
     protected Vector3 spawnOffsetToCamera;
     protected int _numSpanwed = 0;
 
+    protected Coroutine dispatchRoutine = null;
+
     protected void OnEnable()
     {
         transitionEventChannel.OnRaised += OnTransitionEvent;
@@ -51,7 +53,12 @@ public class EnemySpawner : MonoBehaviour
         var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), spawnPosition, Quaternion.identity);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
-        StartCoroutine(DispatchSpawnEventChannelAfterDelay(spawnedEnemy, dispatchEventChannelDelay));
+        if (dispatchRoutine != null)
+        {
+            StopCoroutine(dispatchRoutine);
+            dispatchRoutine = null;
+        }
+        dispatchRoutine = StartCoroutine(DispatchSpawnEventChannelAfterDelay(spawnedEnemy, dispatchEventChannelDelay));
 
         return spawnedEnemy;
     }
@@ -62,6 +69,8 @@ public class EnemySpawner : MonoBehaviour
 
         enemy.GetComponent<EnemyActivation>()?.EnableScripts();
         _enemySpawnedEventChannel.Raise(enemy);
+
+        dispatchRoutine = null;
     }
 
     public void SpawnEnemyAfterDelay()
