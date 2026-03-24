@@ -9,21 +9,30 @@ using UnityEngine;
 
 public class DamageMultiplierManager : MonoBehaviour
 {
-    [SerializeField] CharacterDeathEventChannel _characterDeathEventChannel;
-    [SerializeField] DifficultyCurves _difficultyCurves;
+    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
+    [SerializeField] protected DifficultyCurves difficultyCurves;
 
-    protected float DamageMultiplier = 1f;
-    protected int numEnemyDefeated = 0;
-    protected float damageBonus = 1f;
+    protected float _damageMultiplier = 1f;
+    protected int _numEnemyDefeated = 0;
+    protected float _damageBonus = 1f;
 
-    public float GetMultiplier => DamageMultiplier * damageBonus;
+    public float GetMultiplier => _damageMultiplier * _damageBonus;
 
-    protected void OnEnable() => _characterDeathEventChannel.OnRaised += OnCharacterDiedHandle;
-    protected void OnDisable() => _characterDeathEventChannel.OnRaised -= OnCharacterDiedHandle;
+    protected void OnEnable()
+    {
+        characterDeathEventChannel.OnRaised += OnCharacterDiedHandle;
+        transitionEventChannel.OnRaised += OnLevelTransition;
+    }
+    protected void OnDisable()
+    {
+        characterDeathEventChannel.OnRaised -= OnCharacterDiedHandle;
+        transitionEventChannel.OnRaised -= OnLevelTransition;
+    }
 
     public float GetRawMultiplier
     {
-        get { return DamageMultiplier; }
+        get { return _damageMultiplier; }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -34,19 +43,33 @@ public class DamageMultiplierManager : MonoBehaviour
 
     public void AddTimedBonus(float multiplier)
     {
-        damageBonus *= multiplier;
+        _damageBonus *= multiplier;
     }
 
     public void OnCharacterDiedHandle(CharacterStatus status)
     {
-        // Clear damage bonus affeted by buffs whenever characters defeated.
-        damageBonus = 1f;
 
         if (status.TryGetComponent<EnemyTag>(out _))
         {
-            ++numEnemyDefeated;
-
-            DamageMultiplier = (_difficultyCurves.DamageMultiplierCurve.Evaluate(numEnemyDefeated));
+            OnEnemyKilled(_numEnemyDefeated + 1);
         }
+    }
+
+    protected void OnLevelTransition(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin)
+        {
+            OnEnemyKilled(0);
+        }
+    }
+
+    protected void OnEnemyKilled(int newNumEnemyDefeated)
+    {
+        // Clear timed bonus added during combat
+        _damageBonus = 1f;
+
+        _numEnemyDefeated = newNumEnemyDefeated;
+
+        _damageMultiplier = (difficultyCurves.DamageMultiplierCurve.Evaluate(_numEnemyDefeated));
     }
 }

@@ -47,10 +47,9 @@ public class CombatIntroController : TransitionController
     protected Vector3 partyStartOffsetToCamera;
     protected Vector3 partyArrivalOffsetToCamera;
 
-    bool _isInTransition = false;
-
-    protected void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Transform cameraTransform = Camera.main.transform;
         partyStartOffsetToCamera = partyStartPosition - cameraTransform.position;
         partyArrivalOffsetToCamera = partyArrivalPosition - cameraTransform.position;
@@ -78,6 +77,8 @@ public class CombatIntroController : TransitionController
         {
             t += Time.deltaTime;
 
+            // Simple fixing: Update destination at every frame to prevent bugs when both camer and party started moving. (Both enemy and party died)
+            destination = camera.transform.position + partyArrivalOffsetToCamera;
             partyTransform.position = Vector3.Lerp(partyStartPosition, destination, t / partyMoveDuration);
 
             yield return null;
@@ -137,20 +138,19 @@ public class CombatIntroController : TransitionController
             uiTransform.anchoredPosition = uiArrivalPositions[i];
         }
 
-        _isInTransition = false;
-        RaiseCompleted();
+        CompleteTransition();
     }
 
     public void StartIntroTransition()
     {
-        if (_isInTransition)
-        {
-            return;
-        }
+        RequestTransitionStart(BeginIntroTransition);
+    }
 
-        _isInTransition = true;
-        RaiseStarted();
+    private void BeginIntroTransition()
+    {
         transitionEventChannel.Raise(TransitionPhase.IntroTransitionBegin);
+
+        GlobalRNG.Instance.ResetSeed();
 
         if (partyTransform != null)
         {

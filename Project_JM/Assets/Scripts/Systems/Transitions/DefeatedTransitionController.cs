@@ -47,8 +47,9 @@ public class DefeatedTransitionController : TransitionController
     Transform enemyTransform = null;
     protected Vector3 enemyOffsetToCamera;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Transform cameraTransform = Camera.main.transform;
         partyYOffset = partyYOffset - cameraTransform.position.y;
         enemyOffsetToCamera = enemyArrivalPosition - cameraTransform.position;
@@ -70,7 +71,11 @@ public class DefeatedTransitionController : TransitionController
 
     protected void StartDefeatedTransition()
     {
-        RaiseStarted();
+        RequestTransitionStart(BeginDefeatedTransition);
+    }
+
+    protected void BeginDefeatedTransition()
+    {
         transitionEventChannel.Raise(TransitionPhase.EndTransitionBegin);
 
         if (partyTransform != null)
@@ -155,8 +160,7 @@ public class DefeatedTransitionController : TransitionController
             RectTransform uiTransform = uiTransforms[i];
             uiTransform.anchoredPosition = uiArrivalPositions[i];
         }
-
-        RaiseCompleted();
+        CompleteTransition();
     }
 
     protected void OnCharacterDied(CharacterStatus characterStat)
@@ -179,31 +183,34 @@ public class DefeatedTransitionController : TransitionController
     {
         yield return new WaitForSeconds(delay);
 
-        ParallaxLayer targetParallaxLayer = targetObject.GetComponent<ParallaxLayer>();
-        if (targetParallaxLayer != null)
+        if (targetObject != null)
         {
-            targetParallaxLayer.SetManualMode();
-        }
+            ParallaxLayer targetParallaxLayer = targetObject.GetComponent<ParallaxLayer>();
+            if (targetParallaxLayer != null)
+            {
+                targetParallaxLayer.SetManualMode();
+            }
 
 
-        Vector3 startPosition = targetObject.position;
+            Vector3 startPosition = targetObject.position;
 
-        float t = 0f;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
+            float t = 0f;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
 
-            targetObject.position = Vector3.Lerp(startPosition, targetPosition, t / duration);
+                targetObject.position = Vector3.Lerp(startPosition, targetPosition, t / duration);
 
-            yield return null;
-        }
+                yield return null;
+            }
 
-        targetObject.position = targetPosition;
+            targetObject.position = targetPosition;
 
 
-        if (targetParallaxLayer != null)
-        {
-            targetParallaxLayer.SetParallaxMode();
+            if (targetParallaxLayer != null)
+            {
+                targetParallaxLayer.SetParallaxMode();
+            }
         }
 
         transitionEventChannel.Raise(eventPhase);

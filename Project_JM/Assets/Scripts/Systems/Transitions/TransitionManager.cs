@@ -5,6 +5,7 @@
 // Summary: A script to manager all transition and its data.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TransitionManager : MonoBehaviour
@@ -20,18 +21,26 @@ public class TransitionManager : MonoBehaviour
     protected bool _isHoldingSkip = false;
     protected float _skipTimer = 0f;
 
+    protected readonly Queue<PendingTransitionRequest> _pendingTransitionRequests = new Queue<PendingTransitionRequest>();
+
+
+    protected struct PendingTransitionRequest
+    {
+        public PendingTransitionRequest(TransitionController controller, Action startAction)
+        {
+            Controller = controller;
+            StartAction = startAction;
+        }
+
+        public TransitionController Controller { get; }
+        public Action StartAction { get; }
+    }
 
     protected void OnEnable()
     {
         if (transitionControllers == null || transitionControllers.Length == 0)
         {
             transitionControllers = GetComponentsInChildren<TransitionController>();
-        }
-
-        foreach (TransitionController tc in transitionControllers)
-        {
-            tc.Started += OnTransitionStarted;
-            tc.Completed += OnTransitionCompleted;
         }
     }
 
@@ -43,13 +52,9 @@ public class TransitionManager : MonoBehaviour
 
     protected void OnDisable()
     {
-        foreach (TransitionController tc in transitionControllers)
-        {
-            tc.Started -= OnTransitionStarted;
-            tc.Completed -= OnTransitionCompleted;
-        }
-        _isHoldingSkip = false;
-        Time.timeScale = 1f;
+        _pendingTransitionRequests.Clear();
+        _currentTransition = null;
+        ResetSkipState();
     }
 
     void Update()
@@ -88,28 +93,88 @@ public class TransitionManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    protected void OnTransitionStarted(TransitionController tc)
-    {
-        _currentTransition = tc;
-        _isHoldingSkip = false;
-        _skipTimer = 0f;
 
-        Time.timeScale = 1f;
-        NotifySkipTimerChanged();
+    public bool TryStartTransition(TransitionController controller, Action startAction)
+    {
+        if (controller == null || startAction == null)
+        {
+            return false;
+        }
+
+        if (_currentTransition == null)
+        {
+            _currentTransition = controller;
+            ResetSkipState();
+            startAction();
+            return true;
+        }
+
+        // Check multiple identical requests
+        if (_currentTransition == controller || HasPendingRequest(controller))
+        {
+            return false;
+        }
+
+        _pendingTransitionRequests.Enqueue(new PendingTransitionRequest(controller, startAction));
+
+        return false;
     }
 
-    protected void OnTransitionCompleted(TransitionController tc)
+    public void CompleteTransition(TransitionController controller)
     {
+        if (_currentTransition == null || _currentTransition != controller)
+        {
+            // Deny other transition's completion
+            return;
+        }
+
         _currentTransition = null;
 
-        _isHoldingSkip = false;
-
-        Time.timeScale = 1f;
-        NotifySkipTimerChanged();
+        ResetSkipState();
+        TryStartNextTransition();
     }
 
     protected void NotifySkipTimerChanged()
     {
         OnSkipTimerChanged?.Invoke(_skipTimer, skipHoldingTime);
+    }
+
+    protected void ResetSkipState()
+    {
+        _isHoldingSkip = false;
+        _skipTimer = 0f;
+        Time.timeScale = 1f;
+        NotifySkipTimerChanged();
+    }
+
+    protected bool HasPendingRequest(TransitionController controller)
+    {
+        foreach (PendingTransitionRequest request in _pendingTransitionRequests)
+        {
+            if (request.Controller == controller)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void TryStartNextTransition()
+    {
+        while (_pendingTransitionRequests.Count > 0 && _currentTransition == null)
+        {
+            PendingTransitionRequest pendingRequest = _pendingTransitionRequests.Dequeue();
+
+            if (pendingRequest.Controller == null ||
+                pendingRequest.StartAction == null)
+            {
+                continue;
+            }
+
+            _currentTransition = pendingRequest.Controller;
+
+            ResetSkipState();
+            pendingRequest.StartAction();
+        }
     }
 }

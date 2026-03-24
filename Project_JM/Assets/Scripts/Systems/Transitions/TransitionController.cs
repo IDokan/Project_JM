@@ -9,16 +9,37 @@ using UnityEngine;
 
 public abstract class TransitionController : MonoBehaviour
 {
-    public event Action<TransitionController> Started;
-    public event Action<TransitionController> Completed;
+    [SerializeField] protected TransitionManager transitionManager;
 
-    protected void RaiseStarted()
+    protected virtual void Awake()
     {
-        Started?.Invoke(this);
+        if (transitionManager == null)
+        {
+            transitionManager = GetComponentInParent<TransitionManager>();
+        }
     }
 
-    protected void RaiseCompleted()
+    public bool RequestTransitionStart(Action startAction)
     {
-        Completed?.Invoke(this);
+        if (startAction == null)
+        {
+            return false;
+        }
+
+        if (transitionManager == null)
+        {
+            startAction();
+            return true;
+        }
+
+        return transitionManager.TryStartTransition(this, startAction);
+    }
+
+    public void CompleteTransition()
+    {
+        if (transitionManager != null)
+        {
+            transitionManager.CompleteTransition(this);
+        }
     }
 }

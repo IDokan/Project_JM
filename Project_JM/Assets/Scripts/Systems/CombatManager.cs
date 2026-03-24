@@ -42,13 +42,11 @@ public class CombatManager : MonoBehaviour
         characterDeathEventChannel.OnRaised -= OnAnyoneDied;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected void Awake()
     {
-        _lastAttackedCharacter = party.Get(GemColorUtility.GetRandomGemColor());
+        _lastAttackedCharacter = party.Get(GemColorUtility.GetRandomGemColor(true));
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
 
