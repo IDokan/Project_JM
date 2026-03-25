@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
 
     // Gamepad/keyboard selection
     protected bool _hasSelection;
-    protected float _nextMoveTime;
     protected float _nextMoveHoldTime;
     protected Vector2Int _lastMovedDirection;
     protected float _nextSwapTime;
@@ -172,7 +171,6 @@ public class PlayerController : MonoBehaviour
         _isMoveHolding = false;
 
         _lastMovedDirection = Vector2Int.zero;
-        _nextMoveTime = 0f;
     }
 
     // At everytime stick value has changed,
@@ -222,12 +220,17 @@ public class PlayerController : MonoBehaviour
     {
         _isPadMode = true;
 
-        _isConfirmPressing = true;
+        if(_board.InputEnabled)
+        {
+            _isConfirmPressing = true;
+            gemSelectionHighlightManager.EnableArrows(_selRow, _selCol);
+        }
     }
 
     protected void OnConfirmCanceled(InputAction.CallbackContext _)
     {
         _isConfirmPressing = false;
+        gemSelectionHighlightManager.DisableArrows();
     }
 
     // ----- Helpers ---------
@@ -272,16 +275,6 @@ public class PlayerController : MonoBehaviour
 
     protected bool SelectGem(Vector2Int direction)
     {
-        // Throttle repeats
-        if (Time.time < _nextMoveTime)
-        {
-            // Checks _hasSelection because response immediately for the first selection interaction
-            return false;
-        }
-
-
-        // Move repeat delay needs to be larger than double time of gem moving duration.
-        _nextMoveTime = Time.time + _moveRepeatRate;
 
 
         if (!_hasSelection)

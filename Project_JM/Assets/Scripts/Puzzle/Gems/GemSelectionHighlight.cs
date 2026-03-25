@@ -14,10 +14,28 @@ public class GemSelectionHighlight : MonoBehaviour
     [SerializeField] protected GameObject bottomArrow;
     [SerializeField] protected GameObject rightArrow;
 
+    [SerializeField] protected Animator arrowAnimator;
+
 
 
     protected void Start()
     {
 
+    }
+
+    public void EnableArrows(bool enable)
+    {
+        arrowParent.SetActive(enable);
+    }
+
+    public void EnableArrows(bool top, bool left, bool bottom, bool right)
+    {
+        arrowParent.SetActive(true);
+        topArrow.SetActive(top);
+        leftArrow.SetActive(left);
+        bottomArrow.SetActive(bottom);
+        rightArrow.SetActive(right);
+
+        arrowAnimator.Update(0f);
     }
 }

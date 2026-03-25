@@ -848,7 +848,7 @@ MonoBehaviour:
   move: {fileID: 6220676511678275663, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   confirm: {fileID: 3153855486089574250, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   _dragTresholdPixels: 16
-  _moveRepeatRate: 0.1
+  _moveRepeatRate: 0.12
   _stickDeadZone: 0.25
   _swapRepeatRate: 0.4
   _holdingRepeatDelay: 0.8
@@ -2061,6 +2061,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1651022712360218429, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: selectionHighlightPrefab
+      value: 
+      objectReference: {fileID: 69723808561079182, guid: 0a4f5c34083e7f14ba06854bf0ba8c0b, type: 3}
     - target: {fileID: 1670055396459363335, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: _partyStatus
       value: 
