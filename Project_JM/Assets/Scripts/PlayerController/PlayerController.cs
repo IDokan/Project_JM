@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
     protected bool _isMoveHolding;
 
     protected bool _isPadMode = false;
+    public bool IsPadMode => _isPadMode;
 
     protected void OnEnable()
     {
@@ -218,6 +219,8 @@ public class PlayerController : MonoBehaviour
 
     protected void OnConfirmStarted(InputAction.CallbackContext _)
     {
+        transitionManager.BeginSkipHold();
+
         _isPadMode = true;
 
         if(_board.InputEnabled)
@@ -229,6 +232,9 @@ public class PlayerController : MonoBehaviour
 
     protected void OnConfirmCanceled(InputAction.CallbackContext _)
     {
+        transitionManager.EndSkipHold();
+
+
         _isConfirmPressing = false;
         gemSelectionHighlightManager.DisableArrows();
     }

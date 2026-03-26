@@ -70,8 +70,7 @@ public class TransitionManager : MonoBehaviour
 
         _skipTimer = Mathf.Clamp(_skipTimer, 0f, skipHoldingTime);
 
-        Time.timeScale = (_isHoldingSkip && _skipTimer >= skipHoldingTime) ?
-            skipTimeScale : 1f;
+        GlobalTimeManager.Instance.SkipTransition((_isHoldingSkip && _skipTimer >= skipHoldingTime));
 
         NotifySkipTimerChanged();
     }
@@ -90,7 +89,7 @@ public class TransitionManager : MonoBehaviour
     {
         _isHoldingSkip = false;
 
-        Time.timeScale = 1f;
+        GlobalTimeManager.Instance.RestoreTimeScaleFromSkip();
     }
 
 
@@ -143,7 +142,7 @@ public class TransitionManager : MonoBehaviour
     {
         _isHoldingSkip = false;
         _skipTimer = 0f;
-        Time.timeScale = 1f;
+        GlobalTimeManager.Instance.RestoreTimeScaleFromSkip();
         NotifySkipTimerChanged();
     }
 

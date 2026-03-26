@@ -40,6 +40,12 @@ public class UIFollowPoint : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (playerController == null || playerController.IsPadMode)
+        {
+            uiTransform.anchoredPosition = Vector2.zero;
+            return;
+        }
+
         Vector2 screenPoint = playerController.GetCurrentFollowPoint();
         MoveToScreenPoint(screenPoint + offset);
     }

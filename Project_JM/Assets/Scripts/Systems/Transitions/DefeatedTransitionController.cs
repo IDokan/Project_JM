@@ -9,6 +9,10 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
+
 
 public class DefeatedTransitionController : TransitionController
 {
@@ -33,6 +37,8 @@ public class DefeatedTransitionController : TransitionController
     [Header("UI Positions")]
     [SerializeField] protected RectTransform[] uiTransforms;
     [SerializeField] protected Vector3[] uiArrivalPositions;
+    [SerializeField] protected Selectable retryDefaultSelectable;
+
 
     [Header("Timing")]
     [SerializeField] protected float partyMoveDelay = 1f;
@@ -160,6 +166,8 @@ public class DefeatedTransitionController : TransitionController
             RectTransform uiTransform = uiTransforms[i];
             uiTransform.anchoredPosition = uiArrivalPositions[i];
         }
+        FocusRetryUI();
+
         CompleteTransition();
     }
 
@@ -215,4 +223,36 @@ public class DefeatedTransitionController : TransitionController
 
         transitionEventChannel.Raise(eventPhase);
     }
+    protected void FocusRetryUI()
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null || !(eventSystem.currentInputModule is InputSystemUIInputModule))
+        {
+            return;
+        }
+
+        if (retryDefaultSelectable == null)
+        {
+            for (int i = 0; i < uiTransforms.Length; i++)
+            {
+                RectTransform uiTransform = uiTransforms[i];
+                if (uiTransform == null)
+                {
+                    continue;
+                }
+
+                retryDefaultSelectable = uiTransform.GetComponentInChildren<Selectable>(true);
+                if (retryDefaultSelectable != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (retryDefaultSelectable != null && retryDefaultSelectable.IsActive() && retryDefaultSelectable.IsInteractable())
+        {
+            eventSystem.SetSelectedGameObject(retryDefaultSelectable.gameObject);
+        }
+    }
+
 }
