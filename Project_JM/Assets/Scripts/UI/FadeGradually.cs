@@ -45,7 +45,7 @@ public class FadeGradually : MonoBehaviour
 
         SetAlpha(alphaMultiplier);
 
-        alphaMultiplier -= decreaseAlphaScaler * Time.deltaTime;
+        alphaMultiplier -= decreaseAlphaScaler * Time.unscaledDeltaTime;
         alphaMultiplier = Mathf.Max(0f, alphaMultiplier);
     }
 

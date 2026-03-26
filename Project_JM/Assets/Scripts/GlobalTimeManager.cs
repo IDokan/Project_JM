@@ -27,6 +27,9 @@ public class GlobalTimeManager : MonoBehaviour
 
     protected Coroutine _timerRoutine;
 
+    protected float _skipTimeScale = 3f;
+    protected bool _isPaused = false;
+
     public static IEnumerator WaitForGlobalSeconds(float seconds)
     {
         float elapsed = 0f;
@@ -97,5 +100,33 @@ public class GlobalTimeManager : MonoBehaviour
         {
             EndRoutine();
         }
+    }
+
+    public void SkipTransition(bool isSkipping)
+    {
+        if (!_isPaused)
+        {
+            UnityEngine.Time.timeScale = isSkipping ? _skipTimeScale : 1f;
+        }
+    }
+
+    public void RestoreTimeScaleFromSkip()
+    {
+        if (!_isPaused)
+        {
+            UnityEngine.Time.timeScale = 1f;
+        }
+    }
+
+    public void PauseTimeScale()
+    {
+        _isPaused = true;
+        UnityEngine.Time.timeScale = 0f;
+    }
+
+    public void RestoreTimeScaleFromPause()
+    {
+        _isPaused = false;
+        UnityEngine.Time.timeScale = 1f;
     }
 }
