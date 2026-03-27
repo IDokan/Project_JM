@@ -228,13 +228,13 @@ public class CharacterStatus : MonoBehaviour
 
     protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == TransitionPhase.IntroTransitionBegin)
-        {
-            Clear();
-        }
-        else if (IsEnemyDestroyConditionOnTransitionEvent(phase))
+        if (IsEnemyDestroyConditionOnTransitionEvent(phase))
         {
             Destroy(gameObject);
+        }
+        else if (phase == TransitionPhase.IntroTransitionBegin)
+        {   // Clear level-up effects to the party object
+            Clear();
         }
     }
 
@@ -251,6 +251,8 @@ public class CharacterStatus : MonoBehaviour
             (phase == TransitionPhase.EndEnemyMoveEnd)
             ||
             (phase == TransitionPhase.MiddleTransitionEnd && IsDead)
+            || 
+            (phase == TransitionPhase.IntroTransitionBegin)
             ;
     }
 }

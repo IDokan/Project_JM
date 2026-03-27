@@ -47,6 +47,11 @@ public class CombatIntroController : TransitionController
     protected Vector3 partyStartOffsetToCamera;
     protected Vector3 partyArrivalOffsetToCamera;
 
+    protected Coroutine partyRoutine = null;
+    protected Coroutine boardRoutine = null;
+    protected Coroutine uiRoutine = null;
+    protected Coroutine menuRoutine = null;
+
     protected override void Awake()
     {
         base.Awake();
@@ -88,6 +93,8 @@ public class CombatIntroController : TransitionController
         partyParallaxLayer.SetParallaxMode();
 
         transitionEventChannel.Raise(TransitionPhase.IntroPartyMoveEnd);
+
+        partyRoutine = null;
     }
 
     protected IEnumerator BoardRoutine()
@@ -108,6 +115,7 @@ public class CombatIntroController : TransitionController
 
         transitionEventChannel.Raise(TransitionPhase.IntroBoardMoveEnd);
 
+        boardRoutine = null;
     }
 
     protected IEnumerator UIRoutine()
@@ -139,6 +147,8 @@ public class CombatIntroController : TransitionController
         }
 
         CompleteTransition();
+
+        uiRoutine = null;
     }
 
     public void StartIntroTransition()
@@ -154,22 +164,26 @@ public class CombatIntroController : TransitionController
 
         if (partyTransform != null)
         {
-            StartCoroutine(IntroRoutine());
+            KillOngoingRoutine(partyRoutine);
+            partyRoutine = StartCoroutine(IntroRoutine());
         }
 
         if (boardTransform != null)
         {
-            StartCoroutine(BoardRoutine());
+            KillOngoingRoutine(boardRoutine);
+            boardRoutine = StartCoroutine(BoardRoutine());
         }
 
         if (uiTransforms.Length > 0 && uiArrivalPositions.Length == uiTransforms.Length)
         {
-            StartCoroutine(UIRoutine());
+            KillOngoingRoutine(uiRoutine);
+            uiRoutine = StartCoroutine(UIRoutine());
         }
 
         if (menuTransform != null)
         {
-            StartCoroutine(MenuRoutine());
+            KillOngoingRoutine(menuRoutine);
+            menuRoutine = StartCoroutine(MenuRoutine());
         }
     }
 
@@ -177,6 +191,7 @@ public class CombatIntroController : TransitionController
     {
         if (menuTransform.gameObject.activeSelf == false)
         {
+            menuRoutine = null;
             yield break;
         }
 
@@ -193,5 +208,16 @@ public class CombatIntroController : TransitionController
 
         menuTransform.anchoredPosition = menuArrivalPosition;
         menuTransform.gameObject.SetActive(false);
+
+        menuRoutine = null;
+    }
+
+    protected void KillOngoingRoutine(Coroutine routine)
+    {
+        if (routine != null)
+        {
+            StopCoroutine(routine);
+            routine = null;
+        }
     }
 }

@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public InputActionReference press;
     public InputActionReference move;
     public InputActionReference confirm;
+    public InputActionReference cancel;
 
     [Header("Tuning")]
     [SerializeField] protected float _dragTresholdPixels = 16f;
@@ -34,6 +35,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Interaction VFX")]
     [SerializeField] protected ClickVFXSpawner clickVFXSpawner;
+
+    [Header("Pause UI")]
+    [SerializeField] protected PauseManager pauseManager;
 
     // Pointer-drag state
     protected Vector2 _pressScreenPos;
@@ -63,6 +67,7 @@ public class PlayerController : MonoBehaviour
         press.action.Enable();
         move.action.Enable();
         confirm.action.Enable();
+        cancel.action.Enable();
 
         press.action.started += OnPressStarted;
         press.action.canceled += OnPressCanceled;
@@ -71,6 +76,7 @@ public class PlayerController : MonoBehaviour
         move.action.started += OnMoveStarted;
         move.action.performed += OnMovePerformed;
         move.action.canceled += OnMoveCanceled;
+        cancel.action.performed += OnCancelPerformed;
     }
 
     protected void OnDisable()
@@ -82,11 +88,13 @@ public class PlayerController : MonoBehaviour
         move.action.started -= OnMoveStarted;
         move.action.performed -= OnMovePerformed;
         move.action.canceled -= OnMoveCanceled;
+        cancel.action.performed -= OnCancelPerformed;
 
         point.action.Disable();
         press.action.Disable();
         move.action.Disable();
         confirm.action.Disable();
+        cancel.action.Disable();
     }
 
     // Update is called once per frame
@@ -364,5 +372,11 @@ public class PlayerController : MonoBehaviour
 
 
 
+    }
+
+    protected void OnCancelPerformed(InputAction.CallbackContext _)
+    {
+        // Open pause menu
+        pauseManager.Pause();
     }
 }
