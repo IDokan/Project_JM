@@ -129,4 +129,10 @@ public class GlobalTimeManager : MonoBehaviour
         _isPaused = false;
         UnityEngine.Time.timeScale = 1f;
     }
+
+    public void RestoreTimeScaleExitCombatScene()
+    {
+        _isPaused = false;
+        UnityEngine.Time.timeScale = 1f;
+    }
 }

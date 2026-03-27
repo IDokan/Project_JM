@@ -1001,12 +1001,14 @@ MonoBehaviour:
   press: {fileID: 351169737856641189, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   move: {fileID: 6220676511678275663, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   confirm: {fileID: 3153855486089574250, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
+  cancel: {fileID: 721589173647186240, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   _dragTresholdPixels: 16
   _moveRepeatRate: 0.12
   _stickDeadZone: 0.25
   _swapRepeatRate: 0.4
   _holdingRepeatDelay: 0.8
   clickVFXSpawner: {fileID: 1754810534}
+  pauseManager: {fileID: 1754810535}
 --- !u!114 &1754810534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,7 +1109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
-  m_FirstSelected: {fileID: 727274359}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1798551170
@@ -2609,7 +2611,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4112706472279522872, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4295470772965885001, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3051,6 +3053,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 7.100006
       objectReference: {fileID: 0}
+    - target: {fileID: 5562479795490656314, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: pauseManager
+      value: 
+      objectReference: {fileID: 1754810535}
+    - target: {fileID: 5562479795490656314, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: combatIntroController
+      value: 
+      objectReference: {fileID: 1104298762}
     - target: {fileID: 5862706157185116792, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
