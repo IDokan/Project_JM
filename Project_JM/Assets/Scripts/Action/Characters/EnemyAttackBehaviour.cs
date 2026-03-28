@@ -12,8 +12,8 @@ using UnityEngine;
 public class EnemyAttackBehaviour : MonoBehaviour
 {
     [SerializeField] protected EnemyAttackEventChannel attackChannel;
-    [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
-    [SerializeField] protected BoardDisableLogic boardDisableLogic;
+    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+
     [SerializeField] protected StunRepresenter stunRepresenter;
     [SerializeField, Min(0.001f)] protected float baseCooldown = 5f;
 
@@ -28,6 +28,9 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected Coroutine _enrangeRoutine;
     protected float _enrageTimer;
     [SerializeField, Min(10f)] protected float _enrageDelay = 30f;
+    public float EnrageDelay => _enrageDelay;
+
+    public event Action<float, float> OnEnrageTimeChanged;
 
     protected bool _isStunned = false;
     protected Coroutine _stunRoutine = null;
@@ -36,17 +39,15 @@ public class EnemyAttackBehaviour : MonoBehaviour
     {
         _loop = StartCoroutine(Loop());
         _enrangeRoutine = StartCoroutine(EnrageAfterDelay());
+
+        characterDeathEventChannel.OnRaised += OnDied;
     }
     protected void OnDisable()
     {
-        if (_loop != null)
-        {
-            StopCoroutine(_loop);
-        }
-        if (_enrangeRoutine != null)
-        {
-            StopCoroutine(_enrangeRoutine);
-        }
+        StopRoutines();
+
+
+        characterDeathEventChannel.OnRaised -= OnDied;
     }
 
     protected void Awake()
@@ -90,7 +91,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected void Attack()
     {
         attackChannel.Raise();
-        boardDisableChannel.Raise(boardDisableLogic);
     }
 
     protected float GetCooldown()
@@ -113,6 +113,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected IEnumerator EnrageAfterDelay()
     {
         _enrageTimer = _enrageDelay;
+        OnEnrageTimeChanged?.Invoke(_enrageTimer, _enrageDelay);
 
         // Countdown
         while (_enrageTimer > 0f)
@@ -120,11 +121,13 @@ public class EnemyAttackBehaviour : MonoBehaviour
             if (!_isStunned)
             {
                 _enrageTimer -= GlobalTimeManager.DeltaTime;
+                OnEnrageTimeChanged?.Invoke(_enrageTimer, _enrageDelay);
             }
 
             yield return null;
         }
 
+        OnEnrageTimeChanged?.Invoke(0, _enrageDelay);
         Enrage();
     }
 
@@ -147,5 +150,29 @@ public class EnemyAttackBehaviour : MonoBehaviour
         yield return GlobalTimeManager.WaitForGlobalSeconds(duration);
 
         _isStunned = false;
+    }
+
+    void StopRoutines()
+    {
+        if (_loop != null)
+        {
+            StopCoroutine(_loop);
+            _loop = null;
+        }
+        if (_enrangeRoutine != null)
+        {
+            StopCoroutine(_enrangeRoutine);
+            _enrangeRoutine = null;
+        }
+        if (_stunRoutine != null)
+        {
+            StopCoroutine(_stunRoutine);
+            _stunRoutine = null;
+        }
+    }
+
+    protected void OnDied(CharacterStatus stat)
+    {
+        StopRoutines();
     }
 }

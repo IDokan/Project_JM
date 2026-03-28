@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2919741932444415260
+--- !u!1 &328588960038178317
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5301395697464518032}
-  - component: {fileID: 81970709899125568}
-  - component: {fileID: 9112251591757497968}
-  - component: {fileID: 5441730827273079223}
+  - component: {fileID: 7054377746463972259}
+  - component: {fileID: 7377118208050898422}
+  - component: {fileID: 4896880609364768220}
   m_Layer: 0
-  m_Name: Gem
+  m_Name: GemSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5301395697464518032
+--- !u!4 &7054377746463972259
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2919741932444415260}
+  m_GameObject: {fileID: 328588960038178317}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.99548, y: 0.46878, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 5301395697464518032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &81970709899125568
+--- !u!212 &7377118208050898422
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2919741932444415260}
+  m_GameObject: {fileID: 328588960038178317}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -92,6 +91,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
+--- !u!114 &4896880609364768220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328588960038178317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e7c7981e06fcc4aa6380ae6477adb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GemShake
+  shakeMagnitude: 0.4
+  frequency: 20
+  lerpSpeed: 20
+--- !u!1 &2919741932444415260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5301395697464518032}
+  - component: {fileID: 9112251591757497968}
+  - component: {fileID: 5441730827273079223}
+  m_Layer: 0
+  m_Name: Gem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5301395697464518032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2919741932444415260}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7054377746463972259}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9112251591757497968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +157,7 @@ MonoBehaviour:
   blueSprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
   yellowSprite: {fileID: 152935856936865942, guid: 9ec2b17922b037540b9b061e5dfcdcdd, type: 3}
   gemResolver: {fileID: 8423540921551108864, guid: f793f3070d29bac4fb463427d1a7e773, type: 3}
+  spriteRenderer: {fileID: 7377118208050898422}
 --- !u!114 &5441730827273079223
 MonoBehaviour:
   m_ObjectHideFlags: 0

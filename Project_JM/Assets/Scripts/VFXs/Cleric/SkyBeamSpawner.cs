@@ -14,9 +14,9 @@ public class SkyBeamSpawner : AbstractAnimEventPrefabSpawner<GameObject>
     {
         GameObject skyBeam = Spawn();
 
-        if (_combatManager != null)
+        if (_combatManager != null && _combatManager.Enemy != null)
         {
-            Transform enemy = _combatManager.Enemy.transform.GetChild(0);
+            Transform enemy = _combatManager.EnemyTransform.GetChild(0);
             skyBeam.transform.SetParent(enemy, worldPositionStays: false);
             skyBeam.transform.localPosition = Vector3.zero;
             skyBeam.transform.localRotation = Quaternion.identity;

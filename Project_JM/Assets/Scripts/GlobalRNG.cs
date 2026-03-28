@@ -28,7 +28,7 @@ public class GlobalRNG : ScriptableObject
 
     protected void OnEnable()
     {
-        _rng = new System.Random(_seed);
+        ResetSeed();
     }
 
     public int NextInt(int max) => NextInt(0, max);
@@ -42,6 +42,11 @@ public class GlobalRNG : ScriptableObject
     public void Reseed(int newSeed)
     {
         _seed = newSeed;
+        ResetSeed();
+    }
+
+    public void ResetSeed()
+    {
         _rng = new System.Random(_seed);
     }
 }

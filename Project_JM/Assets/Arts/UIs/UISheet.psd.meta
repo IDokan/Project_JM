@@ -137,7 +137,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UISheet_0
+      name: Rect1
       rect:
         serializedVersion: 2
         x: 11
@@ -145,7 +145,7 @@ TextureImporter:
         width: 498
         height: 98
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -159,15 +159,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_1
+      name: Rect4_L
       rect:
         serializedVersion: 2
         x: 11
-        y: 445
+        y: 440
         width: 13
         height: 66
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -181,15 +181,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_2
+      name: Rect4_0
       rect:
         serializedVersion: 2
         x: 68
-        y: 445
+        y: 440
         width: 363
         height: 66
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -203,15 +203,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_3
+      name: Rect4_R
       rect:
         serializedVersion: 2
         x: 490
-        y: 445
+        y: 440
         width: 12
         height: 66
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -225,7 +225,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_4
+      name: Heart
       rect:
         serializedVersion: 2
         x: 19
@@ -233,7 +233,7 @@ TextureImporter:
         width: 131
         height: 103
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -247,7 +247,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_5
+      name: Sword
       rect:
         serializedVersion: 2
         x: 179
@@ -255,7 +255,7 @@ TextureImporter:
         width: 138
         height: 116
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -269,7 +269,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_6
+      name: Skull
       rect:
         serializedVersion: 2
         x: 360
@@ -277,7 +277,7 @@ TextureImporter:
         width: 133
         height: 114
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -291,7 +291,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_7
+      name: Combo
       rect:
         serializedVersion: 2
         x: 507
@@ -299,7 +299,7 @@ TextureImporter:
         width: 124
         height: 137
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -313,7 +313,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_8
+      name: Circle
       rect:
         serializedVersion: 2
         x: 11
@@ -321,7 +321,7 @@ TextureImporter:
         width: 184
         height: 184
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -334,11 +334,209 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Rect2
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 512
+        width: 482
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e63b7d4b086ee34897102b77bf14dfb
+      internalID: -945941308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UISheet_9_R
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 512
+        width: 8
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8e4b921fef4e14439a0ec68786c98e6
+      internalID: -1472734338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UISheet_9_L
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 512
+        width: 8
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93411671de1ad184c906d6fffb39df09
+      internalID: -1988521637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire0
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 592
+        width: 38
+        height: 46
+      alignment: 9
+      pivot: {x: 0.5, y: 0.34}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d71e0e0bfaabf394bb2657e4ac33a7e3
+      internalID: 265375947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire1
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 592
+        width: 38
+        height: 46
+      alignment: 9
+      pivot: {x: 0.5, y: 0.34}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2878f91e4171a2444bd5a7a0a9bdcbe8
+      internalID: -617987072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire2
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 592
+        width: 38
+        height: 46
+      alignment: 9
+      pivot: {x: 0.5, y: 0.34}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b40b64937c7fa264ca2ff0cbca7ec6d6
+      internalID: 1900089304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Restart
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 90
+        width: 222
+        height: 222
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28e768b189318e145af216054429380f
+      internalID: 1758157431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pause
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 441
+        width: 119
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be1fd72d0c63d994fa287a5524a75836
+      internalID: 580331038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Play
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 144
+        width: 108
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3878d100d41fe864c864d97b31bfb44b
+      internalID: -162046715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 93f5760b09ecb804c99e0965d0cbfb61
     internalID: 0
     vertices: []
     indices: 
@@ -348,15 +546,29 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UISheet_0: 8777824922998612401
-      UISheet_1: 3765853880425637702
-      UISheet_2: 1249985808958975487
-      UISheet_3: 8537368232269895075
-      UISheet_4: 7065759579151131531
-      UISheet_5: -2515130379638872276
-      UISheet_6: -3044407221058930715
-      UISheet_7: -6560312497393280637
-      UISheet_8: 8609931220251892044
+      Circle: 8609931220251892044
+      Combo: -6560312497393280637
+      Fire0: 265375947
+      Fire1: -617987072
+      Fire2: 1900089304
+      Heart: 7065759579151131531
+      Pause: -849803474
+      Play: -162046715
+      Rect1: 8777824922998612401
+      Rect2: -945941308
+      Rect4_0: 1249985808958975487
+      Rect4_L: 3765853880425637702
+      Rect4_R: 8537368232269895075
+      Restart: 1758157431
+      Skull: -3044407221058930715
+      Sword: -2515130379638872276
+      UISheet_0_B: 1223664030
+      UISheet_0_L: 1256235229
+      UISheet_0_R: 997019408
+      UISheet_0_T: 973230164
+      UISheet_14: 1855759993
+      UISheet_9_L: -1988521637
+      UISheet_9_R: -1472734338
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

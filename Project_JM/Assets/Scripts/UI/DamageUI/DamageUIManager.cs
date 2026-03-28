@@ -23,11 +23,11 @@ public class DamageUIManager : MonoBehaviour
         
     }
 
-    public void SpawnDamage(int amount, Vector3 worldPosition)
+    public DamageUI SpawnDamage(int amount, AttackContext context, bool isCritical, float sizeMultiplier = 1f)
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPosition) - transform.position;
-
         var dmg = Instantiate(_damagePrefab, transform);
-        dmg.Show(amount, screenPos);
+        dmg.Show(amount, context, isCritical, sizeMultiplier);
+
+        return dmg;
     }
 }

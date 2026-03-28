@@ -12,51 +12,92 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] protected EnemyBook _enemyBook;
     [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     [SerializeField] protected DifficultyCurves _difficultyCurves;
 
-    [SerializeField] protected Transform _spawnPosition;
+    [SerializeField] protected Vector3 _spawnPosition;
 
-    protected void OnEnable() => _characterDeathEventChannel.OnRaised += OnCharacterDied;
-    protected void OnDisable() => _characterDeathEventChannel.OnRaised -= OnCharacterDied;
+    [SerializeField] protected float spawnDelay = 4f;
+    [SerializeField] protected float dispatchEventChannelDelay = 1f;
 
+    protected Vector3 spawnOffsetToCamera;
     protected int _numSpanwed = 0;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected Coroutine dispatchRoutine = null;
+
+    protected void OnEnable()
     {
-        
+        transitionEventChannel.OnRaised += OnTransitionEvent;
+    }
+    protected void OnDisable()
+    {
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected void Awake()
     {
-        
+        spawnOffsetToCamera = _spawnPosition - Camera.main.transform.position;
+    }
+
+    protected void Clear()
+    {
+        _numSpanwed = 0;
     }
 
     protected GameObject SpawnRandomEnemy()
     {
         _numSpanwed++;
 
-        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), _spawnPosition);
+        Vector3 spawnPosition = spawnOffsetToCamera + Camera.main.transform.position;
+        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), spawnPosition, Quaternion.identity);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
-        _enemySpawnedEventChannel.Raise(spawnedEnemy);
+        if (dispatchRoutine != null)
+        {
+            StopCoroutine(dispatchRoutine);
+            dispatchRoutine = null;
+        }
+        dispatchRoutine = StartCoroutine(DispatchSpawnEventChannelAfterDelay(spawnedEnemy, dispatchEventChannelDelay));
+
         return spawnedEnemy;
     }
 
-    protected void OnCharacterDied(CharacterStatus stat)
+    protected IEnumerator DispatchSpawnEventChannelAfterDelay(GameObject enemy, float delay)
     {
-        if (stat.TryGetComponent<EnemyTag>(out _))
-        {
-            StartCoroutine(SpawnEnemyAfter5Seconds());
-        }
+        yield return new WaitForSeconds(delay);
+
+        enemy.GetComponent<EnemyActivation>()?.EnableScripts();
+        _enemySpawnedEventChannel.Raise(enemy);
+
+        dispatchRoutine = null;
     }
 
-    protected IEnumerator SpawnEnemyAfter5Seconds()
+    public void SpawnEnemyAfterDelay()
     {
-        yield return new WaitForSeconds(5f);
+        StartCoroutine(SpawnEnemyAfterDelayRoutine(spawnDelay));
+    }
+
+    protected IEnumerator SpawnEnemyAfterDelayRoutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
 
         SpawnRandomEnemy();
+    }
+
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroPartyMoveEnd)
+        {
+            SpawnRandomEnemy();
+        }
+        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            SpawnEnemyAfterDelay();
+        }
+        else if(phase == TransitionPhase.IntroTransitionBegin)
+        {
+            Clear();
+        }
     }
 }

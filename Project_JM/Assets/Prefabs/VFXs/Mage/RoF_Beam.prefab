@@ -100,7 +100,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4662421475277001498}
   - component: {fileID: 6265891597942763469}
-  - component: {fileID: 3590436891396104055}
   m_Layer: 0
   m_Name: RoF_Beam
   m_TagString: Untagged
@@ -182,61 +181,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3590436891396104055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3652105713988292449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3049a36980bf10419b712c0a366b8b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FadeOut
-  duration: 1
-  progressCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: -0.004760742
-      inSlope: 9.692723
-      outSlope: 9.692723
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.103472695
-      value: 0.99817145
-      inSlope: Infinity
-      outSlope: Infinity
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.3833313
-      value: 0.9934095
-      inSlope: -4.649667
-      outSlope: -4.649667
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.05999999
-    - serializedVersion: 3
-      time: 1
-      value: -0.0023809671
-      inSlope: 0.015443924
-      outSlope: 0.015443924
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.24666663
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &4984277296483534931
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,6 +192,7 @@ GameObject:
   - component: {fileID: 8834973236105539824}
   - component: {fileID: 1240586848191867614}
   - component: {fileID: 1489962556052311496}
+  - component: {fileID: 1408233800577874235}
   m_Layer: 0
   m_Name: RoF_Beam
   m_TagString: Untagged
@@ -5074,3 +5019,58 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1408233800577874235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4984277296483534931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3049a36980bf10419b712c0a366b8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FadeOut
+  duration: 1
+  progressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -0.004760742
+      inSlope: 9.692723
+      outSlope: 9.692723
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.103472695
+      value: 0.99817145
+      inSlope: Infinity
+      outSlope: Infinity
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3833313
+      value: 0.9934095
+      inSlope: -4.649667
+      outSlope: -4.649667
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.05999999
+    - serializedVersion: 3
+      time: 1
+      value: -0.0023809671
+      inSlope: 0.015443924
+      outSlope: 0.015443924
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.24666663
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
