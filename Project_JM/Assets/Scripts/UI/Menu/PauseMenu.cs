@@ -32,7 +32,7 @@ public class PauseMenu : Menu
 
     protected override void OnDisable()
     {
-        base.OnEnable();
+        base.OnDisable();
         restartButton.onClick.RemoveListener(OnRestartButtonPressed);
         optionButton.onClick.RemoveListener(OnOptionButtonPressed);
         homeButton.onClick.RemoveListener(OnHomeButtonPressed);
@@ -52,7 +52,7 @@ public class PauseMenu : Menu
         GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
     }
 
-    public void OnRestartButtonPressed()
+    protected void OnRestartButtonPressed()
     {
         // @@ TODO: Need to add destructive confirmation.
 
@@ -61,19 +61,19 @@ public class PauseMenu : Menu
         SceneManager.LoadScene(currentScene.name);
     }
 
-    public void OnOptionButtonPressed()
+    protected void OnOptionButtonPressed()
     {
         optionPanel.Show();
     }
 
-    public void OnHomeButtonPressed()
+    protected void OnHomeButtonPressed()
     {
         Hide();
 
         SceneManager.LoadScene(mainMenuSceneName);
     }
 
-    public void OnQuitButtonPressed()
+    protected void OnQuitButtonPressed()
     {
         Hide();
 
