@@ -13,8 +13,20 @@ public class AttackCooldownBinder : MonoBehaviour
     [SerializeField] protected EnemyAttackBehaviour _boundEnemyAI;
     protected BarUI _barUI;
 
-    protected void OnEnable() => _boundEnemyAI.OnAttackTimerChanged += UpdateAttackTimer;
-    protected void OnDisable() => _boundEnemyAI.OnAttackTimerChanged -= UpdateAttackTimer;
+    protected void OnEnable()
+    {
+        if (_boundEnemyAI != null)
+        {
+            _boundEnemyAI.OnAttackTimerChanged += UpdateAttackTimer;
+        }
+    }
+    protected void OnDisable()
+    {
+        if (_boundEnemyAI != null)
+        {
+            _boundEnemyAI.OnAttackTimerChanged -= UpdateAttackTimer;
+        }
+    }
 
     protected void Awake()
     {

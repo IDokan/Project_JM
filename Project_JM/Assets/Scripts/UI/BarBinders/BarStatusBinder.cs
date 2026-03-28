@@ -14,21 +14,30 @@ public class BarStatusBinder : MonoBehaviour
 
     protected void OnEnable()
     {
-        _boundStatus.OnHPChanged += UpdateHP;
-        _boundStatus.OnShieldChanged += UpdateShield;
+        if (_boundStatus != null)
+        {
+            _boundStatus.OnHPChanged += UpdateHP;
+            _boundStatus.OnShieldChanged += UpdateShield;
+        }
     }
 
     protected void OnDisable()
     {
-        _boundStatus.OnHPChanged -= UpdateHP;
-        _boundStatus.OnShieldChanged -= UpdateShield;
+        if (_boundStatus != null)
+        {
+            _boundStatus.OnHPChanged -= UpdateHP;
+            _boundStatus.OnShieldChanged -= UpdateShield;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        UpdateHP(_boundStatus.CurrentHP, _boundStatus.maxHP);
-        UpdateShield(0, _boundStatus.maxHP);
+        if (_boundStatus != null)
+        {
+            UpdateHP(_boundStatus.CurrentHP, _boundStatus.maxHP);
+            UpdateShield(0, _boundStatus.maxHP);
+        }
     }
 
     // Update is called once per frame

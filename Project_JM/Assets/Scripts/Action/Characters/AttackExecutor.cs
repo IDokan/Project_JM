@@ -8,7 +8,6 @@ using MatchEnums;
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(AttackMotion))]
 public class AttackExecutor : MonoBehaviour
 {
     protected AttackMotion motion;
@@ -25,6 +24,10 @@ public class AttackExecutor : MonoBehaviour
     [Header("Enemy attack logics")]
     [SerializeField] protected AttackLogic logicEnemy;
     [SerializeField] protected Transform attackEnemyAttackPoint;
+    [SerializeField] protected BoardDisableLogic boardDisableLogic;
+
+
+    [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
 
     protected AttackContext _context;
     public AttackContext Context => _context;
@@ -68,6 +71,18 @@ public class AttackExecutor : MonoBehaviour
         }
     }
 
+    protected void Start()
+    {
+        if (boardDisableChannel != null)
+        {
+            boardDisableChannel.Raise(new BoardDisableEventContext
+            {
+                boardDisablePhase = BoardDisablePhase.Preview,
+                boardDisableLogic = boardDisableLogic
+            });
+        }
+    }
+
     public void ExecuteAttack(AttackContext context, MatchTier matchTier)
     {
         _context = context;
@@ -92,7 +107,7 @@ public class AttackExecutor : MonoBehaviour
 
         if (attackerObject != null && targetObject != null)
         {       // Enemy attacks immediately
-            offset = targetObject.transform.position - attackerObject.transform.localPosition;
+            offset = targetObject.transform.position - attackerObject.transform.position;
             attackerObject.GetComponent<EnemyAttackMotion>()?.PlayAttackMotion(offset);
         }
 
@@ -136,6 +151,20 @@ public class AttackExecutor : MonoBehaviour
             targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
 
             StartCoroutine(logicEnemy.Execute(_context));
+
+            boardDisableChannel.Raise(new BoardDisableEventContext
+            {
+                boardDisablePhase = BoardDisablePhase.Commit,
+                boardDisableLogic = boardDisableLogic
+            });
+
+            boardDisableChannel.Raise(new BoardDisableEventContext
+            {
+                boardDisablePhase = BoardDisablePhase.Preview,
+                boardDisableLogic = boardDisableLogic
+            });
+
+            Camera.main.GetComponent<CameraShake>()?.Shake();
         }
     }
 

@@ -31,6 +31,7 @@ public class CharacterStatus : MonoBehaviour
 {
     [SerializeField] protected CharacterStatusData _baseData;
     [SerializeField] protected CharacterDeathEventChannel _deathEvent;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     public string CharacterName { get; }
     public float CurrentHP { get; private set; }
@@ -69,18 +70,34 @@ public class CharacterStatus : MonoBehaviour
 
     protected void OnEnable()
     {
-        _deathEvent.OnRaised += ClearBuffs;
+        if (_deathEvent != null)
+        {
+            _deathEvent.OnRaised += ClearBuffs;
+        }
+        else
+        {
+            Debug.LogWarning("CharacterDeathEventChannel is null", this);
+        }
+
+        if (transitionEventChannel != null)
+        {
+            transitionEventChannel.OnRaised += OnTransitionEvent;
+        }
+        else
+        {
+            Debug.LogWarning("TransitionEventChannel is null", this);
+        }
     }
 
     protected void OnDisable()
     {
         _deathEvent.OnRaised -= ClearBuffs;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     protected void Awake()
     {
-        CurrentHP = _baseData.baseHP;
-        maxHP = CurrentHP;
+        Clear();
     }
 
     void Update()
@@ -104,6 +121,11 @@ public class CharacterStatus : MonoBehaviour
     // It takes a range of [0, 1]. 1 means 100%
     public void Heal(float healPercentage)
     {
+        if (IsDead)
+        {
+            return;
+        }
+
         CurrentHP = Mathf.Min(maxHP, CurrentHP + (maxHP * healPercentage));
 
         OnHPChanged?.Invoke(CurrentHP, maxHP);
@@ -111,18 +133,25 @@ public class CharacterStatus : MonoBehaviour
 
     public void AddShield(float shieldPercentage)
     {
+        if (IsDead)
+        {
+            return;
+        }
+
         _shield += Mathf.Max(0f, maxHP * shieldPercentage);
         OnShieldChanged?.Invoke(_shield, maxHP);
     }
 
     public void TakeDamage(float damage)
     {
+        if (IsDead)
+        {
+            return;
+        }
+
         float calculatedDamage = Mathf.Max(0f, damage - _shield);
         _shield = 0f;
         OnShieldChanged?.Invoke(_shield, maxHP);
-
-        // Spawn Damageui slightly above the origin of attacked target
-        DamageUIManager.Instance.SpawnDamage(Mathf.RoundToInt(Mathf.Min(CurrentHP, calculatedDamage)), transform.position + Vector3.up * 1.5f);
 
         CurrentHP = Mathf.Max(0f, CurrentHP - calculatedDamage);
 
@@ -137,8 +166,6 @@ public class CharacterStatus : MonoBehaviour
     protected void Die()
     {
         _deathEvent.Raise(this);
-        // Display death motion or anything about death. Instead of immediately deleting it.
-        Destroy(gameObject);
     }
 
     public void SetComboCritBonus(float value)
@@ -186,5 +213,46 @@ public class CharacterStatus : MonoBehaviour
     {
         ClearBuffCritBonus();
         ClearBuffCitDamageBonus();
+    }
+
+    protected void Clear()
+    {
+        CurrentHP = _baseData.baseHP;
+        maxHP = CurrentHP;
+
+        OnHPChanged?.Invoke(CurrentHP, maxHP);
+
+        _shield = 0f;
+        OnShieldChanged?.Invoke(_shield, maxHP);
+    }
+
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (IsEnemyDestroyConditionOnTransitionEvent(phase))
+        {
+            Destroy(gameObject);
+        }
+        else if (phase == TransitionPhase.IntroTransitionBegin)
+        {   // Clear level-up effects to the party object
+            Clear();
+        }
+    }
+
+    protected bool IsEnemyDestroyConditionOnTransitionEvent(TransitionPhase phase)
+    {
+        bool isEnemy = TryGetComponent<EnemyTag>(out _);
+
+        if (!isEnemy)
+        {   // Do not destroy party roster object
+            return false;
+        }
+
+        return 
+            (phase == TransitionPhase.EndEnemyMoveEnd)
+            ||
+            (phase == TransitionPhase.MiddleTransitionEnd && IsDead)
+            || 
+            (phase == TransitionPhase.IntroTransitionBegin)
+            ;
     }
 }

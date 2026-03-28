@@ -13,6 +13,11 @@ public class ImmediateBoardDisable : BoardDisableLogic
 {
     [SerializeField] protected List<Vector2Int> disableIndices;
 
+    public override IReadOnlyList<Vector2Int> PreviewGemWillDisabled(BoardDisableContext context)
+    {
+        return disableIndices;
+    }
+
     public override IEnumerator Execute(BoardDisableContext context)
     {
         context.BoardInfo.DisableGems(disableIndices);

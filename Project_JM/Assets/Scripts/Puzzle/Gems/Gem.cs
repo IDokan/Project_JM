@@ -20,17 +20,19 @@ public class Gem : MonoBehaviour
 
     [SerializeField] GameObject gemResolver;
 
+    [SerializeField] SpriteRenderer spriteRenderer;
+
     public void Init(GemColor gemColor)
     {
         Color = gemColor;
 
         if (Color == GemColor.None)
         {
-            GetComponent<SpriteRenderer>().color = GemColorUtility.ConvertGemColor(gemColor);
+            spriteRenderer.color = GemColorUtility.ConvertGemColor(gemColor);
         }
         else
         {
-            GetComponent<SpriteRenderer>().sprite = GetSpriteByColor(gemColor);
+            spriteRenderer.sprite = GetSpriteByColor(gemColor);
         }
     }
 
@@ -48,18 +50,27 @@ public class Gem : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void ResolveNoTarget()
+    {
+        GemResolver resolver = Instantiate(gemResolver).GetComponent<GemResolver>();
+
+        resolver.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        resolver.transform.localScale = transform.lossyScale;
+
+        resolver.InitNoTarget(Color);
+
+        Destroy(gameObject);
+    }
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
     }
 
     protected Sprite GetSpriteByColor(GemColor color)

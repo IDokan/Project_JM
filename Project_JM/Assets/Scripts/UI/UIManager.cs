@@ -9,9 +9,9 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] BarStatusBinder _allyHPUIBinder;
     [SerializeField] BarStatusBinder _enemyHPUIBinder;
     [SerializeField] AttackCooldownBinder _enemyAttackUIBinder;
+    [SerializeField] EnrageBarBinder _enemyEnrageUIBinder;
 
 
     protected void OnEnable() => _enemySpawnedEventChannel.OnRaised += OnSpawned;
@@ -31,7 +31,17 @@ public class UIManager : MonoBehaviour
 
     protected void OnSpawned(GameObject gameObject)
     {
-        _enemyHPUIBinder.BindNewStatus(gameObject.GetComponent<CharacterStatus>());
-        _enemyAttackUIBinder.BindNewAI(gameObject.GetComponent<EnemyAttackBehaviour>());
+        if (_enemyHPUIBinder != null)
+        {
+            _enemyHPUIBinder.BindNewStatus(gameObject.GetComponent<CharacterStatus>());
+        }
+        if (_enemyAttackUIBinder != null)
+        {
+            _enemyAttackUIBinder.BindNewAI(gameObject.GetComponent<EnemyAttackBehaviour>());
+        }
+        if (_enemyEnrageUIBinder != null)
+        {
+            _enemyEnrageUIBinder.BindNewAI(gameObject.GetComponent<EnemyAttackBehaviour>());
+        }
     }
 }

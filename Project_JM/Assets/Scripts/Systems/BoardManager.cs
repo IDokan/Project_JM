@@ -9,12 +9,16 @@ using MatchEnums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public interface IBoardInfo
 {
     public int Rows { get; }
     public int Cols { get; }
+
+
+    public bool CanBeDisable(Vector2Int index);
 
     // Returns false if 
     public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices);
@@ -38,8 +42,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected MatchEventChannel _matchEvents;
     [SerializeField] protected GemPowerArrivedEventChannel _powerArrivedEvents;
     [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
     [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
+
+    [SerializeField] protected GameObject _gemDisableFXPrefab;
+
+    // Hint delay starts from user's input
+    [Header("Hint")]
+    [SerializeField] protected float hintDelay = 4f;
 
     protected BoardCoverController boardCoverController;
 
@@ -84,17 +94,47 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
     }
 
+    protected struct MatchCheckResult
+    {
+        public int HorizontalCount;
+        public int VerticalCount;
+
+        public List<Vector2Int> HorizontalIndices;
+        public List<Vector2Int> VerticalIndices;
+
+        public bool HasMatch => HorizontalCount >= 3 || VerticalCount >= 3;
+
+        public MatchCheckResult(int horizontalCount, int verticalCount, List<Vector2Int> horizontalIndices, List<Vector2Int> verticalIndices)
+        {
+            HorizontalCount = horizontalCount;
+            VerticalCount = verticalCount;
+            HorizontalIndices = horizontalIndices;
+            VerticalIndices = verticalIndices;
+        }
+
+        public static MatchCheckResult Empty()
+        {
+            return new MatchCheckResult(0, 0, new List<Vector2Int>(), new List<Vector2Int>());
+        }
+    }
+
+    protected struct HintResult
+    {
+        public bool Found;
+        public List<Vector2Int> Indices;
+    }
+
     protected void OnEnable()
     {
-        _characterDeathEventChannel.OnRaised += OnAnyoneDied;
         _boardDisableEvents.OnRaised += OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
     protected void OnDisable()
     {
-        _characterDeathEventChannel.OnRaised -= OnAnyoneDied;
         _boardDisableEvents.OnRaised -= OnBoardDisabled;
         _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     protected Gem[,] _gems;
@@ -104,17 +144,27 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     private int _numMovingGems = 0;
 
-    public bool InputEnabled => !_busy;
+    public bool InputEnabled => !_busy && _gems != null;
     protected bool _busy;
+
+    protected readonly HashSet<GameObject> _disableFXs = new();
+
+    protected struct ShakingData
+    {
+        public Vector2Int index;
+        public GemColor gemColor;
+        public GemShake shaker;
+    }
+
+    protected readonly List<List<ShakingData>> _shakingDataContainer = new();
+
+    protected Coroutine _hintRoutine = null;
 
     public bool InBounds(int r, int c) => r >= 0 && r < _rows && c >= 0 && c < _cols;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GenerateBoard();
-        _busy = false;
-
         boardCoverController = GetComponent<BoardCoverController>();
         boardCoverController.SetBoardSizeData(_rows, _cols, _cellSize, _spacing);
     }
@@ -139,9 +189,17 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             for (int c = 0; c < _cols; c++)
             {
                 _gems[r, c] = GetRandomGemAboveContainer(r, c);
-                if (HasMatchAtBeginning(r, c))
+
+                List<GemColor> excludeColors = new List<GemColor>();
+                while (HasMatchAtBeginning(r, c))
                 {
-                    _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(_gems[r, c].Color));
+                    GemColor currentColor = _gems[r, c].Color;
+                    if (excludeColors.Contains(currentColor) == false)
+                    {
+                        excludeColors.Add(currentColor);
+                    }
+
+                    _gems[r, c].Init(GemColorUtility.GetRandomGemColorExcept(excludeColors.ToArray()));
                 }
                 MoveGem(_gems[r, c], r, c);
             }
@@ -170,7 +228,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void ResolveMatches()
     {
         var groups = FindMatchGroups();
-        if (groups.Count == 0)
+        if (groups.Count == 0 || _busy)
         {
             return;
         }
@@ -194,6 +252,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 toResolve.Add(cell);
             }
         }
+
+        // If there was a gem that marked as hint, stop them and its group.
+        StopShaking(toResolve);
+        StartHintRoutine();
 
         foreach (var cell in toResolve)
         {
@@ -255,7 +317,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             {
                 var gem = _gems[row, col];
 
-                if (gem == null || gem.Color == GemColor.None)
+                if (gem == null)
                 {
                     col++;
                     continue;
@@ -303,7 +365,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             {
                 var gem = _gems[row, col];
 
-                if (gem == null || gem.Color == GemColor.None)
+                if (gem == null)
                 {
                     row++;
                     continue;
@@ -427,21 +489,55 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return InBounds(index.x, index.y) ? index : new Vector2Int(-1, -1);
     }
 
+    public GemColor GetGemColor(Vector2Int index)
+    {
+        if (_gems == null || !InBounds(index.x, index.y))
+        {
+            return GemColor.None;
+        }
+
+        return _gems[index.x, index.y].Color;
+    }
+
     protected void ResolveGem(int row, int col)
     {
         // @@ TODO: Implement object pool for gems.
         var gem = _gems[row, col];
 
+        if (gem == null)
+        {
+            return;
+        }
+
+        if (gem.Color == GemColor.None)
+        {
+            ResolveGemNoTarget(row, col);
+            return;
+        }
+
+
+        int id = gem.GetInstanceID();
+        gem.Resolve(partyRoster, color => NotifyAbsorbed(color, id));
+        _gems[row, col] = null;
+    }
+
+    protected void ResolveGemNoTarget(int row, int col)
+    {
+        // @@ TODO: Implement object pool for gems.
+        if (_gems == null)
+        {
+            return;
+        }
+
+        var gem = _gems[row, col];
+
         if (gem != null)
         {
-            int id = gem.GetInstanceID();
-            gem.Resolve(partyRoster, color => NotifyAbsorbed(color, id));
+            gem.ResolveNoTarget();
             _gems[row, col] = null;
         }
     }
 
-    // @@ TODO: Resolve bug in this code
-    // Bug: It cannot detect gem absorbed correctly on the overlapped matches such as (5vertical X 3 horizontal).
     public void NotifyAbsorbed(GemColor color, int gemID)
     {
         if (!_pendingByGemID.TryGetValue(gemID, out var groups))
@@ -483,7 +579,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         _pendingByGemID.Remove(gemID);
     }
 
-    // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)
+    // A function to test board has match only and if only at the beginning (Start&GenerateBoard stage)\
+    // Instead of only beginning, it is for total inspection.
     protected bool HasMatchAtBeginning(int row, int col)
     {
         if (_gems[row, col] == null)
@@ -628,7 +725,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             MoveGem(_gems[index.x, index.y], targetRow, targetCol);
             MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
-            (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
+            // Swap
+            SwapGems(index.x, index.y, targetRow, targetCol);
 
             // Restore status before swap if no match found
             if (HasMatchAt(index.x, index.y) == false && HasMatchAt(targetRow, targetCol) == false)
@@ -636,7 +734,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 MoveGem(_gems[index.x, index.y], targetRow, targetCol);
                 MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
-                (_gems[index.x, index.y], _gems[targetRow, targetCol]) = (_gems[targetRow, targetCol], _gems[index.x, index.y]);
+                SwapGems(index.x, index.y, targetRow, targetCol);
             }
 
             return true;
@@ -655,26 +753,75 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         });
     }
 
-    protected void OnBoardDisabled(BoardDisableLogic logic)
+    protected void OnBoardDisabled(BoardDisableEventContext context)
+    {
+
+        switch (context.boardDisablePhase)
+        {
+            case BoardDisablePhase.Preview:
+                SpawnTileDisableEffect(context.boardDisableLogic);
+                break;
+            case BoardDisablePhase.Commit:
+                StartCoroutine(RunBoardDisableAttack(context.boardDisableLogic));
+                break;
+
+
+            default:
+                break;
+        }
+    }
+
+    protected void SpawnTileDisableEffect(BoardDisableLogic logic)
+    {
+        ClearDisableEffects();
+
+        // Spawn disable effect to the location queried by logic.
+        var context = new BoardDisableContext
+        {
+            BoardInfo = this
+        };
+        IReadOnlyList<Vector2Int> indices = logic.PreviewGemWillDisabled(context);
+        for (int i = 0; i < indices.Count; i++)
+        {
+            Vector2Int index = indices[i];
+
+            GameObject fx = Instantiate(_gemDisableFXPrefab, transform);
+            fx.transform.localPosition = GetGemLocation(index.x, index.y);
+            _disableFXs.Add(fx);
+        }
+
+    }
+
+    protected IEnumerator RunBoardDisableAttack(BoardDisableLogic logic)
     {
         var context = new BoardDisableContext
         {
             BoardInfo = this
         };
 
-        StartCoroutine(RunBoardDisableAttack(logic, context));
-    }
-
-    protected IEnumerator RunBoardDisableAttack(BoardDisableLogic logic, BoardDisableContext context)
-    {
         _numMovingGems++;
         yield return StartCoroutine(logic.Execute(context));
         ResolveGemMovement();
     }
 
+
+    public bool CanBeDisable(Vector2Int index)
+    {
+        // If gem board is not initialized, there are no disabled gems => all cells can be disable.
+        if (_gems == null)
+        {
+            return true;
+        }
+        var gem = _gems[index.x, index.y];
+        return gem != null ? (gem.Color != GemColor.None) : false;
+    }
+
     public IReadOnlyList<Vector2Int> DisableGems(IReadOnlyList<Vector2Int> disableIndices)
     {
         var failed = new List<Vector2Int>();
+
+        StopShaking(disableIndices);
+
         foreach (var index in disableIndices)
         {
             var Gem = _gems[index.x, index.y];
@@ -691,11 +838,16 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return failed;
     }
 
-    protected void OnAnyoneDied(CharacterStatus stat)
+    protected void EnableCover(bool refillGems = true)
     {
         _busy = true;
 
-        StartCoroutine(ClearAndRefillGemsAfterDelay(1f));
+        if (refillGems)
+        {
+            StartCoroutine(ClearAndRefillGemsAfterDelay(1f));
+        }
+
+        StopHintRoutine();
 
         boardCoverController.ShowCover();
     }
@@ -703,6 +855,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void OnEnemySpawned(GameObject gameObject)
     {
         _busy = false;
+
+        StartHintRoutine();
 
         boardCoverController.HideCover();
     }
@@ -715,14 +869,417 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void ClearAndRefillGems()
     {
+        ClearDisableEffects();
+        ClearShakingEffects();
+
         for (int r = 0; r < _rows; r++)
         {
             for (int c = 0; c < _cols; c++)
             {
-                ResolveGem(r, c);
+                ResolveGemNoTarget(r, c);
             }
         }
 
+        _numMovingGems = 0;
+
         GenerateBoard();
+    }
+
+    protected void StartShaking(List<Vector2Int> hintIndices)
+    {
+        if (_gems == null)
+        {
+            return;
+        }
+
+        List<ShakingData> shakingData = new();
+        foreach (Vector2Int index in hintIndices)
+        {
+            Gem gem = _gems[index.x, index.y];
+            if (gem == null)
+            {
+                continue;
+            }
+
+            GemShake gemShake = gem.GetComponentInChildren<GemShake>();
+
+            if (gemShake == null)
+            {
+                return;
+            }
+
+            gemShake.StartShake();
+
+            shakingData.Add(new ShakingData
+            {
+                index = index,
+                gemColor = gem.Color,
+                shaker = gemShake
+            });
+        }
+
+        _shakingDataContainer.Add(shakingData);
+
+    }
+
+    protected void StopShaking(Vector2Int index)
+    {
+        StopShaking(new[] { index });
+    }
+
+    protected void StopShaking(IEnumerable<Vector2Int> indexEnumerable)
+    {
+        HashSet<Vector2Int> target = new HashSet<Vector2Int>(indexEnumerable);
+
+        bool ShouldRemove(List<ShakingData> inner)
+        {
+            return inner.Any(item => target.Contains(item.index));
+        }
+
+        List<List<ShakingData>> removedData = _shakingDataContainer.Where(ShouldRemove).ToList();
+
+        foreach (List<ShakingData> data in removedData)
+        {
+            StopShaking(data);
+        }
+
+        VerifyShakings();
+    }
+
+    protected void StopShaking(List<ShakingData> removedData)
+    {
+        if (_gems == null)
+        {
+            return;
+        }
+
+        foreach (ShakingData data in removedData)
+        {
+            data.shaker?.StopShake();
+        }
+
+        _shakingDataContainer.Remove(removedData);
+    }
+
+    protected void ClearShakingEffects()
+    {
+        foreach (List<ShakingData> shakingData in _shakingDataContainer)
+        {
+            foreach (ShakingData data in shakingData)
+            {
+                data.shaker?.StopShake();
+            }
+        }
+        _shakingDataContainer.Clear();
+    }
+
+    protected void ClearDisableEffects()
+    {
+        foreach (GameObject go in _disableFXs)
+        {
+            if (go)
+            {
+                FadeOnSpawnAndDeath fadeScript = go.GetComponent<FadeOnSpawnAndDeath>();
+                if (fadeScript != null)
+                {
+                    fadeScript.FadeOutAndDestroy();
+                }
+                else
+                {
+                    Destroy(go);
+                }
+            }
+        }
+        _disableFXs.Clear();
+    }
+
+    protected void VerifyShakings()
+    {
+        HashSet<List<ShakingData>> invalidData = new();
+
+        foreach (List<ShakingData> shakingData in _shakingDataContainer)
+        {
+            bool isInvalid = false;
+
+            for (int i = 0; i < shakingData.Count; i++)
+            {
+                ShakingData data = shakingData[i];
+
+                Gem gem = _gems[data.index.x, data.index.y];
+                // If gem became different when marked as hint (started to shake)
+                if (gem == null || data.gemColor != gem.Color)
+                {
+                    isInvalid = true;
+                    break;
+                }
+            }
+
+            if (isInvalid)
+            {
+                foreach (ShakingData data in shakingData)
+                {
+                    data.shaker?.StopShake();
+                }
+                invalidData.Add(shakingData);
+            }
+        }
+
+        if (invalidData.Count > 0)
+        {
+            _shakingDataContainer.RemoveAll(item => invalidData.Contains(item));
+        }
+    }
+
+    protected void SwapGems(int row1, int col1, int row2, int col2)
+    {
+        (_gems[row1, col1], _gems[row2, col2]) = (_gems[row2, col2], _gems[row1, col1]);
+    }
+
+    protected List<Vector2Int> FindHintIndices()
+    {
+        for (int i = 0; i < _rows; i++)
+        {
+            for (int j = 0; j < _cols; j++)
+            {
+                // Try swap and find if it has match
+
+                if (i + 1 < _rows)
+                {
+                    HintResult rowHintResult = FindHintFromSwap(i, j, i + 1, j);
+                    if (rowHintResult.Found)
+                    {
+                        return rowHintResult.Indices;
+                    }
+                }
+
+                if (j + 1 < _cols)
+                {
+                    HintResult colHintResult = FindHintFromSwap(i, j, i, j + 1);
+                    if (colHintResult.Found)
+                    {
+                        return colHintResult.Indices;
+                    }
+                }
+            }
+        }
+
+        return new List<Vector2Int>();
+    }
+
+    // Warning: the result indices does not contain (row, col)
+    protected MatchCheckResult GetMatchAt(int row, int col)
+    {
+        MatchCheckResult result = MatchCheckResult.Empty();
+
+        if (!InBounds(row, col) || _gems[row, col] == null)
+        {
+            return result;
+        }
+
+        GemColor color = _gems[row, col].Color;
+
+        // Horizontal check
+        result.HorizontalCount = 1;
+        List<Vector2Int> horizontalMatchIndices = new List<Vector2Int>();
+        int c = col - 1;
+        while (c >= 0)
+        {
+            if (_gems[row, c].Color == color)
+            {
+                result.HorizontalCount++;
+                horizontalMatchIndices.Add(new Vector2Int(row, c));
+                c--;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        c = col + 1;
+
+        while (c < _cols)
+        {
+            if (_gems[row, c].Color == color)
+            {
+                result.HorizontalCount++;
+                horizontalMatchIndices.Add(new Vector2Int(row, c));
+                c++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (result.HorizontalCount >= 3)
+        {
+            result.HorizontalIndices.AddRange(horizontalMatchIndices);
+        }
+
+        // Vertical check
+        result.VerticalCount = 1;
+        List<Vector2Int> verticalMatchIndices = new List<Vector2Int>();
+        int r = row - 1;
+        while (r >= 0)
+        {
+            if (_gems[r, col].Color == color)
+            {
+                result.VerticalCount++;
+                verticalMatchIndices.Add(new Vector2Int(r, col));
+                r--;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        r = row + 1;
+        while (r < _rows)
+        {
+            if (_gems[r, col].Color == color)
+            {
+                result.VerticalCount++;
+                verticalMatchIndices.Add(new Vector2Int(r, col));
+                r++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (result.VerticalCount >= 3)
+        {
+            result.VerticalIndices.AddRange(verticalMatchIndices);
+        }
+
+        return result;
+    }
+
+    protected HintResult FindHintFromSwap(int row1, int col1, int row2, int col2)
+    {
+        SwapGems(row1, col1, row2, col2);
+
+        try
+        {
+            if (IsShaking(row1, col1) == false)
+            {
+
+                MatchCheckResult result1 = GetMatchAt(row1, col1);
+                if (result1.HasMatch)
+                {
+                    return new HintResult
+                    {
+                        Found = true,
+                        Indices = BuildHintIndices(row2, col2, result1)
+                    };
+                }
+            }
+
+
+            if (IsShaking(row2, col2) == false)
+            {
+                MatchCheckResult result2 = GetMatchAt(row2, col2);
+                if (result2.HasMatch)
+                {
+                    return new HintResult
+                    {
+                        Found = true,
+                        Indices = BuildHintIndices(row1, col1, result2)
+                    };
+                }
+            }
+        }
+        finally
+        {
+            SwapGems(row1, col1, row2, col2);
+        }
+
+        return new HintResult
+        {
+            Found = false,
+            Indices = null
+        };
+    }
+
+    protected List<Vector2Int> BuildHintIndices(int movedGemRow, int movedGemCol, MatchCheckResult matchCheck)
+    {
+        List<Vector2Int> result = new();
+        Vector2Int movedIndex = new Vector2Int(movedGemRow, movedGemCol);
+
+        result.Add(movedIndex);
+        result.AddRange(matchCheck.HorizontalIndices);
+        result.AddRange(matchCheck.VerticalIndices);
+
+        return result;
+    }
+
+    protected void StartHintRoutine()
+    {
+        if (_hintRoutine != null)
+        {
+            StopHintRoutine();
+        }
+
+        _hintRoutine = StartCoroutine(HintRoutine(hintDelay));
+    }
+
+    protected void StopHintRoutine()
+    {
+        if (_hintRoutine != null)
+        {
+            StopCoroutine(_hintRoutine);
+        }
+        _hintRoutine = null;
+    }
+
+    protected IEnumerator HintRoutine(float hintDelay)
+    {
+        yield return new WaitForSeconds(hintDelay);
+
+        _hintRoutine = null;
+
+        List<Vector2Int> hintIndices = FindHintIndices();
+        if (hintIndices.Count > 0)
+        {
+            StartShaking(hintIndices);
+
+            StartHintRoutine();
+        }
+    }
+
+    protected bool IsShaking(int r, int c)
+    {
+        if (_gems == null)
+        {
+            return false;
+        }
+
+        Gem gem = _gems[r, c];
+        if (gem == null)
+        {
+            return false;
+        }
+
+        GemShake gemShake = gem.GetComponentInChildren<GemShake>();
+
+        if (gemShake == null)
+        {
+            return false;
+        }
+
+        return gemShake.IsShaking;
+    }
+
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin ||
+            phase == TransitionPhase.MiddleTransitionStarts ||
+            phase == TransitionPhase.EndTransitionBegin)
+        {
+            EnableCover(phase != TransitionPhase.EndTransitionBegin);
+        }
     }
 }
