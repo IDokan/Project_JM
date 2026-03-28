@@ -13,13 +13,11 @@ public class PauseManager : MonoBehaviour
 
     public void Pause()
     {
-        GlobalTimeManager.Instance.PauseTimeScale();
-        pauseMenu.gameObject.SetActive(true);
+        pauseMenu.Show();
     }
 
     public void Resume()
     {
-        GlobalTimeManager.Instance.RestoreTimeScaleFromPause();
-        pauseMenu.gameObject.SetActive(false);
+        pauseMenu.Hide();
     }
 }
