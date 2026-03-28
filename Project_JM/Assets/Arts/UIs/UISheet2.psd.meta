@@ -14,6 +14,39 @@ TextureImporter:
   - first:
       213: -7921088694995770786
     second: UISheet2_3
+  - first:
+      213: -2048054178644458033
+    second: UISheet2_4
+  - first:
+      213: -3244204693291738149
+    second: UISheet2_5
+  - first:
+      213: -6049826308942712540
+    second: UISheet2_6
+  - first:
+      213: 4447567978662296432
+    second: UISheet2_7
+  - first:
+      213: 7195575104394539485
+    second: UISheet2_8
+  - first:
+      213: 3433325999905549555
+    second: UISheet2_9
+  - first:
+      213: 155192486991834318
+    second: UISheet2_10
+  - first:
+      213: 4600691485679456004
+    second: UISheet2_11
+  - first:
+      213: -4320738106891287270
+    second: UISheet2_12
+  - first:
+      213: 608334190627203335
+    second: UISheet2_13
+  - first:
+      213: -514091254841630686
+    second: UISheet2_14
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,7 +155,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UISheet2_0
+      name: Option
       rect:
         serializedVersion: 2
         x: 5
@@ -130,7 +163,7 @@ TextureImporter:
         width: 144
         height: 146
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,7 +177,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet2_1
+      name: Home
       rect:
         serializedVersion: 2
         x: 164
@@ -152,7 +185,7 @@ TextureImporter:
         width: 189
         height: 145
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,7 +199,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet2_2
+      name: Close
       rect:
         serializedVersion: 2
         x: 363
@@ -174,7 +207,7 @@ TextureImporter:
         width: 140
         height: 138
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -188,7 +221,29 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet2_3
+      name: Crown
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 514
+        width: 129
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc584295399d393e0800000000000000
+      internalID: -2048054178644458033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rect
       rect:
         serializedVersion: 2
         x: 8
@@ -196,15 +251,235 @@ TextureImporter:
         width: 165
         height: 165
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e522a64bcc3a21290800000000000000
-      internalID: -7921088694995770786
+      spriteID: bdbd0bd15054af2d0800000000000000
+      internalID: -3244204693291738149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Graphic
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 360
+        width: 140
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42138ae7603ba0ca0800000000000000
+      internalID: -6049826308942712540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Volume
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 372
+        width: 80
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07b719a238fe8bd30800000000000000
+      internalID: 4447567978662296432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wave1
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 381
+        width: 58
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd1b4140f61dbd360800000000000000
+      internalID: 7195575104394539485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Note
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 352
+        width: 110
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fcab7e6ecf95af20800000000000000
+      internalID: 3433325999905549555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wave2
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 120
+        width: 93
+        height: 185
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecc25f2aeba572200800000000000000
+      internalID: 155192486991834318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wave0
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 145
+        width: 115
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40f861dd780f8df30800000000000000
+      internalID: 4600691485679456004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sync
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 151
+        width: 207
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1540438597a904c0800000000000000
+      internalID: -4320738106891287270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: V
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 222
+        width: 136
+        height: 110
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7092f0929bc317800800000000000000
+      internalID: 608334190627203335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SFXIcon
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 160
+        width: 139
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 220a70d3ab49dd8f0800000000000000
+      internalID: -514091254841630686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Display
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 390
+        width: 140
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 053136aac120e364cb79c76bcdbdb303
+      internalID: 2134667900
       vertices: []
       indices: 
       edges: []
@@ -213,7 +488,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 52bbce8a57f3d5d4baa1547d841f1614
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +498,22 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UISheet2_0: -395818137559815602
-      UISheet2_1: -6523820404769137803
-      UISheet2_2: -2473658385531419115
-      UISheet2_3: -7921088694995770786
+      Close: -2473658385531419115
+      Crown: -2048054178644458033
+      Display: 2134667900
+      Graphic: -6049826308942712540
+      GraphicPlatform: -7921088694995770786
+      Home: -6523820404769137803
+      Note: 3433325999905549555
+      Option: -395818137559815602
+      Rect: -3244204693291738149
+      SFXIcon: -514091254841630686
+      Sync: -4320738106891287270
+      V: 608334190627203335
+      Volume: 4447567978662296432
+      Wave0: 4600691485679456004
+      Wave1: 7195575104394539485
+      Wave2: 155192486991834318
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

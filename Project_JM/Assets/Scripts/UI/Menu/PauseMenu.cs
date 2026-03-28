@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : Menu
 {
     [Header("Buttons")]
     [SerializeField] protected Button restartButton;
@@ -19,49 +19,63 @@ public class PauseMenu : MonoBehaviour
     [Header("Logic related refs")]
     [SerializeField] protected CombatIntroController combatIntroController;
     [SerializeField] protected string mainMenuSceneName = "MainMenu";
-    [SerializeField] protected GameObject optionPanel;
-    [SerializeField] protected PauseManager pauseManager;
+    [SerializeField] protected OptionMenu optionPanel;
 
-    protected void Awake()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         restartButton.onClick.AddListener(OnRestartButtonPressed);
         optionButton.onClick.AddListener(OnOptionButtonPressed);
         homeButton.onClick.AddListener(OnHomeButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
     }
 
-    protected void OnDestroy()
+    protected override void OnDisable()
     {
+        base.OnEnable();
         restartButton.onClick.RemoveListener(OnRestartButtonPressed);
         optionButton.onClick.RemoveListener(OnOptionButtonPressed);
         homeButton.onClick.RemoveListener(OnHomeButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
     }
 
+    public override void Show()
+    {
+        base.Show();
+
+        GlobalTimeManager.Instance.PauseTimeScale();
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+        GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+    }
+
     public void OnRestartButtonPressed()
     {
         // @@ TODO: Need to add destructive confirmation.
 
-        GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+        Hide();
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
 
     public void OnOptionButtonPressed()
     {
-
+        optionPanel.Show();
     }
 
     public void OnHomeButtonPressed()
     {
-        GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+        Hide();
 
         SceneManager.LoadScene(mainMenuSceneName);
     }
 
     public void OnQuitButtonPressed()
     {
-        GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+        Hide();
 
 #if UNITY_EDITOR
 Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
