@@ -203,6 +203,7 @@ Follow **Conventional Commits 1.0.0** strictly.
 - Wrap at 72 characters per line
 - Required for any non-trivial change
 - List each changed file and what changed: `FileName.cs - Description` (e.g. `DamageUIManager.cs - Add header comment`)
+- Separate each file entry with one blank line
 
 ### Commit Footer
 - Reference issues: `Closes #123`, `Fixes #456`
