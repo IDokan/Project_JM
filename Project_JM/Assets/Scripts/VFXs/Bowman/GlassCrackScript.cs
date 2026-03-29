@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 01/28/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 01/28/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GlassCrackScript.cs
 // Summary: A script for main mechs for the glass crack prefab.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
 using UnityEngine;

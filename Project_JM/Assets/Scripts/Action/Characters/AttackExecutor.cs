@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 12/25/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 12/25/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: AttackExecutor.cs
 // Summary: A script to bridge between CombatManger and AttackMotions.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using MatchEnums;
 using System;
@@ -10,8 +11,8 @@ using UnityEngine;
 
 public class AttackExecutor : MonoBehaviour
 {
-    protected AttackMotion motion;
-    protected EnemyAttackMotion enemyMotion;
+    protected AttackMotion _motion;
+    protected EnemyAttackMotion _enemyMotion;
 
     [Header("Tier Attack Logics (assigned per character)")]
     [SerializeField] private AttackLogic logic3;
@@ -34,40 +35,40 @@ public class AttackExecutor : MonoBehaviour
 
     protected void Awake()
     {
-        if (motion == null)
+        if (_motion == null)
         {
-            motion = GetComponent<AttackMotion>();
+            _motion = GetComponent<AttackMotion>();
         }
 
-        if (enemyMotion == null)
+        if (_enemyMotion == null)
         {
-            enemyMotion = GetComponent<EnemyAttackMotion>();
+            _enemyMotion = GetComponent<EnemyAttackMotion>();
         }
     }
 
     protected void OnEnable()
     {
-        if (motion != null)
+        if (_motion != null)
         {
-            motion.OnHit += HandleHit;
+            _motion.OnHit += HandleHit;
         }
 
-        if (enemyMotion != null)
+        if (_enemyMotion != null)
         {
-            enemyMotion.OnHit += EnemyHandleHit;
+            _enemyMotion.OnHit += EnemyHandleHit;
         }
     }
 
     protected void OnDisable()
     {
-        if (motion != null)
+        if (_motion != null)
         {
-            motion.OnHit -= HandleHit;
+            _motion.OnHit -= HandleHit;
         }
 
-        if (enemyMotion != null)
+        if (_enemyMotion != null)
         {
-            enemyMotion.OnHit -= EnemyHandleHit;
+            _enemyMotion.OnHit -= EnemyHandleHit;
         }
     }
 

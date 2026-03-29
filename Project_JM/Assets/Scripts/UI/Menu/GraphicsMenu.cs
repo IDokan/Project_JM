@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/27/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/27/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GraphicsMenu.cs
 // Summary: A script to perform graphics menu actions.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,8 +17,8 @@ public class GraphicsMenu : Menu
     [SerializeField] protected Toggle fullScreenModeToggle;
     [SerializeField] protected TMP_Dropdown resolutionDropdown;
 
-    protected Resolution[] availableResolutions;
-    protected string resolutionSignature;
+    protected Resolution[] _availableResolutions;
+    protected string _resolutionSignature;
 
     protected void Awake()
     {
@@ -58,12 +59,12 @@ public class GraphicsMenu : Menu
 
     protected void OnResolutionValueChanged(int index)
     {
-        if (index < 0 || index >= availableResolutions.Length)
+        if (index < 0 || index >= _availableResolutions.Length)
         {
             return;
         }
 
-        Resolution selectedResolution = availableResolutions[index];
+        Resolution selectedResolution = _availableResolutions[index];
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreenMode, selectedResolution.refreshRateRatio);
     }
 
@@ -75,13 +76,13 @@ public class GraphicsMenu : Menu
 
     protected void InitializeResolutionDropdown()
     {
-        availableResolutions = Screen.resolutions;
+        _availableResolutions = Screen.resolutions;
 
-        List<string> options = new List<string>(availableResolutions.Length);
+        List<string> options = new List<string>(_availableResolutions.Length);
 
-        for (int i = 0; i < availableResolutions.Length; ++i)
+        for (int i = 0; i < _availableResolutions.Length; ++i)
         {
-            Resolution resolution = availableResolutions[i];
+            Resolution resolution = _availableResolutions[i];
 
             options.Add($"{resolution.width} x {resolution.height} ({resolution.refreshRateRatio.value:0}Hz)");
         }
@@ -91,12 +92,12 @@ public class GraphicsMenu : Menu
         UpdateResolutionSelectionWithoutNotify();
 
         // Memorize signature when ropdown initialized.
-        resolutionSignature = BuildResolutionSignature(availableResolutions);
+        _resolutionSignature = BuildResolutionSignature(_availableResolutions);
     }
 
     protected void UpdateResolutionSelectionWithoutNotify()
     {
-        if (availableResolutions == null || availableResolutions.Length == 0)
+        if (_availableResolutions == null || _availableResolutions.Length == 0)
         {
             return;
         }
@@ -110,9 +111,9 @@ public class GraphicsMenu : Menu
     {
         Resolution currentResolution = Screen.currentResolution;
 
-        for (int i = 0; i < availableResolutions.Length; ++i)
+        for (int i = 0; i < _availableResolutions.Length; ++i)
         {
-            Resolution resolution = availableResolutions[i];
+            Resolution resolution = _availableResolutions[i];
 
             if (resolution.width == currentResolution.width &&
                 resolution.height == currentResolution.height &&
@@ -156,8 +157,8 @@ public class GraphicsMenu : Menu
         Resolution[] currentResolutions = Screen.resolutions;
 
         string currentSignature = BuildResolutionSignature(currentResolutions);
-        if (availableResolutions == null || availableResolutions.Length == 0 ||
-            currentSignature != resolutionSignature)
+        if (_availableResolutions == null || _availableResolutions.Length == 0 ||
+            currentSignature != _resolutionSignature)
         {
             InitializeResolutionDropdown();
         }

@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/06/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/06/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: FadeOnSpawnAndDeath.cs
 // Summary: A script to fade object on its spawn and death.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
 using System.Collections.Generic;

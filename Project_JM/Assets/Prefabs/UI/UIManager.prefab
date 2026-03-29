@@ -2053,10 +2053,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e706ecfde9b82a747bbbafd38ce995e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
-  _enemyHPUIBinder: {fileID: 7939076324155152995}
-  _enemyAttackUIBinder: {fileID: 667268355314239506}
-  _enemyEnrageUIBinder: {fileID: 3504451297710446783}
+  enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
+  enemyHPUIBinder: {fileID: 7939076324155152995}
+  enemyAttackUIBinder: {fileID: 667268355314239506}
+  enemyEnrageUIBinder: {fileID: 3504451297710446783}
 --- !u!1 &3887719915351278197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,7 +2105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1afbef8d408d74fb620c45765c46cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageUIManager
-  _damagePrefab: {fileID: 7393320494411724631, guid: c6f0c94e232a8284baefe504fd718c7d, type: 3}
+  damagePrefab: {fileID: 7393320494411724631, guid: c6f0c94e232a8284baefe504fd718c7d, type: 3}
 --- !u!1 &3921771208747601986
 GameObject:
   m_ObjectHideFlags: 0

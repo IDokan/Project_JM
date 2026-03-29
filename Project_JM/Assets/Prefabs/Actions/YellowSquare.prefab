@@ -5331,8 +5331,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbec763bea4f4948886e0228e070983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
-  _status: {fileID: 0}
-  _colors: 04000000
+  status: {fileID: 0}
+  colors: 04000000
   hitBurstPrefab: {fileID: 1771619425334909595, guid: f7beb28b4a3c8fb478a8abc5fe2ba5c1, type: 3}
   woundParentTransform: {fileID: 4480899460701387632}
   flashSprite: {fileID: 0}
@@ -5458,7 +5458,7 @@ MonoBehaviour:
   parentTransform: {fileID: 207429551397846993}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
-  _combatManager: {fileID: 0}
+  combatManager: {fileID: 0}
 --- !u!114 &266107498383828663
 MonoBehaviour:
   m_ObjectHideFlags: 0

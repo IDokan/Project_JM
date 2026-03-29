@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/05/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/05/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: PlayerController.cs
 // Summary: A script for universal controller.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -14,10 +15,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] protected BoardManager _board;
+    [SerializeField] protected BoardManager board;
     [SerializeField] protected GemSelectionHighlightManager gemSelectionHighlightManager;
     [SerializeField] protected TransitionManager transitionManager;
-    [SerializeField] protected Camera _cam;
+    [SerializeField] protected Camera cam;
 
     [Header("Actions (drag from Controls.input actions)")]
     public InputActionReference point;
@@ -27,11 +28,11 @@ public class PlayerController : MonoBehaviour
     public InputActionReference cancel;
 
     [Header("Tuning")]
-    [SerializeField] protected float _dragTresholdPixels = 16f;
-    [SerializeField] protected float _moveRepeatRate = 0.12f;
-    [SerializeField] protected float _stickDeadZone = 0.25f;
-    [SerializeField] protected float _swapRepeatRate = 0.4f;
-    [SerializeField] protected float _holdingRepeatDelay = 0.8f;
+    [SerializeField] protected float dragTresholdPixels = 16f;
+    [SerializeField] protected float moveRepeatRate = 0.12f;
+    [SerializeField] protected float stickDeadZone = 0.25f;
+    [SerializeField] protected float swapRepeatRate = 0.4f;
+    [SerializeField] protected float holdingRepeatDelay = 0.8f;
 
     [Header("Interaction VFX")]
     [SerializeField] protected ClickVFXSpawner clickVFXSpawner;
@@ -100,7 +101,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_board.InputEnabled)
+        if (!board.InputEnabled)
         {
             return;
         }
@@ -119,14 +120,14 @@ public class PlayerController : MonoBehaviour
         {
             // Mouse & Mobile mode
             // Pointer drag : once threshold exceeded, decide a 4-way dir and trigger one swap
-            if (_board.InBounds(_selRow, _selCol) && !_firedThisDrag && press.action.IsPressed())
+            if (board.InBounds(_selRow, _selCol) && !_firedThisDrag && press.action.IsPressed())
             {
                 Vector2 delta = GetCurrentFollowPoint() - _pressScreenPos;
-                if (delta.magnitude >= _dragTresholdPixels)
+                if (delta.magnitude >= dragTresholdPixels)
                 {
                     Vector2Int dir = Decide4Way(delta);
                     _firedThisDrag = true;
-                    _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), dir);
+                    board.TrySwapFrom(new Vector2Int(_selRow, _selCol), dir);
                 }
             }
         }
@@ -139,7 +140,7 @@ public class PlayerController : MonoBehaviour
 
         transitionManager.BeginSkipHold();
 
-        if (!_board.InputEnabled)
+        if (!board.InputEnabled)
         {
             clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
             return;
@@ -148,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
         _pressScreenPos = GetCurrentFollowPoint();
         var index = GemIndexUnderCursor(_pressScreenPos);
-        if (!_board.InBounds(index.x, index.y))
+        if (!board.InBounds(index.x, index.y))
         {
             clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
             return;
@@ -157,7 +158,7 @@ public class PlayerController : MonoBehaviour
 
         SetSelection(index.x, index.y);
 
-        clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint(), _board.GetGemColor(index));
+        clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint(), board.GetGemColor(index));
     }
 
     protected void OnPressCanceled(InputAction.CallbackContext _)
@@ -190,7 +191,7 @@ public class PlayerController : MonoBehaviour
 
         Vector2 direction = context.ReadValue<Vector2>();
 
-        if (direction.sqrMagnitude < _stickDeadZone * _stickDeadZone)
+        if (direction.sqrMagnitude < stickDeadZone * stickDeadZone)
         {
             _lastMovedDirection = Vector2Int.zero;
 
@@ -208,20 +209,20 @@ public class PlayerController : MonoBehaviour
 
         bool isPerformed = false;
 
-        if (_isConfirmPressing && _board.InputEnabled)
+        if (_isConfirmPressing && board.InputEnabled)
         {
             isPerformed = SwapGem(directionInt);
         }
         else        // Enabled gem selection act when board disabled.
         {
-            // It is very dangerous because below lines executed even _board _gems is null.
+            // It is very dangerous because below lines executed even board _gems is null.
             isPerformed = SelectGem(directionInt);
         }
 
         if (isPerformed)
         {
             _lastMovedDirection = directionInt;
-            _nextMoveHoldTime = Time.time + _holdingRepeatDelay;
+            _nextMoveHoldTime = Time.time + holdingRepeatDelay;
         }
     }
 
@@ -231,7 +232,7 @@ public class PlayerController : MonoBehaviour
 
         _isPadMode = true;
 
-        if(_board.InputEnabled)
+        if(board.InputEnabled)
         {
             _isConfirmPressing = true;
             gemSelectionHighlightManager.EnableArrows(_selRow, _selCol);
@@ -258,10 +259,10 @@ public class PlayerController : MonoBehaviour
 
     protected Vector2Int GemIndexUnderCursor(Vector2 screenPos)
     {
-        Vector2 world = _cam.ScreenToWorldPoint(screenPos);
-        Vector2 local = _board.transform.InverseTransformPoint(world);
+        Vector2 world = cam.ScreenToWorldPoint(screenPos);
+        Vector2 local = board.transform.InverseTransformPoint(world);
 
-        return _board.GetGemIndex(local);
+        return board.GetGemIndex(local);
     }
 
     protected void SetSelection(int r, int c)
@@ -295,8 +296,8 @@ public class PlayerController : MonoBehaviour
         {   // Init, nothing has selected.
 
             // start centered
-            int r = Mathf.Clamp(_board.Rows / 2, 0, _board.Rows - 1);
-            int c = Mathf.Clamp(_board.Cols / 2, 0, _board.Cols - 1);
+            int r = Mathf.Clamp(board.Rows / 2, 0, board.Rows - 1);
+            int c = Mathf.Clamp(board.Cols / 2, 0, board.Cols - 1);
             SetSelection(r, c);
 
             return true;
@@ -306,7 +307,7 @@ public class PlayerController : MonoBehaviour
             // Typical case, move cursor or try swapping gems
             int nr = _selRow + direction.y;
             int nc = _selCol + direction.x;
-            if (_board.InBounds(nr, nc))
+            if (board.InBounds(nr, nc))
             {
                 // Move cursor
                 SetSelection(nr, nc);
@@ -332,10 +333,10 @@ public class PlayerController : MonoBehaviour
             return false;
         }
 
-        _nextSwapTime = Time.time + _swapRepeatRate;
+        _nextSwapTime = Time.time + swapRepeatRate;
 
         // Try swapping gems
-        _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), direction);
+        board.TrySwapFrom(new Vector2Int(_selRow, _selCol), direction);
 
         return true;
     }
@@ -349,9 +350,9 @@ public class PlayerController : MonoBehaviour
 
         if (_isConfirmPressing)
         {
-            _board.TrySwapFrom(new Vector2Int(_selRow, _selCol), _lastMovedDirection);
+            board.TrySwapFrom(new Vector2Int(_selRow, _selCol), _lastMovedDirection);
 
-            _nextMoveHoldTime = Time.time + _swapRepeatRate;
+            _nextMoveHoldTime = Time.time + swapRepeatRate;
 
             return;
         }
@@ -360,11 +361,11 @@ public class PlayerController : MonoBehaviour
         {
             int nr = _selRow + _lastMovedDirection.y;
             int nc = _selCol + _lastMovedDirection.x;
-            if (_board.InBounds(nr, nc))
+            if (board.InBounds(nr, nc))
             {
                 // Move cursor
                 SetSelection(nr, nc);
-                _nextMoveHoldTime = Time.time + _moveRepeatRate;
+                _nextMoveHoldTime = Time.time + moveRepeatRate;
             }
         }
 

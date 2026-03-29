@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/20/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/20/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: SystemBehaviour.cs
 // Summary: A manager for combo.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using MatchEnums;
 using GemEnums;
@@ -11,26 +12,26 @@ using UnityEngine;
 
 public class ComboManager : MonoBehaviour
 {
-    [SerializeField] protected MatchEventChannel _matchEvents;
-    [SerializeField] protected CharacterStatus _partyStatus;
-    [SerializeField] protected float _comboResetTime = 3f;
+    [SerializeField] protected MatchEventChannel matchEvents;
+    [SerializeField] protected CharacterStatus partyStatus;
+    [SerializeField] protected float comboResetTime = 3f;
 
     public event Action<int, float> OnComboUpdated;
 
-    public float ComboResetTime => _comboResetTime;
+    public float ComboResetTime => comboResetTime;
 
-    protected int comboCount = 0;
-    protected float timer = 0f;
+    protected int _comboCount = 0;
+    protected float _timer = 0f;
 
 
     private void OnEnable()
     {
-        _matchEvents.OnRaised += OnMatch;
+        matchEvents.OnRaised += OnMatch;
     }
 
     private void OnDisable()
     {
-        _matchEvents.OnRaised -= OnMatch;
+        matchEvents.OnRaised -= OnMatch;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -42,12 +43,12 @@ public class ComboManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (comboCount > 0)
+        if (_comboCount > 0)
         {
-            timer -= GlobalTimeManager.DeltaTime;
-            OnComboUpdated.Invoke(comboCount, timer);
+            _timer -= GlobalTimeManager.DeltaTime;
+            OnComboUpdated.Invoke(_comboCount, _timer);
 
-            if (timer <= 0f)
+            if (_timer <= 0f)
             {
                 ResetCombo();
             }
@@ -63,19 +64,19 @@ public class ComboManager : MonoBehaviour
         }
 
         // On Match, increase combo for a duration.
-        comboCount += (int)matchEvent.Tier;
-        timer = _comboResetTime;
-        OnComboUpdated.Invoke(comboCount, timer);
+        _comboCount += (int)matchEvent.Tier;
+        _timer = comboResetTime;
+        OnComboUpdated.Invoke(_comboCount, _timer);
 
         // Increase critical hit chance per combo
-        _partyStatus.SetComboCritBonus(comboCount / 100f);
+        partyStatus.SetComboCritBonus(_comboCount / 100f);
     }
 
     public void ResetCombo()
     {
-        comboCount = 0;
-        _partyStatus.SetComboCritBonus(comboCount);
-        timer = 0f;
-        OnComboUpdated.Invoke(comboCount, timer);
+        _comboCount = 0;
+        partyStatus.SetComboCritBonus(_comboCount);
+        _timer = 0f;
+        OnComboUpdated.Invoke(_comboCount, _timer);
     }
 }

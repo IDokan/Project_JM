@@ -76,8 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db51d9973d185547abca64e111762d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatus
-  _baseData: {fileID: 11400000, guid: c614d50cb86fba346a16a1bce288064c, type: 2}
-  _deathEvent: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  baseData: {fileID: 11400000, guid: c614d50cb86fba346a16a1bce288064c, type: 2}
+  deathEvent: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
 --- !u!114 &6553061434730044119
 MonoBehaviour:
@@ -131,7 +131,7 @@ PrefabInstance:
       value: 0.3782494
       objectReference: {fileID: 0}
     - target: {fileID: 615354426364606362, guid: b4fa411d65d316f4abf60ded32711285, type: 3}
-      propertyPath: _status
+      propertyPath: status
       value: 
       objectReference: {fileID: 8661856663623278153}
     - target: {fileID: 1090393466301800378, guid: b4fa411d65d316f4abf60ded32711285, type: 3}
@@ -517,7 +517,7 @@ PrefabInstance:
       value: -0.7530391
       objectReference: {fileID: 0}
     - target: {fileID: 8385931373688579136, guid: d2f05f0259a917344a13a7d46c449d06, type: 3}
-      propertyPath: _status
+      propertyPath: status
       value: 
       objectReference: {fileID: 8661856663623278153}
     - target: {fileID: 9013221472557818829, guid: d2f05f0259a917344a13a7d46c449d06, type: 3}
@@ -687,7 +687,7 @@ PrefabInstance:
       value: 1777641595
       objectReference: {fileID: 0}
     - target: {fileID: 1968382616848345547, guid: 712c5649889a5984db027664755b5619, type: 3}
-      propertyPath: _status
+      propertyPath: status
       value: 
       objectReference: {fileID: 8661856663623278153}
     - target: {fileID: 2132291408307566724, guid: 712c5649889a5984db027664755b5619, type: 3}
@@ -999,7 +999,7 @@ PrefabInstance:
       value: -0.6895744
       objectReference: {fileID: 0}
     - target: {fileID: 6459766194020525987, guid: 712c5649889a5984db027664755b5619, type: 3}
-      propertyPath: _status
+      propertyPath: status
       value: 
       objectReference: {fileID: 8661856663623278153}
     - target: {fileID: 6597909694858637724, guid: 712c5649889a5984db027664755b5619, type: 3}
@@ -1273,7 +1273,7 @@ PrefabInstance:
       value: 0.23811255
       objectReference: {fileID: 0}
     - target: {fileID: 3044492464641614860, guid: 90ae948826683424bb3a1b173ba9d562, type: 3}
-      propertyPath: _status
+      propertyPath: status
       value: 
       objectReference: {fileID: 8661856663623278153}
     - target: {fileID: 3054816748874019405, guid: 90ae948826683424bb3a1b173ba9d562, type: 3}

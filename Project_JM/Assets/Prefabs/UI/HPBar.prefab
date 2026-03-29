@@ -276,9 +276,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127bda689904e1d4f92eeae30fb631bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BarStatusBinder
-  _boundStatus: {fileID: 0}
-  _HPbarUI: {fileID: 9101432189232218910}
-  _ShieldbarUI: {fileID: 4287037755271665917}
+  boundStatus: {fileID: 0}
+  hPbarUI: {fileID: 9101432189232218910}
+  shieldbarUI: {fileID: 4287037755271665917}
 --- !u!1 &7321914239181802442
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +890,7 @@ PrefabInstance:
     m_TransformParent: {fileID: 5635073737422881962}
     m_Modifications:
     - target: {fileID: 834758799143364432, guid: d7d852aa5e4036645adc0798b23ef313, type: 3}
-      propertyPath: _text
+      propertyPath: text
       value: 
       objectReference: {fileID: 1486956901795083447}
     - target: {fileID: 1270359923762020167, guid: d7d852aa5e4036645adc0798b23ef313, type: 3}
