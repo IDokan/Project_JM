@@ -75,7 +75,8 @@ public class CombatIntroController : TransitionController
         partyParallaxLayer.SetManualMode();
 
         Camera camera = Camera.main;
-        partyTransform.position = camera.transform.position + _partyStartOffsetToCamera;
+        Vector3 startPosition = camera.transform.position + _partyStartOffsetToCamera;
+        partyTransform.position = startPosition;
         Vector3 destination = camera.transform.position + _partyArrivalOffsetToCamera;
 
         float t = 0f;
@@ -85,7 +86,7 @@ public class CombatIntroController : TransitionController
 
             // Simple fixing: Update destination at every frame to prevent bugs when both camer and party started moving. (Both enemy and party died)
             destination = camera.transform.position + _partyArrivalOffsetToCamera;
-            partyTransform.position = Vector3.Lerp(partyStartPosition, destination, t / partyMoveDuration);
+            partyTransform.position = Vector3.Lerp(startPosition, destination, t / partyMoveDuration);
 
             yield return null;
         }
