@@ -1,30 +1,31 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/14/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/14/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EnemySpawner.cs
 // Summary: A class to spawn enemy.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] protected EnemyBook _enemyBook;
-    [SerializeField] protected CharacterDeathEventChannel _characterDeathEventChannel;
-    [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
+    [SerializeField] protected EnemyBook enemyBook;
+    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+    [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected DifficultyCurves _difficultyCurves;
+    [SerializeField] protected DifficultyCurves difficultyCurves;
 
-    [SerializeField] protected Vector3 _spawnPosition;
+    [SerializeField] protected Vector3 spawnPosition;
 
     [SerializeField] protected float spawnDelay = 4f;
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
 
-    protected Vector3 spawnOffsetToCamera;
+    protected Vector3 _spawnOffsetToCamera;
     protected int _numSpanwed = 0;
 
-    protected Coroutine dispatchRoutine = null;
+    protected Coroutine _dispatchRoutine = null;
 
     protected void OnEnable()
     {
@@ -37,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
 
     protected void Awake()
     {
-        spawnOffsetToCamera = _spawnPosition - Camera.main.transform.position;
+        _spawnOffsetToCamera = spawnPosition - Camera.main.transform.position;
     }
 
     protected void Clear()
@@ -49,16 +50,16 @@ public class EnemySpawner : MonoBehaviour
     {
         _numSpanwed++;
 
-        Vector3 spawnPosition = spawnOffsetToCamera + Camera.main.transform.position;
-        var spawnedEnemy = Instantiate(_enemyBook.GetRandomEnemyPrefab(), spawnPosition, Quaternion.identity);
-        spawnedEnemy.GetComponent<CharacterStatus>().Initialize(_difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
+        Vector3 spawnPosition = _spawnOffsetToCamera + Camera.main.transform.position;
+        var spawnedEnemy = Instantiate(enemyBook.GetRandomEnemyPrefab(), spawnPosition, Quaternion.identity);
+        spawnedEnemy.GetComponent<CharacterStatus>().Initialize(difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
-        if (dispatchRoutine != null)
+        if (_dispatchRoutine != null)
         {
-            StopCoroutine(dispatchRoutine);
-            dispatchRoutine = null;
+            StopCoroutine(_dispatchRoutine);
+            _dispatchRoutine = null;
         }
-        dispatchRoutine = StartCoroutine(DispatchSpawnEventChannelAfterDelay(spawnedEnemy, dispatchEventChannelDelay));
+        _dispatchRoutine = StartCoroutine(DispatchSpawnEventChannelAfterDelay(spawnedEnemy, dispatchEventChannelDelay));
 
         return spawnedEnemy;
     }
@@ -68,9 +69,9 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         enemy.GetComponent<EnemyActivation>()?.EnableScripts();
-        _enemySpawnedEventChannel.Raise(enemy);
+        enemySpawnedEventChannel.Raise(enemy);
 
-        dispatchRoutine = null;
+        _dispatchRoutine = null;
     }
 
     public void SpawnEnemyAfterDelay()

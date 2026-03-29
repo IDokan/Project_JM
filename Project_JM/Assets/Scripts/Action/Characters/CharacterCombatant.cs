@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/07/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/07/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: CharacterCombatant.cs
 // Summary: A combatant script for action characters.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using GemEnums;
 using UnityEngine;
@@ -20,16 +21,16 @@ public interface ICombatant
 
 public class CharacterCombatant : MonoBehaviour, ICombatant
 {
-    [SerializeField] protected CharacterStatus _status;
-    [SerializeField] protected GemColor[] _colors;
+    [SerializeField] protected CharacterStatus status;
+    [SerializeField] protected GemColor[] colors;
 
     [SerializeField] protected GameObject hitBurstPrefab;
     [SerializeField] protected Transform woundParentTransform;
 
     [SerializeField] protected FlashSpriteUsingMaterial flashSprite;
 
-    public CharacterStatus Status => _status;
-    public GemColor[] Colors => _colors;
+    public CharacterStatus Status => status;
+    public GemColor[] Colors => colors;
 
     void Awake()
     {
@@ -41,12 +42,12 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     public void Heal(float healPercentage)
     {
-        _status.Heal(healPercentage);
+        status.Heal(healPercentage);
     }
 
     public void AddShield(float shieldPercentage)
     {
-        _status.AddShield(shieldPercentage);
+        status.AddShield(shieldPercentage);
     }
 
     public void TakeDamage(float rawDamage, AttackContext attackContext)
@@ -69,7 +70,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
 
         // Multiply its size by 2 when the attacker is an enemy && not blocked
-        int calculatedDamage = Mathf.RoundToInt(Mathf.Min(_status.CurrentHP, Mathf.Max(damage - _status.Shield, 0f)));
+        int calculatedDamage = Mathf.RoundToInt(Mathf.Min(status.CurrentHP, Mathf.Max(damage - status.Shield, 0f)));
         if (calculatedDamage > 0 &&
             attackContext.Attacker is MonoBehaviour attackerMB &&
             attackerMB.TryGetComponent<EnemyTag>(out _))
@@ -79,7 +80,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         // Spawn Damageui slightly above the origin of attacked target
         DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, colorDamageMultiplier);
 
-        _status.TakeDamage(damage);
+        status.TakeDamage(damage);
 
         if (flashSprite != null)
         {
@@ -92,17 +93,17 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     public void AddBuffCritBonus(float value)
     {
-        _status.AddBuffCritBonus(value);
+        status.AddBuffCritBonus(value);
     }
 
     public void AddBuffCritBonus(float value, float duration)
     {
-        _status.AddBuffCritBonus(value, duration);
+        status.AddBuffCritBonus(value, duration);
     }
 
     public void AddBuffCritDamage(float value)
     {
-        _status.AddBuffCritDamage(value);
+        status.AddBuffCritDamage(value);
     }
 
     protected void SpawnHitBurstParticle(AttackContext attackContext)

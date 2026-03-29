@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 02/09/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 02/09/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: FlyToTarget.cs
 // Summary: A script to move object to the target transform.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using MatchEnums;
@@ -12,7 +13,7 @@ public class FlyToTarget : MonoBehaviour
     [SerializeField] protected bool velocityOriented = true;
     [SerializeField] protected Transform hitTransform;
     [SerializeField] protected LayerMask hitMask;
-    [SerializeField] protected float _speed = 0f;
+    [SerializeField] protected float speed = 0f;
     [SerializeField] private float spriteFacingAngleOffset = 0f;
 
     [Header("AfterImpact")]
@@ -75,7 +76,7 @@ public class FlyToTarget : MonoBehaviour
             }
         }
 
-        Vector2 next = Vector2.MoveTowards(_rigidbody2D.position, _target.position, _speed * Time.fixedDeltaTime);
+        Vector2 next = Vector2.MoveTowards(_rigidbody2D.position, _target.position, speed * Time.fixedDeltaTime);
         _rigidbody2D.MovePosition(next);
     }
 
@@ -94,7 +95,7 @@ public class FlyToTarget : MonoBehaviour
         }
 
         BrokenEggController brokenEgg = Instantiate(brokenEggController);
-        brokenEgg.Init(transform, _speed);
+        brokenEgg.Init(transform, speed);
 
         Destroy(gameObject);
     }

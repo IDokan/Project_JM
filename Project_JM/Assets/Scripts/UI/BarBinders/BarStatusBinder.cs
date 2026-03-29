@@ -1,42 +1,43 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/13/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/13/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: BarUI.cs
 // Summary: A binder that connects between CharacterStatus and BarUI to display UI.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 
 public class BarStatusBinder : MonoBehaviour
 {
-    [SerializeField] protected CharacterStatus _boundStatus;
-    [SerializeField] protected BarUIBase _HPbarUI;
-    [SerializeField] protected BarUIBase _ShieldbarUI;
+    [SerializeField] protected CharacterStatus boundStatus;
+    [SerializeField] protected BarUIBase hPbarUI;
+    [SerializeField] protected BarUIBase shieldbarUI;
 
     protected void OnEnable()
     {
-        if (_boundStatus != null)
+        if (boundStatus != null)
         {
-            _boundStatus.OnHPChanged += UpdateHP;
-            _boundStatus.OnShieldChanged += UpdateShield;
+            boundStatus.OnHPChanged += UpdateHP;
+            boundStatus.OnShieldChanged += UpdateShield;
         }
     }
 
     protected void OnDisable()
     {
-        if (_boundStatus != null)
+        if (boundStatus != null)
         {
-            _boundStatus.OnHPChanged -= UpdateHP;
-            _boundStatus.OnShieldChanged -= UpdateShield;
+            boundStatus.OnHPChanged -= UpdateHP;
+            boundStatus.OnShieldChanged -= UpdateShield;
         }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (_boundStatus != null)
+        if (boundStatus != null)
         {
-            UpdateHP(_boundStatus.CurrentHP, _boundStatus.maxHP);
-            UpdateShield(0, _boundStatus.maxHP);
+            UpdateHP(boundStatus.CurrentHP, boundStatus.maxHP);
+            UpdateShield(0, boundStatus.maxHP);
         }
     }
 
@@ -47,36 +48,36 @@ public class BarStatusBinder : MonoBehaviour
 
     public void BindNewStatus(CharacterStatus newStatus)
     {
-        if (newStatus == _boundStatus) return;
+        if (newStatus == boundStatus) return;
 
-        if (_boundStatus != null)
+        if (boundStatus != null)
         {
-            _boundStatus.OnHPChanged -= UpdateHP;
-            _boundStatus.OnShieldChanged -= UpdateShield;
+            boundStatus.OnHPChanged -= UpdateHP;
+            boundStatus.OnShieldChanged -= UpdateShield;
         }
 
-        _boundStatus = newStatus;
-        _boundStatus.OnHPChanged += UpdateHP;
-        _boundStatus.OnShieldChanged += UpdateShield;
+        boundStatus = newStatus;
+        boundStatus.OnHPChanged += UpdateHP;
+        boundStatus.OnShieldChanged += UpdateShield;
 
-        UpdateHP(_boundStatus.CurrentHP, _boundStatus.maxHP);
-        UpdateShield(0, _boundStatus.maxHP);
+        UpdateHP(boundStatus.CurrentHP, boundStatus.maxHP);
+        UpdateShield(0, boundStatus.maxHP);
     }
 
     protected void UpdateHP(float current, float max)
     {
-        _HPbarUI.UpdateValue(current, max);
+        hPbarUI.UpdateValue(current, max);
     }
 
     protected void UpdateShield(float shieldAmount, float max)
     {
-        if (shieldAmount > _boundStatus.maxHP)
+        if (shieldAmount > boundStatus.maxHP)
         {
-            _ShieldbarUI.UpdateValue(shieldAmount, _boundStatus.maxHP, false);
+            shieldbarUI.UpdateValue(shieldAmount, boundStatus.maxHP, false);
         }
         else
         {
-            _ShieldbarUI.UpdateValue(shieldAmount, max, false);
+            shieldbarUI.UpdateValue(shieldAmount, max, false);
         }
     }
 }

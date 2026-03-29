@@ -1,21 +1,22 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/14/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/14/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: UIManager.cs
 // Summary: A manager that controls UI.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] BarStatusBinder _enemyHPUIBinder;
-    [SerializeField] AttackCooldownBinder _enemyAttackUIBinder;
-    [SerializeField] EnrageBarBinder _enemyEnrageUIBinder;
+    [SerializeField] EnemySpawnedEventChannel enemySpawnedEventChannel;
+    [SerializeField] BarStatusBinder enemyHPUIBinder;
+    [SerializeField] AttackCooldownBinder enemyAttackUIBinder;
+    [SerializeField] EnrageBarBinder enemyEnrageUIBinder;
 
 
-    protected void OnEnable() => _enemySpawnedEventChannel.OnRaised += OnSpawned;
-    protected void OnDisable() => _enemySpawnedEventChannel.OnRaised -= OnSpawned;
+    protected void OnEnable() => enemySpawnedEventChannel.OnRaised += OnSpawned;
+    protected void OnDisable() => enemySpawnedEventChannel.OnRaised -= OnSpawned;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,17 +32,17 @@ public class UIManager : MonoBehaviour
 
     protected void OnSpawned(GameObject gameObject)
     {
-        if (_enemyHPUIBinder != null)
+        if (enemyHPUIBinder != null)
         {
-            _enemyHPUIBinder.BindNewStatus(gameObject.GetComponent<CharacterStatus>());
+            enemyHPUIBinder.BindNewStatus(gameObject.GetComponent<CharacterStatus>());
         }
-        if (_enemyAttackUIBinder != null)
+        if (enemyAttackUIBinder != null)
         {
-            _enemyAttackUIBinder.BindNewAI(gameObject.GetComponent<EnemyAttackBehaviour>());
+            enemyAttackUIBinder.BindNewAI(gameObject.GetComponent<EnemyAttackBehaviour>());
         }
-        if (_enemyEnrageUIBinder != null)
+        if (enemyEnrageUIBinder != null)
         {
-            _enemyEnrageUIBinder.BindNewAI(gameObject.GetComponent<EnemyAttackBehaviour>());
+            enemyEnrageUIBinder.BindNewAI(gameObject.GetComponent<EnemyAttackBehaviour>());
         }
     }
 }

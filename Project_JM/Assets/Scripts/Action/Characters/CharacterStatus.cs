@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/10/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/10/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: CharacterStatus.cs
 // Summary: A class to modify status in runtime.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
 using System.Collections;
@@ -29,8 +30,8 @@ public class TimedModifier
 
 public class CharacterStatus : MonoBehaviour
 {
-    [SerializeField] protected CharacterStatusData _baseData;
-    [SerializeField] protected CharacterDeathEventChannel _deathEvent;
+    [SerializeField] protected CharacterStatusData baseData;
+    [SerializeField] protected CharacterDeathEventChannel deathEvent;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     public string CharacterName { get; }
@@ -41,9 +42,9 @@ public class CharacterStatus : MonoBehaviour
     {
         get
         {
-            float result = _baseData.baseCriticalChance + comboCritBonus;
+            float result = baseData.baseCriticalChance + _comboCritBonus;
 
-            float buffBonus = buffCritChanceBonus;
+            float buffBonus = _buffCritChanceBonus;
             foreach (var m in _critChanceTimedModifiers)
             {
                 buffBonus += m.Multiplier;
@@ -53,7 +54,7 @@ public class CharacterStatus : MonoBehaviour
         }
     }
     // 1 means 100%, 1.5 means 150%
-    public float CriticalDamage => _baseData.baseCriticalDamage + buffCritDamageBonus;
+    public float CriticalDamage => baseData.baseCriticalDamage + _buffCritDamageBonus;
 
     public event Action<float, float> OnHPChanged;
     public event Action<float, float> OnShieldChanged;
@@ -62,17 +63,17 @@ public class CharacterStatus : MonoBehaviour
     public float Shield => _shield;
     public bool IsDead => CurrentHP <= 0f;
 
-    protected float comboCritBonus = 0f;
-    protected float buffCritChanceBonus = 0f;
+    protected float _comboCritBonus = 0f;
+    protected float _buffCritChanceBonus = 0f;
     protected readonly List<TimedModifier> _critChanceTimedModifiers = new();
 
-    protected float buffCritDamageBonus = 0f;
+    protected float _buffCritDamageBonus = 0f;
 
     protected void OnEnable()
     {
-        if (_deathEvent != null)
+        if (deathEvent != null)
         {
-            _deathEvent.OnRaised += ClearBuffs;
+            deathEvent.OnRaised += ClearBuffs;
         }
         else
         {
@@ -91,7 +92,7 @@ public class CharacterStatus : MonoBehaviour
 
     protected void OnDisable()
     {
-        _deathEvent.OnRaised -= ClearBuffs;
+        deathEvent.OnRaised -= ClearBuffs;
         transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
@@ -113,8 +114,8 @@ public class CharacterStatus : MonoBehaviour
 
     public void Initialize(StatusMultiplier multiplier)
     {
-        CurrentHP = CurrentHP / maxHP * _baseData.baseHP * multiplier.HPMultiplier;
-        maxHP = _baseData.baseHP * multiplier.HPMultiplier;
+        CurrentHP = CurrentHP / maxHP * baseData.baseHP * multiplier.HPMultiplier;
+        maxHP = baseData.baseHP * multiplier.HPMultiplier;
         OnHPChanged?.Invoke(CurrentHP, maxHP);
     }
 
@@ -165,17 +166,17 @@ public class CharacterStatus : MonoBehaviour
 
     protected void Die()
     {
-        _deathEvent.Raise(this);
+        deathEvent.Raise(this);
     }
 
     public void SetComboCritBonus(float value)
     {
-        comboCritBonus = value;
+        _comboCritBonus = value;
     }
 
     public void AddBuffCritBonus(float value)
     {
-        buffCritChanceBonus += value;
+        _buffCritChanceBonus += value;
     }
 
     public void AddBuffCritBonus(float value, float duration)
@@ -185,12 +186,12 @@ public class CharacterStatus : MonoBehaviour
 
     public void RemoveBuffCritBonus(float value)
     {
-        buffCritChanceBonus -= value;
+        _buffCritChanceBonus -= value;
     }
 
     public void ClearBuffCritBonus()
     {
-        buffCritChanceBonus = 0f;
+        _buffCritChanceBonus = 0f;
         _critChanceTimedModifiers.Clear();
     }
 
@@ -201,12 +202,12 @@ public class CharacterStatus : MonoBehaviour
 
     public void AddBuffCritDamage(float value)
     {
-        buffCritDamageBonus += value;
+        _buffCritDamageBonus += value;
     }
 
     public void ClearBuffCitDamageBonus()
     {
-        buffCritDamageBonus = 0f;
+        _buffCritDamageBonus = 0f;
     }
 
     public void ClearBuffs(CharacterStatus stat)
@@ -217,7 +218,7 @@ public class CharacterStatus : MonoBehaviour
 
     protected void Clear()
     {
-        CurrentHP = _baseData.baseHP;
+        CurrentHP = baseData.baseHP;
         maxHP = CurrentHP;
 
         OnHPChanged?.Invoke(CurrentHP, maxHP);

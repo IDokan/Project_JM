@@ -950,20 +950,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9aa12ff2d884b4f8a959e5e179a5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _board: {fileID: 594975000}
+  board: {fileID: 594975000}
   gemSelectionHighlightManager: {fileID: 1485710722}
   transitionManager: {fileID: 1986252045}
-  _cam: {fileID: 519420031}
+  cam: {fileID: 519420031}
   point: {fileID: 6606404916258401310, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   press: {fileID: 351169737856641189, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   move: {fileID: 6220676511678275663, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   confirm: {fileID: 3153855486089574250, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   cancel: {fileID: 721589173647186240, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
-  _dragTresholdPixels: 16
-  _moveRepeatRate: 0.12
-  _stickDeadZone: 0.25
-  _swapRepeatRate: 0.4
-  _holdingRepeatDelay: 0.8
+  dragTresholdPixels: 16
+  moveRepeatRate: 0.12
+  stickDeadZone: 0.25
+  swapRepeatRate: 0.4
+  holdingRepeatDelay: 0.8
   clickVFXSpawner: {fileID: 1754810534}
   pauseManager: {fileID: 1754810535}
 --- !u!114 &1754810534
@@ -1928,7 +1928,7 @@ PrefabInstance:
       value: -0.8118852
       objectReference: {fileID: 0}
     - target: {fileID: 7669945126913707774, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
-      propertyPath: _combatManager
+      propertyPath: combatManager
       value: 
       objectReference: {fileID: 1775401076}
     - target: {fileID: 7675649455578350727, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
@@ -2192,7 +2192,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 69723808561079182, guid: 0a4f5c34083e7f14ba06854bf0ba8c0b, type: 3}
     - target: {fileID: 1670055396459363335, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
-      propertyPath: _partyStatus
+      propertyPath: partyStatus
       value: 
       objectReference: {fileID: 1233718909}
     - target: {fileID: 2655240604946002307, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -2244,11 +2244,11 @@ PrefabInstance:
       value: Systems
       objectReference: {fileID: 0}
     - target: {fileID: 3375048565731560635, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
-      propertyPath: _spawnPosition
+      propertyPath: spawnPosition
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4130428429056873238, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
-      propertyPath: _partyStatus
+      propertyPath: partyStatus
       value: 
       objectReference: {fileID: 1233718909}
     - target: {fileID: 4490150295464392029, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -2355,7 +2355,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 667268355314239506, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: _boundEnemyAI
+      propertyPath: boundEnemyAI
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 671198279377143591, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
@@ -2563,7 +2563,7 @@ PrefabInstance:
       value: UIManager
       objectReference: {fileID: 0}
     - target: {fileID: 3992708935617365022, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: _boundComboManager
+      propertyPath: boundComboManager
       value: 
       objectReference: {fileID: 392129642}
     - target: {fileID: 4067617903345712478, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
@@ -2647,7 +2647,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4925806346466236380, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: _boundStatus
+      propertyPath: boundStatus
       value: 
       objectReference: {fileID: 1233718909}
     - target: {fileID: 4945140389979004541, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
@@ -3359,7 +3359,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7939076324155152995, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: _boundStatus
+      propertyPath: boundStatus
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8142799029650648598, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}

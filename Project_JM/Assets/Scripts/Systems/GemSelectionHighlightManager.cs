@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/20/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/20/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GemSelectionHighlightManager.cs
 // Summary: A script to manage GemSelectionHighlight object.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public class GemSelectionHighlightManager : MonoBehaviour
 
     [SerializeField] protected BoardManager boardManager;
 
-    protected GemSelectionHighlight highlightObject = null;
+    protected GemSelectionHighlight _highlightObject = null;
 
     protected void Awake()
     {
@@ -29,22 +30,22 @@ public class GemSelectionHighlightManager : MonoBehaviour
 
     public void HighlightCell(int row, int col)
     {
-        if (highlightObject == null)
+        if (_highlightObject == null)
         {
-            highlightObject = Instantiate(selectionHighlightPrefab, transform);
+            _highlightObject = Instantiate(selectionHighlightPrefab, transform);
         }
-        highlightObject.EnableArrows(false);
-        highlightObject.transform.localPosition = boardManager.GetGemLocation(row, col);
+        _highlightObject.EnableArrows(false);
+        _highlightObject.transform.localPosition = boardManager.GetGemLocation(row, col);
     }
 
     public void EnableArrows(int row, int col)
     {
-        if (highlightObject == null)
+        if (_highlightObject == null)
         {
             return;
         }
 
-        highlightObject.EnableArrows(row < boardManager.Rows - 1,    // Top
+        _highlightObject.EnableArrows(row < boardManager.Rows - 1,    // Top
             col > 0,    // Left
             row > 0,    // Bottom
             col < boardManager.Cols - 1      // Right
@@ -53,11 +54,11 @@ public class GemSelectionHighlightManager : MonoBehaviour
 
     public void DisableArrows()
     {
-        if (highlightObject == null)
+        if (_highlightObject == null)
         {
             return;
         }
 
-        highlightObject.EnableArrows(false);
+        _highlightObject.EnableArrows(false);
     }
 }

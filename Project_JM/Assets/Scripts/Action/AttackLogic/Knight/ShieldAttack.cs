@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/17/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/17/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: ShieldAttack.cs
 // Summary: An attack logic that adds shield.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
 using UnityEngine;

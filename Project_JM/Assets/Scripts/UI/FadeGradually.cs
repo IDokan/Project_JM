@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/16/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/16/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: FadeGradually.cs
 // Summary: A script to fade over time.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,20 +13,20 @@ public class FadeGradually : MonoBehaviour
     [SerializeField] protected float increaseAlphaScaler = 0.1f;
     [SerializeField] protected float decreaseAlphaScaler = 1f;
 
-    protected float alphaMultiplier = 0f;
+    protected float _alphaMultiplier = 0f;
 
-    protected Image[] images;
-    protected float[] maxAlphas;
+    protected Image[] _images;
+    protected float[] _maxAlphas;
 
     protected void Awake()
     {
-        images = GetComponentsInChildren<Image>(true);
+        _images = GetComponentsInChildren<Image>(true);
 
-        maxAlphas = new float[images.Length];
+        _maxAlphas = new float[_images.Length];
 
-        for (int i = 0; i < images.Length; ++i)
+        for (int i = 0; i < _images.Length; ++i)
         {
-            maxAlphas[i] = images[i].color.a;
+            _maxAlphas[i] = _images[i].color.a;
         }
 
         SetAlpha(0f);
@@ -34,33 +35,33 @@ public class FadeGradually : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (alphaMultiplier <= 0f)
+        if (_alphaMultiplier <= 0f)
         {
             SetAlpha(0f);
-            alphaMultiplier = 0f;
+            _alphaMultiplier = 0f;
 
             return;
         }
 
 
-        SetAlpha(alphaMultiplier);
+        SetAlpha(_alphaMultiplier);
 
-        alphaMultiplier -= decreaseAlphaScaler * Time.unscaledDeltaTime;
-        alphaMultiplier = Mathf.Max(0f, alphaMultiplier);
+        _alphaMultiplier -= decreaseAlphaScaler * Time.unscaledDeltaTime;
+        _alphaMultiplier = Mathf.Max(0f, _alphaMultiplier);
     }
 
     protected void SetAlpha(float alpha)
     {
-        for (int i = 0; i < images.Length; ++i)
+        for (int i = 0; i < _images.Length; ++i)
         {
-            Color c = images[i].color;
-            c.a = maxAlphas[i] * alpha;
-            images[i].color = c;
+            Color c = _images[i].color;
+            c.a = _maxAlphas[i] * alpha;
+            _images[i].color = c;
         }
     }
 
     public void IncreaseAlphaMultiplier()
     {
-        alphaMultiplier = Mathf.Clamp01(increaseAlphaScaler + increaseAlphaScaler);
+        _alphaMultiplier = Mathf.Clamp01(increaseAlphaScaler + increaseAlphaScaler);
     }
 }

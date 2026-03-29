@@ -1,25 +1,26 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/18/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/18/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GameProgressManager.cs
 // Summary: A class to manage whole game progress.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 
 public class GameProgressManager : MonoBehaviour
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
-    [SerializeField] protected CharacterDeathEventChannel _deathChannel;
-    [SerializeField] protected DifficultyCurves _curves;
-    [SerializeField] protected CharacterStatus _partyStatus;
+    [SerializeField] protected CharacterDeathEventChannel deathChannel;
+    [SerializeField] protected DifficultyCurves curves;
+    [SerializeField] protected CharacterStatus partyStatus;
 
-    protected int numEnemyDefeated = 0;
+    protected int _numEnemyDefeated = 0;
 
     protected void OnEnable()
     {
-        if (_deathChannel != null)
+        if (deathChannel != null)
         {
-            _deathChannel.OnRaised += OnCharacterDied;
+            deathChannel.OnRaised += OnCharacterDied;
         }
         else
         {
@@ -38,7 +39,7 @@ public class GameProgressManager : MonoBehaviour
 
     protected void OnDisable()
     {
-        _deathChannel.OnRaised -= OnCharacterDied;
+        deathChannel.OnRaised -= OnCharacterDied;
 
         if (transitionEventChannel != null)
         {
@@ -48,7 +49,7 @@ public class GameProgressManager : MonoBehaviour
 
     public void Clear()
     {
-        numEnemyDefeated = 0;
+        _numEnemyDefeated = 0;
     }
 
     protected void OnCharacterDied(CharacterStatus stat)
@@ -74,8 +75,8 @@ public class GameProgressManager : MonoBehaviour
 
     protected void HandleEnemyDied(CharacterStatus stat)
     {
-        ++numEnemyDefeated;
-        _partyStatus.Initialize(_curves.GetDifficultyMultiplier(numEnemyDefeated));
+        ++_numEnemyDefeated;
+        partyStatus.Initialize(curves.GetDifficultyMultiplier(_numEnemyDefeated));
     }
 
     protected void OnTransitionEvent(TransitionPhase phase)
