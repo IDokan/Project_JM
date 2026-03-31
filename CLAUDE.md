@@ -227,6 +227,7 @@ If you find yourself writing "and" in the subject, split it into two commits.
 
 ## Never
 
+- Never read or write large verbose files such as `.prefab` or `.scene` — ask the user first if you think you need to perform actions on these files
 - Never add underscore prefixes to `[SerializeField]` fields — they must be plain camelCase
 - Never use `public` fields unless the value genuinely needs to be accessed from outside the script
 - Never add a `public` method that isn't called from outside the declaring script
