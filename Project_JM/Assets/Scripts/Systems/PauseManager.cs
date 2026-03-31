@@ -12,13 +12,17 @@ public class PauseManager : MonoBehaviour
     [SerializeField] protected PauseMenu pauseMenu;
 
 
+    public bool IsPaused { get; private set; }
+
     public void Pause()
     {
+        IsPaused = true;
         pauseMenu.Show();
     }
 
     public void Resume()
     {
+        IsPaused = false;
         pauseMenu.Hide();
     }
 }

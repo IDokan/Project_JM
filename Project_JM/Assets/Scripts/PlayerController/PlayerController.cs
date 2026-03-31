@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!board.InputEnabled)
+        if (!IsBoardInputEnabled())
         {
             return;
         }
@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
 
         transitionManager.BeginSkipHold();
 
-        if (!board.InputEnabled)
+        if (!IsBoardInputEnabled())
         {
             clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
             return;
@@ -209,11 +209,11 @@ public class PlayerController : MonoBehaviour
 
         bool isPerformed = false;
 
-        if (_isConfirmPressing && board.InputEnabled)
+        if (_isConfirmPressing && IsBoardInputEnabled())
         {
             isPerformed = SwapGem(directionInt);
         }
-        else        // Enabled gem selection act when board disabled.
+        else if (!pauseManager.IsPaused)        // Enabled gem selection action when board disabled.
         {
             // It is very dangerous because below lines executed even board _gems is null.
             isPerformed = SelectGem(directionInt);
@@ -232,7 +232,7 @@ public class PlayerController : MonoBehaviour
 
         _isPadMode = true;
 
-        if(board.InputEnabled)
+        if (IsBoardInputEnabled())
         {
             _isConfirmPressing = true;
             gemSelectionHighlightManager.EnableArrows(_selRow, _selCol);
@@ -247,6 +247,8 @@ public class PlayerController : MonoBehaviour
         _isConfirmPressing = false;
         gemSelectionHighlightManager.DisableArrows();
     }
+
+    protected bool IsBoardInputEnabled() => board.InputEnabled && !pauseManager.IsPaused;
 
     // ----- Helpers ---------
     protected Vector2Int Decide4Way(Vector2 v)
