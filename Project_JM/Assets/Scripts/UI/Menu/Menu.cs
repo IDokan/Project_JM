@@ -14,9 +14,12 @@ public class Menu : MonoBehaviour
     [SerializeField] protected Button title;
     [SerializeField] protected Button backgroundCatcher;
 
+    private CanvasGroup _canvasGroup;
 
     protected virtual void OnEnable()
     {
+        _canvasGroup = GetComponent<CanvasGroup>();
+
         if (title != null)
         {
             title.onClick.AddListener(Hide);
@@ -25,6 +28,8 @@ public class Menu : MonoBehaviour
         {
             backgroundCatcher.onClick.AddListener(Hide);
         }
+
+        Hide();
     }
 
     protected virtual void OnDisable()
@@ -41,11 +46,15 @@ public class Menu : MonoBehaviour
 
     public virtual void Show()
     {
-        gameObject.SetActive(true);
+        _canvasGroup.alpha = 1f;
+        _canvasGroup.interactable = true;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     public virtual void Hide()
     {
-        gameObject.SetActive(false);
+        _canvasGroup.alpha = 0f;
+        _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
     }
 }

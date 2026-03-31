@@ -16,27 +16,11 @@ public class GraphicsMenu : Menu
     [SerializeField] protected Toggle vSyncToggle;
     [SerializeField] protected Toggle fullScreenModeToggle;
     [SerializeField] protected TMP_Dropdown resolutionDropdown;
+    [SerializeField] protected ToggleImageBinder fullScreenModeToggleBinder;
 
     protected Resolution[] _availableResolutions;
     protected List<Resolution> _uniqueResolutions;
     protected string _resolutionSignature;
-    protected bool _initialized;
-
-    public void PreInitialize()
-    {
-        if (_initialized)
-        {
-            return;
-        }
-
-        InitializeDropdowns();
-        _initialized = true;
-    }
-
-    protected void Awake()
-    {
-        PreInitialize();
-    }
 
     protected override void OnEnable()
     {
@@ -84,14 +68,15 @@ public class GraphicsMenu : Menu
     {
         vSyncToggle.SetIsOnWithoutNotify(QualitySettings.vSyncCount > 0);
         fullScreenModeToggle.SetIsOnWithoutNotify(Screen.fullScreen);
+        fullScreenModeToggleBinder.Refresh();
     }
 
     protected void InitializeDropdowns()
     {
         _availableResolutions = Screen.resolutions;
-        _resolutionSignature = BuildResolutionSignature(_availableResolutions);
 
         BuildUniqueResolutionList();
+        _resolutionSignature = BuildResolutionSignature(_uniqueResolutions);
         PopulateResolutionDropdown();
         UpdateDropdownSelectionWithoutNotify();
     }
@@ -108,7 +93,20 @@ public class GraphicsMenu : Menu
                 continue;
             }
 
-            _uniqueResolutions.Add(r);
+            bool alreadyAdded = false;
+            for (int j = 0; j < _uniqueResolutions.Count; ++j)
+            {
+                if (_uniqueResolutions[j].width == r.width && _uniqueResolutions[j].height == r.height)
+                {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+
+            if (!alreadyAdded)
+            {
+                _uniqueResolutions.Add(r);
+            }
         }
     }
 
@@ -118,7 +116,7 @@ public class GraphicsMenu : Menu
 
         for (int i = 0; i < _uniqueResolutions.Count; ++i)
         {
-            options.Add($"{_uniqueResolutions[i].width} x {_uniqueResolutions[i].height} @ {_uniqueResolutions[i].refreshRateRatio.value:0.##}Hz");
+            options.Add($"{_uniqueResolutions[i].width} x {_uniqueResolutions[i].height}");
         }
 
         resolutionDropdown.ClearOptions();
@@ -134,7 +132,7 @@ public class GraphicsMenu : Menu
         }
 
         Resolution selected = _uniqueResolutions[resIndex];
-        Screen.SetResolution(selected.width, selected.height, Screen.fullScreenMode, selected.refreshRateRatio);
+        Screen.SetResolution(selected.width, selected.height, Screen.fullScreenMode);
     }
 
     protected void UpdateDropdownSelectionWithoutNotify()
@@ -152,13 +150,13 @@ public class GraphicsMenu : Menu
 
     protected int FindCurrentResolutionIndex()
     {
-        Resolution current = Screen.currentResolution;
+        int currentWidth = Screen.width;
+        int currentHeight = Screen.height;
 
         for (int i = 0; i < _uniqueResolutions.Count; ++i)
         {
             Resolution r = _uniqueResolutions[i];
-            if (r.width == current.width && r.height == current.height &&
-                Mathf.Approximately((float)r.refreshRateRatio.value, (float)current.refreshRateRatio.value))
+            if (r.width == currentWidth && r.height == currentHeight)
             {
                 return i;
             }
@@ -168,20 +166,20 @@ public class GraphicsMenu : Menu
     }
 
     // -------- Below functions are for efficient drop down construction
-    protected string BuildResolutionSignature(Resolution[] resolutions)
+    protected string BuildResolutionSignature(IList<Resolution> resolutions)
     {
-        if (resolutions == null || resolutions.Length <= 0)
+        if (resolutions == null || resolutions.Count <= 0)
         {
             return string.Empty;
         }
 
-        System.Text.StringBuilder builder = new System.Text.StringBuilder(resolutions.Length * 16);
+        System.Text.StringBuilder builder = new System.Text.StringBuilder(resolutions.Count * 16);
 
-        for (int i = 0; i < resolutions.Length; ++i)
+        for (int i = 0; i < resolutions.Count; ++i)
         {
             Resolution resolution = resolutions[i];
 
-            builder.Append(resolution.width).Append('x').Append(resolution.height).Append('@').Append(resolution.refreshRateRatio.value).Append(';');
+            builder.Append(resolution.width).Append('x').Append(resolution.height).Append(';');
         }
 
         return builder.ToString();
@@ -194,11 +192,39 @@ public class GraphicsMenu : Menu
             return;
         }
 
-        Resolution[] currentResolutions = Screen.resolutions;
+        if (_uniqueResolutions != null && _uniqueResolutions.Count > 0)
+        {
+            return;
+        }
 
-        string currentSignature = BuildResolutionSignature(currentResolutions);
-        if (_availableResolutions == null || _availableResolutions.Length == 0 ||
-            currentSignature != _resolutionSignature)
+        Resolution[] currentResolutions = Screen.resolutions;
+        List<Resolution> current169 = new List<Resolution>(currentResolutions.Length);
+        for (int i = 0; i < currentResolutions.Length; ++i)
+        {
+            Resolution r = currentResolutions[i];
+            if (r.width * 9 != r.height * 16)
+            {
+                continue;
+            }
+
+            bool alreadyAdded = false;
+            for (int j = 0; j < current169.Count; ++j)
+            {
+                if (current169[j].width == r.width && current169[j].height == r.height)
+                {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+
+            if (!alreadyAdded)
+            {
+                current169.Add(r);
+            }
+        }
+
+        string currentSignature = BuildResolutionSignature(current169);
+        if (currentSignature != _resolutionSignature)
         {
             InitializeDropdowns();
         }
