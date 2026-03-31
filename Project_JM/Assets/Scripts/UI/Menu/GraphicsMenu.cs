@@ -18,11 +18,24 @@ public class GraphicsMenu : Menu
     [SerializeField] protected TMP_Dropdown resolutionDropdown;
 
     protected Resolution[] _availableResolutions;
+    protected List<Resolution> _uniqueResolutions;
     protected string _resolutionSignature;
+    protected bool _initialized;
+
+    public void PreInitialize()
+    {
+        if (_initialized)
+        {
+            return;
+        }
+
+        InitializeDropdowns();
+        _initialized = true;
+    }
 
     protected void Awake()
     {
-        InitializeResolutionDropdown();
+        PreInitialize();
     }
 
     protected override void OnEnable()
@@ -33,9 +46,9 @@ public class GraphicsMenu : Menu
         fullScreenModeToggle.onValueChanged.AddListener(OnFullScreenModeToggled);
         resolutionDropdown.onValueChanged.AddListener(OnResolutionValueChanged);
 
-        RefreshResolutionDropdownIfNeeded();
+        RefreshDropdownsIfNeeded();
         SyncGraphicsWidgets();
-        UpdateResolutionSelectionWithoutNotify();
+        UpdateDropdownSelectionWithoutNotify();
     }
 
     protected override void OnDisable()
@@ -59,13 +72,12 @@ public class GraphicsMenu : Menu
 
     protected void OnResolutionValueChanged(int index)
     {
-        if (index < 0 || index >= _availableResolutions.Length)
+        if (index < 0 || index >= _uniqueResolutions.Count)
         {
             return;
         }
 
-        Resolution selectedResolution = _availableResolutions[index];
-        Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreenMode, selectedResolution.refreshRateRatio);
+        ApplyCurrentSettings();
     }
 
     protected void SyncGraphicsWidgets()
@@ -74,52 +86,80 @@ public class GraphicsMenu : Menu
         fullScreenModeToggle.SetIsOnWithoutNotify(Screen.fullScreen);
     }
 
-    protected void InitializeResolutionDropdown()
+    protected void InitializeDropdowns()
     {
         _availableResolutions = Screen.resolutions;
+        _resolutionSignature = BuildResolutionSignature(_availableResolutions);
 
-        List<string> options = new List<string>(_availableResolutions.Length);
+        BuildUniqueResolutionList();
+        PopulateResolutionDropdown();
+        UpdateDropdownSelectionWithoutNotify();
+    }
+
+    protected void BuildUniqueResolutionList()
+    {
+        _uniqueResolutions = new List<Resolution>(_availableResolutions.Length);
 
         for (int i = 0; i < _availableResolutions.Length; ++i)
         {
-            Resolution resolution = _availableResolutions[i];
+            Resolution r = _availableResolutions[i];
+            if (r.width * 9 != r.height * 16)
+            {
+                continue;
+            }
 
-            options.Add($"{resolution.width} x {resolution.height} ({resolution.refreshRateRatio.value:0}Hz)");
+            _uniqueResolutions.Add(r);
+        }
+    }
+
+    protected void PopulateResolutionDropdown()
+    {
+        List<string> options = new List<string>(_uniqueResolutions.Count);
+
+        for (int i = 0; i < _uniqueResolutions.Count; ++i)
+        {
+            options.Add($"{_uniqueResolutions[i].width} x {_uniqueResolutions[i].height} @ {_uniqueResolutions[i].refreshRateRatio.value:0.##}Hz");
         }
 
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);
-        UpdateResolutionSelectionWithoutNotify();
-
-        // Memorize signature when ropdown initialized.
-        _resolutionSignature = BuildResolutionSignature(_availableResolutions);
     }
 
-    protected void UpdateResolutionSelectionWithoutNotify()
+    protected void ApplyCurrentSettings()
     {
-        if (_availableResolutions == null || _availableResolutions.Length == 0)
+        int resIndex = resolutionDropdown.value;
+        if (resIndex < 0 || resIndex >= _uniqueResolutions.Count)
         {
             return;
         }
 
-        int currentIndex = FindCurrentResolutionIndex();
-        resolutionDropdown.SetValueWithoutNotify(currentIndex);
+        Resolution selected = _uniqueResolutions[resIndex];
+        Screen.SetResolution(selected.width, selected.height, Screen.fullScreenMode, selected.refreshRateRatio);
+    }
+
+    protected void UpdateDropdownSelectionWithoutNotify()
+    {
+        if (_availableResolutions == null || _availableResolutions.Length == 0 ||
+            _uniqueResolutions == null || _uniqueResolutions.Count == 0)
+        {
+            return;
+        }
+
+        int resIndex = FindCurrentResolutionIndex();
+        resolutionDropdown.SetValueWithoutNotify(resIndex);
         resolutionDropdown.RefreshShownValue();
     }
 
     protected int FindCurrentResolutionIndex()
     {
-        Resolution currentResolution = Screen.currentResolution;
+        Resolution current = Screen.currentResolution;
 
-        for (int i = 0; i < _availableResolutions.Length; ++i)
+        for (int i = 0; i < _uniqueResolutions.Count; ++i)
         {
-            Resolution resolution = _availableResolutions[i];
-
-            if (resolution.width == currentResolution.width &&
-                resolution.height == currentResolution.height &&
-                Mathf.Approximately((float)resolution.refreshRateRatio.value, (float)currentResolution.refreshRateRatio.value))
+            Resolution r = _uniqueResolutions[i];
+            if (r.width == current.width && r.height == current.height &&
+                Mathf.Approximately((float)r.refreshRateRatio.value, (float)current.refreshRateRatio.value))
             {
-
                 return i;
             }
         }
@@ -147,7 +187,7 @@ public class GraphicsMenu : Menu
         return builder.ToString();
     }
 
-    protected void RefreshResolutionDropdownIfNeeded()
+    protected void RefreshDropdownsIfNeeded()
     {
         if (resolutionDropdown == null)
         {
@@ -160,7 +200,7 @@ public class GraphicsMenu : Menu
         if (_availableResolutions == null || _availableResolutions.Length == 0 ||
             currentSignature != _resolutionSignature)
         {
-            InitializeResolutionDropdown();
+            InitializeDropdowns();
         }
     }
 
