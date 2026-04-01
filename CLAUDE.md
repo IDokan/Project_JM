@@ -194,6 +194,9 @@ Follow **Conventional Commits 1.0.0** strictly.
 
 ### Commit Subject
 - Format: `#<issue number> - <type>(<scope>): <summary>`
+- Issue number is **required** on every commit; look up the best-matching
+  issue with `gh issue list` (closed issues may still be used when
+  semantically appropriate)
 - Types allowed: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
 - Max 72 characters
 - Lowercase only
