@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Project_JM is a 2D tactical puzzle-RPG built in **Unity 6 (v6000.2.9f1)** using C# and URP. Players match gems on an 8x8 board to trigger character attacks against enemies in turn-based combat.
 
+## Design Goals
+
+**Text-less game** — one of the primary design goals is that the game contains no written language of any kind. No English, Japanese, Chinese, Korean, or any other natural language text should appear in the in-game UI, HUD, or gameplay elements. Numbers are acceptable (HP values, damage numbers, timers, etc.), but words and sentences are not. When implementing UI or gameplay features, always represent information through icons, symbols, color, animation, and numbers instead of text labels or descriptions.
+
 ## Tech Stack
 
 - **Engine:** Unity 6000.2.9f1
