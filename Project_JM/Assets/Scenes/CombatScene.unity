@@ -950,22 +950,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9aa12ff2d884b4f8a959e5e179a5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  board: {fileID: 594975000}
-  gemSelectionHighlightManager: {fileID: 1485710722}
-  transitionManager: {fileID: 1986252045}
-  cam: {fileID: 519420031}
   point: {fileID: 6606404916258401310, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   press: {fileID: 351169737856641189, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   move: {fileID: 6220676511678275663, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   confirm: {fileID: 3153855486089574250, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   cancel: {fileID: 721589173647186240, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
-  dragTresholdPixels: 16
+  clickVFXSpawner: {fileID: 1754810534}
+  cam: {fileID: 519420031}
+  board: {fileID: 594975000}
+  gemSelectionHighlightManager: {fileID: 1485710722}
+  transitionManager: {fileID: 1986252045}
+  pauseManager: {fileID: 1754810535}
+  dragThresholdPixels: 16
   moveRepeatRate: 0.12
   stickDeadZone: 0.25
   swapRepeatRate: 0.4
   holdingRepeatDelay: 0.8
-  clickVFXSpawner: {fileID: 1754810534}
-  pauseManager: {fileID: 1754810535}
 --- !u!114 &1754810534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,49 +1084,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1805294063 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6197035472421623429, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-  m_PrefabInstance: {fileID: 6231230550165760674}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Toggle
---- !u!1 &1871814813 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6761244143939448215, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-  m_PrefabInstance: {fileID: 6231230550165760674}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1871814817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1871814813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 378be9eda1a89be47bd635efca366331, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ToggleImageBinder
-  toggle: {fileID: 1805294063}
-  image: {fileID: 1904303801}
-  onSprite: {fileID: -6049826308942712540, guid: 8af525868080d96429326d8aabe3591d, type: 3}
-  offSprite: {fileID: -1794891836, guid: 8af525868080d96429326d8aabe3591d, type: 3}
---- !u!114 &1904303801 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7660378873472656349, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-  m_PrefabInstance: {fileID: 6231230550165760674}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &1986252045 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5839353086084169784, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -2354,14 +2311,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 33780020}
     - target: {fileID: 85713971940577343, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: offset.x
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 85713971940577343, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: offset.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 85713971940577343, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: uiCamera
       value: 
       objectReference: {fileID: 519420031}
@@ -3075,7 +3024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5094240340758896645, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000038146973
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5132932385938972131, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3425,10 +3374,6 @@ PrefabInstance:
       propertyPath: letterboxCamera
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7342287209757785670, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: fullScreenModeToggleBinder
-      value: 
-      objectReference: {fileID: 1871814817}
     - target: {fileID: 7573466221012031489, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3594,9 +3539,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1094238291557028837, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       insertIndex: -1
       addedObject: {fileID: 727274364}
-    - targetCorrespondingSourceObject: {fileID: 6761244143939448215, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1871814817}
   m_SourcePrefab: {fileID: 100100000, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
 --- !u!224 &6231230550165760675 stripped
 RectTransform:
