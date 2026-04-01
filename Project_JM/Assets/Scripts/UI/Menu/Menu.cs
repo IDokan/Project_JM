@@ -14,12 +14,27 @@ public class Menu : MonoBehaviour
     [SerializeField] protected Button title;
     [SerializeField] protected Button backgroundCatcher;
 
+    [Header("Initial state")]
+    [SerializeField] private bool showOnAwake = false;
+
     private CanvasGroup _canvasGroup;
 
-    protected virtual void OnEnable()
+    protected virtual void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
 
+        if (showOnAwake)
+        {
+            Show();
+        }
+        else
+        {
+            Hide();
+        }
+    }
+
+    protected virtual void OnEnable()
+    {
         if (title != null)
         {
             title.onClick.AddListener(Hide);
@@ -28,8 +43,6 @@ public class Menu : MonoBehaviour
         {
             backgroundCatcher.onClick.AddListener(Hide);
         }
-
-        Hide();
     }
 
     protected virtual void OnDisable()

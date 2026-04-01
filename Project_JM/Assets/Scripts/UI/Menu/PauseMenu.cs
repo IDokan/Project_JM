@@ -21,6 +21,12 @@ public class PauseMenu : Menu
     [SerializeField] protected CombatIntroController combatIntroController;
     [SerializeField] protected string mainMenuSceneName = "MainMenu";
     [SerializeField] protected OptionMenu optionPanel;
+    [SerializeField] private ConfirmationDialog confirmationDialog;
+
+    [Header("Confirmation icons")]
+    [SerializeField] private Sprite restartConfirmIcon;
+    [SerializeField] private Sprite homeConfirmIcon;
+    [SerializeField] private Sprite quitConfirmIcon;
 
     protected override void OnEnable()
     {
@@ -55,11 +61,12 @@ public class PauseMenu : Menu
 
     protected void OnRestartButtonPressed()
     {
-        // @@ TODO: Need to add destructive confirmation.
-
-        Hide();
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        confirmationDialog.Show(restartConfirmIcon, () =>
+        {
+            Hide();
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+        });
     }
 
     protected void OnOptionButtonPressed()
@@ -69,19 +76,23 @@ public class PauseMenu : Menu
 
     protected void OnHomeButtonPressed()
     {
-        Hide();
-
-        SceneManager.LoadScene(mainMenuSceneName);
+        confirmationDialog.Show(homeConfirmIcon, () =>
+        {
+            Hide();
+            SceneManager.LoadScene(mainMenuSceneName);
+        });
     }
 
     protected void OnQuitButtonPressed()
     {
-        Hide();
-
+        confirmationDialog.Show(quitConfirmIcon, () =>
+        {
+            Hide();
 #if UNITY_EDITOR
-Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
+            Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
 #else
-        Application.Quit();
+            Application.Quit();
 #endif
+        });
     }
 }
