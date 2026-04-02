@@ -33,11 +33,13 @@ public class ConfirmationDialog : Menu
         cancelButton.onClick.RemoveListener(OnCancelPressed);
     }
 
-    public void Show(Sprite icon, Action onConfirm)
+    public void Show(Image icon, Action onConfirm, Selectable returnTo = null)
     {
-        actionIcon.sprite = icon;
+        actionIcon.sprite = icon.sprite;
+        actionIcon.color = icon.color;
+        actionIcon.rectTransform.sizeDelta = icon.rectTransform.sizeDelta;
         _onConfirm = onConfirm;
-        base.Show();
+        base.Show(returnTo);
     }
 
     public override void Hide()

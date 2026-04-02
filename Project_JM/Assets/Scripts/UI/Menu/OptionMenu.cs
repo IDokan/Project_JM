@@ -36,13 +36,13 @@ public class OptionMenu : Menu
 
     protected void OnGraphicsButtonClicked()
     {
-        graphicsMenu.Show();
+        graphicsMenu.Show(graphicsSettingButton);
         audioMenu.Hide();
     }
 
     protected void OnAudioButtonClicked()
     {
         graphicsMenu.Hide();
-        audioMenu.Show();
+        audioMenu.Show(audioSettingButton);
     }
 }
