@@ -18,15 +18,14 @@ public class PauseMenu : Menu
     [SerializeField] protected Button quitButton;
 
     [Header("Logic related refs")]
-    [SerializeField] protected CombatIntroController combatIntroController;
     [SerializeField] protected string mainMenuSceneName = "MainMenu";
     [SerializeField] protected OptionMenu optionPanel;
     [SerializeField] private ConfirmationDialog confirmationDialog;
 
     [Header("Confirmation icons")]
-    [SerializeField] private Sprite restartConfirmIcon;
-    [SerializeField] private Sprite homeConfirmIcon;
-    [SerializeField] private Sprite quitConfirmIcon;
+    [SerializeField] private Image restartConfirmIcon;
+    [SerializeField] private Image homeConfirmIcon;
+    [SerializeField] private Image quitConfirmIcon;
 
     protected override void OnEnable()
     {
@@ -46,9 +45,9 @@ public class PauseMenu : Menu
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
     }
 
-    public override void Show()
+    public override void Show(Selectable returnTo = null)
     {
-        base.Show();
+        base.Show(returnTo);
 
         GlobalTimeManager.Instance.PauseTimeScale();
     }
@@ -66,12 +65,12 @@ public class PauseMenu : Menu
             Hide();
             Scene currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.name);
-        });
+        }, restartButton);
     }
 
     protected void OnOptionButtonPressed()
     {
-        optionPanel.Show();
+        optionPanel.Show(optionButton);
     }
 
     protected void OnHomeButtonPressed()
@@ -80,19 +79,11 @@ public class PauseMenu : Menu
         {
             Hide();
             SceneManager.LoadScene(mainMenuSceneName);
-        });
+        }, homeButton);
     }
 
     protected void OnQuitButtonPressed()
     {
-        confirmationDialog.Show(quitConfirmIcon, () =>
-        {
-            Hide();
-#if UNITY_EDITOR
-            Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
-#else
-            Application.Quit();
-#endif
-        });
+        QuitWithConfirmation(confirmationDialog, quitConfirmIcon, quitButton);
     }
 }

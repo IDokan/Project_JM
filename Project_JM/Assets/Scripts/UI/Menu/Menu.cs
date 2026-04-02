@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
@@ -14,10 +15,14 @@ public class Menu : MonoBehaviour
     [SerializeField] protected Button title;
     [SerializeField] protected Button backgroundCatcher;
 
+    [Header("Gamepad navigation")]
+    [SerializeField] private Selectable firstSelected;
+
     [Header("Initial state")]
     [SerializeField] private bool showOnAwake = false;
 
     private CanvasGroup _canvasGroup;
+    private Selectable _returnSelected;
 
     protected virtual void Awake()
     {
@@ -57,11 +62,19 @@ public class Menu : MonoBehaviour
         }
     }
 
-    public virtual void Show()
+    public virtual void Show(Selectable returnTo = null)
     {
+        _returnSelected = returnTo;
+
         _canvasGroup.alpha = 1f;
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
+
+        Selectable selected = firstSelected != null ? firstSelected : GetComponentInChildren<Button>();
+        if (selected != null)
+        {
+            EventSystem.current.SetSelectedGameObject(selected.gameObject);
+        }
     }
 
     public virtual void Hide()
@@ -69,5 +82,23 @@ public class Menu : MonoBehaviour
         _canvasGroup.alpha = 0f;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
+
+        if (_returnSelected != null)
+        {
+            EventSystem.current.SetSelectedGameObject(_returnSelected.gameObject);
+        }
+    }
+
+    protected void QuitWithConfirmation(ConfirmationDialog dialog, Image icon, Selectable returnTo = null)
+    {
+        dialog.Show(icon, () =>
+        {
+            Hide();
+#if UNITY_EDITOR
+            Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
+#else
+            Application.Quit();
+#endif
+        }, returnTo);
     }
 }

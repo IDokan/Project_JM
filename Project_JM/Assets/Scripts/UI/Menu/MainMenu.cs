@@ -21,7 +21,7 @@ public class MainMenu : Menu
     [SerializeField] private ConfirmationDialog confirmationDialog;
 
     [Header("Confirmation icons")]
-    [SerializeField] private Sprite quitConfirmIcon;
+    [SerializeField] private Image quitConfirmIcon;
 
     protected override void OnEnable()
     {
@@ -48,18 +48,11 @@ public class MainMenu : Menu
 
     private void OnOptionClicked()
     {
-        optionMenu.Show();
+        optionMenu.Show(optionButton);
     }
 
     private void OnQuitClicked()
     {
-        confirmationDialog.Show(quitConfirmIcon, () =>
-        {
-#if UNITY_EDITOR
-            Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
-#else
-            Application.Quit();
-#endif
-        });
+        QuitWithConfirmation(confirmationDialog, quitConfirmIcon, quitButton);
     }
 }
