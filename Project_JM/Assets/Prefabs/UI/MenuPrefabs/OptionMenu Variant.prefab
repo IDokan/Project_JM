@@ -912,7 +912,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3607403782493033745}
   m_HandleRect: {fileID: 1593745527128767236}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1044,10 +1044,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Toggle
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 5222725778934360250}
+    m_SelectOnDown: {fileID: 2458587791984780030}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -2097,7 +2097,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
+  m_AnchoredPosition: {x: 0, y: -0.0000038146973}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &4980204751818796551
@@ -2277,9 +2277,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Toggle
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 3402342369307755064}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -2589,10 +2589,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 6480710998742213810}
+    m_SelectOnDown: {fileID: 2741849942357050214}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -3264,10 +3264,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_Dropdown
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 3734044438517107792}
+    m_SelectOnDown: {fileID: 3402342369307755064}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -3469,10 +3469,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 7095528369344177308}
+    m_SelectOnDown: {fileID: 6331833650509899337}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -4120,6 +4120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioMenu
   title: {fileID: 7095528369344177308}
   backgroundCatcher: {fileID: 8433290470716969295}
+  firstSelected: {fileID: 6480710998742213810}
   showOnAwake: 0
 --- !u!114 &3383731423676095090 stripped
 MonoBehaviour:
@@ -4273,6 +4274,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5870633689261976348, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5870633689261976348, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 4086118794480707083}
+    - target: {fileID: 5870633689261976348, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 1467950078340969770}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4458,6 +4471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OptionMenu
   title: {fileID: 4086118794480707083}
   backgroundCatcher: {fileID: 4762551215003580800}
+  firstSelected: {fileID: 1467950078340969770}
   showOnAwake: 0
   graphicsSettingButton: {fileID: 1467950078340969770}
   audioSettingButton: {fileID: 5689616339535045678}
@@ -4643,6 +4657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GraphicsMenu
   title: {fileID: 3734044438517107792}
   backgroundCatcher: {fileID: 6710003588367359335}
+  firstSelected: {fileID: 5222725778934360250}
   showOnAwake: 0
   vSyncToggle: {fileID: 2458587791984780030}
   fullScreenModeToggle: {fileID: 3402342369307755064}
@@ -4677,6 +4692,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8309155473678641772}
     m_Modifications:
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 5222725778934360250}
     - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_SpriteState.m_DisabledSprite
       value: 
@@ -4810,6 +4833,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7807358632374603403}
     m_Modifications:
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 1467950078340969770}
     - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_SpriteState.m_DisabledSprite
       value: 
@@ -5035,6 +5070,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5870633689261976348, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5870633689261976348, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 4086118794480707083}
+    - target: {fileID: 5870633689261976348, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 5689616339535045678}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5325,6 +5372,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6577407574497666628}
     m_Modifications:
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 6480710998742213810}
     - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_SpriteState.m_DisabledSprite
       value: 
