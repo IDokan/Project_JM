@@ -7,13 +7,11 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class MainMenuController : BasePlayerController
 {
-    protected override void OnCancelPerformed(InputAction.CallbackContext _)
+    private void Start()
     {
-        // TODO: Navigate back within the menu or quit the application.
-        Application.Quit();
+        playerInput.actions.FindActionMap("Gameplay").Disable();
     }
 }

@@ -6,6 +6,8 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +18,9 @@ public class PauseMenu : Menu
     [SerializeField] protected Button optionButton;
     [SerializeField] protected Button homeButton;
     [SerializeField] protected Button quitButton;
+
+    [Header("Input")]
+    [SerializeField] private PlayerInput playerInput;
 
     [Header("Logic related refs")]
     [SerializeField] protected string mainMenuSceneName = "MainMenu";
@@ -45,15 +50,20 @@ public class PauseMenu : Menu
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
     }
 
+    public bool IsPaused { get; private set; }
+
     public override void Show(Selectable returnTo = null)
     {
+        IsPaused = true;
+        playerInput.SwitchCurrentActionMap("UI");
         base.Show(returnTo);
-
         GlobalTimeManager.Instance.PauseTimeScale();
     }
 
     public override void Hide()
     {
+        IsPaused = false;
+        playerInput.SwitchCurrentActionMap("Gameplay");
         base.Hide();
         GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
     }
