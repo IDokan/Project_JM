@@ -8,7 +8,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIButtonSelectEffect : MonoBehaviour, ISelectHandler, IDeselectHandler
+public class UIButtonSelectEffect : MonoBehaviour, ISelectHandler, IDeselectHandler, ICancelHandler
 {
     [SerializeField] protected GameObject selectedEffect;
     [SerializeField] protected Animator animator;
@@ -23,6 +23,11 @@ public class UIButtonSelectEffect : MonoBehaviour, ISelectHandler, IDeselectHand
         {
             animator.SetBool("Selected", true);
         }
+    }
+
+    public void OnCancel(BaseEventData eventData)
+    {
+        ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, ExecuteEvents.cancelHandler);
     }
 
     public void OnDeselect(BaseEventData eventData)

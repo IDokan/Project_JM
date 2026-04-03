@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Menu : MonoBehaviour
+public class Menu : MonoBehaviour, ICancelHandler
 {
     [Header("Default close interfaces")]
     [SerializeField] protected Button title;
@@ -62,7 +62,12 @@ public class Menu : MonoBehaviour
         }
     }
 
-    public virtual void Show(Selectable returnTo = null)
+    public void Show()
+    {
+        Show(null);
+    }
+
+    public virtual void Show(Selectable returnTo)
     {
         _returnSelected = returnTo;
 
@@ -75,6 +80,11 @@ public class Menu : MonoBehaviour
         {
             EventSystem.current.SetSelectedGameObject(selected.gameObject);
         }
+    }
+
+    public virtual void OnCancel(BaseEventData eventData)
+    {
+        Hide();
     }
 
     public virtual void Hide()
