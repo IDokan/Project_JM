@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -39,6 +40,11 @@ public class MainMenu : Menu
         gameStartButton.onClick.RemoveListener(OnGameStartClicked);
         optionButton.onClick.RemoveListener(OnOptionClicked);
         quitButton.onClick.RemoveListener(OnQuitClicked);
+    }
+
+    public override void OnCancel(BaseEventData eventData)
+    {
+        QuitWithConfirmation(confirmationDialog, quitConfirmIcon);
     }
 
     private void OnGameStartClicked()
