@@ -10,12 +10,8 @@ using UnityEngine.InputSystem;
 
 public abstract class BasePlayerController : MonoBehaviour
 {
-    [Header("Actions (drag from Controls.input actions)")]
-    public InputActionReference point;
-    public InputActionReference press;
-    public InputActionReference move;
-    public InputActionReference confirm;
-    public InputActionReference cancel;
+    [Header("Actions")]
+    [SerializeField] protected PlayerInput playerInput;
 
     [Header("Common Refs")]
     [SerializeField] protected ClickVFXSpawner clickVFXSpawner;
@@ -24,44 +20,39 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool _isPadMode = false;
     public bool IsPadMode => _isPadMode;
 
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
-        point.action.Enable();
-        press.action.Enable();
-        move.action.Enable();
-        confirm.action.Enable();
-        cancel.action.Enable();
-
-        press.action.started += OnPressStarted;
-        press.action.canceled += OnPressCanceled;
-        confirm.action.started += OnConfirmStarted;
-        confirm.action.canceled += OnConfirmCanceled;
-        move.action.started += OnMoveStarted;
-        move.action.performed += OnMovePerformed;
-        move.action.canceled += OnMoveCanceled;
-        cancel.action.performed += OnCancelPerformed;
+        playerInput.onActionTriggered += OnActionTriggered;
     }
 
-    protected void OnDisable()
+    protected virtual void OnDisable()
     {
-        press.action.started -= OnPressStarted;
-        press.action.canceled -= OnPressCanceled;
-        confirm.action.started -= OnConfirmStarted;
-        confirm.action.canceled -= OnConfirmCanceled;
-        move.action.started -= OnMoveStarted;
-        move.action.performed -= OnMovePerformed;
-        move.action.canceled -= OnMoveCanceled;
-        cancel.action.performed -= OnCancelPerformed;
-
-        point.action.Disable();
-        press.action.Disable();
-        move.action.Disable();
-        confirm.action.Disable();
-        cancel.action.Disable();
+        playerInput.onActionTriggered -= OnActionTriggered;
     }
 
-    // Base: switch to mouse mode and spawn plain click VFX.
-    // CombatController overrides this entirely for gem-color-aware spawning.
+    private void OnActionTriggered(InputAction.CallbackContext context)
+    {
+        switch (context.action.name)
+        {
+            case "press":
+                if (context.phase == InputActionPhase.Started) OnPressStarted(context);
+                else if (context.phase == InputActionPhase.Canceled) OnPressCanceled(context);
+                break;
+            case "move":
+                if (context.phase == InputActionPhase.Started) OnMoveStarted(context);
+                else if (context.phase == InputActionPhase.Performed) OnMovePerformed(context);
+                else if (context.phase == InputActionPhase.Canceled) OnMoveCanceled(context);
+                break;
+            case "confirm":
+                if (context.phase == InputActionPhase.Started) OnConfirmStarted(context);
+                else if (context.phase == InputActionPhase.Canceled) OnConfirmCanceled(context);
+                break;
+            case "cancel":
+                if (context.phase == InputActionPhase.Performed) OnCancelPerformed(context);
+                break;
+        }
+    }
+
     protected virtual void OnPressStarted(InputAction.CallbackContext _)
     {
         _isPadMode = false;
@@ -88,7 +79,7 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected virtual void OnCancelPerformed(InputAction.CallbackContext _) { }
 
-    public Vector2 GetCurrentFollowPoint() => point.action.ReadValue<Vector2>();
+    public Vector2 GetCurrentFollowPoint() => playerInput.actions["point"].ReadValue<Vector2>();
 
     protected Vector2Int Decide4Way(Vector2 v)
     {

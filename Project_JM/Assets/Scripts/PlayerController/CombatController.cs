@@ -14,7 +14,7 @@ public class CombatController : BasePlayerController
     [SerializeField] private BoardManager board;
     [SerializeField] private GemSelectionHighlightManager gemSelectionHighlightManager;
     [SerializeField] private TransitionManager transitionManager;
-    [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private PauseMenu pauseMenu;
 
     [Header("Tuning")]
     [SerializeField] private float dragThresholdPixels = 16f;
@@ -39,6 +39,11 @@ public class CombatController : BasePlayerController
     private bool _isConfirmPressing;
     private bool _isMoveHolding;
 
+    private void Start()
+    {
+        playerInput.actions.FindActionMap("UI").Disable();
+    }
+
     private void Update()
     {
         if (!IsBoardInputEnabled())
@@ -60,7 +65,7 @@ public class CombatController : BasePlayerController
         {
             // Mouse & Mobile mode
             // Pointer drag: once threshold exceeded, decide a 4-way dir and trigger one swap.
-            if (board.InBounds(_selRow, _selCol) && !_firedThisDrag && press.action.IsPressed())
+            if (board.InBounds(_selRow, _selCol) && !_firedThisDrag && playerInput.actions["press"].IsPressed())
             {
                 Vector2 delta = GetCurrentFollowPoint() - _pressScreenPos;
                 if (delta.magnitude >= dragThresholdPixels)
@@ -147,7 +152,7 @@ public class CombatController : BasePlayerController
         {
             isPerformed = SwapGem(directionInt);
         }
-        else if (!pauseManager.IsPaused)        // Allow gem selection even when board is disabled.
+        else if (!pauseMenu.IsPaused)        // Allow gem selection even when board is disabled.
         {
             // It is very dangerous because below lines executed even board _gems is null.
             isPerformed = SelectGem(directionInt);
@@ -181,12 +186,12 @@ public class CombatController : BasePlayerController
 
     protected override void OnCancelPerformed(InputAction.CallbackContext _)
     {
-        pauseManager.Pause();
+        pauseMenu.Show();
     }
 
     // ----- Helpers ---------
 
-    private bool IsBoardInputEnabled() => board.InputEnabled && !pauseManager.IsPaused;
+    private bool IsBoardInputEnabled() => board.InputEnabled && !pauseMenu.IsPaused;
 
     private Vector2Int GemIndexUnderCursor(Vector2 screenPos)
     {
