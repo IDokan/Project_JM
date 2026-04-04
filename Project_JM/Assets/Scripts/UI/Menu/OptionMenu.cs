@@ -36,8 +36,8 @@ public class OptionMenu : Menu
 
     protected void OnGraphicsButtonClicked()
     {
-        graphicsMenu.Show(graphicsSettingButton);
         audioMenu.Hide();
+        graphicsMenu.Show(graphicsSettingButton);
     }
 
     protected void OnAudioButtonClicked()
