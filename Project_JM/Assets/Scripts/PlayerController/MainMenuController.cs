@@ -12,6 +12,6 @@ public class MainMenuController : BasePlayerController
 {
     private void Start()
     {
-        playerInput.actions.FindActionMap("Gameplay").Disable();
+        playerInput.SwitchToUIMap();
     }
 }

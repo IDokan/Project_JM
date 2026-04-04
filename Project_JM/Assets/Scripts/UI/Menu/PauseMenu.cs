@@ -55,7 +55,7 @@ public class PauseMenu : Menu
     public override void Show(Selectable returnTo = null)
     {
         IsPaused = true;
-        playerInput.SwitchCurrentActionMap("UI");
+        playerInput.SwitchToUIMap();
         base.Show(returnTo);
         GlobalTimeManager.Instance.PauseTimeScale();
     }
@@ -63,7 +63,7 @@ public class PauseMenu : Menu
     public override void Hide()
     {
         IsPaused = false;
-        playerInput.SwitchCurrentActionMap("Gameplay");
+        playerInput.SwitchToGameplayMap();
         base.Hide();
         GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
     }
