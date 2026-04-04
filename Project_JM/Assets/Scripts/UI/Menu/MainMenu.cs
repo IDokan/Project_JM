@@ -44,7 +44,7 @@ public class MainMenu : Menu
 
     public override void OnCancel(BaseEventData eventData)
     {
-        QuitWithConfirmation(confirmationDialog, quitConfirmIcon);
+        QuitWithConfirmation(confirmationDialog, quitConfirmIcon, quitButton);
     }
 
     private void OnGameStartClicked()

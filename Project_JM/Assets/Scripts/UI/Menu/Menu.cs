@@ -17,6 +17,8 @@ public class Menu : MonoBehaviour, ICancelHandler
 
     [Header("Gamepad navigation")]
     [SerializeField] private Selectable firstSelected;
+    public Selectable GetFirstSelectable()
+        => firstSelected != null ? firstSelected : GetComponentInChildren<Selectable>();
 
     [Header("Initial state")]
     [SerializeField] private bool showOnAwake = false;
@@ -75,7 +77,7 @@ public class Menu : MonoBehaviour, ICancelHandler
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
 
-        Selectable selected = firstSelected != null ? firstSelected : GetComponentInChildren<Button>();
+        Selectable selected = GetFirstSelectable();
         if (selected != null)
         {
             EventSystem.current.SetSelectedGameObject(selected.gameObject);
@@ -99,7 +101,7 @@ public class Menu : MonoBehaviour, ICancelHandler
         }
     }
 
-    protected void QuitWithConfirmation(ConfirmationDialog dialog, Image icon, Selectable returnTo = null)
+    protected void QuitWithConfirmation(ConfirmationDialog dialog, Image icon, Selectable returnTo)
     {
         dialog.Show(icon, () =>
         {
