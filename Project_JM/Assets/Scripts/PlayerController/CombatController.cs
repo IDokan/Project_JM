@@ -81,6 +81,12 @@ public class CombatController : BasePlayerController
     // ------- Pointer events --------
     protected override void OnPressStarted(InputAction.CallbackContext _)
     {
+        if (pauseMenu.IsPaused)
+        {
+            clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
+            return;
+        }
+
         _isPadMode = false;
         transitionManager.BeginSkipHold();
 
@@ -105,6 +111,11 @@ public class CombatController : BasePlayerController
 
     protected override void OnPressCanceled(InputAction.CallbackContext _)
     {
+        if (pauseMenu.IsPaused)
+        {
+            return;
+        }
+
         transitionManager.EndSkipHold();
         ClearSelection();
         _firedThisDrag = false;
