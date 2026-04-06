@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/27/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/27/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GraphicsMenu.cs
 // Summary: A script to perform graphics menu actions.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,14 +16,11 @@ public class GraphicsMenu : Menu
     [SerializeField] protected Toggle vSyncToggle;
     [SerializeField] protected Toggle fullScreenModeToggle;
     [SerializeField] protected TMP_Dropdown resolutionDropdown;
+    [SerializeField] protected ToggleImageBinder fullScreenModeToggleBinder;
 
-    protected Resolution[] availableResolutions;
-    protected string resolutionSignature;
-
-    protected void Awake()
-    {
-        InitializeResolutionDropdown();
-    }
+    protected Resolution[] _availableResolutions;
+    protected List<Resolution> _uniqueResolutions;
+    protected string _resolutionSignature;
 
     protected override void OnEnable()
     {
@@ -32,9 +30,9 @@ public class GraphicsMenu : Menu
         fullScreenModeToggle.onValueChanged.AddListener(OnFullScreenModeToggled);
         resolutionDropdown.onValueChanged.AddListener(OnResolutionValueChanged);
 
-        RefreshResolutionDropdownIfNeeded();
+        RefreshDropdownsIfNeeded();
         SyncGraphicsWidgets();
-        UpdateResolutionSelectionWithoutNotify();
+        UpdateDropdownSelectionWithoutNotify();
     }
 
     protected override void OnDisable()
@@ -58,67 +56,108 @@ public class GraphicsMenu : Menu
 
     protected void OnResolutionValueChanged(int index)
     {
-        if (index < 0 || index >= availableResolutions.Length)
+        if (index < 0 || index >= _uniqueResolutions.Count)
         {
             return;
         }
 
-        Resolution selectedResolution = availableResolutions[index];
-        Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreenMode, selectedResolution.refreshRateRatio);
+        ApplyCurrentSettings();
     }
 
     protected void SyncGraphicsWidgets()
     {
         vSyncToggle.SetIsOnWithoutNotify(QualitySettings.vSyncCount > 0);
         fullScreenModeToggle.SetIsOnWithoutNotify(Screen.fullScreen);
+        fullScreenModeToggleBinder.Refresh();
     }
 
-    protected void InitializeResolutionDropdown()
+    protected void InitializeDropdowns()
     {
-        availableResolutions = Screen.resolutions;
+        _availableResolutions = Screen.resolutions;
 
-        List<string> options = new List<string>(availableResolutions.Length);
+        BuildUniqueResolutionList();
+        _resolutionSignature = BuildResolutionSignature(_uniqueResolutions);
+        PopulateResolutionDropdown();
+        UpdateDropdownSelectionWithoutNotify();
+    }
 
-        for (int i = 0; i < availableResolutions.Length; ++i)
+    protected void BuildUniqueResolutionList()
+    {
+        _uniqueResolutions = new List<Resolution>(_availableResolutions.Length);
+
+        for (int i = 0; i < _availableResolutions.Length; ++i)
         {
-            Resolution resolution = availableResolutions[i];
+            Resolution r = _availableResolutions[i];
+            if (r.width * 9 != r.height * 16)
+            {
+                continue;
+            }
 
-            options.Add($"{resolution.width} x {resolution.height} ({resolution.refreshRateRatio.value:0}Hz)");
+            bool alreadyAdded = false;
+            for (int j = 0; j < _uniqueResolutions.Count; ++j)
+            {
+                if (_uniqueResolutions[j].width == r.width && _uniqueResolutions[j].height == r.height)
+                {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+
+            if (!alreadyAdded)
+            {
+                _uniqueResolutions.Add(r);
+            }
+        }
+    }
+
+    protected void PopulateResolutionDropdown()
+    {
+        List<string> options = new List<string>(_uniqueResolutions.Count);
+
+        for (int i = 0; i < _uniqueResolutions.Count; ++i)
+        {
+            options.Add($"{_uniqueResolutions[i].width} x {_uniqueResolutions[i].height}");
         }
 
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);
-        UpdateResolutionSelectionWithoutNotify();
-
-        // Memorize signature when ropdown initialized.
-        resolutionSignature = BuildResolutionSignature(availableResolutions);
     }
 
-    protected void UpdateResolutionSelectionWithoutNotify()
+    protected void ApplyCurrentSettings()
     {
-        if (availableResolutions == null || availableResolutions.Length == 0)
+        int resIndex = resolutionDropdown.value;
+        if (resIndex < 0 || resIndex >= _uniqueResolutions.Count)
         {
             return;
         }
 
-        int currentIndex = FindCurrentResolutionIndex();
-        resolutionDropdown.SetValueWithoutNotify(currentIndex);
+        Resolution selected = _uniqueResolutions[resIndex];
+        Screen.SetResolution(selected.width, selected.height, Screen.fullScreenMode);
+    }
+
+    protected void UpdateDropdownSelectionWithoutNotify()
+    {
+        if (_availableResolutions == null || _availableResolutions.Length == 0 ||
+            _uniqueResolutions == null || _uniqueResolutions.Count == 0)
+        {
+            return;
+        }
+
+        int resIndex = FindCurrentResolutionIndex();
+        resolutionDropdown.SetValueWithoutNotify(resIndex);
         resolutionDropdown.RefreshShownValue();
     }
 
     protected int FindCurrentResolutionIndex()
     {
-        Resolution currentResolution = Screen.currentResolution;
+        int currentWidth = Screen.width;
+        int currentHeight = Screen.height;
 
-        for (int i = 0; i < availableResolutions.Length; ++i)
+        for (int i = 0; i < _uniqueResolutions.Count; ++i)
         {
-            Resolution resolution = availableResolutions[i];
-
-            if (resolution.width == currentResolution.width &&
-                resolution.height == currentResolution.height &&
-                Mathf.Approximately((float)resolution.refreshRateRatio.value, (float)currentResolution.refreshRateRatio.value))
+            Resolution r = _uniqueResolutions[i];
+            if (r.width == currentWidth && r.height == currentHeight)
             {
-
                 return i;
             }
         }
@@ -127,39 +166,67 @@ public class GraphicsMenu : Menu
     }
 
     // -------- Below functions are for efficient drop down construction
-    protected string BuildResolutionSignature(Resolution[] resolutions)
+    protected string BuildResolutionSignature(IList<Resolution> resolutions)
     {
-        if (resolutions == null || resolutions.Length <= 0)
+        if (resolutions == null || resolutions.Count <= 0)
         {
             return string.Empty;
         }
 
-        System.Text.StringBuilder builder = new System.Text.StringBuilder(resolutions.Length * 16);
+        System.Text.StringBuilder builder = new System.Text.StringBuilder(resolutions.Count * 16);
 
-        for (int i = 0; i < resolutions.Length; ++i)
+        for (int i = 0; i < resolutions.Count; ++i)
         {
             Resolution resolution = resolutions[i];
 
-            builder.Append(resolution.width).Append('x').Append(resolution.height).Append('@').Append(resolution.refreshRateRatio.value).Append(';');
+            builder.Append(resolution.width).Append('x').Append(resolution.height).Append(';');
         }
 
         return builder.ToString();
     }
 
-    protected void RefreshResolutionDropdownIfNeeded()
+    protected void RefreshDropdownsIfNeeded()
     {
         if (resolutionDropdown == null)
         {
             return;
         }
 
-        Resolution[] currentResolutions = Screen.resolutions;
-
-        string currentSignature = BuildResolutionSignature(currentResolutions);
-        if (availableResolutions == null || availableResolutions.Length == 0 ||
-            currentSignature != resolutionSignature)
+        if (_uniqueResolutions != null && _uniqueResolutions.Count > 0)
         {
-            InitializeResolutionDropdown();
+            return;
+        }
+
+        Resolution[] currentResolutions = Screen.resolutions;
+        List<Resolution> current169 = new List<Resolution>(currentResolutions.Length);
+        for (int i = 0; i < currentResolutions.Length; ++i)
+        {
+            Resolution r = currentResolutions[i];
+            if (r.width * 9 != r.height * 16)
+            {
+                continue;
+            }
+
+            bool alreadyAdded = false;
+            for (int j = 0; j < current169.Count; ++j)
+            {
+                if (current169[j].width == r.width && current169[j].height == r.height)
+                {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+
+            if (!alreadyAdded)
+            {
+                current169.Add(r);
+            }
+        }
+
+        string currentSignature = BuildResolutionSignature(current169);
+        if (currentSignature != _resolutionSignature)
+        {
+            InitializeDropdowns();
         }
     }
 

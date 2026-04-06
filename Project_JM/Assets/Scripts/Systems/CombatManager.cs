@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/07/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/07/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: CombatManager.cs
 // Summary: A class to manage whole combat logic.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using GemEnums;
 using MatchEnums;

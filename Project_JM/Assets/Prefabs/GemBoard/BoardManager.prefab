@@ -137,19 +137,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d47860508980ff4c961f78146a2a8fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
-  _rows: 7
-  _cols: 8
-  _cellSize: 1
-  _spacing: 0.05
-  _gemPrefab: {fileID: 2919741932444415260, guid: 4a7c755880a8a2842bec2733420a38d0, type: 3}
-  _fallingSpeed: 1
+  rows: 7
+  cols: 8
+  cellSize: 1
+  spacing: 0.05
+  gemPrefab: {fileID: 2919741932444415260, guid: 4a7c755880a8a2842bec2733420a38d0, type: 3}
+  fallingSpeed: 1
   partyRoster: {fileID: 0}
-  _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
-  _powerArrivedEvents: {fileID: 11400000, guid: 567d58de1386e9e48a14d646b9a01677, type: 2}
-  _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
-  _boardDisableEvents: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
+  matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
+  powerArrivedEvents: {fileID: 11400000, guid: 567d58de1386e9e48a14d646b9a01677, type: 2}
+  enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
+  boardDisableEvents: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
-  _gemDisableFXPrefab: {fileID: 4349974960750324187, guid: a6f1135dafdef5549b84ad68c1141750, type: 3}
+  gemDisableFXPrefab: {fileID: 4349974960750324187, guid: a6f1135dafdef5549b84ad68c1141750, type: 3}
   hintDelay: 4
 --- !u!114 &5489374677128354126
 MonoBehaviour:

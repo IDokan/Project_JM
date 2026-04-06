@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/10/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/10/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GlobalRNG.cs
 // Summary: A global system for RNG.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using System;
@@ -23,7 +24,7 @@ public class GlobalRNG : ScriptableObject
         }
     }
 
-    [SerializeField] protected int _seed = 12345;
+    [SerializeField] protected int seed = 12345;
     protected System.Random _rng;
 
     protected void OnEnable()
@@ -41,12 +42,12 @@ public class GlobalRNG : ScriptableObject
     }
     public void Reseed(int newSeed)
     {
-        _seed = newSeed;
+        seed = newSeed;
         ResetSeed();
     }
 
     public void ResetSeed()
     {
-        _rng = new System.Random(_seed);
+        _rng = new System.Random(seed);
     }
 }

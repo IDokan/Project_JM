@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/16/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/16/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: MiddleTransitionController.cs
 // Summary: A script to manage middle transition logic.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 //                      Middle transition conducts below tasks:
 //                                          1. Starts moving camera.
 //                                          2. Spawn next enemy.

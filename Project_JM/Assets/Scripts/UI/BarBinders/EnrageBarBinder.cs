@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/09/2026 Sinil Kang
-// Project: Project JM - https://github.com/IDokan/Project_JM 
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/09/2026 Sinil Kang. All Rights Reserved.
+// Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EnrageBarBinder.cs
 // Summary: A script to bind enrage time to a slider bar.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using UnityEngine.UI;

@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 01/08/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 01/08/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EasingBarUI.cs
 // Summary: A UI type of bar that easing slowly.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ using TMPro;
 
 public class EasingBarUI : BarUIBase
 {
-    [SerializeField] protected TextMeshProUGUI _text;
+    [SerializeField] protected TextMeshProUGUI text;
 
     [SerializeField] protected Slider healthSlider;
     [SerializeField] protected Slider easingHealthSlider;
@@ -49,22 +50,22 @@ public class EasingBarUI : BarUIBase
 
         healthSlider.value = current;
 
-        if (_text != null)
+        if (text != null)
         {
             if (displayMaxValue)
             {
-                _text.text = $"{Mathf.RoundToInt(current)} / {Mathf.RoundToInt(max)}";
+                text.text = $"{Mathf.RoundToInt(current)} / {Mathf.RoundToInt(max)}";
             }
             else
             {
                 if (current <= 0f)
                 {
-                    _text.CrossFadeAlpha(0f, 0.25f, false);
+                    text.CrossFadeAlpha(0f, 0.25f, false);
                 }
                 else
                 {
-                    _text.CrossFadeAlpha(1f, 0.1f, false);
-                    _text.text = $"{Mathf.RoundToInt(current)}";
+                    text.CrossFadeAlpha(1f, 0.1f, false);
+                    text.text = $"{Mathf.RoundToInt(current)}";
 
                 }
             }
@@ -103,9 +104,9 @@ public class EasingBarUI : BarUIBase
             }
         }
 
-        if (_text != null)
+        if (text != null)
         {
-            _text.text = givenText;
+            text.text = givenText;
         }
     }
 }

@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/06/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/06/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GemMover.cs
 // Summary: A script for gem movement.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
 using System.Collections;
@@ -25,8 +26,8 @@ public class GemMover : MonoBehaviour
     }
 
     // === Settings ===
-    [SerializeField] protected float _defaultDuration = 0.2f;
-    [SerializeField] protected float _epsilon = 0.01f;
+    [SerializeField] protected float defaultDuration = 0.2f;
+    [SerializeField] protected float epsilon = 0.01f;
 
     protected readonly Queue<MoveStep> _queue = new();
     protected Coroutine _runner;
@@ -63,7 +64,7 @@ public class GemMover : MonoBehaviour
 
         if(duration <= 0f)
         {
-            duration = _defaultDuration;
+            duration = defaultDuration;
         }
 
         _queue.Enqueue(new MoveStep(target, onComplete, duration));
@@ -127,7 +128,7 @@ public class GemMover : MonoBehaviour
 
             // Early snap if close enough
             if ((Vector2)transform.localPosition == target ||
-                Vector2.SqrMagnitude((Vector2)transform.localPosition - target) < _epsilon * _epsilon)
+                Vector2.SqrMagnitude((Vector2)transform.localPosition - target) < epsilon * epsilon)
             {
                 break;
             }

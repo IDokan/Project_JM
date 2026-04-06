@@ -1,10 +1,13 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/25/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/25/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: PauseMenu.cs
 // Summary: A script to perform pause menu actions.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -16,10 +19,18 @@ public class PauseMenu : Menu
     [SerializeField] protected Button homeButton;
     [SerializeField] protected Button quitButton;
 
+    [Header("Input")]
+    [SerializeField] private PlayerInput playerInput;
+
     [Header("Logic related refs")]
-    [SerializeField] protected CombatIntroController combatIntroController;
     [SerializeField] protected string mainMenuSceneName = "MainMenu";
     [SerializeField] protected OptionMenu optionPanel;
+    [SerializeField] private ConfirmationDialog confirmationDialog;
+
+    [Header("Confirmation icons")]
+    [SerializeField] private Image restartConfirmIcon;
+    [SerializeField] private Image homeConfirmIcon;
+    [SerializeField] private Image quitConfirmIcon;
 
     protected override void OnEnable()
     {
@@ -39,48 +50,50 @@ public class PauseMenu : Menu
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
     }
 
-    public override void Show()
-    {
-        base.Show();
+    public bool IsPaused { get; private set; }
 
+    public override void Show(Selectable returnTo = null)
+    {
+        IsPaused = true;
+        playerInput.SwitchToUIMap();
+        base.Show(returnTo);
         GlobalTimeManager.Instance.PauseTimeScale();
     }
 
     public override void Hide()
     {
+        IsPaused = false;
+        playerInput.SwitchToGameplayMap();
         base.Hide();
         GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
     }
 
     protected void OnRestartButtonPressed()
     {
-        // @@ TODO: Need to add destructive confirmation.
-
-        Hide();
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        confirmationDialog.Show(restartConfirmIcon, () =>
+        {
+            Hide();
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+        }, restartButton);
     }
 
     protected void OnOptionButtonPressed()
     {
-        optionPanel.Show();
+        optionPanel.Show(optionButton);
     }
 
     protected void OnHomeButtonPressed()
     {
-        Hide();
-
-        SceneManager.LoadScene(mainMenuSceneName);
+        confirmationDialog.Show(homeConfirmIcon, () =>
+        {
+            Hide();
+            SceneManager.LoadScene(mainMenuSceneName);
+        }, homeButton);
     }
 
     protected void OnQuitButtonPressed()
     {
-        Hide();
-
-#if UNITY_EDITOR
-Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
-#else
-        Application.Quit();
-#endif
+        QuitWithConfirmation(confirmationDialog, quitConfirmIcon, quitButton);
     }
 }

@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/17/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/17/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: DefeatedTransitionController.cs
 // Summary: A script to control logic when party defeated.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 //                      Defeated logic conducts below tasks:
 //                                          1. Move party down.
 //                                          2. Move enemy&UI aside.
@@ -51,14 +52,14 @@ public class DefeatedTransitionController : TransitionController
     [SerializeField] protected float uiMoveDuration = 1f;
 
     Transform enemyTransform = null;
-    protected Vector3 enemyOffsetToCamera;
+    protected Vector3 _enemyOffsetToCamera;
 
     protected override void Awake()
     {
         base.Awake();
         Transform cameraTransform = Camera.main.transform;
         partyYOffset = partyYOffset - cameraTransform.position.y;
-        enemyOffsetToCamera = enemyArrivalPosition - cameraTransform.position;
+        _enemyOffsetToCamera = enemyArrivalPosition - cameraTransform.position;
     }
 
 
@@ -113,7 +114,7 @@ public class DefeatedTransitionController : TransitionController
 
     protected IEnumerator EnemyRoutine()
     {
-        Vector3 enemyTargetLocation = Camera.main.transform.position + enemyOffsetToCamera;
+        Vector3 enemyTargetLocation = Camera.main.transform.position + _enemyOffsetToCamera;
         yield return MoveParallaxObject(enemyTransform, enemyTargetLocation, enemyMoveDelay, enemyMoveDuration, TransitionPhase.EndEnemyMoveEnd);
     }
 

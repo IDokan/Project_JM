@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/19/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/19/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: DamageUI.cs
 // Summary: A script for damage UI.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 
 using TMPro;
@@ -13,12 +14,14 @@ using UnityEngine.UI;
 
 public class DamageUI : MonoBehaviour
 {
-    [SerializeField] protected float _lifetime = 1.2f;
+    [SerializeField] protected float lifetime = 1.2f;
     [SerializeField] protected TextMeshProUGUI text;
     [SerializeField] protected GameObject shieldObject;
 
-    protected Image shieldImage = null;
+    protected Image _shieldImage = null;
     protected RectTransform _rect;
+    protected Canvas _canvas;
+    protected RectTransform _canvasRect;
 
 
     protected void Awake()
@@ -28,17 +31,20 @@ public class DamageUI : MonoBehaviour
         {
             text = GetComponent<TextMeshProUGUI>();
         }
+
+        _canvas = GetComponentInParent<Canvas>();
+        _canvasRect = _canvas.GetComponent<RectTransform>();
     }
 
     protected void OnEnable()
     {
         shieldObject.SetActive(false);
-        if (shieldImage != null)
+        if (_shieldImage != null)
         {
-            Color shieldImageColor = shieldImage.color;
+            Color shieldImageColor = _shieldImage.color;
             shieldImageColor.a = 1f;
-            shieldImage.color = shieldImageColor;
-            shieldImage = null;
+            _shieldImage.color = shieldImageColor;
+            _shieldImage = null;
         }
     }
 
@@ -57,14 +63,23 @@ public class DamageUI : MonoBehaviour
     public void Show(int amount, AttackContext context, bool isCritical, float sizeMultiplier)
     {
 
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(context.HitTransform.position) - transform.position;
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(context.HitTransform.position);
 
-        _rect.anchoredPosition = screenPos;
+        // Transform screen space position to the current rectangle space position
+            // because canvas is Scree Space - Camera.
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _canvasRect,
+            screenPos,
+            _canvas.worldCamera,
+            out Vector2 localPoint
+            );
+
+        _rect.anchoredPosition = localPoint;
 
         if (amount <= 0)
         {
             shieldObject.SetActive(true);
-            shieldImage = shieldObject.GetComponent<Image>();
+            _shieldImage = shieldObject.GetComponent<Image>();
         }
 
         text.text = amount.ToString();
@@ -98,18 +113,18 @@ public class DamageUI : MonoBehaviour
 
         // Animation
         Sequence seq = DOTween.Sequence();
-        seq.Append(_rect.DOAnchorPos(_rect.anchoredPosition + new Vector2(randomX, 80f), _lifetime))
-           .Join(text.DOFade(0f, _lifetime).SetEase(Ease.InCubic));
+        seq.Append(_rect.DOAnchorPos(_rect.anchoredPosition + new Vector2(randomX, 80f), lifetime))
+           .Join(text.DOFade(0f, lifetime).SetEase(Ease.InCubic));
 
 
-        if (shieldImage != null)
+        if (_shieldImage != null)
         {
-            seq.Join(shieldImage.DOFade(0f, _lifetime).SetEase(Ease.InCubic));
+            seq.Join(_shieldImage.DOFade(0f, lifetime).SetEase(Ease.InCubic));
         }
 
         seq.Join(
-            _rect.DOScale(1.2f, _lifetime / 4f).SetEase(Ease.OutBack)
-            .OnComplete(() => _rect.DOScale(0.8f, _lifetime * 3f / 4f))
+            _rect.DOScale(1.2f, lifetime / 4f).SetEase(Ease.OutBack)
+            .OnComplete(() => _rect.DOScale(0.8f, lifetime * 3f / 4f))
             )
            .AppendInterval(0.2f)
            .OnComplete(() =>
