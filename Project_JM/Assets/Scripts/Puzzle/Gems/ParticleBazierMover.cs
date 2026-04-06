@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 01/05/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 01/05/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: ParticleBazierMover.cs
 // Summary: A script to move particle to a position using Bazier curve.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
 using System.Collections;
@@ -30,7 +31,7 @@ public class ParticleBazierMover : MonoBehaviour
     bool _completedFired = false;
 
     protected ParticleSystem.Particle[] _particles;
-    protected Transform target;
+    protected Transform _target;
 
     protected struct Info
     {
@@ -70,7 +71,7 @@ public class ParticleBazierMover : MonoBehaviour
         // Wait until emitter works.
         yield return new WaitForSeconds(delay);
 
-        if (!controlledParticleSystem || !target)
+        if (!controlledParticleSystem || !_target)
         {
             yield break;
         }
@@ -79,7 +80,7 @@ public class ParticleBazierMover : MonoBehaviour
 
         _centerStart = controlledParticleSystem.transform.position;
 
-        Vector3 direction = (target.position - _centerStart);
+        Vector3 direction = (_target.position - _centerStart);
         if (direction.sqrMagnitude < 1e-8f)
         {
             direction = Vector3.right;
@@ -131,7 +132,7 @@ public class ParticleBazierMover : MonoBehaviour
 
     protected void LateUpdate()
     {
-        if (!_following || !controlledParticleSystem || !target)
+        if (!_following || !controlledParticleSystem || !_target)
         {
             return;
         }
@@ -147,7 +148,7 @@ public class ParticleBazierMover : MonoBehaviour
         float u = travelTime <= 1e-6f ? 1f : Mathf.Clamp01((Time.time - _moveStartTime) / travelTime);
         u = u * u * (3f - 2f * u);
 
-        Vector3 targetPos = target.position;
+        Vector3 targetPos = _target.position;
 
         int count = controlledParticleSystem.GetParticles(_particles);
 
@@ -241,6 +242,6 @@ public class ParticleBazierMover : MonoBehaviour
 
     public void SetTargetTransform(Transform transform)
     {
-        target = transform;
+        _target = transform;
     }
 }

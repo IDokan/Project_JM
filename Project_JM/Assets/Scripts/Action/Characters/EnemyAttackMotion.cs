@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 12/24/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 12/24/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EnemyAttackMotion.cs
 // Summary: A script for enemy attack motion.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using DG.Tweening;
 using System;
@@ -19,8 +20,8 @@ public class EnemyAttackMotion : MonoBehaviour
 
     // The durations can be changed in near future
     //      to display different pause for different attack logics.
-    [SerializeField] protected float _moveDuration = 0.1f;
-    [SerializeField] protected float _pauseDuration = 0.2f;
+    [SerializeField] protected float moveDuration = 0.1f;
+    [SerializeField] protected float pauseDuration = 0.2f;
 
     protected static readonly int DamagedTrig = Animator.StringToHash("DamagedTrig");
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
@@ -29,7 +30,7 @@ public class EnemyAttackMotion : MonoBehaviour
     protected Vector3 _originalPosition;
     protected Sequence _moveSequence;
 
-    protected float timeScaler = 1f;
+    protected float _timeScaler = 1f;
 
 
     protected bool _attackDone = true;
@@ -65,7 +66,7 @@ public class EnemyAttackMotion : MonoBehaviour
 
         _attackDone = false;
 
-        Move(moveOffset, _moveDuration, _pauseDuration, RaiseHit, RaiseAttackEnd);
+        Move(moveOffset, moveDuration, pauseDuration, RaiseHit, RaiseAttackEnd);
 
         _animator.ResetTrigger(AttackTrig);
         _animator.SetTrigger(AttackTrig);
@@ -78,7 +79,7 @@ public class EnemyAttackMotion : MonoBehaviour
             return;
         }
 
-        Move(moveOffset, _moveDuration, _pauseDuration, null, null);
+        Move(moveOffset, moveDuration, pauseDuration, null, null);
 
         _animator.ResetTrigger(DamagedTrig);
         _animator.SetTrigger(DamagedTrig);
@@ -103,12 +104,12 @@ public class EnemyAttackMotion : MonoBehaviour
             .OnComplete(()=>onSequenceComplete?.Invoke())
             .SetLink(gameObject);
 
-        _moveSequence.timeScale = timeScaler;
+        _moveSequence.timeScale = _timeScaler;
     }
 
     protected void ApplyGlobalTweenScale(float scale)
     {
-        timeScaler = scale;
+        _timeScaler = scale;
 
         if (_moveSequence != null && _moveSequence.IsActive())
         {

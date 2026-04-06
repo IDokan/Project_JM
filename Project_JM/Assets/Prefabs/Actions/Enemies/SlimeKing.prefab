@@ -87,8 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbec763bea4f4948886e0228e070983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombatant
-  _status: {fileID: 6721484090919061956}
-  _colors: 0100000002000000
+  status: {fileID: 6721484090919061956}
+  colors: 0100000002000000
   hitBurstPrefab: {fileID: 1771619425334909595, guid: f7beb28b4a3c8fb478a8abc5fe2ba5c1, type: 3}
   woundParentTransform: {fileID: 6402355911693699624}
   flashSprite: {fileID: 1051967404695388042}
@@ -104,8 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db51d9973d185547abca64e111762d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatus
-  _baseData: {fileID: 11400000, guid: 4ef685ffaa4dfdf4aaecf0f58eeeba42, type: 2}
-  _deathEvent: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  baseData: {fileID: 11400000, guid: 4ef685ffaa4dfdf4aaecf0f58eeeba42, type: 2}
+  deathEvent: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
 --- !u!114 &4409018762775306443
 MonoBehaviour:
@@ -187,8 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackMotion
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
-  _moveDuration: 0.1
-  _pauseDuration: 0.2
+  moveDuration: 0.1
+  pauseDuration: 0.2
 --- !u!114 &581450553150658279
 MonoBehaviour:
   m_ObjectHideFlags: 0

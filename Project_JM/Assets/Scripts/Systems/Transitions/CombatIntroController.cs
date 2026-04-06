@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/11/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/11/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: CombatIntroController.cs
 // Summary: A script to manage combat intro logic.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 //                      Combat intro conducts below tasks:
 //                                          1. Move party to an arrival position.
 //                                          2. Invoke camera mover and enemy spawner. (Can be done by event channel though)
@@ -44,20 +45,20 @@ public class CombatIntroController : TransitionController
     [SerializeField] protected float uiMoveDuration = 1f;
     [SerializeField] protected float menuMoveDuration = 0.5f;
 
-    protected Vector3 partyStartOffsetToCamera;
-    protected Vector3 partyArrivalOffsetToCamera;
+    protected Vector3 _partyStartOffsetToCamera;
+    protected Vector3 _partyArrivalOffsetToCamera;
 
-    protected Coroutine partyRoutine = null;
-    protected Coroutine boardRoutine = null;
-    protected Coroutine uiRoutine = null;
-    protected Coroutine menuRoutine = null;
+    protected Coroutine _partyRoutine = null;
+    protected Coroutine _boardRoutine = null;
+    protected Coroutine _uiRoutine = null;
+    protected Coroutine _menuRoutine = null;
 
     protected override void Awake()
     {
         base.Awake();
         Transform cameraTransform = Camera.main.transform;
-        partyStartOffsetToCamera = partyStartPosition - cameraTransform.position;
-        partyArrivalOffsetToCamera = partyArrivalPosition - cameraTransform.position;
+        _partyStartOffsetToCamera = partyStartPosition - cameraTransform.position;
+        _partyArrivalOffsetToCamera = partyArrivalPosition - cameraTransform.position;
         // Since Board is under an object that contains ParallaxLayout script, no need to find offset.
     }
 
@@ -74,8 +75,9 @@ public class CombatIntroController : TransitionController
         partyParallaxLayer.SetManualMode();
 
         Camera camera = Camera.main;
-        partyTransform.position = camera.transform.position + partyStartOffsetToCamera;
-        Vector3 destination = camera.transform.position + partyArrivalOffsetToCamera;
+        Vector3 startPosition = camera.transform.position + _partyStartOffsetToCamera;
+        partyTransform.position = startPosition;
+        Vector3 destination = camera.transform.position + _partyArrivalOffsetToCamera;
 
         float t = 0f;
         while (t < partyMoveDuration)
@@ -83,8 +85,8 @@ public class CombatIntroController : TransitionController
             t += Time.deltaTime;
 
             // Simple fixing: Update destination at every frame to prevent bugs when both camer and party started moving. (Both enemy and party died)
-            destination = camera.transform.position + partyArrivalOffsetToCamera;
-            partyTransform.position = Vector3.Lerp(partyStartPosition, destination, t / partyMoveDuration);
+            destination = camera.transform.position + _partyArrivalOffsetToCamera;
+            partyTransform.position = Vector3.Lerp(startPosition, destination, t / partyMoveDuration);
 
             yield return null;
         }
@@ -94,7 +96,7 @@ public class CombatIntroController : TransitionController
 
         transitionEventChannel.Raise(TransitionPhase.IntroPartyMoveEnd);
 
-        partyRoutine = null;
+        _partyRoutine = null;
     }
 
     protected IEnumerator BoardRoutine()
@@ -115,7 +117,7 @@ public class CombatIntroController : TransitionController
 
         transitionEventChannel.Raise(TransitionPhase.IntroBoardMoveEnd);
 
-        boardRoutine = null;
+        _boardRoutine = null;
     }
 
     protected IEnumerator UIRoutine()
@@ -148,7 +150,7 @@ public class CombatIntroController : TransitionController
 
         CompleteTransition();
 
-        uiRoutine = null;
+        _uiRoutine = null;
     }
 
     public void StartIntroTransition()
@@ -164,26 +166,26 @@ public class CombatIntroController : TransitionController
 
         if (partyTransform != null)
         {
-            KillOngoingRoutine(partyRoutine);
-            partyRoutine = StartCoroutine(IntroRoutine());
+            KillOngoingRoutine(_partyRoutine);
+            _partyRoutine = StartCoroutine(IntroRoutine());
         }
 
         if (boardTransform != null)
         {
-            KillOngoingRoutine(boardRoutine);
-            boardRoutine = StartCoroutine(BoardRoutine());
+            KillOngoingRoutine(_boardRoutine);
+            _boardRoutine = StartCoroutine(BoardRoutine());
         }
 
         if (uiTransforms.Length > 0 && uiArrivalPositions.Length == uiTransforms.Length)
         {
-            KillOngoingRoutine(uiRoutine);
-            uiRoutine = StartCoroutine(UIRoutine());
+            KillOngoingRoutine(_uiRoutine);
+            _uiRoutine = StartCoroutine(UIRoutine());
         }
 
         if (menuTransform != null)
         {
-            KillOngoingRoutine(menuRoutine);
-            menuRoutine = StartCoroutine(MenuRoutine());
+            KillOngoingRoutine(_menuRoutine);
+            _menuRoutine = StartCoroutine(MenuRoutine());
         }
     }
 
@@ -191,7 +193,7 @@ public class CombatIntroController : TransitionController
     {
         if (menuTransform.gameObject.activeSelf == false)
         {
-            menuRoutine = null;
+            _menuRoutine = null;
             yield break;
         }
 
@@ -209,7 +211,7 @@ public class CombatIntroController : TransitionController
         menuTransform.anchoredPosition = menuArrivalPosition;
         menuTransform.gameObject.SetActive(false);
 
-        menuRoutine = null;
+        _menuRoutine = null;
     }
 
     protected void KillOngoingRoutine(Coroutine routine)

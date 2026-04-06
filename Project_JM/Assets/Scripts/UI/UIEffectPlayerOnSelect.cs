@@ -1,13 +1,14 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/25/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/25/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
-// File: UIButtonSelectEffect.cs
+// File: UIEffectPlayerOnSelect.cs
 // Summary: A script to play effect of button selected.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIButtonSelectEffect : MonoBehaviour, ISelectHandler, IDeselectHandler
+public class UIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDeselectHandler, ICancelHandler
 {
     [SerializeField] protected GameObject selectedEffect;
     [SerializeField] protected Animator animator;
@@ -22,6 +23,11 @@ public class UIButtonSelectEffect : MonoBehaviour, ISelectHandler, IDeselectHand
         {
             animator.SetBool("Selected", true);
         }
+    }
+
+    public void OnCancel(BaseEventData eventData)
+    {
+        ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, ExecuteEvents.cancelHandler);
     }
 
     public void OnDeselect(BaseEventData eventData)

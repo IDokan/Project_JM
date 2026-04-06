@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/11/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/11/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: TransitionController.cs
 // Summary: An abstract script for all transition controller classes.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
 using UnityEngine;

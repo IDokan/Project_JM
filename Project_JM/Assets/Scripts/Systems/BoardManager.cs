@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/03/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/03/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: BoardManager.cs
 // Summary: A script for gem board.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using GemEnums;
 using MatchEnums;
@@ -27,31 +28,31 @@ public interface IBoardInfo
 [RequireComponent(typeof(BoardCoverController))]
 public class BoardManager : MonoBehaviour, IBoardInfo
 {
-    [SerializeField] protected int _rows = 8;
-    public int Rows => _rows;
-    [SerializeField] protected int _cols = 8;
-    public int Cols => _cols;
-    [SerializeField] protected float _cellSize = 1f;
-    public float CellSize => _cellSize;
-    [SerializeField] protected float _spacing = 0.05f;
-    public float Spacing => _spacing;
-    [SerializeField] protected GameObject _gemPrefab;
-    [SerializeField] protected float _fallingSpeed = 3f;
+    [SerializeField] protected int rows = 8;
+    public int Rows => rows;
+    [SerializeField] protected int cols = 8;
+    public int Cols => cols;
+    [SerializeField] protected float cellSize = 1f;
+    public float CellSize => cellSize;
+    [SerializeField] protected float spacing = 0.05f;
+    public float Spacing => spacing;
+    [SerializeField] protected GameObject gemPrefab;
+    [SerializeField] protected float fallingSpeed = 3f;
 
     [SerializeField] protected PartyRoster partyRoster;
-    [SerializeField] protected MatchEventChannel _matchEvents;
-    [SerializeField] protected GemPowerArrivedEventChannel _powerArrivedEvents;
-    [SerializeField] protected EnemySpawnedEventChannel _enemySpawnedEventChannel;
-    [SerializeField] protected BoardDisableEventChannel _boardDisableEvents;
+    [SerializeField] protected MatchEventChannel matchEvents;
+    [SerializeField] protected GemPowerArrivedEventChannel powerArrivedEvents;
+    [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
+    [SerializeField] protected BoardDisableEventChannel boardDisableEvents;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected GameObject _gemDisableFXPrefab;
+    [SerializeField] protected GameObject gemDisableFXPrefab;
 
     // Hint delay starts from user's input
     [Header("Hint")]
     [SerializeField] protected float hintDelay = 4f;
 
-    protected BoardCoverController boardCoverController;
+    protected BoardCoverController _boardCoverController;
 
 
 
@@ -126,14 +127,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void OnEnable()
     {
-        _boardDisableEvents.OnRaised += OnBoardDisabled;
-        _enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
+        boardDisableEvents.OnRaised += OnBoardDisabled;
+        enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
         transitionEventChannel.OnRaised += OnTransitionEvent;
     }
     protected void OnDisable()
     {
-        _boardDisableEvents.OnRaised -= OnBoardDisabled;
-        _enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
+        boardDisableEvents.OnRaised -= OnBoardDisabled;
+        enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
         transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
@@ -160,13 +161,13 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected Coroutine _hintRoutine = null;
 
-    public bool InBounds(int r, int c) => r >= 0 && r < _rows && c >= 0 && c < _cols;
+    public bool InBounds(int r, int c) => r >= 0 && r < rows && c >= 0 && c < cols;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        boardCoverController = GetComponent<BoardCoverController>();
-        boardCoverController.SetBoardSizeData(_rows, _cols, _cellSize, _spacing);
+        _boardCoverController = GetComponent<BoardCoverController>();
+        _boardCoverController.SetBoardSizeData(rows, cols, cellSize, spacing);
     }
 
     // Update is called once per frame
@@ -182,11 +183,11 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     // A function that resolve matches only when board initially generated.
     protected void GenerateBoard()
     {
-        _gems = new Gem[_rows, _cols];
+        _gems = new Gem[rows, cols];
 
-        for (int r = 0; r < _rows; r++)
+        for (int r = 0; r < rows; r++)
         {
-            for (int c = 0; c < _cols; c++)
+            for (int c = 0; c < cols; c++)
             {
                 _gems[r, c] = GetRandomGemAboveContainer(r, c);
 
@@ -209,7 +210,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     // It takes row & col for only gem location.
     protected Gem GetRandomGem(int row, int col)
     {
-        GameObject gemObj = Instantiate(_gemPrefab, transform);
+        GameObject gemObj = Instantiate(gemPrefab, transform);
         Vector2 gemLocalPos = GetGemLocation(row, col);
         gemObj.transform.localPosition = gemLocalPos;
         Gem gem = gemObj.GetComponent<Gem>();
@@ -222,7 +223,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     // It takes row & col for only gem location.
     protected Gem GetRandomGemAboveContainer(int row, int col)
     {
-        return GetRandomGem(row + _rows, col);
+        return GetRandomGem(row + rows, col);
     }
 
     protected void ResolveMatches()
@@ -269,10 +270,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void ApplyGravity()
     {
-        for (int col = 0; col < _cols; col++)
+        for (int col = 0; col < cols; col++)
         {
             int writeRow = 0;
-            for (int row = 0; row < _rows; row++)
+            for (int row = 0; row < rows; row++)
             {
                 if (_gems[row, col] != null)
                 {
@@ -291,14 +292,14 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void RefillBoard()
     {
-        for (int col = 0; col < _cols; col++)
+        for (int col = 0; col < cols; col++)
         {
             int numRefilledGem = 0;
-            for (int row = 0; row < _rows; row++)
+            for (int row = 0; row < rows; row++)
             {
                 if (_gems[row, col] == null)
                 {
-                    _gems[row, col] = GetRandomGem(_rows + (numRefilledGem++), col);
+                    _gems[row, col] = GetRandomGem(rows + (numRefilledGem++), col);
                     MoveGem(_gems[row, col], row, col);
                 }
             }
@@ -310,10 +311,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         var groups = new List<MatchGroup>();
 
         // Horizontal runs
-        for (int row = 0; row < _rows; ++row)
+        for (int row = 0; row < rows; ++row)
         {
             int col = 0;
-            while (col < _cols)
+            while (col < cols)
             {
                 var gem = _gems[row, col];
 
@@ -327,7 +328,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 int start = col;
                 int len = 1;
 
-                while (start + len < _cols)
+                while (start + len < cols)
                 {
                     var g2 = _gems[row, start + len];
                     if (g2 == null || g2.Color != color)
@@ -357,11 +358,11 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
 
         // Vertical runs
-        for (int col = 0; col < _cols; ++col)
+        for (int col = 0; col < cols; ++col)
         {
             int row = 0;
 
-            while (row < _rows)
+            while (row < rows)
             {
                 var gem = _gems[row, col];
 
@@ -375,7 +376,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 int start = row;
                 int len = 1;
 
-                while (start + len < _rows)
+                while (start + len < rows)
                 {
                     var g2 = _gems[start + len, col];
                     if (g2 == null || g2.Color != color)
@@ -475,13 +476,13 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     public Vector2 GetGemLocation(int row, int col)
     {
-        return new Vector2(col * (_cellSize + _spacing), row * (_cellSize + _spacing));
+        return new Vector2(col * (cellSize + spacing), row * (cellSize + spacing));
     }
 
     // This function takes only local position according to the board.
     public Vector2Int GetGemIndex(Vector2 localPosition)
     {
-        float cellUnit = 1f / (_cellSize + _spacing);
+        float cellUnit = 1f / (cellSize + spacing);
         int col = Mathf.FloorToInt((localPosition.x + (cellUnit * 0.5f)) * cellUnit);
         int row = Mathf.FloorToInt((localPosition.y + (cellUnit * 0.5f)) * cellUnit);
 
@@ -565,7 +566,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 group.Completed = true;
 
                 var tier = MatchTierUtil.GetMatchTier(group.Required);
-                _powerArrivedEvents.Raise(new MatchEvent
+                powerArrivedEvents.Raise(new MatchEvent
                 {
                     Color = group.Color,
                     Tier = tier
@@ -657,7 +658,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         c = col + 1;
 
-        while (c < _cols)
+        while (c < cols)
         {
             if (_gems[row, c].Color == color)
             {
@@ -692,7 +693,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
 
         r = row + 1;
-        while (r < _rows)
+        while (r < rows)
         {
             if (_gems[r, col].Color == color)
             {
@@ -746,7 +747,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void FireMatchEvent(GemColor color, int count)
     {
         var tier = MatchTierUtil.GetMatchTier(count);
-        _matchEvents.Raise(new MatchEvent
+        matchEvents.Raise(new MatchEvent
         {
             Color = color,
             Tier = tier
@@ -785,7 +786,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         {
             Vector2Int index = indices[i];
 
-            GameObject fx = Instantiate(_gemDisableFXPrefab, transform);
+            GameObject fx = Instantiate(gemDisableFXPrefab, transform);
             fx.transform.localPosition = GetGemLocation(index.x, index.y);
             _disableFXs.Add(fx);
         }
@@ -849,7 +850,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         StopHintRoutine();
 
-        boardCoverController.ShowCover();
+        _boardCoverController.ShowCover();
     }
 
     protected void OnEnemySpawned(GameObject gameObject)
@@ -858,7 +859,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         StartHintRoutine();
 
-        boardCoverController.HideCover();
+        _boardCoverController.HideCover();
     }
 
     protected IEnumerator ClearAndRefillGemsAfterDelay(float delay)
@@ -872,9 +873,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         ClearDisableEffects();
         ClearShakingEffects();
 
-        for (int r = 0; r < _rows; r++)
+        for (int r = 0; r < rows; r++)
         {
-            for (int c = 0; c < _cols; c++)
+            for (int c = 0; c < cols; c++)
             {
                 ResolveGemNoTarget(r, c);
             }
@@ -1037,13 +1038,13 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected List<Vector2Int> FindHintIndices()
     {
-        for (int i = 0; i < _rows; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < _cols; j++)
+            for (int j = 0; j < cols; j++)
             {
                 // Try swap and find if it has match
 
-                if (i + 1 < _rows)
+                if (i + 1 < rows)
                 {
                     HintResult rowHintResult = FindHintFromSwap(i, j, i + 1, j);
                     if (rowHintResult.Found)
@@ -1052,7 +1053,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                     }
                 }
 
-                if (j + 1 < _cols)
+                if (j + 1 < cols)
                 {
                     HintResult colHintResult = FindHintFromSwap(i, j, i, j + 1);
                     if (colHintResult.Found)
@@ -1098,7 +1099,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         c = col + 1;
 
-        while (c < _cols)
+        while (c < cols)
         {
             if (_gems[row, c].Color == color)
             {
@@ -1136,7 +1137,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         }
 
         r = row + 1;
-        while (r < _rows)
+        while (r < rows)
         {
             if (_gems[r, col].Color == color)
             {

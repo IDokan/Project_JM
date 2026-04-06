@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 11/05/2025 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 11/05/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: UIFollowPoint.cs
-// Summary: A script to move UI to follow point of PlayerController.
+// Summary: A script to move UI to follow point of BasePlayerController.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class UIFollowPoint : MonoBehaviour
     [SerializeField] protected RectTransform uiTransform;
     [SerializeField] protected Canvas canvas;
     [SerializeField] protected Camera uiCamera;
-    [SerializeField] protected PlayerController playerController;
+    [SerializeField] protected BasePlayerController playerController;
 
     [SerializeField] protected Vector2 offset;
 

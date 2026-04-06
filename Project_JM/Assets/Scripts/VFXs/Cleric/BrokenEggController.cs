@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 02/10/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 02/10/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: BrokenEggController.cs
 // Summary: A script to control transform and torque of broken eggs.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 

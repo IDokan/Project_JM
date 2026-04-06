@@ -89,12 +89,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a1ff2235f09d3479546b5fdc895059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  _enemyBook: {fileID: 11400000, guid: 2cb3d0cff5fe9d84d98b5e05bbcafa35, type: 2}
-  _characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
-  _enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
+  enemyBook: {fileID: 11400000, guid: 2cb3d0cff5fe9d84d98b5e05bbcafa35, type: 2}
+  characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
-  _difficultyCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
-  _spawnPosition: {x: 12.4, y: -4, z: 0}
+  difficultyCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
+  spawnPosition: {x: 12.4, y: -4, z: 0}
   spawnDelay: 4
   dispatchEventChannelDelay: 1
 --- !u!1 &1389493428556137630
@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameProgressManager
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
-  _deathChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
-  _curves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
-  _partyStatus: {fileID: 0}
+  deathChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  curves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
+  partyStatus: {fileID: 0}
 --- !u!1 &2987994210524115475
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,9 +512,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ca7b8c10f9bb847a8e045ab9d7b461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboManager
-  _matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
-  _partyStatus: {fileID: 0}
-  _comboResetTime: 3
+  matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
+  partyStatus: {fileID: 0}
+  comboResetTime: 3
 --- !u!1 &9033511896242580566
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,7 +562,7 @@ MonoBehaviour:
   transitionManager: {fileID: 0}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   partyTransform: {fileID: 0}
-  partyStartPosition: {x: -11.76, y: -2.69, z: 0}
+  partyStartPosition: {x: -13.76, y: -2.69, z: 0}
   partyArrivalPosition: {x: 3.24, y: -2.69, z: 0}
   boardTransform: {fileID: 8115716145221142382}
   boardStartPosition: {x: -1155.58, y: -583, z: 0}

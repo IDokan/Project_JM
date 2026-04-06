@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/19/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/19/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: ClickVFXSpawner.cs
 // Summary: A script to spawn click VFX.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 
 using UnityEngine;

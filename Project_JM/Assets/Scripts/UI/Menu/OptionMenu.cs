@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: MIT
-// Copyright (c) 03/27/2026 Sinil Kang
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 03/27/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: OptionMenu.cs
 // Summary: A script to perform option menu actions.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,13 +36,13 @@ public class OptionMenu : Menu
 
     protected void OnGraphicsButtonClicked()
     {
-        graphicsMenu.Show();
         audioMenu.Hide();
+        graphicsMenu.Show(graphicsSettingButton);
     }
 
     protected void OnAudioButtonClicked()
     {
         graphicsMenu.Hide();
-        audioMenu.Show();
+        audioMenu.Show(audioSettingButton);
     }
 }
