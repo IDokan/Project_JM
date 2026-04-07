@@ -23,7 +23,7 @@ public class Menu : MonoBehaviour, ICancelHandler
     [Header("Initial state")]
     [SerializeField] private bool showOnAwake = false;
 
-    private CanvasGroup _canvasGroup;
+    protected CanvasGroup _canvasGroup;
     private Selectable _returnSelected;
 
     protected virtual void Awake()
@@ -99,18 +99,5 @@ public class Menu : MonoBehaviour, ICancelHandler
         {
             EventSystem.current.SetSelectedGameObject(_returnSelected.gameObject);
         }
-    }
-
-    protected void QuitWithConfirmation(ConfirmationDialog dialog, Image icon, Selectable returnTo)
-    {
-        dialog.Show(icon, () =>
-        {
-            Hide();
-#if UNITY_EDITOR
-            Debug.Log("QuitGame called. Quit does not work in Unity Editor.");
-#else
-            Application.Quit();
-#endif
-        }, returnTo);
     }
 }
