@@ -26,6 +26,7 @@ public class PauseMenu : Menu
     [SerializeField] protected string mainMenuSceneName = "MainMenu";
     [SerializeField] protected OptionMenu optionPanel;
     [SerializeField] private ConfirmationDialog confirmationDialog;
+    [SerializeField] private SceneTransition sceneTransition;
 
     [Header("Confirmation icons")]
     [SerializeField] private Image restartConfirmIcon;
@@ -87,13 +88,15 @@ public class PauseMenu : Menu
     {
         confirmationDialog.Show(homeConfirmIcon, () =>
         {
-            Hide();
-            SceneManager.LoadScene(mainMenuSceneName);
+            sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, homeButton);
     }
 
     protected void OnQuitButtonPressed()
     {
-        QuitWithConfirmation(confirmationDialog, quitConfirmIcon, quitButton);
+        confirmationDialog.Show(quitConfirmIcon, () =>
+        {
+            sceneTransition.FadeAndQuit();
+        }, quitButton);
     }
 }
