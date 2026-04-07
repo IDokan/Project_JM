@@ -744,6 +744,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2751452494269341747, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2927990352563217149, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -764,6 +768,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4075923489737854481, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 1457916643}
     - target: {fileID: 4507354582048836393, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: m_Name
       value: MainMenuUI
@@ -880,10 +888,22 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6970572030738745872, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
+      propertyPath: mainMenuController
+      value: 
+      objectReference: {fileID: 1457916645}
+    - target: {fileID: 7340348238230312988, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
+      propertyPath: m_Name
+      value: SceneTransition
+      objectReference: {fileID: 0}
     - target: {fileID: 8194272069923016451, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8294349685557873105, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 1457916643}
     - target: {fileID: 8437162601510046370, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
