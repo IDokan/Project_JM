@@ -41,7 +41,13 @@ public class CombatController : BasePlayerController
 
     private void Start()
     {
+        // Explicitly disable the UI map before switching to Gameplay.
+        // SwitchToGameplayMap() alone leaves the UI map active, causing both
+        // maps to process any shared input binding simultaneously. Without this,
+        // the first ESC press fires both Gameplay's Cancel (open pause) and UI's
+        // Cancel (close pause) in the same frame — making ESC appear broken.
         playerInput.actions.FindActionMap("UI").Disable();
+        playerInput.SwitchToGameplayMap();
     }
 
     private void Update()
