@@ -70,6 +70,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
 
         // Multiply its size by 2 when the attacker is an enemy && not blocked
+        bool shieldReduced = status.Shield > 0f && damage > 0f;
         int calculatedDamage = Mathf.RoundToInt(Mathf.Min(status.CurrentHP, Mathf.Max(damage - status.Shield, 0f)));
         if (calculatedDamage > 0 &&
             attackContext.Attacker is MonoBehaviour attackerMB &&
@@ -78,7 +79,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             colorDamageMultiplier *= 2f;
         }
         // Spawn Damageui slightly above the origin of attacked target
-        DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, colorDamageMultiplier);
+        DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, shieldReduced, colorDamageMultiplier);
 
         status.TakeDamage(damage);
 
