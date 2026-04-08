@@ -34,13 +34,22 @@ public class Menu : MonoBehaviour, ICancelHandler
     {
         _canvasGroup = GetComponent<CanvasGroup>();
 
-        if (showOnAwake)
+        if (_canvasGroup)
         {
-            Show();
-        }
-        else
-        {
-            Hide();
+            if (showOnAwake)
+            {
+                _canvasGroup.alpha = 1f;
+                _canvasGroup.interactable = true;
+                _canvasGroup.blocksRaycasts = true;
+                transform.localScale = Vector3.one;
+            }
+            else
+            {
+                _canvasGroup.alpha = 0f;
+                _canvasGroup.interactable = false;
+                _canvasGroup.blocksRaycasts = false;
+                transform.localScale = Vector3.zero;
+            }
         }
     }
 

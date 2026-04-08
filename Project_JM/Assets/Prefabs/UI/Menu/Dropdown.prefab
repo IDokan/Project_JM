@@ -304,8 +304,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Option A
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea033fb0d35452e4da3539ab4ac4e949, type: 2}
+  m_sharedMaterial: {fileID: -6321772117637226910, guid: ea033fb0d35452e4da3539ab4ac4e949, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -669,8 +669,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIEffectPlayerOnSelect
   selectedEffect: {fileID: 549392687221997601}
   animator: {fileID: 0}
-  highlightCanvasGroup: {fileID: 2329714777339078517}
-  fadeDuration: 0.15
 --- !u!114 &6968587240000678669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,7 +682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JuicyDropdown
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1140,8 +1138,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea033fb0d35452e4da3539ab4ac4e949, type: 2}
+  m_sharedMaterial: {fileID: -6321772117637226910, guid: ea033fb0d35452e4da3539ab4ac4e949, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1350,10 +1348,5 @@ RectTransform:
 --- !u!1 &549392687221997601 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1300481049471638340, guid: 02eb50e565d15b14d84521529f1b1f88, type: 3}
-  m_PrefabInstance: {fileID: 1554842633760856933}
-  m_PrefabAsset: {fileID: 0}
---- !u!225 &2329714777339078517 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 3875107906373614608, guid: 02eb50e565d15b14d84521529f1b1f88, type: 3}
   m_PrefabInstance: {fileID: 1554842633760856933}
   m_PrefabAsset: {fileID: 0}
