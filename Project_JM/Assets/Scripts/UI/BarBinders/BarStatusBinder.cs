@@ -66,7 +66,7 @@ public class BarStatusBinder : MonoBehaviour
 
     protected void UpdateHP(float current, float max)
     {
-        hPbarUI.UpdateValue(current, max);
+        hPbarUI.UpdateValue(current, max, false);
     }
 
     protected void UpdateShield(float shieldAmount, float max)
