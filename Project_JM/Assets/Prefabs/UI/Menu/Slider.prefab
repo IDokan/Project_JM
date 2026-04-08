@@ -217,6 +217,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIEffectPlayerOnSelect
   selectedEffect: {fileID: 5429715169593737805}
   animator: {fileID: 0}
+  highlightCanvasGroup: {fileID: 7823073258294076697}
+  fadeDuration: 0.15
 --- !u!1 &1309929832456955996
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,5 +530,10 @@ RectTransform:
 --- !u!1 &5429715169593737805 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1300481049471638340, guid: 02eb50e565d15b14d84521529f1b1f88, type: 3}
+  m_PrefabInstance: {fileID: 6437338979532347657}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &7823073258294076697 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3875107906373614608, guid: 02eb50e565d15b14d84521529f1b1f88, type: 3}
   m_PrefabInstance: {fileID: 6437338979532347657}
   m_PrefabAsset: {fileID: 0}
