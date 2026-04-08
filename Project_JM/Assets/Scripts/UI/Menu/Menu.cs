@@ -5,6 +5,7 @@
 // Summary: A script for parent and abstract class of menu script.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,6 +20,9 @@ public class Menu : MonoBehaviour, ICancelHandler
     [SerializeField] private Selectable firstSelected;
     public Selectable GetFirstSelectable()
         => firstSelected != null ? firstSelected : GetComponentInChildren<Selectable>();
+
+    [Header("Style")]
+    [SerializeField] private MenuStyleSO style;
 
     [Header("Initial state")]
     [SerializeField] private bool showOnAwake = false;
@@ -74,14 +78,34 @@ public class Menu : MonoBehaviour, ICancelHandler
         _returnSelected = returnTo;
 
         _canvasGroup.alpha = 1f;
-        _canvasGroup.interactable = true;
-        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
 
         Selectable selected = GetFirstSelectable();
         if (selected != null)
         {
             EventSystem.current.SetSelectedGameObject(selected.gameObject);
         }
+
+        if (style != null)
+        {
+            transform.DOKill();
+            transform.localScale = Vector3.zero;
+            transform.DOScale(Vector3.one, style.showDuration)
+                .SetEase(Ease.OutBack)
+                .SetUpdate(true)
+                .OnComplete(OnShowComplete);
+        }
+        else
+        {
+            OnShowComplete();
+        }
+    }
+
+    private void OnShowComplete()
+    {
+        _canvasGroup.interactable = true;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     public virtual void OnCancel(BaseEventData eventData)
@@ -91,13 +115,23 @@ public class Menu : MonoBehaviour, ICancelHandler
 
     public virtual void Hide()
     {
-        _canvasGroup.alpha = 0f;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
 
-        if (_returnSelected != null)
+        EventSystem.current.SetSelectedGameObject(
+            _returnSelected != null ? _returnSelected.gameObject : null);
+
+        if (style != null)
         {
-            EventSystem.current.SetSelectedGameObject(_returnSelected.gameObject);
+            transform.DOKill();
+            transform.DOScale(Vector3.zero, style.hideDuration)
+                .SetEase(Ease.InBack)
+                .SetUpdate(true)
+                .OnComplete(() => _canvasGroup.alpha = 0f);
+        }
+        else
+        {
+            _canvasGroup.alpha = 0f;
         }
     }
 }
