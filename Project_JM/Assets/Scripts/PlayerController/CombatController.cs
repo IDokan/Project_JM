@@ -117,12 +117,13 @@ public class CombatController : BasePlayerController
 
     protected override void OnPressCanceled(InputAction.CallbackContext _)
     {
+        transitionManager.EndSkipHold();
+
         if (pauseMenu.IsPaused)
         {
             return;
         }
 
-        transitionManager.EndSkipHold();
         ClearSelection();
         _firedThisDrag = false;
     }
