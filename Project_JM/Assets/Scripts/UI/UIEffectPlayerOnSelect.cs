@@ -32,14 +32,13 @@ public class UIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDeselectHa
 
     public void OnDeselect(BaseEventData eventData)
     {
-        if (selectedEffect != null)
-        {
-            selectedEffect.SetActive(false);
-        }
-
         if (animator != null)
         {
             animator.SetBool("Selected", false);
+        }
+        if (selectedEffect != null)
+        {
+            selectedEffect.SetActive(false);
         }
     }
 }
