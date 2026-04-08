@@ -23,6 +23,9 @@ public class EnrageBarBinder : MonoBehaviour
         if (boundEnemyAI != null)
         {
             boundEnemyAI.OnEnrageTimeChanged += UpdateEnrage;
+        }
+        if (characterDeathEventChannel != null)
+        {
             characterDeathEventChannel.OnRaised += OnAnyoneDied;
         }
     }
@@ -32,6 +35,9 @@ public class EnrageBarBinder : MonoBehaviour
         if (boundEnemyAI != null)
         {
             boundEnemyAI.OnEnrageTimeChanged -= UpdateEnrage;
+        }
+        if (characterDeathEventChannel != null)
+        {
             characterDeathEventChannel.OnRaised -= OnAnyoneDied;
         }
     }
