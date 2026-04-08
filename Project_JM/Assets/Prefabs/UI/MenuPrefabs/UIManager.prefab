@@ -798,6 +798,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 4331383551556544809}
     m_Modifications:
     - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 7187381222729911374}
+    - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_SpriteState.m_PressedSprite
       value: 
       objectReference: {fileID: -162046715, guid: 176ae06927ab02d4b9d3be5d670cd6ef, type: 3}
@@ -2397,6 +2405,7 @@ MonoBehaviour:
   title: {fileID: 1906941779905920727}
   backgroundCatcher: {fileID: 1320291584639458850}
   firstSelected: {fileID: 7187381222729911374}
+  style: {fileID: 11400000, guid: b1d14877cb1f1c14ca8dfd5aa6cfc83b, type: 2}
   showOnAwake: 0
   restartButton: {fileID: 7187381222729911374}
   optionButton: {fileID: 3326188996599523822}
