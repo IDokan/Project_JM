@@ -36,6 +36,6 @@ public class ComboBinder : MonoBehaviour
 
     void UpdateComboData(int comboCount, float timer)
     {
-        _barUI.UpdateValue(timer, boundComboManager.ComboResetTime, $"{comboCount}");
+        _barUI.UpdateValue(timer, boundComboManager.ComboResetTime, $"{comboCount}", Mathf.InverseLerp(50f, 90f, comboCount));
     }
 }

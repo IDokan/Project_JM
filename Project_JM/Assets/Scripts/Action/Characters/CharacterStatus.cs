@@ -50,7 +50,8 @@ public class CharacterStatus : MonoBehaviour
                 buffBonus += m.Multiplier;
             }
 
-            return result + buffBonus;
+            // Clamped to [0, 1] to prevent crit chance UI from displaying values over 100%
+            return Mathf.Clamp01(result + buffBonus);
         }
     }
     // 1 means 100%, 1.5 means 150%
@@ -58,6 +59,8 @@ public class CharacterStatus : MonoBehaviour
 
     public event Action<float, float> OnHPChanged;
     public event Action<float, float> OnShieldChanged;
+    public event Action<float> OnCritChanceChanged;
+    public event Action OnCriticalHit;
 
     protected float _shield;
     public float Shield => _shield;
@@ -103,12 +106,19 @@ public class CharacterStatus : MonoBehaviour
 
     void Update()
     {
+        bool anyExpired = false;
         for (int i = _critChanceTimedModifiers.Count - 1; i >= 0; i--)
         {
             if (_critChanceTimedModifiers[i].UpdateTimer(GlobalTimeManager.DeltaTime))
             {
                 _critChanceTimedModifiers.RemoveAt(i);
+                anyExpired = true;
             }
+        }
+
+        if (anyExpired)
+        {
+            RaiseCritChanceChanged();
         }
     }
 
@@ -172,32 +182,44 @@ public class CharacterStatus : MonoBehaviour
     public void SetComboCritBonus(float value)
     {
         _comboCritBonus = value;
+        RaiseCritChanceChanged();
     }
 
     public void AddBuffCritBonus(float value)
     {
         _buffCritChanceBonus += value;
+        RaiseCritChanceChanged();
     }
 
     public void AddBuffCritBonus(float value, float duration)
     {
         _critChanceTimedModifiers.Add(new TimedModifier(value, duration));
+        RaiseCritChanceChanged();
     }
 
     public void RemoveBuffCritBonus(float value)
     {
         _buffCritChanceBonus -= value;
+        RaiseCritChanceChanged();
     }
 
     public void ClearBuffCritBonus()
     {
         _buffCritChanceBonus = 0f;
         _critChanceTimedModifiers.Clear();
+        RaiseCritChanceChanged();
     }
+
+    private void RaiseCritChanceChanged() => OnCritChanceChanged?.Invoke(CriticalChance);
 
     public bool IsCriticalHit()
     {
-        return CriticalChance > GlobalRNG.Instance.NextFloat();
+        bool isCrit = CriticalChance > GlobalRNG.Instance.NextFloat();
+        if (isCrit)
+        {
+            OnCriticalHit?.Invoke();
+        }
+        return isCrit;
     }
 
     public void AddBuffCritDamage(float value)
