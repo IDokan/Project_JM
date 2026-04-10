@@ -39,7 +39,7 @@ namespace GemEnums
                 case GemColor.Green: return Color.green;
                 case GemColor.Blue: return Color.blue;
                 case GemColor.Yellow: return Color.yellow;
-                default: return Color.black;
+                default: return new Color(1f, 0f, 236f / 255f);
             }
         }
 
