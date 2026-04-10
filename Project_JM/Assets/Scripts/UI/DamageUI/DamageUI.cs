@@ -112,8 +112,9 @@ public class DamageUI : MonoBehaviour
         _rect.rotation = Quaternion.Euler(0, 0, randomRot);
 
         // Animation
+        DOTween.Kill(gameObject);
         _rect.localScale = Vector3.zero;
-        Sequence seq = DOTween.Sequence();
+        Sequence seq = DOTween.Sequence().SetLink(gameObject);
         seq.Append(_rect.DOAnchorPos(_rect.anchoredPosition + new Vector2(randomX, 80f), lifetime))
            .Join(text.DOFade(0f, lifetime).SetEase(Ease.InCubic));
 
@@ -128,7 +129,7 @@ public class DamageUI : MonoBehaviour
            .AppendInterval(0.2f)
            .OnComplete(() =>
            {
-               Destroy(gameObject);
+               if (this != null) Destroy(gameObject);
            });
     }
 }
