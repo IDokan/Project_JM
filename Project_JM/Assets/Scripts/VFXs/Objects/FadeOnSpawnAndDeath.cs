@@ -13,6 +13,7 @@ public class FadeOnSpawnAndDeath : MonoBehaviour
 {
     [SerializeField] protected float fadeDuration = 0.2f;
     [SerializeField] protected float defaultTargetAlpha = 0.5f;
+    [SerializeField] protected float destroyDelay = 0f;
 
     [SerializeField] protected bool changeParticleSystemColor = false;
 
@@ -23,10 +24,7 @@ public class FadeOnSpawnAndDeath : MonoBehaviour
     protected void Awake()
     {
         _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(includeInactive: true);
-        if (changeParticleSystemColor)
-        {
-            _particleSystems = GetComponentsInChildren<ParticleSystem>(includeInactive: true);
-        }
+        _particleSystems = GetComponentsInChildren<ParticleSystem>(includeInactive: true);
     }
 
     protected void OnEnable()
@@ -41,6 +39,10 @@ public class FadeOnSpawnAndDeath : MonoBehaviour
 
     public void FadeOutAndDestroy()
     {
+        foreach (ParticleSystem ps in _particleSystems)
+        {
+            ps.Stop();
+        }
         StartFade(0f, true);
     }
 
@@ -113,6 +115,7 @@ public class FadeOnSpawnAndDeath : MonoBehaviour
 
         if(destroyOnComplete)
         {
+            yield return new WaitForSeconds(destroyDelay);
             Destroy(gameObject);
         }
 
