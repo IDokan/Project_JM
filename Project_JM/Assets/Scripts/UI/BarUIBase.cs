@@ -11,10 +11,13 @@ public abstract class BarUIBase : MonoBehaviour
 {
     public void UpdateValue(float current, float max, bool displayMaxValue = true)
         => OnUpdateValue(current, max, displayMaxValue);
+    public void UpdateValue(float current, float max, string givenText, float alpha)
+        => OnUpdateValue(current, max, givenText, alpha);
     public void UpdateValue(float current, float max, string givenText)
-        => OnUpdateValue(current, max, givenText);
-    
+            => OnUpdateValue(current, max, givenText, 1f);
+
+
 
     protected abstract void OnUpdateValue(float current, float max, bool displayMaxValue);
-    protected abstract void OnUpdateValue(float current, float max, string givenText);
+    protected abstract void OnUpdateValue(float current, float max, string givenText, float alpha);
 }
