@@ -84,7 +84,7 @@ public class EasingBarUI : BarUIBase
         }
     }
 
-    protected override void OnUpdateValue(float current, float max, string givenText)
+    protected override void OnUpdateValue(float current, float max, string givenText, float alpha)
     {
         healthSlider.maxValue = max;
         easingHealthSlider.maxValue = max;
@@ -106,6 +106,7 @@ public class EasingBarUI : BarUIBase
 
         if (text != null)
         {
+            text.alpha = alpha;
             text.text = givenText;
         }
     }
