@@ -61,6 +61,8 @@ public class CharacterStatus : MonoBehaviour
     public event Action<float, float> OnShieldChanged;
     public event Action<float> OnCritChanceChanged;
     public event Action OnCriticalHit;
+    public event Action OnCritTimedBuffStarted;
+    public event Action OnCritTimedBuffStopped;
 
     protected float _shield;
     public float Shield => _shield;
@@ -119,6 +121,10 @@ public class CharacterStatus : MonoBehaviour
         if (anyExpired)
         {
             RaiseCritChanceChanged();
+            if (_critChanceTimedModifiers.Count == 0)
+            {
+                OnCritTimedBuffStopped?.Invoke();
+            }
         }
     }
 
@@ -193,6 +199,10 @@ public class CharacterStatus : MonoBehaviour
 
     public void AddBuffCritBonus(float value, float duration)
     {
+        if (_critChanceTimedModifiers.Count == 0)
+        {
+            OnCritTimedBuffStarted?.Invoke();
+        }
         _critChanceTimedModifiers.Add(new TimedModifier(value, duration));
         RaiseCritChanceChanged();
     }
@@ -206,7 +216,12 @@ public class CharacterStatus : MonoBehaviour
     public void ClearBuffCritBonus()
     {
         _buffCritChanceBonus = 0f;
+        bool hadTimedModifiers = _critChanceTimedModifiers.Count > 0;
         _critChanceTimedModifiers.Clear();
+        if (hadTimedModifiers)
+        {
+            OnCritTimedBuffStopped?.Invoke();
+        }
         RaiseCritChanceChanged();
     }
 
