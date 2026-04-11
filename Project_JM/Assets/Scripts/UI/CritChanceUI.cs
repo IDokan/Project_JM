@@ -15,17 +15,22 @@ public class CritChanceUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI critChanceLabel;
 
     [SerializeField] private ParticleSystem[] particleSystems;
+    [SerializeField] private ParticleSystem buffParticle;
 
     private void OnEnable()
     {
         characterStatus.OnCritChanceChanged += OnCritChanceChanged;
         characterStatus.OnCriticalHit += OnCriticalHit;
+        characterStatus.OnCritTimedBuffStarted += OnCritBuffStarted;
+        characterStatus.OnCritTimedBuffStopped += OnCritBuffStopped;
     }
 
     private void OnDisable()
     {
         characterStatus.OnCritChanceChanged -= OnCritChanceChanged;
         characterStatus.OnCriticalHit -= OnCriticalHit;
+        characterStatus.OnCritTimedBuffStarted -= OnCritBuffStarted;
+        characterStatus.OnCritTimedBuffStopped -= OnCritBuffStopped;
     }
 
     private void Start()
@@ -51,4 +56,8 @@ public class CritChanceUI : MonoBehaviour
             ps.Play();
         }
     }
+
+    private void OnCritBuffStarted() => buffParticle.Play();
+
+    private void OnCritBuffStopped() => buffParticle.Stop(false, ParticleSystemStopBehavior.StopEmitting);
 }
