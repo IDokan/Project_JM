@@ -115,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 1881969256398716841}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 7, z: 0}
+  m_LocalPosition: {x: 11.5, y: 6.5, z: 0}
   m_LocalScale: {x: 2.0833335, y: 2.0833335, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0c6c89db6472348957b98becdee878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AimPointSpawner
-  prefab: {fileID: 6240843834693849955, guid: 6fcae81700dfd1e459036206a81c1897, type: 3}
+  prefab: {fileID: 6240843834693849955, guid: c27181128776a6f4893cbe667ee797d3, type: 3}
   parentTransform: {fileID: 3639564419234054949}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
@@ -315,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 648b5309da305804fb408ea26cbd79fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AimPointT5Spawner
-  prefab: {fileID: 6240843834693849955, guid: c27181128776a6f4893cbe667ee797d3, type: 3}
+  prefab: {fileID: 6240843834693849955, guid: 6fcae81700dfd1e459036206a81c1897, type: 3}
   parentTransform: {fileID: 3211494379857779700}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
@@ -610,7 +610,7 @@ Transform:
   m_GameObject: {fileID: 6975959342160580799}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.67, y: 7.36, z: 0}
+  m_LocalPosition: {x: 11, y: 5, z: 0}
   m_LocalScale: {x: 2.0833335, y: 2.0833335, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -706,7 +706,7 @@ Transform:
   m_GameObject: {fileID: 7073998832537538679}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 7, z: 0}
+  m_LocalPosition: {x: 11.5, y: 6.5, z: 0}
   m_LocalScale: {x: 2.0833335, y: 2.0833335, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -820,11 +820,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8990060974824053273, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9712376
+      value: 0.9712371
       objectReference: {fileID: 0}
     - target: {fileID: -8990060974824053273, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.23811255
+      value: 0.23811445
       objectReference: {fileID: 0}
     - target: {fileID: -8990060974824053273, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -872,7 +872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7831996082990914527, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.83554834
+      value: 0.83554757
       objectReference: {fileID: 0}
     - target: {fileID: -7831996082990914527, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.x
@@ -884,7 +884,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7831996082990914527, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5494169
+      value: -0.5494182
       objectReference: {fileID: 0}
     - target: {fileID: -7831996082990914527, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1032,7 +1032,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -825442164916724042, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.2636058
+      value: 0.2636062
       objectReference: {fileID: 0}
     - target: {fileID: -825442164916724042, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1040,7 +1040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -825442164916724042, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.96463054
+      value: 0.9646304
       objectReference: {fileID: 0}
     - target: {fileID: -677852214661083522, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1076,7 +1076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -470053979645406647, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.707648
+      value: 0.7076479
       objectReference: {fileID: 0}
     - target: {fileID: -14398151662182881, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_SortingLayer
@@ -1220,7 +1220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4617718484124976915, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.3575183
+      value: -0.35751835
       objectReference: {fileID: 0}
     - target: {fileID: 4677212285094747062, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_SortingLayer
@@ -1244,7 +1244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5290862418984201839, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.3405305
+      value: 0.34053057
       objectReference: {fileID: 0}
     - target: {fileID: 5290862418984201839, guid: c5ecb9d35fd236f4a87e983fc35a298b, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1470,7 +1470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.6463234e-29
-  m_labelHash: 3.0997532e-27
+  m_labelHash: 5.878249e-16
   m_SpriteKey: 0
   m_SpriteHash: 270061216
 --- !u!4 &986390283795798561 stripped
@@ -1506,7 +1506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.2684659e-34
-  m_labelHash: 3.0997532e-27
+  m_labelHash: 5.878249e-16
   m_SpriteKey: 0
   m_SpriteHash: 815377828
 --- !u!4 &1847436386779317784 stripped
@@ -1589,7 +1589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.877808e-33
-  m_labelHash: 3.0997532e-27
+  m_labelHash: 5.878249e-16
   m_SpriteKey: 0
   m_SpriteHash: 962340163
 --- !u!4 &5905084452174259606 stripped
