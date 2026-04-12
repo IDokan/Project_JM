@@ -242,7 +242,7 @@ public class CharacterStatus : MonoBehaviour
         _buffCritDamageBonus += value;
     }
 
-    public void ClearBuffCitDamageBonus()
+    public void ClearBuffCritDamageBonus()
     {
         _buffCritDamageBonus = 0f;
     }
@@ -250,7 +250,7 @@ public class CharacterStatus : MonoBehaviour
     public void ClearBuffs(CharacterStatus stat)
     {
         ClearBuffCritBonus();
-        ClearBuffCitDamageBonus();
+        ClearBuffCritDamageBonus();
     }
 
     protected void Clear()
