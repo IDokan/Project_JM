@@ -63,6 +63,8 @@ public class CharacterStatus : MonoBehaviour
     public event Action OnCriticalHit;
     public event Action OnCritTimedBuffStarted;
     public event Action OnCritTimedBuffStopped;
+    public event Action OnCritDamageBuffStarted;
+    public event Action OnCritDamageBuffStopped;
 
     protected float _shield;
     public float Shield => _shield;
@@ -239,12 +241,21 @@ public class CharacterStatus : MonoBehaviour
 
     public void AddBuffCritDamage(float value)
     {
+        bool wasInactive = _buffCritDamageBonus <= 0f;
         _buffCritDamageBonus += value;
+        if (wasInactive && _buffCritDamageBonus > 0f)
+        {
+            OnCritDamageBuffStarted?.Invoke();
+        }
     }
 
     public void ClearBuffCritDamageBonus()
     {
-        _buffCritDamageBonus = 0f;
+        if (_buffCritDamageBonus > 0f)
+        {
+            _buffCritDamageBonus = 0f;
+            OnCritDamageBuffStopped?.Invoke();
+        }
     }
 
     public void ClearBuffs(CharacterStatus stat)
