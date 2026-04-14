@@ -1570,6 +1570,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.7076477
       objectReference: {fileID: 0}
+    - target: {fileID: 2624237442348015073, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 14.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 2624237442348015073, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2671217984748237456, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7436352
@@ -2179,6 +2187,7 @@ PrefabInstance:
     - {fileID: 7116614453698839513, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4179299367311911872, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
+    - {fileID: 1871292568692402702, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5931316084057072174, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
@@ -3294,6 +3303,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6323993898207240143, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: characterStatus
+      value: 
+      objectReference: {fileID: 1233718909}
     - target: {fileID: 6490529358751755490, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3650,6 +3663,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9031918611814296843, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9076389824367271509, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_SortingLayer
       value: 6
@@ -3696,6 +3713,8 @@ PrefabInstance:
     - {fileID: 2556306918463035791, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
     - {fileID: 3565031945214094498, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
     - {fileID: 6816558048383230377, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+    - {fileID: 7658584221803931746, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+    - {fileID: 3626411100653850102, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
