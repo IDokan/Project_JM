@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cd0e3e49e0d1f14db004dc17b330861, type: 3}
+  m_Name: Piano
+  m_EditorClassIdentifier: Assembly-CSharp::AudioCueSO
+  clips:
+  - {fileID: 8300000, guid: 2e0cd9910b629f646a7a9ae13d4d535b, type: 3}
+  - {fileID: 8300000, guid: 4b5153e5687bdeb4c8a148099a6c3593, type: 3}
+  - {fileID: 8300000, guid: dee51dca24b46ae4dadf97d8b1fae4e9, type: 3}
+  - {fileID: 8300000, guid: 6b888fd88de18924f8230f575664b083, type: 3}
+  volume: 21
+  pitchMin: 0.9
+  pitchMax: 1.1
+  loop: 0
