@@ -20,9 +20,13 @@ public class AudioCueSO : ScriptableObject
 
     public float Volume => volume;
     public bool Loop => loop;
+    public int ClipCount => clips != null ? clips.Length : 0;
 
     public AudioClip GetClip() =>
         clips is { Length: > 0 } ? clips[Random.Range(0, clips.Length)] : null;
+
+    public AudioClip GetClip(int index) =>
+        clips is { Length: > 0 } ? clips[Mathf.Clamp(index, 0, clips.Length - 1)] : null;
 
     public float GetRandomPitch() => Random.Range(pitchMin, pitchMax);
 }
