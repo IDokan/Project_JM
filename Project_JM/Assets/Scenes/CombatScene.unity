@@ -1187,6 +1187,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1929591172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1929591174}
+  - component: {fileID: 1929591173}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1929591173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929591172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ab8a15ee8e0d04181b77cf8e2da9fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  bgmMixerGroup: {fileID: -3202996517405283289, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
+  uiSfxMixerGroup: {fileID: 3471157596913494063, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
+  puzzleSfxMixerGroup: {fileID: -2903586513060504370, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
+  actionSfxMixerGroup: {fileID: -6774330949474060271, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
+  uiSfxPoolSize: 4
+  puzzleSfxPoolSize: 4
+  actionSfxPoolSize: 8
+--- !u!4 &1929591174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929591172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.009, y: 0.36278, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1986252045 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5839353086084169784, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -2363,6 +2414,10 @@ PrefabInstance:
       propertyPath: partyStatus
       value: 
       objectReference: {fileID: 1233718909}
+    - target: {fileID: 4130428429056873238, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: audioChainTimeLimit
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4490150295464392029, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: party
       value: 
@@ -3758,3 +3813,4 @@ SceneRoots:
   - {fileID: 4645798362671533346}
   - {fileID: 2781529482926182001}
   - {fileID: 5760348805556038935}
+  - {fileID: 1929591174}
