@@ -34,6 +34,10 @@ public class AudioManager : MonoBehaviour
     private AudioSource[] _puzzleSfxPool;
     private AudioSource[] _actionSfxPool;
 
+    private float[] _uiSfxStartTimes;
+    private float[] _puzzleSfxStartTimes;
+    private float[] _actionSfxStartTimes;
+
     private AudioSource CurrentMusicSource => _sourceAIsCurrent ? _musicSourceA : _musicSourceB;
     private AudioSource OtherMusicSource => _sourceAIsCurrent ? _musicSourceB : _musicSourceA;
 
@@ -54,6 +58,10 @@ public class AudioManager : MonoBehaviour
         _uiSfxPool = CreatePool(uiSfxPoolSize, "UISfx", uiSfxMixerGroup);
         _puzzleSfxPool = CreatePool(puzzleSfxPoolSize, "PuzzleSfx", puzzleSfxMixerGroup);
         _actionSfxPool = CreatePool(actionSfxPoolSize, "ActionSfx", actionSfxMixerGroup);
+
+        _uiSfxStartTimes = new float[uiSfxPoolSize];
+        _puzzleSfxStartTimes = new float[puzzleSfxPoolSize];
+        _actionSfxStartTimes = new float[actionSfxPoolSize];
     }
 
     // ── BGM ──────────────────────────────────────────────────────────────────
@@ -113,31 +121,58 @@ public class AudioManager : MonoBehaviour
 
     // ── SFX ──────────────────────────────────────────────────────────────────
 
-    public void PlayUISFX(AudioCueSO cue) => PlayOnPool(_uiSfxPool, cue);
-    public void PlayPuzzleSFX(AudioCueSO cue) => PlayOnPool(_puzzleSfxPool, cue);
-    public void PlayActionSFX(AudioCueSO cue) => PlayOnPool(_actionSfxPool, cue);
+    public void PlayUISFX(AudioCueSO cue) => PlayOnPool(_uiSfxPool, _uiSfxStartTimes, cue);
+    public void PlayPuzzleSFX(AudioCueSO cue) => PlayOnPool(_puzzleSfxPool, _puzzleSfxStartTimes, cue);
+    public void PlayPuzzleSFX(AudioCueSO cue, int clipIndex) => PlayOnPool(_puzzleSfxPool, _puzzleSfxStartTimes, cue, clipIndex);
+    public void PlayActionSFX(AudioCueSO cue) => PlayOnPool(_actionSfxPool, _actionSfxStartTimes, cue);
 
     // ── Private helpers ───────────────────────────────────────────────────────
 
-    private void PlayOnPool(AudioSource[] pool, AudioCueSO cue)
+    private void PlayOnPool(AudioSource[] pool, float[] startTimes, AudioCueSO cue)
     {
         if (cue == null) return;
-        AudioClip clip = cue.GetClip();
+        PlayOnPoolWithClip(pool, startTimes, cue, cue.GetClip());
+    }
+
+    private void PlayOnPool(AudioSource[] pool, float[] startTimes, AudioCueSO cue, int clipIndex)
+    {
+        if (cue == null) return;
+        PlayOnPoolWithClip(pool, startTimes, cue, cue.GetClip(clipIndex));
+    }
+
+    private void PlayOnPoolWithClip(AudioSource[] pool, float[] startTimes, AudioCueSO cue, AudioClip clip)
+    {
         if (clip == null) return;
 
-        foreach (AudioSource source in pool)
+        for (int i = 0; i < pool.Length; i++)
         {
-            if (source.isPlaying) continue;
+            if (pool[i].isPlaying) continue;
 
-            source.clip = clip;
-            source.volume = cue.Volume;
-            source.pitch = cue.GetRandomPitch();
-            source.loop = cue.Loop;
-            source.Play();
+            PlayOnSource(pool[i], cue, clip);
+            startTimes[i] = Time.unscaledTime;
             return;
         }
-        // All sources in the pool are busy — cue is silently dropped.
-        Debug.LogError($"[AudioManager] All sources in pool are busy — cue '{cue.name}' was dropped.");
+
+        // All sources busy — stop the oldest and reuse it.
+        int oldestIndex = 0;
+        for (int i = 1; i < pool.Length; i++)
+        {
+            if (startTimes[i] < startTimes[oldestIndex])
+                oldestIndex = i;
+        }
+
+        pool[oldestIndex].Stop();
+        PlayOnSource(pool[oldestIndex], cue, clip);
+        startTimes[oldestIndex] = Time.unscaledTime;
+    }
+
+    private void PlayOnSource(AudioSource source, AudioCueSO cue, AudioClip clip)
+    {
+        source.clip = clip;
+        source.volume = cue.Volume;
+        source.pitch = cue.GetRandomPitch();
+        source.loop = cue.Loop;
+        source.Play();
     }
 
     private IEnumerator FadeCoroutine(AudioSource source, float targetVolume, float duration)
