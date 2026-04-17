@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 4202452729555105499}
   - component: {fileID: 5489374677128354126}
   - component: {fileID: 8409098911008119587}
+  - component: {fileID: 5172821424484416084}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -150,8 +151,8 @@ MonoBehaviour:
   boardDisableEvents: {fileID: 11400000, guid: 0a8e8c52b0d9ef943bcaf207ad74cb4a, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   gemDisableFXPrefab: {fileID: 2595264459829895592, guid: a6f1135dafdef5549b84ad68c1141750, type: 3}
-  gemMatchSfx: {fileID: 11400000, guid: dfbbd10a34feb524ab5e17cae7d786c4, type: 2}
   hintDelay: 4
+  boardAudioPlayer: {fileID: 5172821424484416084}
 --- !u!114 &5489374677128354126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +183,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlightManager
   selectionHighlightPrefab: {fileID: 69723808561079182, guid: 0a4f5c34083e7f14ba06854bf0ba8c0b, type: 3}
   boardManager: {fileID: 4202452729555105499}
+--- !u!114 &5172821424484416084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7342104600010321755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcfc93f5cf85a974bb5169b50accda53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardAudioPlayer
+  gemHintCue: {fileID: 11400000, guid: 23e084b40998f3c428d8073c3c37c6f6, type: 2}
 --- !u!1 &7469514949075606743
 GameObject:
   m_ObjectHideFlags: 0
