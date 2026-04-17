@@ -51,6 +51,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     // Hint delay starts from user's input
     [Header("Hint")]
     [SerializeField] protected float hintDelay = 4f;
+    [SerializeField] protected BoardAudioPlayer boardAudioPlayer;
 
     protected BoardCoverController _boardCoverController;
 
@@ -917,6 +918,11 @@ public class BoardManager : MonoBehaviour, IBoardInfo
                 gemColor = gem.Color,
                 shaker = gemShake
             });
+        }
+
+        if (shakingData.Count > 0)
+        {
+            boardAudioPlayer?.PlayGemHint();
         }
 
         _shakingDataContainer.Add(shakingData);
