@@ -66,9 +66,7 @@ public class ComboManager : MonoBehaviour
         {
             _audioChainTimer -= GlobalTimeManager.DeltaTime;
             if (_audioChainTimer <= 0f)
-            {
                 _audioChainIndex = 0;
-            }
         }
     }
     
