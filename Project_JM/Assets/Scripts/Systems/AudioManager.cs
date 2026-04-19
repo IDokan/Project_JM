@@ -170,7 +170,7 @@ public class AudioManager : MonoBehaviour
     {
         source.clip = clip;
         source.volume = cue.Volume;
-        source.pitch = cue.GetRandomPitch();
+        source.pitch = cue.GetPitch();
         source.loop = cue.Loop;
         source.Play();
     }
@@ -216,7 +216,7 @@ public class AudioManager : MonoBehaviour
     private void ConfigureMusicSource(AudioSource source, AudioCueSO cue)
     {
         source.clip = cue.GetClip();
-        source.pitch = cue.GetRandomPitch();
+        source.pitch = cue.GetPitch();
         source.loop = cue.Loop;
     }
 
