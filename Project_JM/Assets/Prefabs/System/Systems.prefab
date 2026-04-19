@@ -517,7 +517,7 @@ MonoBehaviour:
   partyStatus: {fileID: 0}
   comboResetTime: 3
   gemMatchSfx: {fileID: 11400000, guid: dfbbd10a34feb524ab5e17cae7d786c4, type: 2}
-  audioChainTimeLimit: 0.2
+  audioChainTimeLimit: 0.5
 --- !u!1 &9033511896242580566
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,9 +645,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4202452729555105499, guid: bf1aab60bd402bb4aa548a8435701b51, type: 3}
-      propertyPath: gemDisableFXPrefab
+      propertyPath: partyRoster
       value: 
-      objectReference: {fileID: 2595264459829895592, guid: a6f1135dafdef5549b84ad68c1141750, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6109222803121866255, guid: bf1aab60bd402bb4aa548a8435701b51, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.8
