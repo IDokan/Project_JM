@@ -14,6 +14,7 @@ public class AudioCueSO : ScriptableObject
 {
     [SerializeField] private AudioClip[] clips;
     [SerializeField] private float volume = 1f;
+    [SerializeField] private bool randomizePitch = true;
     [SerializeField] private float pitchMin = 0.9f;
     [SerializeField] private float pitchMax = 1.1f;
     [SerializeField] private bool loop = false;
@@ -28,5 +29,5 @@ public class AudioCueSO : ScriptableObject
     public AudioClip GetClip(int index) =>
         clips is { Length: > 0 } ? clips[Mathf.Clamp(index, 0, clips.Length - 1)] : null;
 
-    public float GetRandomPitch() => Random.Range(pitchMin, pitchMax);
+    public float GetPitch() => randomizePitch ? Random.Range(pitchMin, pitchMax) : 1f;
 }
