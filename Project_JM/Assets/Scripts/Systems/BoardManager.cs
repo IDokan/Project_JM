@@ -747,6 +747,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void FireMatchEvent(GemColor color, int count)
     {
+        if (color == GemColor.None)
+            boardAudioPlayer.PlayNoneMatch();
+
         var tier = MatchTierUtil.GetMatchTier(count);
         matchEvents.Raise(new MatchEvent
         {
