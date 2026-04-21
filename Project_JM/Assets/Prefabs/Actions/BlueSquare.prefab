@@ -706,6 +706,7 @@ MonoBehaviour:
   prefab: {fileID: 6416626565191940911, guid: d27a4f36eb34b024aa4ebf30ac20ab21, type: 3}
   randomTransformScript: {fileID: 8651376883748025525}
   localOffset: {x: 0.5, y: 0, z: 0}
+  sfx: {fileID: 11400000, guid: c4310942e7e811a4a9340827cc2bea72, type: 2}
   speed: 30
   lifeTime: 1.5
   targets:
@@ -729,6 +730,7 @@ MonoBehaviour:
   parentTransform: {fileID: 2219893476137290648}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+  sfx: {fileID: 11400000, guid: 66a7545b428666f4aae789f311f959bd, type: 2}
   randomTransform: {fileID: 8651376883748025525}
 --- !u!114 &8651376883748025525
 MonoBehaviour:
@@ -762,6 +764,7 @@ MonoBehaviour:
   prefab: {fileID: 2863471393507618175, guid: a8c81d264ae1acd46be8ccf8d7739c07, type: 3}
   randomTransformScript: {fileID: 8651376883748025525}
   localOffset: {x: 0, y: 0, z: 0}
+  sfx: {fileID: 11400000, guid: 3095b57606be72e4095afeca9eafbee5, type: 2}
   beamPrefab: {fileID: 4984277296483534931, guid: e33dcaf8c358365458d45d0f8254ec59, type: 3}
   targets:
   - {fileID: 7961020605595789453}
@@ -784,6 +787,7 @@ MonoBehaviour:
   parentTransform: {fileID: 6457100515725460865}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+  sfx: {fileID: 0}
 --- !u!114 &1288891421847571877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +804,7 @@ MonoBehaviour:
   parentTransform: {fileID: 6457100515725460865}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+  sfx: {fileID: 11400000, guid: 66a7545b428666f4aae789f311f959bd, type: 2}
 --- !u!114 &803448760880670134
 MonoBehaviour:
   m_ObjectHideFlags: 0
