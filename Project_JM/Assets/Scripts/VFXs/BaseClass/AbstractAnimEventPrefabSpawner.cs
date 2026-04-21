@@ -19,8 +19,6 @@ public abstract class AbstractAnimEventPrefabSpawner<TPrefab> : MonoBehaviour
 
     protected TPrefab Spawn()
     {
-        if (sfx != null)
-            AudioManager.Instance.PlayActionSFX(sfx);
         return SpawnAtTransform(parentTransform);
     }
 
@@ -30,6 +28,9 @@ public abstract class AbstractAnimEventPrefabSpawner<TPrefab> : MonoBehaviour
         {
             return null;
         }
+
+        if (sfx != null)
+            AudioManager.Instance.PlayActionSFX(sfx);
 
         Transform t = givenTransform ? givenTransform : transform;
 
