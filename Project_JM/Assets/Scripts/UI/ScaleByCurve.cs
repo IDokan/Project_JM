@@ -30,6 +30,6 @@ public class ScaleByCurve : MonoBehaviour
     public void Play()
     {
         transform.localScale = Vector3.zero;
-        transform.DOScale(_initialScale, duration).SetEase(curve);
+        transform.DOScale(_initialScale, duration).SetEase(curve).SetLink(gameObject);
     }
 }

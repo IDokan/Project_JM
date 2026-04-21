@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class BrokenEggController : MonoBehaviour
 {
+    [SerializeField] private AudioCueSO sfx;
+
     [SerializeField] protected GameObject leftEgg;
     [SerializeField] protected GameObject rightEgg;
 
@@ -16,6 +18,14 @@ public class BrokenEggController : MonoBehaviour
     [SerializeField] protected Vector3 rightOffset;
 
     [SerializeField] protected float reactionMultiplier = 0.5f;
+
+    void Awake()
+    {
+        if (sfx != null)
+        {
+            AudioManager.Instance.PlayActionSFX(sfx);
+        }
+    }
 
     public void Init(Transform eggTransform, float speed)
     {

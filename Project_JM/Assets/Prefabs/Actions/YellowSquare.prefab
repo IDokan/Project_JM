@@ -5288,6 +5288,7 @@ GameObject:
   - component: {fileID: 7345929778065005517}
   - component: {fileID: 266107498383828663}
   - component: {fileID: 3725089692956984012}
+  - component: {fileID: 1946331997644894319}
   m_Layer: 0
   m_Name: YellowSquare
   m_TagString: Untagged
@@ -5411,6 +5412,7 @@ MonoBehaviour:
   parentTransform: {fileID: 7030216198098956414}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+  sfx: {fileID: 11400000, guid: 3b21c80976b15d3438bf03bda8e26b0b, type: 2}
   combatManager: {fileID: 0}
   clericAttackExecutor: {fileID: 2490722363239806062}
 --- !u!114 &1634525158179187894
@@ -5442,6 +5444,7 @@ MonoBehaviour:
   parentTransform: {fileID: 7241474321468328154}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+  sfx: {fileID: 11400000, guid: 1b136e9384d221b4bb48d20284bcce27, type: 2}
 --- !u!114 &7345929778065005517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5458,6 +5461,7 @@ MonoBehaviour:
   parentTransform: {fileID: 207429551397846993}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+  sfx: {fileID: 0}
   combatManager: {fileID: 0}
 --- !u!114 &266107498383828663
 MonoBehaviour:
@@ -5475,6 +5479,7 @@ MonoBehaviour:
   parentTransform: {fileID: 7819907440989543674}
   localOffset: {x: 0, y: 0, z: 0}
   baseRotatingDeg: 0
+  sfx: {fileID: 0}
 --- !u!114 &3725089692956984012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5487,6 +5492,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f158a5ba0c5316a4283f9fa1dcf5dfc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllyTag
+--- !u!114 &1946331997644894319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5114379530251128962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9c3b9f56427f624bbf9cd8c7498a0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClericSFXPlayer
+  sfx: {fileID: 11400000, guid: 5691d41688b493849b602da30dd92867, type: 2}
 --- !u!1 &5573824307224507408
 GameObject:
   m_ObjectHideFlags: 0
