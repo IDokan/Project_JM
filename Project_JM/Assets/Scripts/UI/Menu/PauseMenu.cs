@@ -59,6 +59,7 @@ public class PauseMenu : Menu
         playerInput.SwitchToUIMap();
         base.Show(returnTo);
         GlobalTimeManager.Instance.PauseTimeScale();
+        AudioManager.Instance.PauseScaledSFX();
     }
 
     public override void Hide()
@@ -67,6 +68,7 @@ public class PauseMenu : Menu
         playerInput.SwitchToGameplayMap();
         base.Hide();
         GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+        AudioManager.Instance.ResumeScaledSFX();
     }
 
     protected void OnRestartButtonPressed()
