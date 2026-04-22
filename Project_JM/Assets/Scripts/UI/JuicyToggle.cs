@@ -50,7 +50,7 @@ public class JuicyToggle : Toggle
         if (background != null)
         {
             background.DOKill();
-            background.DOColor(value ? style.onColor : style.offColor, style.colorDuration).SetUpdate(true);
+            background.DOColor(value ? style.onColor : style.offColor, style.colorDuration).SetUpdate(true).SetLink(gameObject);
         }
 
         if (value)
@@ -58,13 +58,15 @@ public class JuicyToggle : Toggle
             checkmark.localScale = Vector3.zero;
             checkmark.DOScale(Vector3.one, style.toggleDuration)
                 .SetEase(Ease.OutBack)
-                .SetUpdate(true);
+                .SetUpdate(true)
+                .SetLink(gameObject);
         }
         else
         {
             checkmark.DOScale(Vector3.zero, style.toggleDuration)
                 .SetEase(Ease.InBack)
-                .SetUpdate(true);
+                .SetUpdate(true)
+                .SetLink(gameObject);
         }
     }
 
@@ -86,6 +88,6 @@ public class JuicyToggle : Toggle
         if (instant)
             background.color = target;
         else
-            background.DOColor(target, style.colorDuration).SetUpdate(true);
+            background.DOColor(target, style.colorDuration).SetUpdate(true).SetLink(gameObject);
     }
 }
