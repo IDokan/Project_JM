@@ -103,6 +103,7 @@ public class Menu : MonoBehaviour, ICancelHandler
             transform.DOScale(Vector3.one, style.showDuration)
                 .SetEase(Ease.OutBack)
                 .SetUpdate(true)
+                .SetLink(gameObject)
                 .OnComplete(OnShowComplete);
         }
         else
@@ -136,6 +137,7 @@ public class Menu : MonoBehaviour, ICancelHandler
             transform.DOScale(Vector3.zero, style.hideDuration)
                 .SetEase(Ease.InBack)
                 .SetUpdate(true)
+                .SetLink(gameObject)
                 .OnComplete(() => _canvasGroup.alpha = 0f);
         }
         else
