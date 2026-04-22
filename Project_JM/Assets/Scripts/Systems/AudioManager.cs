@@ -121,6 +121,18 @@ public class AudioManager : MonoBehaviour
 
     // ── SFX ──────────────────────────────────────────────────────────────────
 
+    public void PauseScaledSFX()
+    {
+        foreach (var source in _puzzleSfxPool) source.Pause();
+        foreach (var source in _actionSfxPool) source.Pause();
+    }
+
+    public void ResumeScaledSFX()
+    {
+        foreach (var source in _puzzleSfxPool) source.UnPause();
+        foreach (var source in _actionSfxPool) source.UnPause();
+    }
+
     public void PlayUISFX(AudioCueSO cue) => PlayOnPool(_uiSfxPool, _uiSfxStartTimes, cue);
     public void PlayPuzzleSFX(AudioCueSO cue) => PlayOnPool(_puzzleSfxPool, _puzzleSfxStartTimes, cue);
     public void PlayPuzzleSFX(AudioCueSO cue, int clipIndex) => PlayOnPool(_puzzleSfxPool, _puzzleSfxStartTimes, cue, clipIndex);
