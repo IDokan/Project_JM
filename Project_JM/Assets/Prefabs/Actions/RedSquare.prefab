@@ -716,6 +716,7 @@ GameObject:
   - component: {fileID: 8647604718751229255}
   - component: {fileID: 3557102199850266963}
   - component: {fileID: 3368013263216039225}
+  - component: {fileID: 5361054748474371118}
   m_Layer: 0
   m_Name: RedSquare
   m_TagString: Untagged
@@ -809,7 +810,7 @@ MonoBehaviour:
   logic4: {fileID: 11400000, guid: e361be7c4d6371c4db83ca5c7cd2bd15, type: 2}
   logic5: {fileID: 11400000, guid: f2e6711f5f793cf40836d7c14fff6f7b, type: 2}
   attack3AttackPoint: {fileID: 3599723201070594014}
-  attack4AttackPoint: {fileID: 2780268373697275344}
+  attack4AttackPoint: {fileID: 3599723201070594014}
   attack5AttackPoint: {fileID: 2780268373697275344}
   logicEnemy: {fileID: 0}
   attackEnemyAttackPoint: {fileID: 0}
@@ -878,6 +879,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f158a5ba0c5316a4283f9fa1dcf5dfc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllyTag
+--- !u!114 &5361054748474371118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7378609590189185883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7945a5ff7fc713a45b64f8a49ef1a35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnightSFXPlayer
+  shieldAttackSFX: {fileID: 11400000, guid: daaa97649bb2c804e98b8c21676268ad, type: 2}
+  bashSFX: {fileID: 11400000, guid: 66996c6063de89143b1e60e2f759708a, type: 2}
+  armorHitSFX: {fileID: 11400000, guid: cdd490ba6fba6df45aad67fc2a3ddc01, type: 2}
 --- !u!1 &7774183868671680934
 GameObject:
   m_ObjectHideFlags: 0
