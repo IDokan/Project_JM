@@ -28,6 +28,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     [SerializeField] protected Transform woundParentTransform;
 
     [SerializeField] protected FlashSpriteUsingMaterial flashSprite;
+    [SerializeField] private AudioCueSO hurtSfx;
 
     public CharacterStatus Status => status;
     public GemColor[] Colors => colors;
@@ -86,6 +87,11 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         if (flashSprite != null)
         {
             flashSprite.Flash();
+        }
+
+        if (hurtSfx != null)
+        {
+            AudioManager.Instance.PlayActionSFX(hurtSfx);
         }
 
         SpawnHitBurstParticle(attackContext);
