@@ -724,6 +724,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         if (InBounds(index.x, index.y) && InBounds(targetRow, targetCol))
         {
+            boardAudioPlayer?.PlayGemSwap();
+
             MoveGem(_gems[index.x, index.y], targetRow, targetCol);
             MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
@@ -742,6 +744,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             return true;
         }
 
+        boardAudioPlayer?.PlayInvalidSwap();
         return false;
     }
 
