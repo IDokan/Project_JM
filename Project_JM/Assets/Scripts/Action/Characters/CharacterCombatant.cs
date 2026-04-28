@@ -29,6 +29,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     [SerializeField] protected FlashSpriteUsingMaterial flashSprite;
     [SerializeField] private AudioCueSO hurtSfx;
+    [SerializeField] private AudioCueSO killVoiceSFX;
 
     public CharacterStatus Status => status;
     public GemColor[] Colors => colors;
@@ -53,6 +54,12 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     public void TakeDamage(float rawDamage, AttackContext attackContext)
     {
+        // Prevent any extra interaction to the enemy already died.
+        if (status.IsDead)
+        {
+            return;
+        }
+
         float damage = rawDamage * attackContext.DamageMultiplierManager.GetMultiplier;
 
         bool isCritical = false;
@@ -84,6 +91,13 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
         status.TakeDamage(damage);
 
+        if (status.IsDead
+            && attackContext.Attacker is CharacterCombatant attackerCombatant
+            && attackerCombatant.TryGetComponent<AllyTag>(out _))
+        {
+            attackerCombatant.OnKilledEnemy();
+        }
+
         if (flashSprite != null)
         {
             flashSprite.Flash();
@@ -111,6 +125,14 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     public void AddBuffCritDamage(float value)
     {
         status.AddBuffCritDamage(value);
+    }
+
+    private void OnKilledEnemy()
+    {
+        if (killVoiceSFX != null)
+        {
+            AudioManager.Instance.PlayActionSFX(killVoiceSFX);
+        }
     }
 
     protected void SpawnHitBurstParticle(AttackContext attackContext)
