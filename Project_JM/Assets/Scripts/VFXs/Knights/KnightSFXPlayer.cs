@@ -12,7 +12,6 @@ public class KnightSFXPlayer : MonoBehaviour
     [SerializeField] private AudioCueSO shieldAttackSFX;
     [SerializeField] private AudioCueSO bashSFX;
     [SerializeField] private AudioCueSO armorHitSFX;
-
     public void AnimEvent_ShieldAttack() => AudioManager.Instance.PlayActionSFX(shieldAttackSFX);
     public void AnimEvent_Bash() => AudioManager.Instance.PlayActionSFX(bashSFX);
     public void AnimEvent_ArmorHit() => AudioManager.Instance.PlayActionSFX(armorHitSFX);
