@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 3517060550137473913}
   - component: {fileID: 325963819189281011}
   - component: {fileID: 1051967404695388042}
+  - component: {fileID: 1800938627218413061}
   m_Layer: 0
   m_Name: SlimeKing
   m_TagString: Untagged
@@ -92,6 +93,8 @@ MonoBehaviour:
   hitBurstPrefab: {fileID: 1771619425334909595, guid: f7beb28b4a3c8fb478a8abc5fe2ba5c1, type: 3}
   woundParentTransform: {fileID: 6402355911693699624}
   flashSprite: {fileID: 1051967404695388042}
+  hurtSfx: {fileID: 0}
+  killVoiceSFX: {fileID: 0}
 --- !u!114 &6721484090919061956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,9 +124,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackBehaviour
   attackChannel: {fileID: 11400000, guid: 630175c78ca3d34419acfc1f9fe240c4, type: 2}
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  enrageSfx: {fileID: 11400000, guid: bfb5416f4926a884595549e541958d91, type: 2}
   stunRepresenter: {fileID: 3517060550137473913}
   baseCooldown: 5
-  _enrageDelay: 30
+  enrageDelay: 30
 --- !u!114 &5405543324218558201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,8 +191,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackMotion
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  swingSfx: {fileID: 11400000, guid: ebc9967d329f6cf478ff8db181d882b7, type: 2}
+  impactSfx: {fileID: 0}
   moveDuration: 0.1
   pauseDuration: 0.2
+  moveOffsetMultiplier: 1
 --- !u!114 &581450553150658279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +304,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashSpriteUsingMaterial
   flashMaterial: {fileID: 2100000, guid: 4c255d06f51c0414e9006be812578ba9, type: 2}
+--- !u!114 &1800938627218413061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164301083414174608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b096dc03168424488e43f43aab3b6e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlimeKingStateVisual
+  enemyAttackBehaviour: {fileID: 4409018762775306443}
+  eyeSpriteResolver: {fileID: 3043877357171005569}
+  eyeCategory: Eye
+  normalEyeLabel: Normal
+  enragedEyeLabel: Enraged
+  stunnedEyeLabel: Stunned
 --- !u!1 &7655192076060876005
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,6 +563,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1042433663895973915, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
+    - {fileID: 9076625663292999965, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
       insertIndex: -1
