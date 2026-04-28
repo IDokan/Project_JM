@@ -18,10 +18,15 @@ public class EnemyAttackMotion : MonoBehaviour
     [Header("Wiring")]
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
 
+    [Header("SFX")]
+    [SerializeField] protected AudioCueSO swingSfx;
+    [SerializeField] protected AudioCueSO impactSfx;
+
     // The durations can be changed in near future
     //      to display different pause for different attack logics.
     [SerializeField] protected float moveDuration = 0.1f;
     [SerializeField] protected float pauseDuration = 0.2f;
+    [SerializeField, Range(0f, 1f)] protected float moveOffsetMultiplier = 1f;
 
     protected static readonly int DamagedTrig = Animator.StringToHash("DamagedTrig");
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
@@ -66,7 +71,8 @@ public class EnemyAttackMotion : MonoBehaviour
 
         _attackDone = false;
 
-        Move(moveOffset, moveDuration, pauseDuration, RaiseHit, RaiseAttackEnd);
+        AudioManager.Instance.PlayActionSFX(swingSfx);
+        Move(moveOffset * moveOffsetMultiplier, moveDuration, pauseDuration, RaiseHit, RaiseAttackEnd);
 
         _animator.ResetTrigger(AttackTrig);
         _animator.SetTrigger(AttackTrig);
@@ -119,6 +125,7 @@ public class EnemyAttackMotion : MonoBehaviour
 
     public void RaiseHit()
     {
+        AudioManager.Instance.PlayActionSFX(impactSfx);
         OnHit?.Invoke();
     }
 
