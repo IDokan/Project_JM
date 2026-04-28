@@ -15,6 +15,9 @@ public class EnemyAttackBehaviour : MonoBehaviour
     [SerializeField] protected EnemyAttackEventChannel attackChannel;
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
 
+    [Header("SFX")]
+    [SerializeField] protected AudioCueSO enrageSfx;
+
     [SerializeField] protected StunRepresenter stunRepresenter;
     [SerializeField, Min(0.001f)] protected float baseCooldown = 5f;
 
@@ -28,13 +31,21 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     protected Coroutine _enrangeRoutine;
     protected float _enrageTimer;
-    [SerializeField, Min(10f)] protected float _enrageDelay = 30f;
-    public float EnrageDelay => _enrageDelay;
+    [SerializeField, Min(10f)] protected float enrageDelay = 30f;
+    public float EnrageDelay => enrageDelay;
 
     public event Action<float, float> OnEnrageTimeChanged;
 
+    public event Action OnEnraged;
+    public event Action OnStunBegin;
+    public event Action OnStunEnd;
+
+    protected bool _isEnraged = false;
     protected bool _isStunned = false;
     protected Coroutine _stunRoutine = null;
+
+    public bool IsEnraged => _isEnraged;
+    public bool IsStunned => _isStunned;
 
     protected void OnEnable()
     {
@@ -43,10 +54,10 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
         characterDeathEventChannel.OnRaised += OnDied;
     }
+
     protected void OnDisable()
     {
         StopRoutines();
-
 
         characterDeathEventChannel.OnRaised -= OnDied;
     }
@@ -56,25 +67,17 @@ public class EnemyAttackBehaviour : MonoBehaviour
         _currentCooldown = baseCooldown;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
     public void DelayAttack(float delay)
     {
         UpdateAttackTimer(delay);
     }
 
-    // Update is called once per frame
     protected IEnumerator Loop()
     {
         while (true)
         {
             _attackTimer = _currentCooldown;
 
-            // Countdown
             while (_attackTimer > 0f)
             {
                 if (!_isStunned)
@@ -94,11 +97,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
         attackChannel.Raise();
     }
 
-    protected float GetCooldown()
-    {
-        return _currentCooldown;
-    }
-
     protected void UpdateAttackTimer(float value)
     {
         _attackTimer = Mathf.Clamp(_attackTimer + value, 0f, _currentCooldown);
@@ -107,28 +105,30 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     protected void Enrage()
     {
+        _isEnraged = true;
         _currentCooldown *= 0.25f;
         OnAttackTimerChanged?.Invoke(_attackTimer, _currentCooldown);
+        AudioManager.Instance.PlayActionSFX(enrageSfx);
+        OnEnraged?.Invoke();
     }
 
     protected IEnumerator EnrageAfterDelay()
     {
-        _enrageTimer = _enrageDelay;
-        OnEnrageTimeChanged?.Invoke(_enrageTimer, _enrageDelay);
+        _enrageTimer = enrageDelay;
+        OnEnrageTimeChanged?.Invoke(_enrageTimer, enrageDelay);
 
-        // Countdown
         while (_enrageTimer > 0f)
         {
             if (!_isStunned)
             {
                 _enrageTimer -= GlobalTimeManager.DeltaTime;
-                OnEnrageTimeChanged?.Invoke(_enrageTimer, _enrageDelay);
+                OnEnrageTimeChanged?.Invoke(_enrageTimer, enrageDelay);
             }
 
             yield return null;
         }
 
-        OnEnrageTimeChanged?.Invoke(0, _enrageDelay);
+        OnEnrageTimeChanged?.Invoke(0, enrageDelay);
         Enrage();
     }
 
@@ -145,12 +145,14 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected IEnumerator StunRoutine(float duration)
     {
         _isStunned = true;
+        OnStunBegin?.Invoke();
 
         stunRepresenter.Stun(duration);
 
         yield return GlobalTimeManager.WaitForGlobalSeconds(duration);
 
         _isStunned = false;
+        OnStunEnd?.Invoke();
     }
 
     void StopRoutines()
