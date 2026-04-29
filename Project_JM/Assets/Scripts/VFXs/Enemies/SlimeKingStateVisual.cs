@@ -12,6 +12,7 @@ public class SlimeKingStateVisual : MonoBehaviour
 {
     [SerializeField] private EnemyAttackBehaviour enemyAttackBehaviour;
     [SerializeField] private SpriteResolver eyeSpriteResolver;
+    [SerializeField] private ParticleSystem enrageParticle;
 
     [Header("Eye Labels")]
     [SerializeField] private string eyeCategory;
@@ -24,6 +25,7 @@ public class SlimeKingStateVisual : MonoBehaviour
         enemyAttackBehaviour.OnEnraged += OnEnraged;
         enemyAttackBehaviour.OnStunBegin += OnStunBegin;
         enemyAttackBehaviour.OnStunEnd += OnStunEnd;
+        enemyAttackBehaviour.OnDied += OnEnemyDied;
     }
 
     private void OnDisable()
@@ -31,11 +33,13 @@ public class SlimeKingStateVisual : MonoBehaviour
         enemyAttackBehaviour.OnEnraged -= OnEnraged;
         enemyAttackBehaviour.OnStunBegin -= OnStunBegin;
         enemyAttackBehaviour.OnStunEnd -= OnStunEnd;
+        enemyAttackBehaviour.OnDied -= OnEnemyDied;
     }
 
     private void OnEnraged()
     {
         SetEye(enragedEyeLabel);
+        enrageParticle?.Play();
     }
 
     private void OnStunBegin()
@@ -46,6 +50,12 @@ public class SlimeKingStateVisual : MonoBehaviour
     private void OnStunEnd()
     {
         SetEye(enemyAttackBehaviour.IsEnraged ? enragedEyeLabel : normalEyeLabel);
+    }
+
+    private void OnEnemyDied()
+    {
+        SetEye(normalEyeLabel);
+        enrageParticle?.Stop();
     }
 
     private void SetEye(string label)
