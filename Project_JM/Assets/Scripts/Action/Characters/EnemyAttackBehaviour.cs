@@ -39,6 +39,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     public event Action OnEnraged;
     public event Action OnStunBegin;
     public event Action OnStunEnd;
+    public event Action OnDied;
 
     protected bool _isEnraged = false;
     protected bool _isStunned = false;
@@ -52,14 +53,14 @@ public class EnemyAttackBehaviour : MonoBehaviour
         _loop = StartCoroutine(Loop());
         _enrangeRoutine = StartCoroutine(EnrageAfterDelay());
 
-        characterDeathEventChannel.OnRaised += OnDied;
+        characterDeathEventChannel.OnRaised += HandleDeath;
     }
 
     protected void OnDisable()
     {
         StopRoutines();
 
-        characterDeathEventChannel.OnRaised -= OnDied;
+        characterDeathEventChannel.OnRaised -= HandleDeath;
     }
 
     protected void Awake()
@@ -174,8 +175,13 @@ public class EnemyAttackBehaviour : MonoBehaviour
         }
     }
 
-    protected void OnDied(CharacterStatus stat)
+    protected void HandleDeath(CharacterStatus stat)
     {
         StopRoutines();
+
+        if (stat.TryGetComponent<EnemyTag>(out _))
+        {
+            OnDied?.Invoke();
+        }
     }
 }
