@@ -2,7 +2,7 @@
 // Copyright (c) 12/24/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EnemyAttackMotion.cs
-// Summary: A script for enemy attack motion.
+// Summary: Universal enemy animation controller — drives Animator and delegates state visuals to EnemyStateVisual.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using DG.Tweening;
@@ -16,28 +16,24 @@ public class EnemyAttackMotion : MonoBehaviour
     public event Action OnHit;
 
     [Header("Wiring")]
-    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+    [SerializeField] protected EnemyAttackBehaviour enemyAttackBehaviour;
+    [SerializeField] protected EnemyStateVisual stateVisual;
 
     [Header("SFX")]
     [SerializeField] protected AudioCueSO swingSfx;
     [SerializeField] protected AudioCueSO impactSfx;
 
-    // The durations can be changed in near future
-    //      to display different pause for different attack logics.
+    [Header("Damaged Motion")]
     [SerializeField] protected float moveDuration = 0.1f;
     [SerializeField] protected float pauseDuration = 0.2f;
-    [SerializeField, Range(0f, 1f)] protected float moveOffsetMultiplier = 1f;
 
     protected static readonly int DamagedTrig = Animator.StringToHash("DamagedTrig");
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
-    protected static readonly int TierInt = Animator.StringToHash("TierInt");
+    protected static readonly int DeadTrig = Animator.StringToHash("DeadTrig");
 
     protected Vector3 _originalPosition;
     protected Sequence _moveSequence;
-
     protected float _timeScaler = 1f;
-
-
     protected bool _attackDone = true;
 
     protected void Awake()
@@ -53,13 +49,19 @@ public class EnemyAttackMotion : MonoBehaviour
     protected void OnEnable()
     {
         GlobalTimeManager.OnScaleChanged += ApplyGlobalTweenScale;
-        characterDeathEventChannel.OnRaised += OnCharacterDied;
+        enemyAttackBehaviour.OnEnraged += OnEnraged;
+        enemyAttackBehaviour.OnStunBegin += OnStunBegin;
+        enemyAttackBehaviour.OnStunEnd += OnStunEnd;
+        enemyAttackBehaviour.OnDied += OnDied;
     }
 
     protected void OnDisable()
     {
         GlobalTimeManager.OnScaleChanged -= ApplyGlobalTweenScale;
-        characterDeathEventChannel.OnRaised -= OnCharacterDied;
+        enemyAttackBehaviour.OnEnraged -= OnEnraged;
+        enemyAttackBehaviour.OnStunBegin -= OnStunBegin;
+        enemyAttackBehaviour.OnStunEnd -= OnStunEnd;
+        enemyAttackBehaviour.OnDied -= OnDied;
     }
 
     public void PlayAttackMotion(Vector3 moveOffset)
@@ -72,10 +74,9 @@ public class EnemyAttackMotion : MonoBehaviour
         _attackDone = false;
 
         AudioManager.Instance.PlayActionSFX(swingSfx);
-        Move(moveOffset * moveOffsetMultiplier, moveDuration, pauseDuration, RaiseHit, RaiseAttackEnd);
-
         _animator.ResetTrigger(AttackTrig);
         _animator.SetTrigger(AttackTrig);
+        stateVisual?.OnAttack(moveOffset);
     }
 
     public void PlayDamagedMotion(Vector3 moveOffset)
@@ -85,15 +86,14 @@ public class EnemyAttackMotion : MonoBehaviour
             return;
         }
 
-        Move(moveOffset, moveDuration, pauseDuration, null, null);
+        Move(moveOffset, null, null);
 
         _animator.ResetTrigger(DamagedTrig);
         _animator.SetTrigger(DamagedTrig);
     }
 
-    protected void Move(Vector3 offset, float moveDuration, float pauseDuration, Action onReachedTarget, Action onSequenceComplete)
+    protected void Move(Vector3 offset, Action onReachedTarget, Action onSequenceComplete)
     {
-        // If previous sequence has not finished yet, kill it.
         if (_moveSequence != null && _moveSequence.IsActive())
         {
             _moveSequence.Kill();
@@ -101,13 +101,12 @@ public class EnemyAttackMotion : MonoBehaviour
 
         Vector3 target = _originalPosition + offset;
 
-        // Call OnHit.Invoke() after the first append ended.
         _moveSequence = DOTween.Sequence();
         _moveSequence.Append(transform.DOLocalMove(target, moveDuration).SetEase(Ease.OutQuad))
             .AppendCallback(() => onReachedTarget?.Invoke())
             .AppendInterval(pauseDuration)
             .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
-            .OnComplete(()=>onSequenceComplete?.Invoke())
+            .OnComplete(() => onSequenceComplete?.Invoke())
             .SetLink(gameObject);
 
         _moveSequence.timeScale = _timeScaler;
@@ -123,26 +122,42 @@ public class EnemyAttackMotion : MonoBehaviour
         }
     }
 
-    public void RaiseHit()
+    // Called via Animation Event at the frame the attack connects.
+    public void AnimEvent_RaiseHit()
     {
         AudioManager.Instance.PlayActionSFX(impactSfx);
         OnHit?.Invoke();
     }
 
-    public void RaiseAttackEnd()
+    // Called via Animation Event at the last frame of the attack clip.
+    public void AnimEvent_RaiseAttackEnd()
     {
         _attackDone = true;
     }
 
-
-    protected void OnCharacterDied(CharacterStatus characterStat)
+    private void OnEnraged()
     {
-        if (characterStat.TryGetComponent<EnemyTag>(out _))
+        stateVisual?.OnEnraged();
+    }
+
+    private void OnStunBegin()
+    {
+        stateVisual?.OnStunBegin();
+    }
+
+    private void OnStunEnd()
+    {
+        stateVisual?.OnStunEnd();
+    }
+
+    private void OnDied()
+    {
+        if (_moveSequence != null && _moveSequence.IsActive())
         {
-            if (_moveSequence != null && _moveSequence.IsActive())
-            {
-                _moveSequence.Kill();
-            }
+            _moveSequence.Kill();
         }
+
+        _animator.SetTrigger(DeadTrig);
+        stateVisual?.OnDied();
     }
 }
