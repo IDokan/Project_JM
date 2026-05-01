@@ -328,7 +328,7 @@ MonoBehaviour:
   moveDuration: 0.2
   pauseDuration: 0.05
   moveOffsetMultiplier: 0.7
-  readyOffsetMultiplier: 0.25
+  readyOffsetMultiplier: 0.15
 --- !u!1 &7655192076060876005
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,6 +618,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4c255d06f51c0414e9006be812578ba9, type: 2}
+    - target: {fileID: 4257508509235537429, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.066592336
+      objectReference: {fileID: 0}
+    - target: {fileID: 4257508509235537429, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.0343819
+      objectReference: {fileID: 0}
     - target: {fileID: 4752976386374262124, guid: b971b79afc494dc43a0be1a05acd02b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.021147843
