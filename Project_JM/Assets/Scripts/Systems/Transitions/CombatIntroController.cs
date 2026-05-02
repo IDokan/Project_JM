@@ -7,6 +7,7 @@
 //                      Combat intro conducts below tasks:
 //                                          1. Move party to an arrival position.
 //                                          2. Invoke camera mover and enemy spawner. (Can be done by event channel though)
+//                                          3. Play and fade in combat BGM.
 
 
 using System.Collections;

@@ -7,6 +7,7 @@
 //                      Defeated logic conducts below tasks:
 //                                          1. Move party down.
 //                                          2. Move enemy&UI aside.
+//                                          3. Fade out combat BGM.
 
 using System.Collections;
 using UnityEngine;
