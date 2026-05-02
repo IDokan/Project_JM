@@ -24,11 +24,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private int puzzleSfxPoolSize = 4;
     [SerializeField] private int actionSfxPoolSize = 8;
 
-    private AudioSource _musicSourceA;
-    private AudioSource _musicSourceB;
-    private Coroutine _fadeCoroutineA;
-    private Coroutine _fadeCoroutineB;
-    private bool _sourceAIsCurrent = true;
+    [SerializeField] private AnimationCurve fadeCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+
+    private AudioSource _currentMusicSource;
+    private AudioSource _otherMusicSource;
+    private Coroutine _currentFadeCoroutine;
+    private Coroutine _otherFadeCoroutine;
 
     private AudioSource[] _uiSfxPool;
     private AudioSource[] _puzzleSfxPool;
@@ -37,9 +38,6 @@ public class AudioManager : MonoBehaviour
     private float[] _uiSfxStartTimes;
     private float[] _puzzleSfxStartTimes;
     private float[] _actionSfxStartTimes;
-
-    private AudioSource CurrentMusicSource => _sourceAIsCurrent ? _musicSourceA : _musicSourceB;
-    private AudioSource OtherMusicSource => _sourceAIsCurrent ? _musicSourceB : _musicSourceA;
 
     private void Awake()
     {
@@ -52,8 +50,8 @@ public class AudioManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        _musicSourceA = CreateMusicSource("MusicSourceA");
-        _musicSourceB = CreateMusicSource("MusicSourceB");
+        _currentMusicSource = CreateMusicSource("MusicSourceA");
+        _otherMusicSource = CreateMusicSource("MusicSourceB");
 
         _uiSfxPool = CreatePool(uiSfxPoolSize, "UISfx", uiSfxMixerGroup);
         _puzzleSfxPool = CreatePool(puzzleSfxPoolSize, "PuzzleSfx", puzzleSfxMixerGroup);
@@ -71,52 +69,54 @@ public class AudioManager : MonoBehaviour
         if (cue == null) return;
 
         StopAllFadeCoroutines();
-        _musicSourceA.Stop();
-        _musicSourceB.Stop();
-        _musicSourceA.volume = 0f;
-        _musicSourceB.volume = 0f;
+        _currentMusicSource.Stop();
+        _otherMusicSource.Stop();
+        _currentMusicSource.volume = 0f;
+        _otherMusicSource.volume = 0f;
 
-        _sourceAIsCurrent = true;
-        ConfigureMusicSource(_musicSourceA, cue);
-        _musicSourceA.volume = cue.Volume;
-        _musicSourceA.Play();
+        ConfigureMusicSource(_currentMusicSource, cue);
+        _currentMusicSource.volume = cue.Volume;
+        _currentMusicSource.Play();
     }
 
     public void StopBGM()
     {
         StopAllFadeCoroutines();
-        _musicSourceA.Stop();
-        _musicSourceB.Stop();
-        _musicSourceA.volume = 0f;
-        _musicSourceB.volume = 0f;
+        _currentMusicSource.Stop();
+        _otherMusicSource.Stop();
+        _currentMusicSource.volume = 0f;
+        _otherMusicSource.volume = 0f;
     }
 
     public void FadeOutBGM(float duration)
     {
-        StopFadeCoroutine(_sourceAIsCurrent);
-        if (_sourceAIsCurrent)
-            _fadeCoroutineA = StartCoroutine(FadeCoroutine(_musicSourceA, 0f, duration));
-        else
-            _fadeCoroutineB = StartCoroutine(FadeCoroutine(_musicSourceB, 0f, duration));
+        if (!_currentMusicSource.isPlaying)
+        {
+            return;
+        }
+        if (_currentFadeCoroutine != null)
+        {
+            StopCoroutine(_currentFadeCoroutine);
+        }
+        _currentFadeCoroutine = StartCoroutine(FadeCoroutine(_currentMusicSource, 0f, duration, fadeCurve));
     }
 
     public void FadeInBGM(AudioCueSO cue, float duration)
     {
         if (cue == null) return;
 
-        StopFadeCoroutine(!_sourceAIsCurrent);
-        AudioSource target = OtherMusicSource;
-        target.Stop();
-        ConfigureMusicSource(target, cue);
-        target.volume = 0f;
-        target.Play();
+        if (_otherFadeCoroutine != null)
+        {
+            StopCoroutine(_otherFadeCoroutine);
+        }
+        _otherMusicSource.Stop();
+        ConfigureMusicSource(_otherMusicSource, cue);
+        _otherMusicSource.volume = 0f;
+        _otherMusicSource.Play();
+        FadeOutBGM(duration);
+        _otherFadeCoroutine = StartCoroutine(FadeCoroutine(_otherMusicSource, cue.Volume, duration, fadeCurve));
 
-        if (!_sourceAIsCurrent)
-            _fadeCoroutineA = StartCoroutine(FadeCoroutine(_musicSourceA, cue.Volume, duration));
-        else
-            _fadeCoroutineB = StartCoroutine(FadeCoroutine(_musicSourceB, cue.Volume, duration));
-
-        _sourceAIsCurrent = !_sourceAIsCurrent;
+        SwapMusicSources();
     }
 
     // ── SFX ──────────────────────────────────────────────────────────────────
@@ -187,7 +187,7 @@ public class AudioManager : MonoBehaviour
         source.Play();
     }
 
-    private IEnumerator FadeCoroutine(AudioSource source, float targetVolume, float duration)
+    private IEnumerator FadeCoroutine(AudioSource source, float targetVolume, float duration, AnimationCurve curve)
     {
         float startVolume = source.volume;
         float elapsed = 0f;
@@ -195,7 +195,7 @@ public class AudioManager : MonoBehaviour
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
-            source.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / duration);
+            source.volume = Mathf.Lerp(startVolume, targetVolume, curve.Evaluate(elapsed / duration));
             yield return null;
         }
 
@@ -205,24 +205,16 @@ public class AudioManager : MonoBehaviour
             source.Stop();
     }
 
-    private void StopFadeCoroutine(bool isMusicSourceA)
+    private void SwapMusicSources()
     {
-        if (isMusicSourceA && _fadeCoroutineA != null)
-        {
-            StopCoroutine(_fadeCoroutineA);
-            _fadeCoroutineA = null;
-        }
-        else if (!isMusicSourceA && _fadeCoroutineB != null)
-        {
-            StopCoroutine(_fadeCoroutineB);
-            _fadeCoroutineB = null;
-        }
+        (_currentMusicSource, _otherMusicSource) = (_otherMusicSource, _currentMusicSource);
+        (_currentFadeCoroutine, _otherFadeCoroutine) = (_otherFadeCoroutine, _currentFadeCoroutine);
     }
 
     private void StopAllFadeCoroutines()
     {
-        if (_fadeCoroutineA != null) { StopCoroutine(_fadeCoroutineA); _fadeCoroutineA = null; }
-        if (_fadeCoroutineB != null) { StopCoroutine(_fadeCoroutineB); _fadeCoroutineB = null; }
+        if (_currentFadeCoroutine != null) { StopCoroutine(_currentFadeCoroutine); _currentFadeCoroutine = null; }
+        if (_otherFadeCoroutine != null) { StopCoroutine(_otherFadeCoroutine); _otherFadeCoroutine = null; }
     }
 
     private void ConfigureMusicSource(AudioSource source, AudioCueSO cue)
