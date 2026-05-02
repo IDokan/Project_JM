@@ -41,6 +41,7 @@ public class SceneTransition : MonoBehaviour
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName);
         loadOp.allowSceneActivation = false;
 
+        AudioManager.Instance.FadeOutBGM(fadeDuration);
         fadeOverlay.DOFade(1f, fadeDuration)
             .SetUpdate(true)
             .OnComplete(() => loadOp.allowSceneActivation = true);
@@ -50,6 +51,7 @@ public class SceneTransition : MonoBehaviour
     {
         playerInput.DeactivateInput();
 
+        AudioManager.Instance.FadeOutBGM(fadeDuration);
         fadeOverlay.DOFade(1f, fadeDuration)
             .SetUpdate(true)
             .OnComplete(() => Application.Quit());
