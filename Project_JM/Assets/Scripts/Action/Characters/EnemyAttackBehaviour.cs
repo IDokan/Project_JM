@@ -108,7 +108,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
         _isEnraged = true;
         _currentCooldown *= 0.25f;
         OnAttackTimerChanged?.Invoke(_attackTimer, _currentCooldown);
-        AudioManager.Instance.PlayActionSFX(enrageSfx);
+        AudioManager.Instance.PlayEnemyActionSFX(enrageSfx);
         OnEnraged?.Invoke();
     }
 

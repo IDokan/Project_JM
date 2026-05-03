@@ -73,7 +73,7 @@ public class EnemyAttackMotion : MonoBehaviour
 
         _attackDone = false;
 
-        AudioManager.Instance.PlayActionSFX(swingSfx);
+        AudioManager.Instance.PlayEnemyActionSFX(swingSfx);
         _animator.ResetTrigger(AttackTrig);
         _animator.SetTrigger(AttackTrig);
         stateVisual?.OnAttack(moveOffset);
@@ -125,7 +125,7 @@ public class EnemyAttackMotion : MonoBehaviour
     // Called via Animation Event at the frame the attack connects.
     public void AnimEvent_RaiseHit()
     {
-        AudioManager.Instance.PlayActionSFX(impactSfx);
+        AudioManager.Instance.PlayEnemyActionSFX(impactSfx);
         OnHit?.Invoke();
     }
 

@@ -5,6 +5,8 @@
 // Summary: Singleton audio manager that persists across scenes. Manages two BGM sources
 //          for crossfading and three SFX pools (UI, Puzzle, Action) with per-category
 //          mixer group routing. BGM fades use unscaled time.
+//          Enemy action SFX routes through a dedicated child group so GlobalTimeManager
+//          time scale changes can pitch-shift the group without touching ally sounds.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
@@ -19,10 +21,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup uiSfxMixerGroup;
     [SerializeField] private AudioMixerGroup puzzleSfxMixerGroup;
     [SerializeField] private AudioMixerGroup actionSfxMixerGroup;
+    [SerializeField] private AudioMixerGroup enemyActionSfxMixerGroup;
 
     [SerializeField] private int uiSfxPoolSize = 4;
     [SerializeField] private int puzzleSfxPoolSize = 4;
     [SerializeField] private int actionSfxPoolSize = 8;
+    [SerializeField] private int enemyActionSfxPoolSize = 4;
 
     [SerializeField] private AnimationCurve fadeCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
@@ -34,10 +38,18 @@ public class AudioManager : MonoBehaviour
     private AudioSource[] _uiSfxPool;
     private AudioSource[] _puzzleSfxPool;
     private AudioSource[] _actionSfxPool;
+    private AudioSource[] _enemyActionSfxPool;
 
     private float[] _uiSfxStartTimes;
     private float[] _puzzleSfxStartTimes;
     private float[] _actionSfxStartTimes;
+    private float[] _enemyActionSfxStartTimes;
+    private float[] _enemyActionSfxBasePitches;
+
+    private float _timeScaler = 1f;
+
+    // Pitch Shifter pitch input range is 0.5–2; compensation (1/newScale) breaks outside that range.
+    private const string EnemyPitchShiftParam = "EnemyActionSFXPitchShift";
 
     private void Awake()
     {
@@ -56,11 +68,17 @@ public class AudioManager : MonoBehaviour
         _uiSfxPool = CreatePool(uiSfxPoolSize, "UISfx", uiSfxMixerGroup);
         _puzzleSfxPool = CreatePool(puzzleSfxPoolSize, "PuzzleSfx", puzzleSfxMixerGroup);
         _actionSfxPool = CreatePool(actionSfxPoolSize, "ActionSfx", actionSfxMixerGroup);
+        _enemyActionSfxPool = CreatePool(enemyActionSfxPoolSize, "EnemyActionSfx", enemyActionSfxMixerGroup);
 
         _uiSfxStartTimes = new float[uiSfxPoolSize];
         _puzzleSfxStartTimes = new float[puzzleSfxPoolSize];
         _actionSfxStartTimes = new float[actionSfxPoolSize];
+        _enemyActionSfxStartTimes = new float[enemyActionSfxPoolSize];
+        _enemyActionSfxBasePitches = new float[enemyActionSfxPoolSize];
     }
+
+    private void OnEnable()  => GlobalTimeManager.OnScaleChanged += OnTimeScaleChanged;
+    private void OnDisable() => GlobalTimeManager.OnScaleChanged -= OnTimeScaleChanged;
 
     // ── BGM ──────────────────────────────────────────────────────────────────
 
@@ -125,20 +143,38 @@ public class AudioManager : MonoBehaviour
     {
         foreach (var source in _puzzleSfxPool) source.Pause();
         foreach (var source in _actionSfxPool) source.Pause();
+        foreach (var source in _enemyActionSfxPool) source.Pause();
     }
 
     public void ResumeScaledSFX()
     {
         foreach (var source in _puzzleSfxPool) source.UnPause();
         foreach (var source in _actionSfxPool) source.UnPause();
+        foreach (var source in _enemyActionSfxPool) source.UnPause();
     }
 
     public void PlayUISFX(AudioCueSO cue) => PlayOnPool(_uiSfxPool, _uiSfxStartTimes, cue);
     public void PlayPuzzleSFX(AudioCueSO cue) => PlayOnPool(_puzzleSfxPool, _puzzleSfxStartTimes, cue);
     public void PlayPuzzleSFX(AudioCueSO cue, int clipIndex) => PlayOnPool(_puzzleSfxPool, _puzzleSfxStartTimes, cue, clipIndex);
     public void PlayActionSFX(AudioCueSO cue) => PlayOnPool(_actionSfxPool, _actionSfxStartTimes, cue);
+    public void PlayEnemyActionSFX(AudioCueSO cue) => PlayOnEnemyPool(cue);
 
     // ── Private helpers ───────────────────────────────────────────────────────
+
+    private void OnTimeScaleChanged(float newScale)
+    {
+        _timeScaler = newScale;
+
+        enemyActionSfxMixerGroup.audioMixer.SetFloat(EnemyPitchShiftParam, 1f / newScale);
+
+        for (int i = 0; i < _enemyActionSfxPool.Length; i++)
+        {
+            if (_enemyActionSfxPool[i].isPlaying)
+            {
+                _enemyActionSfxPool[i].pitch = _enemyActionSfxBasePitches[i] * newScale;
+            }
+        }
+    }
 
     private void PlayOnPool(AudioSource[] pool, float[] startTimes, AudioCueSO cue)
     {
@@ -178,6 +214,44 @@ public class AudioManager : MonoBehaviour
         startTimes[oldestIndex] = Time.unscaledTime;
     }
 
+    private void PlayOnEnemyPool(AudioCueSO cue)
+    {
+        if (cue == null) return;
+
+        AudioClip clip = cue.GetClip();
+        if (clip == null) return;
+
+        for (int i = 0; i < _enemyActionSfxPool.Length; i++)
+        {
+            if (_enemyActionSfxPool[i].isPlaying) continue;
+
+            PlayOnEnemySource(_enemyActionSfxPool[i], cue, clip, i);
+            _enemyActionSfxStartTimes[i] = Time.unscaledTime;
+            return;
+        }
+
+        int oldestIndex = 0;
+        for (int i = 1; i < _enemyActionSfxPool.Length; i++)
+        {
+            if (_enemyActionSfxStartTimes[i] < _enemyActionSfxStartTimes[oldestIndex])
+                oldestIndex = i;
+        }
+
+        _enemyActionSfxPool[oldestIndex].Stop();
+        PlayOnEnemySource(_enemyActionSfxPool[oldestIndex], cue, clip, oldestIndex);
+        _enemyActionSfxStartTimes[oldestIndex] = Time.unscaledTime;
+    }
+
+    private void PlayOnEnemySource(AudioSource source, AudioCueSO cue, AudioClip clip, int index)
+    {
+        source.clip = clip;
+        source.volume = cue.Volume;
+        _enemyActionSfxBasePitches[index] = cue.GetPitch();
+        source.pitch = _enemyActionSfxBasePitches[index] * _timeScaler;
+        source.loop = cue.Loop;
+        source.Play();
+    }
+
     private void PlayOnSource(AudioSource source, AudioCueSO cue, AudioClip clip)
     {
         source.clip = clip;
@@ -202,7 +276,9 @@ public class AudioManager : MonoBehaviour
         source.volume = targetVolume;
 
         if (targetVolume <= 0f)
+        {
             source.Stop();
+        }
     }
 
     private void SwapMusicSources()
