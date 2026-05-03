@@ -498,7 +498,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -1917351183
-  m_SortingOrder: 20
+  m_SortingOrder: 40
   m_TargetDisplay: 0
 --- !u!1 &519420028
 GameObject:
@@ -830,6 +830,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db51d9973d185547abca64e111762d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatus
+--- !u!114 &1266238553 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 343100328019067674, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+  m_PrefabInstance: {fileID: 6231230550165760674}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d08f56097d5834dad122945caafd76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RetryMenu
 --- !u!114 &1301366580 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8348092773870949786, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -989,6 +1000,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0e406a2a8b5d54499ae203dcdcf252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlightManager
+--- !u!114 &1635851511 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1609911731291094093, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+  m_PrefabInstance: {fileID: 6231230550165760674}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6690b9b68d70f4b824d7588de2c1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConfirmationDialog
 --- !u!4 &1687414569 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4476003029408211714, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
@@ -1220,10 +1242,12 @@ MonoBehaviour:
   uiSfxMixerGroup: {fileID: 3471157596913494063, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
   puzzleSfxMixerGroup: {fileID: -2903586513060504370, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
   actionSfxMixerGroup: {fileID: -6774330949474060271, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
+  enemyActionSfxMixerGroup: {fileID: 5482758574671668386, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
   uiSfxPoolSize: 4
   puzzleSfxPoolSize: 4
   actionSfxPoolSize: 8
-  fadeInCurve:
+  enemyActionSfxPoolSize: 4
+  fadeCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -1239,30 +1263,6 @@ MonoBehaviour:
       time: 1
       value: 1
       inSlope: 1
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  fadeOutCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
@@ -2427,9 +2427,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6231230550165760676}
     - target: {fileID: 2770614653617851893, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: retryMenu
+      value: 
+      objectReference: {fileID: 1266238553}
+    - target: {fileID: 2770614653617851893, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: partyTransform
       value: 
       objectReference: {fileID: 1687414569}
+    - target: {fileID: 2770614653617851893, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: retryShowDelay
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2770614653617851893, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: retryDefaultSelectable
       value: 
@@ -2538,6 +2546,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 343100328019067674, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 1754810531}
+    - target: {fileID: 343100328019067674, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: sceneTransition
+      value: 
+      objectReference: {fileID: 1312642492}
+    - target: {fileID: 343100328019067674, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: confirmationDialog
+      value: 
+      objectReference: {fileID: 1635851511}
     - target: {fileID: 399603438792350688, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2840,7 +2860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4112706472279522872, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4295470772965885001, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3573,22 +3593,6 @@ PrefabInstance:
     - target: {fileID: 7278162365482035236, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7302611939392974178, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1104298762}
-    - target: {fileID: 7302611939392974178, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartIntroTransition
-      objectReference: {fileID: 0}
-    - target: {fileID: 7302611939392974178, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CombatIntroController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7302611939392974178, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7334086988840018300, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x
