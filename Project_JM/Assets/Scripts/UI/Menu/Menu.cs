@@ -38,10 +38,7 @@ public class Menu : MonoBehaviour, ICancelHandler
         {
             if (showOnAwake)
             {
-                _canvasGroup.alpha = 1f;
-                _canvasGroup.interactable = true;
-                _canvasGroup.blocksRaycasts = true;
-                transform.localScale = Vector3.one;
+                Show();
             }
             else
             {
