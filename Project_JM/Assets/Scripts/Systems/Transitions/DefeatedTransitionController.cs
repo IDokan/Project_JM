@@ -11,18 +11,12 @@
 
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.UI;
-using UnityEngine.UI;
-
+using UnityEngine.InputSystem;
 
 public class DefeatedTransitionController : TransitionController
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
-
-
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
-
 
     [Header("Party")]
     [SerializeField] protected Transform partyTransform;
@@ -36,11 +30,9 @@ public class DefeatedTransitionController : TransitionController
     [SerializeField] protected Transform boardTransform;
     [SerializeField] protected Vector3 boardArrivalPosition;
 
-    [Header("UI Positions")]
-    [SerializeField] protected RectTransform[] uiTransforms;
-    [SerializeField] protected Vector3[] uiArrivalPositions;
-    [SerializeField] protected Selectable retryDefaultSelectable;
-
+    [Header("Retry Menu")]
+    [SerializeField] private RetryMenu retryMenu;
+    [SerializeField] private float retryShowDelay = 1f;
 
     [Header("Timing")]
     [SerializeField] protected float partyMoveDelay = 1f;
@@ -49,8 +41,6 @@ public class DefeatedTransitionController : TransitionController
     [SerializeField] protected float enemyMoveDuration = 1f;
     [SerializeField] protected float boardMoveDelay = 1f;
     [SerializeField] protected float boardMoveDuration = 1f;
-    [SerializeField] protected float uiMoveDelay = 1f;
-    [SerializeField] protected float uiMoveDuration = 1f;
 
     Transform enemyTransform = null;
     protected Vector3 _enemyOffsetToCamera;
@@ -62,8 +52,6 @@ public class DefeatedTransitionController : TransitionController
         partyYOffset = partyYOffset - cameraTransform.position.y;
         _enemyOffsetToCamera = enemyArrivalPosition - cameraTransform.position;
     }
-
-
 
     protected void OnEnable()
     {
@@ -98,15 +86,12 @@ public class DefeatedTransitionController : TransitionController
         {
             StartCoroutine(BoardRoutine());
         }
-        if (uiTransforms.Length > 0 && uiArrivalPositions.Length == uiTransforms.Length)
-        {
-            StartCoroutine(UIRoutine());
-        }
+
+        StartCoroutine(ShowRetryMenuRoutine());
     }
 
     protected IEnumerator PartyRoutine()
     {
-
         Vector3 partyStartPosition = partyTransform.position;
         Vector3 partyArrivalPosition = partyStartPosition + new Vector3(0f, partyYOffset, 0);
 
@@ -138,38 +123,10 @@ public class DefeatedTransitionController : TransitionController
         transitionEventChannel.Raise(TransitionPhase.EndBoardMoveEnd);
     }
 
-    protected IEnumerator UIRoutine()
+    private IEnumerator ShowRetryMenuRoutine()
     {
-        yield return new WaitForSeconds(uiMoveDelay);
-
-        Vector2[] uiStartPositions = new Vector2[uiTransforms.Length];
-
-        for (int i = 0; i < uiTransforms.Length; i++)
-        {
-            uiStartPositions[i] = uiTransforms[i].anchoredPosition;
-            uiTransforms[i].gameObject.SetActive(true);
-        }
-
-        float t = 0f;
-        while (t < uiMoveDuration)
-        {
-            t += Time.deltaTime;
-
-            for (int i = 0; i < uiTransforms.Length; i++)
-            {
-                RectTransform uiTransform = uiTransforms[i];
-                uiTransform.anchoredPosition = Vector2.Lerp(uiStartPositions[i], uiArrivalPositions[i], t / uiMoveDuration);
-            }
-            yield return null;
-        }
-
-        for (int i = 0; i < uiTransforms.Length; i++)
-        {
-            RectTransform uiTransform = uiTransforms[i];
-            uiTransform.anchoredPosition = uiArrivalPositions[i];
-        }
-        FocusRetryUI();
-
+        yield return new WaitForSeconds(retryShowDelay);
+        retryMenu.Show();
         CompleteTransition();
     }
 
@@ -201,21 +158,17 @@ public class DefeatedTransitionController : TransitionController
                 targetParallaxLayer.SetManualMode();
             }
 
-
             Vector3 startPosition = targetObject.position;
 
             float t = 0f;
             while (t < duration)
             {
                 t += Time.deltaTime;
-
                 targetObject.position = Vector3.Lerp(startPosition, targetPosition, t / duration);
-
                 yield return null;
             }
 
             targetObject.position = targetPosition;
-
 
             if (targetParallaxLayer != null)
             {
@@ -225,36 +178,4 @@ public class DefeatedTransitionController : TransitionController
 
         transitionEventChannel.Raise(eventPhase);
     }
-    protected void FocusRetryUI()
-    {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem == null || !(eventSystem.currentInputModule is InputSystemUIInputModule))
-        {
-            return;
-        }
-
-        if (retryDefaultSelectable == null)
-        {
-            for (int i = 0; i < uiTransforms.Length; i++)
-            {
-                RectTransform uiTransform = uiTransforms[i];
-                if (uiTransform == null)
-                {
-                    continue;
-                }
-
-                retryDefaultSelectable = uiTransform.GetComponentInChildren<Selectable>(true);
-                if (retryDefaultSelectable != null)
-                {
-                    break;
-                }
-            }
-        }
-
-        if (retryDefaultSelectable != null && retryDefaultSelectable.IsActive() && retryDefaultSelectable.IsInteractable())
-        {
-            eventSystem.SetSelectedGameObject(retryDefaultSelectable.gameObject);
-        }
-    }
-
 }
