@@ -33,18 +33,12 @@ public class CombatIntroController : TransitionController
     [SerializeField] protected Vector3[] uiStartPositions;
     [SerializeField] protected Vector3[] uiArrivalPositions;
 
-    [Header("Menu position")]
-    [SerializeField] protected RectTransform menuTransform;
-    [SerializeField] protected Vector3 menuStartPosition;
-    [SerializeField] protected Vector3 menuArrivalPosition;
-
     [Header("Timing")]
     [SerializeField] protected float partyMoveDuration = 5f;
     [SerializeField] protected float boardMoveDelay = 4f;
     [SerializeField] protected float boardMoveDuration = 2f;
     [SerializeField] protected float uiMoveDelay = 5.5f;
     [SerializeField] protected float uiMoveDuration = 1f;
-    [SerializeField] protected float menuMoveDuration = 0.5f;
 
     protected Vector3 _partyStartOffsetToCamera;
     protected Vector3 _partyArrivalOffsetToCamera;
@@ -52,7 +46,6 @@ public class CombatIntroController : TransitionController
     protected Coroutine _partyRoutine = null;
     protected Coroutine _boardRoutine = null;
     protected Coroutine _uiRoutine = null;
-    protected Coroutine _menuRoutine = null;
 
     protected override void Awake()
     {
@@ -182,37 +175,6 @@ public class CombatIntroController : TransitionController
             KillOngoingRoutine(_uiRoutine);
             _uiRoutine = StartCoroutine(UIRoutine());
         }
-
-        if (menuTransform != null)
-        {
-            KillOngoingRoutine(_menuRoutine);
-            _menuRoutine = StartCoroutine(MenuRoutine());
-        }
-    }
-
-    protected IEnumerator MenuRoutine()
-    {
-        if (menuTransform.gameObject.activeSelf == false)
-        {
-            _menuRoutine = null;
-            yield break;
-        }
-
-        menuTransform.anchoredPosition = menuStartPosition;
-
-        float t = 0f;
-        while (t < menuMoveDuration)
-        {
-            t += Time.deltaTime;
-
-            menuTransform.anchoredPosition = Vector2.Lerp(menuStartPosition, menuArrivalPosition, t / menuMoveDuration);
-            yield return null;
-        }
-
-        menuTransform.anchoredPosition = menuArrivalPosition;
-        menuTransform.gameObject.SetActive(false);
-
-        _menuRoutine = null;
     }
 
     protected void KillOngoingRoutine(Coroutine routine)
