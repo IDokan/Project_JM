@@ -90,6 +90,7 @@ public class PauseMenu : Menu
     {
         confirmationDialog.Show(homeConfirmIcon, () =>
         {
+            Hide();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, homeButton);
     }
