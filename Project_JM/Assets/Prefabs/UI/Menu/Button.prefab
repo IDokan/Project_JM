@@ -137,8 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonSelectEffect
   selectedEffect: {fileID: 2270993082417910677}
   animator: {fileID: 0}
-  highlightCanvasGroup: {fileID: 4057508719380214977}
-  fadeDuration: 0.15
+  touchSFX: {fileID: 11400000, guid: fac9ecc17cfae124daa5377ebe7ac13f, type: 2}
 --- !u!1 &8748762107507760818
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,10 +318,5 @@ RectTransform:
 --- !u!1 &2270993082417910677 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1300481049471638340, guid: 02eb50e565d15b14d84521529f1b1f88, type: 3}
-  m_PrefabInstance: {fileID: 975043281492756689}
-  m_PrefabAsset: {fileID: 0}
---- !u!225 &4057508719380214977 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 3875107906373614608, guid: 02eb50e565d15b14d84521529f1b1f88, type: 3}
   m_PrefabInstance: {fileID: 975043281492756689}
   m_PrefabAsset: {fileID: 0}

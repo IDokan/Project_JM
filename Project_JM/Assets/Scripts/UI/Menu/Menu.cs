@@ -27,14 +27,17 @@ public class Menu : MonoBehaviour, ICancelHandler
     [Header("Initial state")]
     [SerializeField] private bool showOnAwake = false;
 
-    protected CanvasGroup _canvasGroup;
+    [SerializeField] protected CanvasGroup canvasGroup;
     private Selectable _returnSelected;
 
     protected virtual void Awake()
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+        }
 
-        if (_canvasGroup)
+        if (canvasGroup)
         {
             if (showOnAwake)
             {
@@ -42,9 +45,9 @@ public class Menu : MonoBehaviour, ICancelHandler
             }
             else
             {
-                _canvasGroup.alpha = 0f;
-                _canvasGroup.interactable = false;
-                _canvasGroup.blocksRaycasts = false;
+                canvasGroup.alpha = 0f;
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
                 transform.localScale = Vector3.zero;
             }
         }
@@ -83,9 +86,9 @@ public class Menu : MonoBehaviour, ICancelHandler
     {
         _returnSelected = returnTo;
 
-        _canvasGroup.alpha = 1f;
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
 
         Selectable selected = GetFirstSelectable();
         if (selected != null)
@@ -111,8 +114,8 @@ public class Menu : MonoBehaviour, ICancelHandler
 
     private void OnShowComplete()
     {
-        _canvasGroup.interactable = true;
-        _canvasGroup.blocksRaycasts = true;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
     }
 
     public virtual void OnCancel(BaseEventData eventData)
@@ -122,8 +125,8 @@ public class Menu : MonoBehaviour, ICancelHandler
 
     public virtual void Hide()
     {
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
 
         EventSystem.current.SetSelectedGameObject(
             _returnSelected != null ? _returnSelected.gameObject : null);
@@ -135,11 +138,11 @@ public class Menu : MonoBehaviour, ICancelHandler
                 .SetEase(Ease.InBack)
                 .SetUpdate(true)
                 .SetLink(gameObject)
-                .OnComplete(() => _canvasGroup.alpha = 0f);
+                .OnComplete(() => canvasGroup.alpha = 0f);
         }
         else
         {
-            _canvasGroup.alpha = 0f;
+            canvasGroup.alpha = 0f;
         }
     }
 }

@@ -494,7 +494,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3731206504249307349}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.69142854
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -669,6 +669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIEffectPlayerOnSelect
   selectedEffect: {fileID: 549392687221997601}
   animator: {fileID: 0}
+  touchSFX: {fileID: 11400000, guid: fac9ecc17cfae124daa5377ebe7ac13f, type: 2}
 --- !u!114 &6968587240000678669
 MonoBehaviour:
   m_ObjectHideFlags: 0

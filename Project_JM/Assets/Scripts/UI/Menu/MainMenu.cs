@@ -57,13 +57,13 @@ public class MainMenu : Menu
     {
         mainMenuController.DisableInput();
 
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
 
         AsyncOperation loadOp = SceneManager.LoadSceneAsync("CombatScene");
         loadOp.allowSceneActivation = false;
 
-        _canvasGroup.DOFade(0f, exitFadeDuration)
+        canvasGroup.DOFade(0f, exitFadeDuration)
             .SetUpdate(true)
             .OnComplete(() => loadOp.allowSceneActivation = true);
     }
