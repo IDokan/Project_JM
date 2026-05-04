@@ -54,6 +54,13 @@ public class SceneTransition : MonoBehaviour
         AudioManager.Instance.FadeOutBGM(fadeDuration);
         fadeOverlay.DOFade(1f, fadeDuration)
             .SetUpdate(true)
-            .OnComplete(() => Application.Quit());
+            .OnComplete(() =>
+            {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
+            });
     }
 }
