@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cd0e3e49e0d1f14db004dc17b330861, type: 3}
-  m_Name: AC_UI_Touch
+  m_Name: AC_UI_Cancel
   m_EditorClassIdentifier: Assembly-CSharp::AudioCueSO
   clips:
-  - {fileID: 8300000, guid: 9b64a61a1565b4845a5992c70a146494, type: 3}
   - {fileID: 8300000, guid: 842c7d4d9505fba429246d0443ab1ab5, type: 3}
-  - {fileID: 8300000, guid: ad8a6f8cb3b85b245a7b9332111dc203, type: 3}
-  volume: 1
+  volume: 0.4
   randomizePitch: 1
-  pitchMin: 0.9
-  pitchMax: 1.1
+  pitchMin: 0.8
+  pitchMax: 0.8
   loop: 0
