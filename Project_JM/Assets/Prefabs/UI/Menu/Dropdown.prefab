@@ -494,7 +494,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3731206504249307349}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.69142854
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -585,8 +585,8 @@ GameObject:
   - component: {fileID: 8709570131498528132}
   - component: {fileID: 8384770405408203007}
   - component: {fileID: 848677940332241381}
-  - component: {fileID: 7133614279344291448}
   - component: {fileID: 6968587240000678669}
+  - component: {fileID: 58120604320051302}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -655,21 +655,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7133614279344291448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4818665097657327347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 886be1023564c3a4392f3e0586160b71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIEffectPlayerOnSelect
-  selectedEffect: {fileID: 549392687221997601}
-  animator: {fileID: 0}
-  touchSFX: {fileID: 11400000, guid: fac9ecc17cfae124daa5377ebe7ac13f, type: 2}
 --- !u!114 &6968587240000678669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,6 +712,22 @@ MonoBehaviour:
   m_AlphaFadeSpeed: 0.15
   background: {fileID: 848677940332241381}
   style: {fileID: 11400000, guid: 0668b3028ad4e0e4884ddd78560cd692, type: 2}
+--- !u!114 &58120604320051302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818665097657327347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24cccc3fe30884649aa597162d353f22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropdownUIEffectPlayerOnSelect
+  selectedEffect: {fileID: 549392687221997601}
+  animator: {fileID: 0}
+  pressSFX: {fileID: 11400000, guid: fac9ecc17cfae124daa5377ebe7ac13f, type: 2}
+  cancelSFX: {fileID: 11400000, guid: 4b6bddd62d7004b4481a7382ef1f3f3a, type: 2}
 --- !u!1 &5731535553084225433
 GameObject:
   m_ObjectHideFlags: 0
