@@ -8,16 +8,12 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDeselectHandler, ICancelHandler, IPointerEnterHandler
+public class UIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDeselectHandler, ICancelHandler, IPointerClickHandler, ISubmitHandler
 {
     [SerializeField] protected GameObject selectedEffect;
     [SerializeField] protected Animator animator;
-    [SerializeField] private AudioCueSO touchSFX;
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        AudioManager.Instance.PlayUISFX(touchSFX);
-    }
+    [SerializeField] protected AudioCueSO pressSFX;
+    [SerializeField] private AudioCueSO cancelSFX;
 
     public void OnSelect(BaseEventData eventData)
     {
@@ -29,11 +25,21 @@ public class UIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDeselectHa
         {
             animator.SetBool("Selected", true);
         }
-        AudioManager.Instance.PlayUISFX(touchSFX);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        AudioManager.Instance.PlayUISFX(pressSFX);
+    }
+
+    public void OnSubmit(BaseEventData eventData)
+    {
+        AudioManager.Instance.PlayUISFX(pressSFX);
     }
 
     public void OnCancel(BaseEventData eventData)
     {
+        AudioManager.Instance.PlayUISFX(cancelSFX);
         ExecuteEvents.ExecuteHierarchy(transform.parent.gameObject, eventData, ExecuteEvents.cancelHandler);
     }
 
