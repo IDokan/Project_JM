@@ -347,6 +347,94 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: SliderBackground
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 126
+        width: 226
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3757b81176e55d54185ea6b88fb53759
+      internalID: 255842373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SliderHandle
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 10
+        width: 30
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01d4deeab274c47469b1e83680784c0c
+      internalID: 1880975645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SliderBackground_LeftEdge
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 126
+        width: 8
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66784c8f0c334f140b653904c90c68bf
+      internalID: 1648288498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SliderBackground_RightEdge
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 126
+        width: 8
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aabca54b6061cac41a7bea12e1f86362
+      internalID: -1807548433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -368,6 +456,11 @@ TextureImporter:
       Lightening3: -952369599
       Lightening4: -6060933869815045775
       Lightening5: 6445693629851040445
+      SliderBackground: 255842373
+      SliderBackground_LeftEdge: 1648288498
+      SliderBackground_RightEdge: -1807548433
+      SliderFill: 1516763209
+      SliderHandle: 1880975645
       ThinkingEye: 340330430
       ThinkingHand: 1932840934136728952
       ThinkingMouth: -5814733504111108192
