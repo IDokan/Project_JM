@@ -149,6 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIEffectPlayerOnSelect
   selectedEffect: {fileID: 5716292831699499337}
   animator: {fileID: 0}
+  pressSFX: {fileID: 11400000, guid: fac9ecc17cfae124daa5377ebe7ac13f, type: 2}
+  cancelSFX: {fileID: 11400000, guid: 4b6bddd62d7004b4481a7382ef1f3f3a, type: 2}
 --- !u!1 &1521786779500665715
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +360,7 @@ MonoBehaviour:
   firstSelected: {fileID: 1241275045469001080}
   style: {fileID: 11400000, guid: b1d14877cb1f1c14ca8dfd5aa6cfc83b, type: 2}
   showOnAwake: 0
+  canvasGroup: {fileID: 0}
   playerInput: {fileID: 0}
   restartButton: {fileID: 1241275045469001080}
   mainMenuButton: {fileID: 4618558191991839459}
@@ -678,6 +681,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIEffectPlayerOnSelect
   selectedEffect: {fileID: 175800269529832781}
   animator: {fileID: 0}
+  pressSFX: {fileID: 11400000, guid: fac9ecc17cfae124daa5377ebe7ac13f, type: 2}
+  cancelSFX: {fileID: 11400000, guid: 4b6bddd62d7004b4481a7382ef1f3f3a, type: 2}
 --- !u!1 &7567356217749986570
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,6 +908,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIEffectPlayerOnSelect
   selectedEffect: {fileID: 6158607453356324338}
   animator: {fileID: 0}
+  pressSFX: {fileID: 11400000, guid: fac9ecc17cfae124daa5377ebe7ac13f, type: 2}
+  cancelSFX: {fileID: 11400000, guid: 4b6bddd62d7004b4481a7382ef1f3f3a, type: 2}
 --- !u!1001 &1188015674436093449
 PrefabInstance:
   m_ObjectHideFlags: 0
