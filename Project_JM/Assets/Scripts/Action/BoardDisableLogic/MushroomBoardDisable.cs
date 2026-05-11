@@ -13,18 +13,17 @@ using UnityEngine;
 public class MushroomBoardDisable : BoardDisableLogic
 {
     // Pattern offsets relative to center (row, col). Center itself is not disabled.
-    // Visually: left cap, top, right cap — mushroom shape.
     private static readonly Vector2Int[] MushroomPattern =
     {
-        new Vector2Int(-1, 0),
-        new Vector2Int(0, 1),
+        new Vector2Int(0, -1),
         new Vector2Int(1, 0),
+        new Vector2Int(0, 1),
     };
 
     // Pre-computed from pattern: center must stay within these offsets from the board edge.
-    private const int MinRowOffset = -1;
+    private const int MinRowOffset = 0;
     private const int MaxRowOffset = 1;
-    private const int MinColOffset = 0;
+    private const int MinColOffset = -1;
     private const int MaxColOffset = 1;
 
     private const int MaxTries = 100;
