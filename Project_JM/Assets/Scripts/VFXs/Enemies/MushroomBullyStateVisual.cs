@@ -7,9 +7,25 @@
 
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class MushroomBullyStateVisual : EnemyStateVisual
 {
+    [SerializeField] private SpriteResolver faceSpriteResolver;
+    [SerializeField] private SpriteResolver leftFingersSpriteResolver;
+    [SerializeField] private SpriteResolver rightFingersSpriteResolver;
+
+    [Header("Face Labels")]
+    [SerializeField] private string faceCategory;
+    [SerializeField] private string normalFaceLabel;
+    [SerializeField] private string enragedFaceLabel;
+    [SerializeField] private string deadFaceLabel;
+
+    [Header("Fingers Labels")]
+    [SerializeField] private string leftFingersCategory;
+    [SerializeField] private string rightFingersCategory;
+    [SerializeField] private string openFingersLabel;
+
     [Header("Attack Motion")]
     [SerializeField] private float readyDuration = 0.1f;
     [SerializeField] private float moveDuration = 0.1f;
@@ -17,6 +33,7 @@ public class MushroomBullyStateVisual : EnemyStateVisual
     [SerializeField, Range(0f, 1f)] private float moveOffsetMultiplier = 1f;
     [SerializeField, Range(0f, 1f)] private float readyOffsetMultiplier = 0.5f;
 
+    private bool _isEnraged;
     private Vector3 _originalPosition;
     private Sequence _moveSequence;
     private float _timeScaler = 1f;
@@ -36,11 +53,21 @@ public class MushroomBullyStateVisual : EnemyStateVisual
         GlobalTimeManager.OnScaleChanged -= ApplyGlobalTweenScale;
     }
 
-    public override void OnEnraged() { }
+    public override void OnEnraged()
+    {
+        _isEnraged = true;
+        SetFace(enragedFaceLabel);
+    }
 
-    public override void OnStunBegin() { }
+    public override void OnStunBegin()
+    {
+        SetFace(deadFaceLabel);
+    }
 
-    public override void OnStunEnd() { }
+    public override void OnStunEnd()
+    {
+        SetFace(_isEnraged ? enragedFaceLabel : normalFaceLabel);
+    }
 
     public override void OnDied()
     {
@@ -48,6 +75,10 @@ public class MushroomBullyStateVisual : EnemyStateVisual
         {
             _moveSequence.Kill();
         }
+
+        SetFace(deadFaceLabel);
+        leftFingersSpriteResolver.SetCategoryAndLabel(leftFingersCategory, openFingersLabel);
+        rightFingersSpriteResolver.SetCategoryAndLabel(rightFingersCategory, openFingersLabel);
     }
 
     public override void OnAttack(Vector3 moveOffset)
@@ -83,5 +114,10 @@ public class MushroomBullyStateVisual : EnemyStateVisual
         {
             _moveSequence.timeScale = scale;
         }
+    }
+
+    private void SetFace(string label)
+    {
+        faceSpriteResolver.SetCategoryAndLabel(faceCategory, label);
     }
 }
