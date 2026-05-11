@@ -58,6 +58,7 @@ MonoBehaviour:
   status: {fileID: 6721484090919061956}
   colors: 
   hitBurstPrefab: {fileID: 1771619425334909595, guid: f7beb28b4a3c8fb478a8abc5fe2ba5c1, type: 3}
+  woundParentTransform: {fileID: 0}
   flashSprite: {fileID: 1051967404695388042}
   hurtSfx: {fileID: 0}
   killVoiceSFX: {fileID: 0}
@@ -158,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackMotion
   enemyAttackBehaviour: {fileID: 4409018762775306443}
   stateVisual: {fileID: 0}
+  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   swingSfx: {fileID: 0}
   impactSfx: {fileID: 0}
   moveDuration: 0.1
