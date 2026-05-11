@@ -18,6 +18,7 @@ public class EnemyAttackMotion : MonoBehaviour
     [Header("Wiring")]
     [SerializeField] protected EnemyAttackBehaviour enemyAttackBehaviour;
     [SerializeField] protected EnemyStateVisual stateVisual;
+    [SerializeField] private TransitionEventChannel transitionEventChannel;
 
     [Header("SFX")]
     [SerializeField] protected AudioCueSO swingSfx;
@@ -30,6 +31,7 @@ public class EnemyAttackMotion : MonoBehaviour
     protected static readonly int DamagedTrig = Animator.StringToHash("DamagedTrig");
     protected static readonly int AttackTrig = Animator.StringToHash("AttackTrig");
     protected static readonly int DeadTrig = Animator.StringToHash("DeadTrig");
+    protected static readonly int WalkTrig = Animator.StringToHash("WalkTrig");
 
     protected Vector3 _originalPosition;
     protected Sequence _moveSequence;
@@ -53,6 +55,10 @@ public class EnemyAttackMotion : MonoBehaviour
         enemyAttackBehaviour.OnStunBegin += OnStunBegin;
         enemyAttackBehaviour.OnStunEnd += OnStunEnd;
         enemyAttackBehaviour.OnDied += OnDied;
+        if (transitionEventChannel != null)
+        {
+            transitionEventChannel.OnRaised += OnTransitionPhase;
+        }
     }
 
     protected void OnDisable()
@@ -62,6 +68,10 @@ public class EnemyAttackMotion : MonoBehaviour
         enemyAttackBehaviour.OnStunBegin -= OnStunBegin;
         enemyAttackBehaviour.OnStunEnd -= OnStunEnd;
         enemyAttackBehaviour.OnDied -= OnDied;
+        if (transitionEventChannel != null)
+        {
+            transitionEventChannel.OnRaised -= OnTransitionPhase;
+        }
     }
 
     public void PlayAttackMotion(Vector3 moveOffset)
@@ -159,5 +169,14 @@ public class EnemyAttackMotion : MonoBehaviour
 
         _animator.SetTrigger(DeadTrig);
         stateVisual?.OnDied();
+    }
+
+    private void OnTransitionPhase(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.EndEnemyMoveBegin)
+        {
+            _animator.SetTrigger(WalkTrig);
+            stateVisual?.OnWin();
+        }
     }
 }

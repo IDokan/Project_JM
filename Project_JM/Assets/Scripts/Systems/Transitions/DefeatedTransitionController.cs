@@ -100,8 +100,10 @@ public class DefeatedTransitionController : TransitionController
 
     protected IEnumerator EnemyRoutine()
     {
+        yield return new WaitForSeconds(enemyMoveDelay);
+        transitionEventChannel.Raise(TransitionPhase.EndEnemyMoveBegin);
         Vector3 enemyTargetLocation = Camera.main.transform.position + _enemyOffsetToCamera;
-        yield return MoveParallaxObject(enemyTransform, enemyTargetLocation, enemyMoveDelay, enemyMoveDuration, TransitionPhase.EndEnemyMoveEnd);
+        yield return MoveParallaxObject(enemyTransform, enemyTargetLocation, 0f, enemyMoveDuration, TransitionPhase.EndEnemyMoveEnd);
     }
 
     protected IEnumerator BoardRoutine()

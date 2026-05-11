@@ -13,5 +13,6 @@ public class EnemyStateVisual : MonoBehaviour
     public virtual void OnStunBegin() { }
     public virtual void OnStunEnd() { }
     public virtual void OnDied() { }
+    public virtual void OnWin() { }
     public virtual void OnAttack(Vector3 moveOffset) { }
 }
