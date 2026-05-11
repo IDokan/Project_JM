@@ -18,6 +18,7 @@ public enum TransitionPhase
     MiddleTransitionEnd,
     EndTransitionBegin,
     EndPartyMoveEnd,
+    EndEnemyMoveBegin,
     EndEnemyMoveEnd,
     EndBoardMoveEnd,
 }
