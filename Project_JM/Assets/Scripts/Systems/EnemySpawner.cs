@@ -19,7 +19,6 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] protected Vector3 spawnPosition;
 
-    [SerializeField] protected float spawnDelay = 4f;
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
 
     protected Vector3 _spawnOffsetToCamera;
@@ -74,27 +73,15 @@ public class EnemySpawner : MonoBehaviour
         _dispatchRoutine = null;
     }
 
-    public void SpawnEnemyAfterDelay()
-    {
-        StartCoroutine(SpawnEnemyAfterDelayRoutine(spawnDelay));
-    }
-
-    protected IEnumerator SpawnEnemyAfterDelayRoutine(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        SpawnRandomEnemy();
-    }
-
     protected void OnTransitionEvent(TransitionPhase phase)
     {
         if (phase == TransitionPhase.IntroPartyMoveEnd)
         {
             SpawnRandomEnemy();
         }
-        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        else if (phase == TransitionPhase.MiddleEnemySpawnBegin)
         {
-            SpawnEnemyAfterDelay();
+            SpawnRandomEnemy();
         }
         else if(phase == TransitionPhase.IntroTransitionBegin)
         {
