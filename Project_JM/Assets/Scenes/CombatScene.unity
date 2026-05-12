@@ -2343,6 +2343,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1369642959996047647, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: enemySpawnDelay
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1369642959996047647, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: middleTransitionDuration
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1670055396459363335, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: partyStatus
       value: 
@@ -2402,6 +2410,10 @@ PrefabInstance:
     - target: {fileID: 2987994210524115475, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: m_Name
       value: Systems
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375048565731560635, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: spawnDelay
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3375048565731560635, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: spawnPosition
