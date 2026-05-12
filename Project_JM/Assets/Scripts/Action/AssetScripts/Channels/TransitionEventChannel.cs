@@ -15,6 +15,8 @@ public enum TransitionPhase
     IntroPartyMoveEnd,
     IntroBoardMoveEnd,
     MiddleTransitionStarts,
+    MiddleCameraMoveBegin,
+    MiddleEnemySpawnBegin,
     MiddleTransitionEnd,
     EndTransitionBegin,
     EndPartyMoveEnd,

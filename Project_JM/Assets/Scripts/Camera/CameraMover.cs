@@ -69,7 +69,7 @@ public class CameraMover : MonoBehaviour
         {
             Move(moveDistance * introMoveDuration / moveDuration, introMoveDuration, 0);
         }
-        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        else if (phase == TransitionPhase.MiddleCameraMoveBegin)
         {
             Move(moveDistance, moveDuration, moveDelay);
         }
