@@ -60,6 +60,7 @@ public class StunRepresenter : MonoBehaviour
             yield return GlobalTimeManager.WaitForGlobalSeconds(duration);
         }
 
+        _animator.ResetTrigger(StunTrig);
         _animator.SetBool(IsStunned, false);
 
         _stunRoutine = null;
