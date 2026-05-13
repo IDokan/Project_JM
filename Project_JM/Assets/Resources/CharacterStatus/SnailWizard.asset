@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 448761849b170aa46b608bb76eeb3723, type: 3}
-  m_Name: EnemyBook
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyBook
-  entries:
-  - EnemyPrefab: {fileID: 2621932401753991514, guid: 7884452cb20e7e2498ffe5b9eb02f09d, type: 3}
+  m_Script: {fileID: 11500000, guid: a67ecbface6c3994dab0deccf121a4b2, type: 3}
+  m_Name: SnailWizard
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStatusData
+  characterName: SnailWizard
+  baseHP: 325
+  baseCriticalChance: 0
+  baseCriticalDamage: 1
