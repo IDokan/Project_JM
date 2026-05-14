@@ -43,6 +43,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     protected bool _isEnraged = false;
     protected bool _isStunned = false;
+    protected bool _isAttacking = false;
     protected Coroutine _stunRoutine = null;
 
     public bool IsStunned => _isStunned;
@@ -80,7 +81,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
             while (_attackTimer > 0f)
             {
-                if (!_isStunned)
+                if (!_isStunned && !_isAttacking)
                 {
                     UpdateAttackTimer(-GlobalTimeManager.DeltaTime);
                 }
@@ -89,12 +90,23 @@ public class EnemyAttackBehaviour : MonoBehaviour
             }
 
             Attack();
+
+            while (_isAttacking)
+            {
+                yield return null;
+            }
         }
     }
 
     protected void Attack()
     {
+        _isAttacking = true;
         attackChannel.Raise();
+    }
+
+    public void NotifyAttackFinished()
+    {
+        _isAttacking = false;
     }
 
     protected void UpdateAttackTimer(float value)
