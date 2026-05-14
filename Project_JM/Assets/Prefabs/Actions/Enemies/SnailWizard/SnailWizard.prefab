@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3224797692331812633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2252091964890800508}
+  m_Layer: 0
+  m_Name: AttackProjectileSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2252091964890800508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3224797692331812633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1780741315175010297}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4912838104447193795
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,15 +328,19 @@ PrefabInstance:
     - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: logicEnemy
       value: 
-      objectReference: {fileID: 11400000, guid: 1ecf779713ecb9349b8077b0d93f5492, type: 2}
+      objectReference: {fileID: 11400000, guid: ca1a52239e5580d43a9f9d5c30e68dc7, type: 2}
     - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: boardDisableLogic
       value: 
       objectReference: {fileID: 11400000, guid: ac5b032c8d3399f47831e285f5dcedd3, type: 2}
     - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: hitTransformOffset.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: attackEnemyAttackPoint
       value: 
-      objectReference: {fileID: 4225248617680852606}
+      objectReference: {fileID: 0}
     - target: {fileID: 1176053653374777677, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: colors.Array.size
       value: 2
@@ -391,10 +426,16 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7592910946159918387, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6505599955724666867}
+    - targetCorrespondingSourceObject: {fileID: 7592910946159918387, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2252091964890800508}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 782884609582459367}
+    - targetCorrespondingSourceObject: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8209994631759583922}
   m_SourcePrefab: {fileID: 100100000, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
 --- !u!4 &1780741315175010297 stripped
 Transform:
@@ -425,12 +466,21 @@ MonoBehaviour:
   deadEyeLabel: Dead
   mouthCategory: Mouth
   normalMouthLabel: Normal
-  normalAttackMouthLabel: NormalAttack
   enragedMouthLabel: Enraged
-  enragedAttackMouthLabel: EnragedAttack
   damagedMouthLabel: Damaged
-  readyDuration: 0.1
-  moveDuration: 0.1
-  pauseDuration: 0.2
-  moveOffsetMultiplier: 1
-  readyOffsetMultiplier: 0.5
+--- !u!114 &8209994631759583922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2621932401753991514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a5a1801f343a64e968fa6400b4d727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailWizardProjectileSpawner
+  projectilePrefab: {fileID: 8002074548382604252, guid: 3bf6dd8e9adc89d47bef9f7a634b7677, type: 3}
+  magicCirclePrefab: {fileID: 6329932026978337817, guid: ffe3690ef3d02ca48b9de3f02cc79cdf, type: 3}
+  spawnPoint: {fileID: 2252091964890800508}
+  travelDuration: 0.5
