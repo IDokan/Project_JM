@@ -63,7 +63,7 @@ public class DamageUI : MonoBehaviour
     public void Show(int amount, AttackContext context, bool isCritical, bool shieldReduced, float sizeMultiplier)
     {
 
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(context.HitTransform.position);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(context.HitPosition);
 
         // Transform screen space position to the current rectangle space position
             // because canvas is Scree Space - Camera.

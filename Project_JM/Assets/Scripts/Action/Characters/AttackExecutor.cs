@@ -24,11 +24,15 @@ public class AttackExecutor : MonoBehaviour
 
     [Header("Enemy attack logics")]
     [SerializeField] protected AttackLogic logicEnemy;
-    [SerializeField] protected Transform attackEnemyAttackPoint;
     [SerializeField] protected BoardDisableLogic boardDisableLogic;
-
-
     [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
+    [Header("Melee Attack")]
+    [SerializeField, Tooltip("Null transform passes target's transform as hit transform")]
+    protected Transform attackEnemyAttackPoint;
+    [Header("Ranged Attack")]
+    [SerializeField] private Vector3 hitTransformOffset;
+
+    public Vector3 HitTransformOffset => hitTransformOffset;
 
     protected AttackContext _context;
     public AttackContext Context => _context;
@@ -129,7 +133,7 @@ public class AttackExecutor : MonoBehaviour
     {
 
         var targetObject = _context.Target as MonoBehaviour;
-        _context.HitTransform = hitTransform;
+        _context.HitPosition = hitTransform.position;
 
         if (targetObject != null)
         {
@@ -145,7 +149,7 @@ public class AttackExecutor : MonoBehaviour
     {
         var targetObject = _context.Target as MonoBehaviour;
 
-        _context.HitTransform = attackEnemyAttackPoint;
+        _context.HitPosition = attackEnemyAttackPoint != null ? attackEnemyAttackPoint.position : targetObject.transform.position + hitTransformOffset;
 
         if (targetObject != null)
         {
