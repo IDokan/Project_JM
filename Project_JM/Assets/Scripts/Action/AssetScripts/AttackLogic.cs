@@ -14,7 +14,7 @@ public struct AttackContext
     public ICombatant Attacker;
     public ICombatant Target;
 
-    public Transform HitTransform;
+    public Vector3 HitPosition;
 
     public DamageMultiplierManager DamageMultiplierManager;
 

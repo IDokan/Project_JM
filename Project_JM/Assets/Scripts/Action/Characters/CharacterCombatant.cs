@@ -137,12 +137,12 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     protected void SpawnHitBurstParticle(AttackContext attackContext)
     {
-        if (hitBurstPrefab == null || attackContext.HitTransform == null)
+        if (hitBurstPrefab == null)
         {
             return;
         }
 
-        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, attackContext.HitTransform.rotation,
+        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitPosition, Quaternion.identity,
             woundParentTransform == null ? gameObject.transform : woundParentTransform);
 
         GemColor gemColor;
@@ -164,14 +164,14 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     protected void SpawnImpactAttachment(AttackContext attackContext)
     {
-        if (attackContext.ImpactAttachPrefab == null || attackContext.HitTransform == null)
+        if (attackContext.ImpactAttachPrefab == null)
         {
             return;
         }
 
         Transform parent = (woundParentTransform == null ? transform : woundParentTransform);
 
-        Vector3 spawnPos = attackContext.HitTransform.position;
+        Vector3 spawnPos = attackContext.HitPosition;
 
         var go = Instantiate(attackContext.ImpactAttachPrefab, spawnPos, Quaternion.identity, parent);
 
