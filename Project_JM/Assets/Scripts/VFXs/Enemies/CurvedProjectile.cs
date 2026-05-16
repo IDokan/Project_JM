@@ -12,6 +12,7 @@ public class CurvedProjectile : MonoBehaviour
 {
     [SerializeField] private float arcHeight = 1.5f;
     [SerializeField] private bool rotateTowardMotion = true;
+    [SerializeField] private float rotationMagnitude = 360f;
 
     public void Initialize(Transform target, Vector3 offset, float duration)
     {
@@ -21,6 +22,7 @@ public class CurvedProjectile : MonoBehaviour
     private IEnumerator TravelRoutine(Vector3 start, Transform target, Vector3 offset, float duration)
     {
         float elapsed = 0f;
+        float spinAngle = 0f;
 
         while (elapsed < duration)
         {
@@ -30,7 +32,8 @@ public class CurvedProjectile : MonoBehaviour
                 yield break;
             }
 
-            elapsed += GlobalTimeManager.DeltaTime;
+            float delta = GlobalTimeManager.DeltaTime;
+            elapsed += delta;
             float t = Mathf.Clamp01(elapsed / duration);
 
             Vector3 end = target.position + offset;
@@ -39,13 +42,15 @@ public class CurvedProjectile : MonoBehaviour
             Vector3 prevPos = transform.position;
             transform.position = QuadraticBezier(start, control, end, t);
 
+            spinAngle += rotationMagnitude * delta;
+
             if (rotateTowardMotion)
             {
                 Vector3 dir = transform.position - prevPos;
                 if (dir.sqrMagnitude > 0.0001f)
                 {
-                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    transform.rotation = Quaternion.Euler(0f, 0f, angle);
+                    float travelAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                    transform.rotation = Quaternion.Euler(0f, 0f, travelAngle + spinAngle);
                 }
             }
 
