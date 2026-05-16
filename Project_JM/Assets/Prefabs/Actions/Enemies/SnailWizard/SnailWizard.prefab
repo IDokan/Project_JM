@@ -118,7 +118,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9058550286831852411}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.73186266, w: 0.68145216}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1175392, y: 3.2621086, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -351,6 +351,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1566607451597362913}
     - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: swingSfx
+      value: 
+      objectReference: {fileID: 11400000, guid: d60a50cb2d727e54583527d30682eeb1, type: 2}
+    - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: stateVisual
       value: 
       objectReference: {fileID: 782884609582459367}
@@ -362,6 +366,14 @@ PrefabInstance:
       propertyPath: vfxAnchor
       value: 
       objectReference: {fileID: 2507601053936207033}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageSfx
+      value: 
+      objectReference: {fileID: 11400000, guid: c434299c68821564497b010c325780ff, type: 2}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: m_Name
       value: SnailWizard
@@ -429,6 +441,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8209994631759583922}
+    - targetCorrespondingSourceObject: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1048445271421948329}
   m_SourcePrefab: {fileID: 100100000, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
 --- !u!4 &1780741315175010297 stripped
 Transform:
@@ -516,3 +531,18 @@ MonoBehaviour:
   magicCirclePrefab: {fileID: 6329932026978337817, guid: ffe3690ef3d02ca48b9de3f02cc79cdf, type: 3}
   spawnPoint: {fileID: 2252091964890800508}
   travelDuration: 0.5
+--- !u!114 &1048445271421948329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2621932401753991514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e32b3801f867aa4595eedbedda25864, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailWizardSFXPlayer
+  magicCircleSpawnSFX: {fileID: 11400000, guid: 6546461697fdaf84fae4b13fa4275fb2, type: 2}
+  throwSFX: {fileID: 11400000, guid: cc6845bbee3e6e0459e5d1bf6f880f0e, type: 2}
+  hitSFX: {fileID: 11400000, guid: 87cd3ca20bfe877418abe502fcdd50c9, type: 2}
