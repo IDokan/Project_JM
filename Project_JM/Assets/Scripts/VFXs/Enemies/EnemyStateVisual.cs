@@ -15,4 +15,5 @@ public class EnemyStateVisual : MonoBehaviour
     public virtual void OnDied() { }
     public virtual void OnWin() { }
     public virtual void OnAttack(Vector3 moveOffset) { }
+    public virtual void OnAttackEnd() { }
 }
