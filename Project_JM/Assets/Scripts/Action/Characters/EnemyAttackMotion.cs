@@ -143,6 +143,7 @@ public class EnemyAttackMotion : MonoBehaviour
     public void AnimEvent_RaiseAttackEnd()
     {
         _attackDone = true;
+        stateVisual?.OnAttackEnd();
         enemyAttackBehaviour.NotifyAttackFinished();
     }
 
