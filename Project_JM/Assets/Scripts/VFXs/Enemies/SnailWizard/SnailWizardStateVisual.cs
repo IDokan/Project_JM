@@ -71,11 +71,13 @@ public class SnailWizardStateVisual : EnemyStateVisual
 
     public override void OnStunBegin()
     {
+        SetEye(deadEyeLabel);
         SetMouth(damagedMouthLabel);
     }
 
     public override void OnStunEnd()
     {
+        SetEye(normalEyeLabel);
         SetMouth(_isEnraged ? enragedMouthLabel : normalMouthLabel);
     }
 
