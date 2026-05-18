@@ -2444,11 +2444,20 @@ PrefabInstance:
       value: -1150.58
       objectReference: {fileID: 0}
     - target: {fileID: 8348092773870949786, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: followY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8348092773870949786, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8348092773870949786, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: followShake
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
+    - {fileID: 519472790844437647, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
     m_RemovedGameObjects:
     - {fileID: 1771287436350047106, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
     - {fileID: 5093552456572659982, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
