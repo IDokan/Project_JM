@@ -23,6 +23,7 @@ public class EnemySpawner : MonoBehaviour
 
     protected Vector3 _spawnOffsetToCamera;
     protected int _numSpanwed = 0;
+    protected GameObject _lastSpawnedPrefab = null;
 
     protected Coroutine _dispatchRoutine = null;
 
@@ -43,14 +44,18 @@ public class EnemySpawner : MonoBehaviour
     protected void Clear()
     {
         _numSpanwed = 0;
+        _lastSpawnedPrefab = null;
     }
 
     protected GameObject SpawnRandomEnemy()
     {
         _numSpanwed++;
 
+        var prefab = enemyBook.GetRandomEnemyPrefabExcluding(_lastSpawnedPrefab);
+        _lastSpawnedPrefab = prefab;
+
         Vector3 spawnPosition = _spawnOffsetToCamera + Camera.main.transform.position;
-        var spawnedEnemy = Instantiate(enemyBook.GetRandomEnemyPrefab(), spawnPosition, Quaternion.identity);
+        var spawnedEnemy = Instantiate(prefab, spawnPosition, Quaternion.identity);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
         if (_dispatchRoutine != null)

@@ -95,7 +95,6 @@ MonoBehaviour:
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   difficultyCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
   spawnPosition: {x: 12.4, y: -4, z: 0}
-  spawnDelay: 5
   dispatchEventChannelDelay: 1
 --- !u!1 &1389493428556137630
 GameObject:
@@ -155,6 +154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 935236977859202638}
   - component: {fileID: 8348092773870949786}
+  - component: {fileID: 519472790844437647}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -202,6 +202,19 @@ MonoBehaviour:
   parallaxFactor: 1
   cameraTransform: {fileID: 0}
   followMode: 1
+--- !u!114 &519472790844437647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2987994210524115475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12ab18ca2f9078b4980e6c55a002ff26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShakeStabilizer
+  cameraShake: {fileID: 0}
 --- !u!1 &4134523709245377034
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +360,8 @@ MonoBehaviour:
   transitionManager: {fileID: 0}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  cameraStartDelay: 1
+  enemySpawnDelay: 3
   middleTransitionDuration: 5
 --- !u!1 &7733845625183951440
 GameObject:

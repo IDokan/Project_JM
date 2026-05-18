@@ -27,4 +27,47 @@ public class EnemyBook : ScriptableObject
 
         return entries[GlobalRNG.Instance.NextInt(entries.Length)].EnemyPrefab;
     }
+
+    public GameObject GetRandomEnemyPrefabExcluding(GameObject excludePrefab)
+    {
+        if (entries.Length <= 0)
+        {
+            return null;
+        }
+
+        if (excludePrefab == null || entries.Length == 1)
+        {
+            return GetRandomEnemyPrefab();
+        }
+
+        int validCount = 0;
+        for (int i = 0; i < entries.Length; i++)
+        {
+            if (entries[i].EnemyPrefab != excludePrefab)
+            {
+                validCount++;
+            }
+        }
+
+        if (validCount == 0)
+        {
+            return GetRandomEnemyPrefab();
+        }
+
+        int pick = GlobalRNG.Instance.NextInt(validCount);
+        int seen = 0;
+        for (int i = 0; i < entries.Length; i++)
+        {
+            if (entries[i].EnemyPrefab != excludePrefab)
+            {
+                if (seen == pick)
+                {
+                    return entries[i].EnemyPrefab;
+                }
+                seen++;
+            }
+        }
+
+        return GetRandomEnemyPrefab();
+    }
 }
