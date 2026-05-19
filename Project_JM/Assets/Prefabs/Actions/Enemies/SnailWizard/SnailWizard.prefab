@@ -325,7 +325,7 @@ PrefabInstance:
     - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: boardDisableLogic
       value: 
-      objectReference: {fileID: 11400000, guid: ac5b032c8d3399f47831e285f5dcedd3, type: 2}
+      objectReference: {fileID: 11400000, guid: 24a287c278c30c64a9a3faaff7f90cf3, type: 2}
     - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: hitTransformOffset.y
       value: 1.5
@@ -373,6 +373,10 @@ PrefabInstance:
     - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: enrageDelay
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: baseCooldown
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: m_Name
