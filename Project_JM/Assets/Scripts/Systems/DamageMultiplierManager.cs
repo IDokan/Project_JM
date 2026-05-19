@@ -32,7 +32,7 @@ public class DamageMultiplierManager : MonoBehaviour
         transitionEventChannel.OnRaised -= OnLevelTransition;
     }
 
-    public float GetRawMultiplier
+    public float GetEnemyMultiplier
     {
         get { return _damageMultiplier; }
     }
@@ -78,6 +78,6 @@ public class DamageMultiplierManager : MonoBehaviour
     {
         _numEnemyDefeated = newNumEnemyDefeated;
 
-        _damageMultiplier = (difficultyCurves.DamageMultiplierCurve.Evaluate(_numEnemyDefeated));
+        _damageMultiplier = difficultyCurves.GetLevelMultiplier(_numEnemyDefeated);
     }
 }

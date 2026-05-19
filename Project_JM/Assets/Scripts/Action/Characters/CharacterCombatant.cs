@@ -60,7 +60,10 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             return;
         }
 
-        float damage = rawDamage * attackContext.DamageMultiplierManager.GetMultiplier;
+        bool isEnemyAttacker = attackContext.Attacker is MonoBehaviour mb && mb.TryGetComponent<EnemyTag>(out _);
+        float damage = rawDamage * (isEnemyAttacker
+            ? attackContext.DamageMultiplierManager.GetEnemyMultiplier  // excludes _damageBonus; enemy must not benefit from player skills such as Cleric buff
+            : attackContext.DamageMultiplierManager.GetMultiplier);
 
         bool isCritical = false;
         // Critical hit calculation
@@ -80,9 +83,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         // Multiply its size by 2 when the attacker is an enemy && not blocked
         bool shieldReduced = status.Shield > 0f && damage > 0f;
         int calculatedDamage = Mathf.RoundToInt(Mathf.Min(status.CurrentHP, Mathf.Max(damage - status.Shield, 0f)));
-        if (calculatedDamage > 0 &&
-            attackContext.Attacker is MonoBehaviour attackerMB &&
-            attackerMB.TryGetComponent<EnemyTag>(out _))
+        if (calculatedDamage > 0 && isEnemyAttacker)
         {
             colorDamageMultiplier *= 2f;
         }
