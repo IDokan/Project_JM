@@ -2,7 +2,7 @@
 // Copyright (c) 11/14/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EnemySpawner.cs
-// Summary: A class to spawn enemy.
+// Summary: Spawns enemies by delegating group progression to EnemyBook.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
@@ -11,19 +11,16 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] protected EnemyBook enemyBook;
-    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     [SerializeField] protected DifficultyCurves difficultyCurves;
 
     [SerializeField] protected Vector3 spawnPosition;
-
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
 
     protected Vector3 _spawnOffsetToCamera;
     protected int _numSpanwed = 0;
-    protected GameObject _lastSpawnedPrefab = null;
 
     protected Coroutine _dispatchRoutine = null;
 
@@ -31,6 +28,7 @@ public class EnemySpawner : MonoBehaviour
     {
         transitionEventChannel.OnRaised += OnTransitionEvent;
     }
+
     protected void OnDisable()
     {
         transitionEventChannel.OnRaised -= OnTransitionEvent;
@@ -44,18 +42,17 @@ public class EnemySpawner : MonoBehaviour
     protected void Clear()
     {
         _numSpanwed = 0;
-        _lastSpawnedPrefab = null;
+        enemyBook.ResetProgression();
     }
 
-    protected GameObject SpawnRandomEnemy()
+    protected GameObject SpawnNextEnemy()
     {
         _numSpanwed++;
 
-        var prefab = enemyBook.GetRandomEnemyPrefabExcluding(_lastSpawnedPrefab);
-        _lastSpawnedPrefab = prefab;
+        GameObject prefab = enemyBook.GetNextEnemy();
 
-        Vector3 spawnPosition = _spawnOffsetToCamera + Camera.main.transform.position;
-        var spawnedEnemy = Instantiate(prefab, spawnPosition, Quaternion.identity);
+        Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
+        var spawnedEnemy = Instantiate(prefab, pos, Quaternion.identity);
         spawnedEnemy.GetComponent<CharacterStatus>().Initialize(difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
 
         if (_dispatchRoutine != null)
@@ -82,13 +79,13 @@ public class EnemySpawner : MonoBehaviour
     {
         if (phase == TransitionPhase.IntroPartyMoveEnd)
         {
-            SpawnRandomEnemy();
+            SpawnNextEnemy();
         }
         else if (phase == TransitionPhase.MiddleEnemySpawnBegin)
         {
-            SpawnRandomEnemy();
+            SpawnNextEnemy();
         }
-        else if(phase == TransitionPhase.IntroTransitionBegin)
+        else if (phase == TransitionPhase.IntroTransitionBegin)
         {
             Clear();
         }

@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448761849b170aa46b608bb76eeb3723, type: 3}
   m_Name: TestBook
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBook
-  entries:
-  - EnemyPrefab: {fileID: 6919487055845207464, guid: bb95590a6f6566545b2f3fbbc795ba40, type: 3}
+  easyEnemies: []
+  mediumEnemies: []
+  hardEnemies:
+  - {fileID: 1050946259736528144, guid: b4d992c334f05164088954a75a27596d, type: 3}
