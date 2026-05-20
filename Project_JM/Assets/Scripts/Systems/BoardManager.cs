@@ -810,6 +810,12 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         _numMovingGems++;
         yield return StartCoroutine(logic.Execute(context));
         ResolveGemMovement();
+
+        boardDisableEvents.Raise(new BoardDisableEventContext
+        {
+            boardDisablePhase = BoardDisablePhase.Preview,
+            boardDisableLogic = logic
+        });
     }
 
 
