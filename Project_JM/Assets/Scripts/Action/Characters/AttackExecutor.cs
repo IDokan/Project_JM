@@ -157,15 +157,10 @@ public class AttackExecutor : MonoBehaviour
 
             StartCoroutine(logicEnemy.Execute(_context));
 
+            // Run preview right after commit perfectly handled in BoardManager::RunBoardDisableAttack function.
             boardDisableChannel.Raise(new BoardDisableEventContext
             {
                 boardDisablePhase = BoardDisablePhase.Commit,
-                boardDisableLogic = boardDisableLogic
-            });
-
-            boardDisableChannel.Raise(new BoardDisableEventContext
-            {
-                boardDisablePhase = BoardDisablePhase.Preview,
                 boardDisableLogic = boardDisableLogic
             });
 
