@@ -2,72 +2,73 @@
 // Copyright (c) 11/14/2025 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EnemyBook.cs
-// Summary: A scriptable object to contain enemy data.
+// Summary: A scriptable object that holds enemy prefabs grouped by difficulty tier and manages spawn progression.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using System.Collections.Generic;
 using UnityEngine;
-
-[System.Serializable]
-public struct EnemyEntry
-{
-    public GameObject EnemyPrefab;
-}
 
 [CreateAssetMenu(fileName = "EnemyBook", menuName = "JM/Data/EnemyBook")]
 public class EnemyBook : ScriptableObject
 {
-    [SerializeField] protected EnemyEntry[] entries;
+    [SerializeField] private GameObject[] easyEnemies;
+    [SerializeField] private GameObject[] mediumEnemies;
+    [SerializeField] private GameObject[] hardEnemies;
 
-    public GameObject GetRandomEnemyPrefab()
+    private GameObject[][] _groups;
+    private int _currentGroupIndex;
+    private readonly List<int> _remainingInGroup = new List<int>();
+
+    private void OnEnable()
     {
-        if (entries.Length <= 0)
-        {
-            return null;
-        }
-
-        return entries[GlobalRNG.Instance.NextInt(entries.Length)].EnemyPrefab;
+        _groups = new[] { easyEnemies, mediumEnemies, hardEnemies };
+        ResetProgression();
     }
 
-    public GameObject GetRandomEnemyPrefabExcluding(GameObject excludePrefab)
+    public void ResetProgression()
     {
-        if (entries.Length <= 0)
+        _currentGroupIndex = 0;
+        FillRemainingFromCurrentGroup();
+        SkipEmptyGroups();
+    }
+
+    public GameObject GetNextEnemy()
+    {
+        if (_remainingInGroup.Count == 0)
         {
-            return null;
+            AdvanceToNextGroup();
         }
 
-        if (excludePrefab == null || entries.Length == 1)
-        {
-            return GetRandomEnemyPrefab();
-        }
+        int pick = Random.Range(0, _remainingInGroup.Count);
+        int enemyIndex = _remainingInGroup[pick];
+        _remainingInGroup.RemoveAt(pick);
 
-        int validCount = 0;
-        for (int i = 0; i < entries.Length; i++)
-        {
-            if (entries[i].EnemyPrefab != excludePrefab)
-            {
-                validCount++;
-            }
-        }
+        return _groups[_currentGroupIndex][enemyIndex];
+    }
 
-        if (validCount == 0)
+    private void FillRemainingFromCurrentGroup()
+    {
+        _remainingInGroup.Clear();
+        GameObject[] group = _groups[_currentGroupIndex];
+        for (int i = 0; i < group.Length; i++)
         {
-            return GetRandomEnemyPrefab();
+            _remainingInGroup.Add(i);
         }
+    }
 
-        int pick = GlobalRNG.Instance.NextInt(validCount);
-        int seen = 0;
-        for (int i = 0; i < entries.Length; i++)
+    private void AdvanceToNextGroup()
+    {
+        _currentGroupIndex = Mathf.Min(_currentGroupIndex + 1, _groups.Length - 1);
+        FillRemainingFromCurrentGroup();
+        SkipEmptyGroups();
+    }
+
+    private void SkipEmptyGroups()
+    {
+        while (_remainingInGroup.Count == 0 && _currentGroupIndex < _groups.Length - 1)
         {
-            if (entries[i].EnemyPrefab != excludePrefab)
-            {
-                if (seen == pick)
-                {
-                    return entries[i].EnemyPrefab;
-                }
-                seen++;
-            }
+            _currentGroupIndex++;
+            FillRemainingFromCurrentGroup();
         }
-
-        return GetRandomEnemyPrefab();
     }
 }
