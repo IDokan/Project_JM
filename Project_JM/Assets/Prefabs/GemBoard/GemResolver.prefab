@@ -78,8 +78,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -237149231
-  m_SortingLayer: 5
-  m_SortingOrder: 5
+  m_SortingLayer: 6
+  m_SortingOrder: 20
   m_Sprite: {fileID: 152935856936865942, guid: 9ec2b17922b037540b9b061e5dfcdcdd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1091,8 +1091,8 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 3
-        scalar: 30
-        minScalar: 15
+        scalar: 10
+        minScalar: 5
         maxCurve:
           serializedVersion: 2
           m_Curve:
@@ -4972,8 +4972,8 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -237149231
-  m_SortingLayer: 5
-  m_SortingOrder: 7
+  m_SortingLayer: 6
+  m_SortingOrder: 17
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
