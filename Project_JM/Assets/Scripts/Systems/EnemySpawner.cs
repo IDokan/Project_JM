@@ -24,6 +24,9 @@ public class EnemySpawner : MonoBehaviour
 
     protected Coroutine _dispatchRoutine = null;
 
+    private float _spawnTime;
+    private string _spawnedEnemyName;
+
     protected void OnEnable()
     {
         transitionEventChannel.OnRaised += OnTransitionEvent;
@@ -53,7 +56,10 @@ public class EnemySpawner : MonoBehaviour
 
         Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
         var spawnedEnemy = Instantiate(prefab, pos, Quaternion.identity);
-        spawnedEnemy.GetComponent<CharacterStatus>().Initialize(difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
+        var characterStatus = spawnedEnemy.GetComponent<CharacterStatus>();
+        characterStatus.Initialize(difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
+        _spawnTime = Time.time;
+        _spawnedEnemyName = characterStatus.CharacterName;
 
         if (_dispatchRoutine != null)
         {
@@ -81,9 +87,17 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnNextEnemy();
         }
+        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            Debug.Log($"{_numSpanwed}th enemy => {_spawnedEnemyName}: defeated in {Time.time - _spawnTime:F1} seconds.");
+        }
         else if (phase == TransitionPhase.MiddleEnemySpawnBegin)
         {
             SpawnNextEnemy();
+        }
+        else if (phase == TransitionPhase.EndTransitionBegin)
+        {
+            Debug.Log($"{_numSpanwed}th enemy => {_spawnedEnemyName}: defeated in {Time.time - _spawnTime:F1} seconds.");
         }
         else if (phase == TransitionPhase.IntroTransitionBegin)
         {
