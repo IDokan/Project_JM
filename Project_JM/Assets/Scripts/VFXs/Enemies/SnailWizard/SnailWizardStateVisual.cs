@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
@@ -86,7 +87,7 @@ public class SnailWizardStateVisual : EnemyStateVisual
         SetEye(deadEyeLabel);
     }
 
-    public override void OnAttack(Vector3 moveOffset)
+    public override Sequence BuildAttackSequence(Vector3 moveOffset)
     {
         SetMouth(_isEnraged ? enragedAttackMouthLabel : normalAttackMouthLabel);
 
@@ -95,6 +96,8 @@ public class SnailWizardStateVisual : EnemyStateVisual
             StopCoroutine(_routine);
         }
         _routine = StartCoroutine(GlowRoutine());
+
+        return null;
     }
 
     public override void OnAttackEnd()
