@@ -30,22 +30,10 @@ public class SlimeKingStateVisual : EnemyStateVisual
 
     private bool _isEnraged;
     private Vector3 _originalPosition;
-    private Sequence _moveSequence;
-    private float _timeScaler = 1f;
 
     private void Awake()
     {
         _originalPosition = transform.localPosition;
-    }
-
-    private void OnEnable()
-    {
-        GlobalTimeManager.OnScaleChanged += ApplyGlobalTweenScale;
-    }
-
-    private void OnDisable()
-    {
-        GlobalTimeManager.OnScaleChanged -= ApplyGlobalTweenScale;
     }
 
     public override void OnEnraged()
@@ -67,48 +55,22 @@ public class SlimeKingStateVisual : EnemyStateVisual
 
     public override void OnDied()
     {
-        if (_moveSequence != null && _moveSequence.IsActive())
-        {
-            _moveSequence.Kill();
-        }
-
         SetEye(deadEyeLabel);
         enrageParticle?.Stop();
     }
 
-    public override void OnAttack(Vector3 moveOffset)
+    public override Sequence BuildAttackSequence(Vector3 moveOffset)
     {
-        Move(moveOffset * moveOffsetMultiplier);
-    }
-
-    private void Move(Vector3 offset)
-    {
-        if (_moveSequence != null && _moveSequence.IsActive())
-        {
-            _moveSequence.Kill();
-        }
-
+        Vector3 offset = moveOffset * moveOffsetMultiplier;
         Vector3 readyPosition = _originalPosition - offset * readyOffsetMultiplier;
         Vector3 target = _originalPosition + offset;
 
-        _moveSequence = DOTween.Sequence()
+        return DOTween.Sequence()
             .Append(transform.DOLocalMove(readyPosition, readyDuration).SetEase(Ease.OutQuad))
             .Append(transform.DOLocalMove(target, moveDuration).SetEase(Ease.OutQuad))
             .AppendInterval(pauseDuration)
             .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
             .SetLink(gameObject);
-
-        _moveSequence.timeScale = _timeScaler;
-    }
-
-    private void ApplyGlobalTweenScale(float scale)
-    {
-        _timeScaler = scale;
-
-        if (_moveSequence != null && _moveSequence.IsActive())
-        {
-            _moveSequence.timeScale = scale;
-        }
     }
 
     private void SetEye(string label)

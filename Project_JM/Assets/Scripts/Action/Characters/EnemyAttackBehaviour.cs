@@ -157,6 +157,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected IEnumerator StunRoutine(float duration)
     {
         _isStunned = true;
+        _isAttacking = false;
         OnStunBegin?.Invoke();
 
         stunRepresenter.Stun(duration);

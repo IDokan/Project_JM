@@ -25,11 +25,11 @@ Transform:
   m_GameObject: {fileID: 3957847251034005623}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: -1.4, z: 0}
+  m_LocalPosition: {x: 0, y: -1.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2664719845362386668}
+  m_Father: {fileID: 2150943139914095353}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5136118762950188913
 GameObject:
@@ -377,12 +377,12 @@ PrefabInstance:
     - {fileID: 3452367102528285226, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
     - {fileID: 8959632923705629322, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -7278043772024415896, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 579333049892345158}
     - targetCorrespondingSourceObject: {fileID: 2584048276694844797, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5650860502093533510}
-    - targetCorrespondingSourceObject: {fileID: 2584048276694844797, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 579333049892345158}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
       insertIndex: -1
@@ -413,6 +413,11 @@ MonoBehaviour:
 --- !u!4 &1155534668474153551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
+  m_PrefabInstance: {fileID: 515273633486668689}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2150943139914095353 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7278043772024415896, guid: 5464e334e3bf7bd478bd86f199bc367a, type: 3}
   m_PrefabInstance: {fileID: 515273633486668689}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2229957823411150512 stripped
@@ -483,6 +488,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4734252991028836222}
     - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: swingSfx
+      value: 
+      objectReference: {fileID: 11400000, guid: 3ea0ba972dbef244885c334a68ff4c3f, type: 2}
+    - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: stateVisual
       value: 
       objectReference: {fileID: 8171956619934152500}
@@ -494,6 +503,14 @@ PrefabInstance:
       propertyPath: vfxAnchor
       value: 
       objectReference: {fileID: 579333049892345158}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageSfx
+      value: 
+      objectReference: {fileID: 11400000, guid: 2ca8c2d60016d424c8dfe46586b8974f, type: 2}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageDelay
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: m_Name
       value: FlyingFish
@@ -582,6 +599,9 @@ MonoBehaviour:
   enragedEyeLabel: Enraged
   stunnedEyeLabel: Stunned
   deadEyeLabel: Dead
+  splashDownDistance: 1
+  splashDuration: 0.15
+  splashPauseDuration: 0.1
   readyDuration: 0.1
   moveDuration: 0.1
   pauseDuration: 0.2

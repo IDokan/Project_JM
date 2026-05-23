@@ -37,6 +37,9 @@ public class EnemyAttackMotion : MonoBehaviour
     protected Sequence _moveSequence;
     protected float _timeScaler = 1f;
     protected bool _attackDone = true;
+    protected bool _enragePlaying;
+    protected Vector3 _pendingMoveOffset;
+    private bool _moveSequenceFired;
 
     protected void Awake()
     {
@@ -81,17 +84,23 @@ public class EnemyAttackMotion : MonoBehaviour
             return;
         }
 
-        _attackDone = false;
+        if (_moveSequence != null && _moveSequence.IsActive())
+        {
+            _moveSequence.Kill();
+        }
 
-        AudioManager.Instance.PlayEnemyActionSFX(swingSfx);
+        _attackDone = false;
+        _enragePlaying = false;
+        _pendingMoveOffset = moveOffset;
+        _moveSequenceFired = false;
+
         _animator.ResetTrigger(AttackTrig);
         _animator.SetTrigger(AttackTrig);
-        stateVisual?.OnAttack(moveOffset);
     }
 
     public void PlayDamagedMotion(Vector3 moveOffset)
     {
-        if (_animator == null || _attackDone == false)
+        if (_animator == null || !_attackDone || _enragePlaying)
         {
             return;
         }
@@ -132,6 +141,18 @@ public class EnemyAttackMotion : MonoBehaviour
         }
     }
 
+    // Called via Animation Event at the first frame of the attack clip.
+    public void AnimEvent_RaiseAttackBegin()
+    {
+        _moveSequenceFired = true;
+        AudioManager.Instance.PlayEnemyActionSFX(swingSfx);
+        _moveSequence = stateVisual?.BuildAttackSequence(_pendingMoveOffset);
+        if (_moveSequence != null)
+        {
+            _moveSequence.timeScale = _timeScaler;
+        }
+    }
+
     // Called via Animation Event at the frame the attack connects.
     public void AnimEvent_RaiseHit()
     {
@@ -142,6 +163,10 @@ public class EnemyAttackMotion : MonoBehaviour
     // Called via Animation Event at the last frame of the attack clip.
     public void AnimEvent_RaiseAttackEnd()
     {
+        if (stateVisual != null && !_moveSequenceFired)
+        {
+            Debug.LogWarning($"[EnemyAttackMotion] {gameObject.name}: AnimEvent_RaiseAttackBegin never fired. Add the animation event to the attack clip.", this);
+        }
         _attackDone = true;
         stateVisual?.OnAttackEnd();
         enemyAttackBehaviour.NotifyAttackFinished();
@@ -150,10 +175,30 @@ public class EnemyAttackMotion : MonoBehaviour
     private void OnEnraged()
     {
         stateVisual?.OnEnraged();
+
+        if (!_attackDone)
+        {
+            return;
+        }
+
+        if (_moveSequence != null && _moveSequence.IsActive())
+        {
+            _moveSequence.Kill();
+        }
+
+        _moveSequence = stateVisual?.BuildEnragedSequence();
+        if (_moveSequence != null)
+        {
+            _enragePlaying = true;
+            _moveSequence.OnComplete(() => _enragePlaying = false);
+            _moveSequence.timeScale = _timeScaler;
+        }
     }
 
     private void OnStunBegin()
     {
+        _attackDone = true;
+        _enragePlaying = false;
         stateVisual?.OnStunBegin();
     }
 
@@ -168,6 +213,9 @@ public class EnemyAttackMotion : MonoBehaviour
         {
             _moveSequence.Kill();
         }
+
+        _attackDone = true;
+        _enragePlaying = false;
 
         _animator.SetTrigger(DeadTrig);
         stateVisual?.OnDied();
