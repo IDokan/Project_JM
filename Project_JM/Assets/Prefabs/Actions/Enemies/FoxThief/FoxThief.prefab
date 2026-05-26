@@ -343,7 +343,8 @@ Transform:
   m_LocalPosition: {x: 0.41656303, y: -0.49680382, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1253245592866636972}
   m_Father: {fileID: 7497401697235668963}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6163102475169552450
@@ -468,6 +469,37 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
   m_Flip: 0
+--- !u!1 &8616167593282728718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1253245592866636972}
+  m_Layer: 0
+  m_Name: AttackPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1253245592866636972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616167593282728718}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.9680546, w: 0.2507395}
+  m_LocalPosition: {x: -0.394, y: 0.308, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4973736358778307347}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8776381094386311840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,7 +1403,19 @@ PrefabInstance:
     - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: attackEnemyAttackPoint
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: perHitTransforms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: 'perHitTransforms.Array.data[0]'
+      value: 
       objectReference: {fileID: 5650860502093533510}
+    - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: 'perHitTransforms.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1253245592866636972}
     - target: {fileID: 1176053653374777677, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: colors.Array.size
       value: 2
@@ -1400,6 +1444,10 @@ PrefabInstance:
       propertyPath: vfxAnchor
       value: 
       objectReference: {fileID: 579333049892345158}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageSfx
+      value: 
+      objectReference: {fileID: 11400000, guid: 67520dedb9276dc4090546ffaa25ddbd, type: 2}
     - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: baseCooldown
       value: 10
@@ -1499,6 +1547,7 @@ MonoBehaviour:
   leftFingersCategory: LeftFingers
   rightFingersCategory: RightFingers
   openFingersLabel: Open
+  normalAttackSFX: {fileID: 11400000, guid: 5ea973d5906a88e4e87a6da05913cc14, type: 2}
   moveDuration: 0.2
   pauseDuration: 0.2
   moveOffsetMultiplier: 0.85
