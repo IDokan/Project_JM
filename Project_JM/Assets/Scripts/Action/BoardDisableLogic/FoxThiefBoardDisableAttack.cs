@@ -18,14 +18,14 @@ public class FoxThiefBoardDisableAttack : BoardDisableLogic
     {
         new Vector2Int(0, 0),
         new Vector2Int(1, 1),
-        new Vector2Int(1, 2),
+        new Vector2Int(2, 1),
     };
 
     private static readonly Vector2Int[] DelayedPattern =
     {
-        new Vector2Int(0, 0),
         new Vector2Int(1, 0),
-        new Vector2Int(2, 1),
+        new Vector2Int(0, 1),
+        new Vector2Int(0, 2),
     };
 
     private const int MaxTries = 100;
