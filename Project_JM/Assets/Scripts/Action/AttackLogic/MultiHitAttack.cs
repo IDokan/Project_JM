@@ -17,12 +17,19 @@ public class MultiHitAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        ctx.Target?.TakeDamage(baseDamage, ctx);
-
-        for (int i = 1; i < hitCount; i++)
+        for (int i = 0; i < hitCount; i++)
         {
-            yield return GlobalTimeManager.WaitForGlobalSeconds(intervalSeconds);
+            if (ctx.MultiHitTransformContainer.IsValid)
+            {
+                ctx.HitTransform = ctx.MultiHitTransformContainer.GetTransform(i);
+            }
+
             ctx.Target?.TakeDamage(baseDamage, ctx);
+
+            if (i < hitCount - 1)
+            {
+                yield return GlobalTimeManager.WaitForGlobalSeconds(intervalSeconds);
+            }
         }
     }
 
