@@ -34,6 +34,9 @@ public class FoxThiefStateVisual : EnemyStateVisual
     [SerializeField] private string rightFingersCategory;
     [SerializeField] private string openFingersLabel;
 
+    [Header("SFX")]
+    [SerializeField] private AudioCueSO normalAttackSFX;
+
     [Header("Attack Motion")]
     [SerializeField] private float moveDuration = 0.1f;
     [SerializeField] private float pauseDuration = 0.2f;
@@ -85,6 +88,14 @@ public class FoxThiefStateVisual : EnemyStateVisual
             .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
             .SetLink(gameObject);
     }
+
+    public override void OnWin()
+    {
+        SetEye(normalEyeLabel);
+        SetMouth(normalMouthLabel);
+    }
+
+    public void AnimEvent_PlayNormalAttackSound() => AudioManager.Instance.PlayActionSFX(normalAttackSFX);
 
     private void SetEye(string label)
     {
