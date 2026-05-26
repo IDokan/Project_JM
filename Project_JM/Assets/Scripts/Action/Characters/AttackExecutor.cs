@@ -26,9 +26,12 @@ public class AttackExecutor : MonoBehaviour
     [SerializeField] protected AttackLogic logicEnemy;
     [SerializeField] protected BoardDisableLogic boardDisableLogic;
     [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
-    [Header("Melee Attack")]
-    [SerializeField, Tooltip("Null transform passes target's transform as hit transform")]
+    [Header("Melee Attack — Single Hit")]
+    [SerializeField, Tooltip("The hit point for a single-hit attack. Null falls back to the target's transform.")]
     protected Transform attackEnemyAttackPoint;
+    [Header("Melee Attack — Multi Hit")]
+    [SerializeField, Tooltip("Optional. Must be assigned when using a multi-hit attack logic. Leave empty for single-hit enemies.")]
+    protected Transform[] perHitTransforms;
     [Header("Ranged Attack")]
     [SerializeField] private Vector3 hitTransformOffset;
 
@@ -133,7 +136,7 @@ public class AttackExecutor : MonoBehaviour
     {
 
         var targetObject = _context.Target as MonoBehaviour;
-        _context.HitPosition = hitTransform.position;
+        _context.HitTransform = hitTransform;
 
         if (targetObject != null)
         {
@@ -149,10 +152,11 @@ public class AttackExecutor : MonoBehaviour
     {
         var targetObject = _context.Target as MonoBehaviour;
 
-        _context.HitPosition = attackEnemyAttackPoint != null ? attackEnemyAttackPoint.position : targetObject.transform.position + hitTransformOffset;
-
         if (targetObject != null)
         {
+            _context.HitTransform = attackEnemyAttackPoint != null ? attackEnemyAttackPoint : targetObject.transform;
+            _context.MultiHitTransformContainer = new MultiHitTransformContainer(perHitTransforms);
+
             targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
 
             StartCoroutine(logicEnemy.Execute(_context));
