@@ -78,8 +78,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -237149231
-  m_SortingLayer: 5
-  m_SortingOrder: 5
+  m_SortingLayer: 6
+  m_SortingOrder: 20
   m_Sprite: {fileID: 152935856936865942, guid: 9ec2b17922b037540b9b061e5dfcdcdd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -107,6 +107,7 @@ MonoBehaviour:
   greenSprite: {fileID: 4063884222152227866, guid: d9866886e1469f24b85cf1a6c9f0f52d, type: 3}
   blueSprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
   yellowSprite: {fileID: 152935856936865942, guid: 9ec2b17922b037540b9b061e5dfcdcdd, type: 3}
+  noneSprite: {fileID: -2452711188386133984, guid: a7d4ce9cc3d5a424eb77e1ff885b62a7, type: 3}
   gemResolver: {fileID: 0}
   spriteRenderer: {fileID: 0}
 --- !u!1 &4018183153765811337
@@ -1090,8 +1091,8 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 3
-        scalar: 30
-        minScalar: 15
+        scalar: 10
+        minScalar: 5
         maxCurve:
           serializedVersion: 2
           m_Curve:
@@ -1493,7 +1494,7 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 55705
+        atime1: 58982
         atime2: 65535
         atime3: 65535
         atime4: 0
@@ -4971,8 +4972,8 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -237149231
-  m_SortingLayer: 5
-  m_SortingOrder: 7
+  m_SortingLayer: 6
+  m_SortingOrder: 17
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -5024,6 +5025,7 @@ MonoBehaviour:
   damping: 9
   endOffsetWeight: 0.2
   bendScale: 3
+  fadeRadius: 2
 --- !u!1 &8423540921551108864
 GameObject:
   m_ObjectHideFlags: 0

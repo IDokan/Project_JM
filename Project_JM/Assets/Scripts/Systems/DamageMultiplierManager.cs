@@ -13,6 +13,7 @@ public class DamageMultiplierManager : MonoBehaviour
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected DifficultyCurves difficultyCurves;
+    [SerializeField] protected DamageBonusChangedEventChannel damageBonusChangedEventChannel;
 
     protected float _damageMultiplier = 1f;
     protected int _numEnemyDefeated = 0;
@@ -31,7 +32,7 @@ public class DamageMultiplierManager : MonoBehaviour
         transitionEventChannel.OnRaised -= OnLevelTransition;
     }
 
-    public float GetRawMultiplier
+    public float GetEnemyMultiplier
     {
         get { return _damageMultiplier; }
     }
@@ -45,10 +46,18 @@ public class DamageMultiplierManager : MonoBehaviour
     public void AddTimedBonus(float multiplier)
     {
         _damageBonus *= multiplier;
+        damageBonusChangedEventChannel.Raise(_damageBonus);
+    }
+
+    protected void ClearTimedBonus()
+    {
+        _damageBonus = 1f;
+        damageBonusChangedEventChannel.Raise(_damageBonus);
     }
 
     public void OnCharacterDiedHandle(CharacterStatus status)
     {
+        ClearTimedBonus();
 
         if (status.TryGetComponent<EnemyTag>(out _))
         {
@@ -60,17 +69,15 @@ public class DamageMultiplierManager : MonoBehaviour
     {
         if (phase == TransitionPhase.IntroTransitionBegin)
         {
+            ClearTimedBonus();
             OnEnemyKilled(0);
         }
     }
 
     protected void OnEnemyKilled(int newNumEnemyDefeated)
     {
-        // Clear timed bonus added during combat
-        _damageBonus = 1f;
-
         _numEnemyDefeated = newNumEnemyDefeated;
 
-        _damageMultiplier = (difficultyCurves.DamageMultiplierCurve.Evaluate(_numEnemyDefeated));
+        _damageMultiplier = difficultyCurves.GetLevelMultiplier(_numEnemyDefeated);
     }
 }

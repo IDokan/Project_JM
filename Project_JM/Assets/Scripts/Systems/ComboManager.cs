@@ -16,6 +16,14 @@ public class ComboManager : MonoBehaviour
     [SerializeField] protected CharacterStatus partyStatus;
     [SerializeField] protected float comboResetTime = 3f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioCueSO gemMatchSfx;
+    [SerializeField] private float audioChainTimeLimit = 0.2f;
+
+    private int _audioChainIndex;
+    private float _audioChainTimer;
+    private int _lastAudioFrame = -1;
+
     public event Action<int, float> OnComboUpdated;
 
     public float ComboResetTime => comboResetTime;
@@ -53,6 +61,13 @@ public class ComboManager : MonoBehaviour
                 ResetCombo();
             }
         }
+
+        if (_audioChainTimer > 0f)
+        {
+            _audioChainTimer -= GlobalTimeManager.DeltaTime;
+            if (_audioChainTimer <= 0f)
+                _audioChainIndex = 0;
+        }
     }
     
     public void OnMatch(MatchEvent matchEvent)
@@ -67,6 +82,16 @@ public class ComboManager : MonoBehaviour
         _comboCount += (int)matchEvent.Tier;
         _timer = comboResetTime;
         OnComboUpdated.Invoke(_comboCount, _timer);
+
+        if (Time.frameCount != _lastAudioFrame)
+        {
+            AudioManager.Instance.PlayPuzzleSFX(gemMatchSfx, _audioChainIndex);
+            _audioChainIndex = gemMatchSfx != null
+                ? Mathf.Min(_audioChainIndex + 1, gemMatchSfx.ClipCount - 1)
+                : 0;
+            _audioChainTimer = audioChainTimeLimit;
+            _lastAudioFrame = Time.frameCount;
+        }
 
         // Increase critical hit chance per combo
         partyStatus.SetComboCritBonus(_comboCount / 100f);

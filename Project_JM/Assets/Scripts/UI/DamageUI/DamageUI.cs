@@ -60,7 +60,7 @@ public class DamageUI : MonoBehaviour
 
     }
 
-    public void Show(int amount, AttackContext context, bool isCritical, float sizeMultiplier)
+    public void Show(int amount, AttackContext context, bool isCritical, bool shieldReduced, float sizeMultiplier)
     {
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(context.HitTransform.position);
@@ -76,7 +76,7 @@ public class DamageUI : MonoBehaviour
 
         _rect.anchoredPosition = localPoint;
 
-        if (amount <= 0)
+        if (shieldReduced)
         {
             shieldObject.SetActive(true);
             _shieldImage = shieldObject.GetComponent<Image>();
@@ -112,7 +112,9 @@ public class DamageUI : MonoBehaviour
         _rect.rotation = Quaternion.Euler(0, 0, randomRot);
 
         // Animation
-        Sequence seq = DOTween.Sequence();
+        DOTween.Kill(gameObject);
+        _rect.localScale = Vector3.zero;
+        Sequence seq = DOTween.Sequence().SetLink(gameObject);
         seq.Append(_rect.DOAnchorPos(_rect.anchoredPosition + new Vector2(randomX, 80f), lifetime))
            .Join(text.DOFade(0f, lifetime).SetEase(Ease.InCubic));
 
@@ -122,14 +124,12 @@ public class DamageUI : MonoBehaviour
             seq.Join(_shieldImage.DOFade(0f, lifetime).SetEase(Ease.InCubic));
         }
 
-        seq.Join(
-            _rect.DOScale(1.2f, lifetime / 4f).SetEase(Ease.OutBack)
-            .OnComplete(() => _rect.DOScale(0.8f, lifetime * 3f / 4f))
-            )
+        seq.Join(_rect.DOScale(1.2f, lifetime / 4f).SetEase(Ease.OutBack))
+           .Insert(lifetime / 4f, _rect.DOScale(0.8f, lifetime * 3f / 4f))
            .AppendInterval(0.2f)
            .OnComplete(() =>
            {
-               Destroy(gameObject);
+               if (this != null) Destroy(gameObject);
            });
     }
 }

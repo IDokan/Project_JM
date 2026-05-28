@@ -14,7 +14,9 @@ public struct AttackContext
     public ICombatant Attacker;
     public ICombatant Target;
 
+    // Must always be a valid (non-null) Transform before TakeDamage is called.
     public Transform HitTransform;
+    public MultiHitTransformContainer MultiHitTransformContainer;
 
     public DamageMultiplierManager DamageMultiplierManager;
 

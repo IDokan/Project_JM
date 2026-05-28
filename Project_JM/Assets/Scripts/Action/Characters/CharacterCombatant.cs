@@ -28,6 +28,8 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
     [SerializeField] protected Transform woundParentTransform;
 
     [SerializeField] protected FlashSpriteUsingMaterial flashSprite;
+    [SerializeField] private AudioCueSO hurtSfx;
+    [SerializeField] private AudioCueSO killVoiceSFX;
 
     public CharacterStatus Status => status;
     public GemColor[] Colors => colors;
@@ -52,7 +54,16 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     public void TakeDamage(float rawDamage, AttackContext attackContext)
     {
-        float damage = rawDamage * attackContext.DamageMultiplierManager.GetMultiplier;
+        // Prevent any extra interaction to the enemy already died.
+        if (status.IsDead)
+        {
+            return;
+        }
+
+        bool isEnemyAttacker = attackContext.Attacker is MonoBehaviour mb && mb.TryGetComponent<EnemyTag>(out _);
+        float damage = rawDamage * (isEnemyAttacker
+            ? attackContext.DamageMultiplierManager.GetEnemyMultiplier  // excludes _damageBonus; enemy must not benefit from player skills such as Cleric buff
+            : attackContext.DamageMultiplierManager.GetMultiplier);
 
         bool isCritical = false;
         // Critical hit calculation
@@ -70,21 +81,32 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
 
         // Multiply its size by 2 when the attacker is an enemy && not blocked
+        bool shieldReduced = status.Shield > 0f && damage > 0f;
         int calculatedDamage = Mathf.RoundToInt(Mathf.Min(status.CurrentHP, Mathf.Max(damage - status.Shield, 0f)));
-        if (calculatedDamage > 0 &&
-            attackContext.Attacker is MonoBehaviour attackerMB &&
-            attackerMB.TryGetComponent<EnemyTag>(out _))
+        if (calculatedDamage > 0 && isEnemyAttacker)
         {
             colorDamageMultiplier *= 2f;
         }
         // Spawn Damageui slightly above the origin of attacked target
-        DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, colorDamageMultiplier);
+        DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, shieldReduced, colorDamageMultiplier);
 
         status.TakeDamage(damage);
+
+        if (status.IsDead
+            && attackContext.Attacker is CharacterCombatant attackerCombatant
+            && attackerCombatant.TryGetComponent<AllyTag>(out _))
+        {
+            attackerCombatant.OnKilledEnemy();
+        }
 
         if (flashSprite != null)
         {
             flashSprite.Flash();
+        }
+
+        if (hurtSfx != null)
+        {
+            AudioManager.Instance.PlayActionSFX(hurtSfx);
         }
 
         SpawnHitBurstParticle(attackContext);
@@ -106,14 +128,22 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         status.AddBuffCritDamage(value);
     }
 
+    private void OnKilledEnemy()
+    {
+        if (killVoiceSFX != null)
+        {
+            AudioManager.Instance.PlayActionSFX(killVoiceSFX);
+        }
+    }
+
     protected void SpawnHitBurstParticle(AttackContext attackContext)
     {
-        if (hitBurstPrefab == null || attackContext.HitTransform == null)
+        if (hitBurstPrefab == null)
         {
             return;
         }
 
-        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, attackContext.HitTransform.rotation,
+        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, Quaternion.identity,
             woundParentTransform == null ? gameObject.transform : woundParentTransform);
 
         GemColor gemColor;
@@ -135,7 +165,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     protected void SpawnImpactAttachment(AttackContext attackContext)
     {
-        if (attackContext.ImpactAttachPrefab == null || attackContext.HitTransform == null)
+        if (attackContext.ImpactAttachPrefab == null)
         {
             return;
         }

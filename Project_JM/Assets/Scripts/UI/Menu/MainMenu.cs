@@ -5,6 +5,7 @@
 // Summary: Main menu controller; handles game start, options, and quit.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -18,8 +19,13 @@ public class MainMenu : Menu
     [SerializeField] private Button quitButton;
 
     [Header("Refs")]
+    [SerializeField] private MainMenuController mainMenuController;
+    [SerializeField] private SceneTransition sceneTransition;
     [SerializeField] private OptionMenu optionMenu;
     [SerializeField] private ConfirmationDialog confirmationDialog;
+
+    [Header("Transition")]
+    [SerializeField] private float exitFadeDuration = 0.4f;
 
     [Header("Confirmation icons")]
     [SerializeField] private Image quitConfirmIcon;
@@ -44,12 +50,22 @@ public class MainMenu : Menu
 
     public override void OnCancel(BaseEventData eventData)
     {
-        QuitWithConfirmation(confirmationDialog, quitConfirmIcon, quitButton);
+        QuitWithFadeTransition();
     }
 
     private void OnGameStartClicked()
     {
-        SceneManager.LoadScene("CombatScene");
+        mainMenuController.DisableInput();
+
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync("CombatScene");
+        loadOp.allowSceneActivation = false;
+
+        canvasGroup.DOFade(0f, exitFadeDuration)
+            .SetUpdate(true)
+            .OnComplete(() => loadOp.allowSceneActivation = true);
     }
 
     private void OnOptionClicked()
@@ -59,6 +75,14 @@ public class MainMenu : Menu
 
     private void OnQuitClicked()
     {
-        QuitWithConfirmation(confirmationDialog, quitConfirmIcon, quitButton);
+        QuitWithFadeTransition();
+    }
+
+    private void QuitWithFadeTransition()
+    {
+        confirmationDialog.Show(quitConfirmIcon, () =>
+        {
+            sceneTransition.FadeAndQuit();
+        }, quitButton);
     }
 }

@@ -16,8 +16,14 @@ public class ShieldAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        float shieldRatio = 0f;
+        if (ctx.Attacker is CharacterCombatant attacker && attacker.Status.maxHP > 0f)
+        {
+            shieldRatio = attacker.Status.Shield / attacker.Status.maxHP;
+        }
+
         ctx.Attacker?.AddShield(shieldPercentage);
-        ctx.Target?.TakeDamage(baseDamage, ctx);
+        ctx.Target?.TakeDamage(baseDamage * (1f + shieldRatio), ctx);
 
         yield break;
     }

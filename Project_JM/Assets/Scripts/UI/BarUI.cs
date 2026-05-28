@@ -57,7 +57,7 @@ public class BarUI : BarUIBase
         }
     }
 
-    protected override void OnUpdateValue(float current, float max, string givenText)
+    protected override void OnUpdateValue(float current, float max, string givenText, float alpha)
     {
         slider.maxValue = max;
 
@@ -65,6 +65,7 @@ public class BarUI : BarUIBase
 
         if (text != null)
         {
+            text.alpha = alpha;
             text.text = givenText;
         }
     }

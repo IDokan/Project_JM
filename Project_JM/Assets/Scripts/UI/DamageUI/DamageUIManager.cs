@@ -30,10 +30,10 @@ public class DamageUIManager : MonoBehaviour
         
     }
 
-    public DamageUI SpawnDamage(int amount, AttackContext context, bool isCritical, float sizeMultiplier = 1f)
+    public DamageUI SpawnDamage(int amount, AttackContext context, bool isCritical, bool shieldReduced, float sizeMultiplier = 1f)
     {
         var dmg = Instantiate(damagePrefab, transform);
-        dmg.Show(amount, context, isCritical, sizeMultiplier);
+        dmg.Show(amount, context, isCritical, shieldReduced, sizeMultiplier);
 
         return dmg;
     }

@@ -76,7 +76,7 @@ public class GameProgressManager : MonoBehaviour
     protected void HandleEnemyDied(CharacterStatus stat)
     {
         ++_numEnemyDefeated;
-        partyStatus.Initialize(curves.GetDifficultyMultiplier(_numEnemyDefeated));
+        partyStatus.Initialize(curves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
     }
 
     protected void OnTransitionEvent(TransitionPhase phase)

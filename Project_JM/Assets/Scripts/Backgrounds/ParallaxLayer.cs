@@ -15,20 +15,30 @@ public class ParallaxLayer : MonoBehaviour
         Parallax
     }
 
-    [Range(0f, 2f)] public float parallaxFactor = 0.3f;     // 1 on camera; 0.1f slower than cam; 2 fater than cam
+    [Range(0f, 2f)] [SerializeField] protected float parallaxFactor = 0.3f;     // 1 on camera; 0.1f slower than cam; 2 fater than cam
+
+    public float ParallaxFactor => parallaxFactor;
 
     [SerializeField] protected Transform cameraTransform;
+    [SerializeField] protected CameraShake cameraShake;
     [SerializeField] protected FollowMode followMode = FollowMode.Parallax;
+    [SerializeField] protected bool followShake = false;
 
 
     protected Vector3 _startPos;
     protected float _startCamX;
+    protected float _startCamY;
 
     void Awake()
     {
         if (cameraTransform == null)
         {
             cameraTransform = Camera.main.transform;
+        }
+
+        if (cameraShake == null)
+        {
+            cameraShake = Camera.main.GetComponent<CameraShake>();
         }
 
         CacheParallaxOrigin();
@@ -41,11 +51,23 @@ public class ParallaxLayer : MonoBehaviour
             return;
         }
 
-        float camDeltaX = cameraTransform.position.x - _startCamX;
+        float camDeltaX;
+        float camDeltaY;
+        if (followShake)
+        {
+            camDeltaX = cameraTransform.position.x - _startCamX;
+            camDeltaY = cameraTransform.position.y - _startCamY;
+        }
+        else
+        {
+            Vector3 shakeOffset = cameraShake != null ? cameraShake.ShakeOffset : Vector3.zero;
+            camDeltaX = (cameraTransform.position.x - shakeOffset.x) - _startCamX;
+            camDeltaY = (cameraTransform.position.y - shakeOffset.y) - _startCamY;
+        }
 
         transform.position = new Vector3(
             _startPos.x + camDeltaX * parallaxFactor,
-            _startPos.y,
+            _startPos.y + camDeltaY * parallaxFactor,
             _startPos.z
             );
     }
@@ -65,5 +87,6 @@ public class ParallaxLayer : MonoBehaviour
     {
         _startPos = transform.position;
         _startCamX = cameraTransform.position.x;
+        _startCamY = cameraTransform.position.y;
     }
 }
