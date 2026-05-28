@@ -24,11 +24,18 @@ public class AttackExecutor : MonoBehaviour
 
     [Header("Enemy attack logics")]
     [SerializeField] protected AttackLogic logicEnemy;
-    [SerializeField] protected Transform attackEnemyAttackPoint;
     [SerializeField] protected BoardDisableLogic boardDisableLogic;
-
-
     [SerializeField] protected BoardDisableEventChannel boardDisableChannel;
+    [Header("Melee Attack — Single Hit")]
+    [SerializeField, Tooltip("The hit point for a single-hit attack. Null falls back to the target's transform.")]
+    protected Transform attackEnemyAttackPoint;
+    [Header("Melee Attack — Multi Hit")]
+    [SerializeField, Tooltip("Optional. Must be assigned when using a multi-hit attack logic. Leave empty for single-hit enemies.")]
+    protected Transform[] perHitTransforms;
+    [Header("Ranged Attack")]
+    [SerializeField] private Vector3 hitTransformOffset;
+
+    public Vector3 HitTransformOffset => hitTransformOffset;
 
     protected AttackContext _context;
     public AttackContext Context => _context;
@@ -145,23 +152,19 @@ public class AttackExecutor : MonoBehaviour
     {
         var targetObject = _context.Target as MonoBehaviour;
 
-        _context.HitTransform = attackEnemyAttackPoint;
-
         if (targetObject != null)
         {
+            _context.HitTransform = attackEnemyAttackPoint != null ? attackEnemyAttackPoint : targetObject.transform;
+            _context.MultiHitTransformContainer = new MultiHitTransformContainer(perHitTransforms);
+
             targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
 
             StartCoroutine(logicEnemy.Execute(_context));
 
+            // Run preview right after commit perfectly handled in BoardManager::RunBoardDisableAttack function.
             boardDisableChannel.Raise(new BoardDisableEventContext
             {
                 boardDisablePhase = BoardDisablePhase.Commit,
-                boardDisableLogic = boardDisableLogic
-            });
-
-            boardDisableChannel.Raise(new BoardDisableEventContext
-            {
-                boardDisablePhase = BoardDisablePhase.Preview,
                 boardDisableLogic = boardDisableLogic
             });
 

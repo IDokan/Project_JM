@@ -46,11 +46,12 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected BoardDisableEventChannel boardDisableEvents;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected GameObject gemDisableFXPrefab;
+    [SerializeField] protected FadeOnSpawnAndDeath gemDisableFXPrefab;
 
     // Hint delay starts from user's input
     [Header("Hint")]
     [SerializeField] protected float hintDelay = 4f;
+    [SerializeField] protected BoardAudioPlayer boardAudioPlayer;
 
     protected BoardCoverController _boardCoverController;
 
@@ -148,7 +149,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     public bool InputEnabled => !_busy && _gems != null;
     protected bool _busy;
 
-    protected readonly HashSet<GameObject> _disableFXs = new();
+    protected readonly List<FadeOnSpawnAndDeath> _disableFXs = new();
 
     protected struct ShakingData
     {
@@ -723,6 +724,8 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
         if (InBounds(index.x, index.y) && InBounds(targetRow, targetCol))
         {
+            boardAudioPlayer?.PlayGemSwap();
+
             MoveGem(_gems[index.x, index.y], targetRow, targetCol);
             MoveGem(_gems[targetRow, targetCol], index.x, index.y);
 
@@ -741,11 +744,15 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             return true;
         }
 
+        boardAudioPlayer?.PlayInvalidSwap();
         return false;
     }
 
     protected void FireMatchEvent(GemColor color, int count)
     {
+        if (color == GemColor.None)
+            boardAudioPlayer.PlayNoneMatch();
+
         var tier = MatchTierUtil.GetMatchTier(count);
         matchEvents.Raise(new MatchEvent
         {
@@ -786,7 +793,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         {
             Vector2Int index = indices[i];
 
-            GameObject fx = Instantiate(gemDisableFXPrefab, transform);
+            FadeOnSpawnAndDeath fx = Instantiate(gemDisableFXPrefab, transform);
             fx.transform.localPosition = GetGemLocation(index.x, index.y);
             _disableFXs.Add(fx);
         }
@@ -803,6 +810,12 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         _numMovingGems++;
         yield return StartCoroutine(logic.Execute(context));
         ResolveGemMovement();
+
+        boardDisableEvents.Raise(new BoardDisableEventContext
+        {
+            boardDisablePhase = BoardDisablePhase.Preview,
+            boardDisableLogic = logic
+        });
     }
 
 
@@ -919,6 +932,11 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             });
         }
 
+        if (shakingData.Count > 0)
+        {
+            boardAudioPlayer?.PlayGemHint();
+        }
+
         _shakingDataContainer.Add(shakingData);
 
     }
@@ -976,20 +994,9 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     protected void ClearDisableEffects()
     {
-        foreach (GameObject go in _disableFXs)
+        foreach (FadeOnSpawnAndDeath fx in _disableFXs)
         {
-            if (go)
-            {
-                FadeOnSpawnAndDeath fadeScript = go.GetComponent<FadeOnSpawnAndDeath>();
-                if (fadeScript != null)
-                {
-                    fadeScript.FadeOutAndDestroy();
-                }
-                else
-                {
-                    Destroy(go);
-                }
-            }
+            if (fx) fx.FadeOutAndDestroy();
         }
         _disableFXs.Clear();
     }

@@ -18,6 +18,7 @@ public class Gem : MonoBehaviour
     public Sprite greenSprite;
     public Sprite blueSprite;
     public Sprite yellowSprite;
+    public Sprite noneSprite;
 
     [SerializeField] GameObject gemResolver;
 
@@ -26,15 +27,7 @@ public class Gem : MonoBehaviour
     public void Init(GemColor gemColor)
     {
         Color = gemColor;
-
-        if (Color == GemColor.None)
-        {
-            spriteRenderer.color = GemColorUtility.ConvertGemColor(gemColor);
-        }
-        else
-        {
-            spriteRenderer.sprite = GetSpriteByColor(gemColor);
-        }
+        spriteRenderer.sprite = GetSpriteByColor(gemColor);
     }
 
     public void Resolve(PartyRoster partyRoster, Action<GemColor> onAbsorbed)
@@ -82,6 +75,7 @@ public class Gem : MonoBehaviour
             GemColor.Blue => blueSprite,
             GemColor.Green => greenSprite,
             GemColor.Yellow => yellowSprite,
+            GemColor.None => noneSprite,
             _ => null
         };
     }

@@ -18,5 +18,7 @@ public static class PlayerInputExtensions
     public static void SwitchToGameplayMap(this PlayerInput playerInput)
     {
         playerInput.SwitchCurrentActionMap("Gameplay");
+        playerInput.actions.FindActionMap("UI").FindAction("Click").Enable();
+        playerInput.actions.FindActionMap("UI").FindAction("Point").Enable();
     }
 }

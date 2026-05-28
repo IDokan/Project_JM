@@ -14,4 +14,9 @@ public class MainMenuController : BasePlayerController
     {
         playerInput.SwitchToUIMap();
     }
+
+    public void DisableInput()
+    {
+        playerInput.DeactivateInput();
+    }
 }

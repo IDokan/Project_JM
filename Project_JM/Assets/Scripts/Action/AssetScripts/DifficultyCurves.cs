@@ -11,14 +11,29 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DifficultyCurves", menuName = "JM/Curves/DifficultyCurves")]
 public class DifficultyCurves : ScriptableObject
 {
-    public AnimationCurve HPMultiplierCurve;
-    public AnimationCurve DamageMultiplierCurve;
+    // Raises the bar the player must clear per enemy; scales enemy HP only — no benefit to the player
+    public AnimationCurve DifficultyMultiplierCurve;
+    // Level-up linear formula (y = slope * stage + intercept); scales ally HP, enemy HP, and all damage proportionally — relative balance stays neutral
+    [SerializeField] float levelMultiplierSlope = 0.5f;
+    [SerializeField] float levelMultiplierIntercept = 1f;
 
     public StatusMultiplier GetDifficultyMultiplier(int stage)
     {
         StatusMultiplier result;
-        result.HPMultiplier = HPMultiplierCurve.Evaluate(stage) *
-            DamageMultiplierCurve.Evaluate(stage);
+        result.HPMultiplier = DifficultyMultiplierCurve.Evaluate(stage) *
+            GetLevelMultiplier(stage);
         return result;
+    }
+
+    public StatusMultiplier GetAllyDifficultyMultiplier(int stage)
+    {
+        StatusMultiplier result;
+        result.HPMultiplier = GetLevelMultiplier(stage);
+        return result;
+    }
+
+    public float GetLevelMultiplier(int stage)
+    {
+        return levelMultiplierSlope * stage + levelMultiplierIntercept;
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5050649360670026318}
   - component: {fileID: 5639765191312733316}
   - component: {fileID: 2675546426703268743}
+  - component: {fileID: 9115508073158744368}
   m_Layer: 0
   m_Name: ShieldVFX
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -103,13 +104,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3049a36980bf10419b712c0a366b8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShieldFadeOutPlayer
-  duration: 1
+  duration: 1.5
   progressCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
+      time: -0.0041666664
+      value: 0.99523807
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5007782
+      value: 0.99523926
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -128,3 +138,59 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9115508073158744368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617004618437957491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d17e4096fa62f945936f34312c8d2d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScaleByCurve
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.010974884
+      value: 0.4992447
+      inSlope: 3.3353345
+      outSlope: 3.3353345
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.13968736
+      value: 1.0017537
+      inSlope: -0.063185915
+      outSlope: -0.063185915
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.8103617
+      outWeight: 0.3625693
+    - serializedVersion: 3
+      time: 0.32625708
+      value: 0.8636033
+      inSlope: -0.32503113
+      outSlope: -0.32503113
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99246156
+      value: 0.7973912
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  duration: 1.5
+  playOnStart: 1

@@ -14,7 +14,7 @@ public class CombatController : BasePlayerController
     [SerializeField] private BoardManager board;
     [SerializeField] private GemSelectionHighlightManager gemSelectionHighlightManager;
     [SerializeField] private TransitionManager transitionManager;
-    [SerializeField] private PauseMenu pauseMenu;
+    [SerializeField] private PauseButton pauseButton;
 
     [Header("Tuning")]
     [SerializeField] private float dragThresholdPixels = 16f;
@@ -41,7 +41,13 @@ public class CombatController : BasePlayerController
 
     private void Start()
     {
+        // Explicitly disable the UI map before switching to Gameplay.
+        // SwitchToGameplayMap() alone leaves the UI map active, causing both
+        // maps to process any shared input binding simultaneously. Without this,
+        // the first ESC press fires both Gameplay's Cancel (open pause) and UI's
+        // Cancel (close pause) in the same frame — making ESC appear broken.
         playerInput.actions.FindActionMap("UI").Disable();
+        playerInput.SwitchToGameplayMap();
     }
 
     private void Update()
@@ -81,7 +87,7 @@ public class CombatController : BasePlayerController
     // ------- Pointer events --------
     protected override void OnPressStarted(InputAction.CallbackContext _)
     {
-        if (pauseMenu.IsPaused)
+        if (pauseButton.IsPaused)
         {
             clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
             return;
@@ -111,12 +117,13 @@ public class CombatController : BasePlayerController
 
     protected override void OnPressCanceled(InputAction.CallbackContext _)
     {
-        if (pauseMenu.IsPaused)
+        transitionManager.EndSkipHold();
+
+        if (pauseButton.IsPaused)
         {
             return;
         }
 
-        transitionManager.EndSkipHold();
         ClearSelection();
         _firedThisDrag = false;
     }
@@ -163,7 +170,7 @@ public class CombatController : BasePlayerController
         {
             isPerformed = SwapGem(directionInt);
         }
-        else if (!pauseMenu.IsPaused)        // Allow gem selection even when board is disabled.
+        else if (!pauseButton.IsPaused)        // Allow gem selection even when board is disabled.
         {
             // It is very dangerous because below lines executed even board _gems is null.
             isPerformed = SelectGem(directionInt);
@@ -197,12 +204,12 @@ public class CombatController : BasePlayerController
 
     protected override void OnCancelPerformed(InputAction.CallbackContext _)
     {
-        pauseMenu.Show();
+        pauseButton.Open();
     }
 
     // ----- Helpers ---------
 
-    private bool IsBoardInputEnabled() => board.InputEnabled && !pauseMenu.IsPaused;
+    private bool IsBoardInputEnabled() => board.InputEnabled && !pauseButton.IsPaused;
 
     private Vector2Int GemIndexUnderCursor(Vector2 screenPos)
     {

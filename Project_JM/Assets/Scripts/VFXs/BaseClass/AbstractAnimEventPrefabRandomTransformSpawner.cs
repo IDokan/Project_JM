@@ -14,6 +14,7 @@ public abstract class AbstractAnimEventPrefabRandomTransformSpawner<TPrefab> : M
     [SerializeField] protected TPrefab prefab;
     [SerializeField] protected GetRandomTransform randomTransformScript;
     [SerializeField] protected Vector3 localOffset;
+    [SerializeField] private AudioCueSO sfx;
 
     public TPrefab Spawn(TPrefab givenPrefab = null, bool isCachedTransform = true)
     {
@@ -26,6 +27,9 @@ public abstract class AbstractAnimEventPrefabRandomTransformSpawner<TPrefab> : M
         {
             randomTransformScript = GetComponent<GetRandomTransform>();
         }
+
+        if (sfx != null)
+            AudioManager.Instance.PlayActionSFX(sfx);
 
         Transform t = isCachedTransform ? randomTransformScript.GetCachedTransform() : randomTransformScript.RandomTransform();
 

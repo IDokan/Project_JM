@@ -1,0 +1,40 @@
+// SPDX-License-Identifier: LicenseRef-Proprietary
+// Copyright (c) 20/05/2026 Sinil Kang. All Rights Reserved.
+// Project: Project JM - https://github.com/IDokan/Project_JM
+// File: DummyStateVisual.cs
+// Summary: Dummy enemy visual — attack lunge motion only, no sprite state changes.
+// Unauthorized copying, distribution, or modification of this file is strictly prohibited.
+
+using DG.Tweening;
+using UnityEngine;
+
+public class DummyStateVisual : EnemyStateVisual
+{
+    [Header("Attack Motion")]
+    [SerializeField] private float readyDuration = 0.1f;
+    [SerializeField] private float moveDuration = 0.1f;
+    [SerializeField] private float pauseDuration = 0.2f;
+    [SerializeField, Range(0f, 1f)] private float moveOffsetMultiplier = 1f;
+    [SerializeField, Range(0f, 1f)] private float readyOffsetMultiplier = 0.5f;
+
+    private Vector3 _originalPosition;
+
+    private void Awake()
+    {
+        _originalPosition = transform.localPosition;
+    }
+
+    public override Sequence BuildAttackSequence(Vector3 moveOffset)
+    {
+        Vector3 offset = moveOffset * moveOffsetMultiplier;
+        Vector3 readyPosition = _originalPosition - offset * readyOffsetMultiplier;
+        Vector3 target = _originalPosition + offset;
+
+        return DOTween.Sequence()
+            .Append(transform.DOLocalMove(readyPosition, readyDuration).SetEase(Ease.OutQuad))
+            .Append(transform.DOLocalMove(target, moveDuration).SetEase(Ease.OutQuad))
+            .AppendInterval(pauseDuration)
+            .Append(transform.DOLocalMove(_originalPosition, moveDuration).SetEase(Ease.InQuad))
+            .SetLink(gameObject);
+    }
+}

@@ -11,7 +11,10 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     protected Vector3 _originLocalPos;
+    protected Vector3 _shakeOffset;
     protected Coroutine _routine;
+
+    public Vector3 ShakeOffset => _shakeOffset;
 
     protected void Awake()
     {
@@ -39,11 +42,13 @@ public class CameraShake : MonoBehaviour
             t += Time.unscaledDeltaTime;
 
             Vector2 rand = Random.insideUnitCircle * magnitude;
-            transform.localPosition = _originLocalPos + new Vector3(rand.x, rand.y, 0f);
+            _shakeOffset = new Vector3(rand.x, rand.y, 0f);
+            transform.localPosition = _originLocalPos + _shakeOffset;
 
             yield return null;
         }
 
+        _shakeOffset = Vector3.zero;
         transform.localPosition = _originLocalPos;
         _routine = null;
     }

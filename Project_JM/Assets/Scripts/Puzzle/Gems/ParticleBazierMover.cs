@@ -26,6 +26,7 @@ public class ParticleBazierMover : MonoBehaviour
 
     [SerializeField] protected float endOffsetWeight;
     [SerializeField] protected float bendScale = 1f;
+    [SerializeField] private float fadeRadius = 2f;
 
     public event Action Completed;
     bool _completedFired = false;
@@ -121,6 +122,11 @@ public class ParticleBazierMover : MonoBehaviour
 
     protected void EnsureBuffer()
     {
+        if (_particles != null && controlledParticleSystem.particleCount <= _particles.Length)
+        {
+            return;
+        }
+
         var main = controlledParticleSystem.main;
         int max = Mathf.Max(4, main.maxParticles);
 
@@ -211,16 +217,11 @@ public class ParticleBazierMover : MonoBehaviour
                 p.remainingLifetime = 0f;
             }
 
-            // Update particle's opacity by velocity when they began floating to destination.
-            if (u > 0.5f)
-            {
-                float clampedVelocitySqrMagnitude = Mathf.Clamp01(velocitySqrMagnitude / 20f);
-                byte alpha = (byte)Mathf.RoundToInt(255 * clampedVelocitySqrMagnitude);
-
-                Color32 c = p.startColor;
-                c.a = alpha;
-                p.startColor = c;
-            }
+            float distSqr = (p.position - endPosition).sqrMagnitude;
+            float normalizedDist = Mathf.Clamp01(distSqr / (fadeRadius * fadeRadius));
+            Color32 c = p.startColor;
+            c.a = (byte)Mathf.RoundToInt(255f * normalizedDist);
+            p.startColor = c;
         }
 
         controlledParticleSystem.SetParticles(_particles, count);
