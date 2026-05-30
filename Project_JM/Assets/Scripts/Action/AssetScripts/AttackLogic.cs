@@ -16,7 +16,9 @@ public struct AttackContext
 
     // Must always be a valid (non-null) Transform before TakeDamage is called.
     public Transform HitTransform;
-    public MultiHitTransformContainer MultiHitTransformContainer;
+public Vector3 HitTransformOffset;
+
+    public Vector3 GetHitPosition() => HitTransform.position + HitTransformOffset;
 
     public DamageMultiplierManager DamageMultiplierManager;
 
