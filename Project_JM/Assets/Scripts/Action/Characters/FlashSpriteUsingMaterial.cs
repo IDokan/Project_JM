@@ -64,7 +64,7 @@ public class FlashSpriteUsingMaterial : MonoBehaviour
         flashMaterial.SetFloat("_FlashAmount", amount);
         flashMaterial.SetColor("_FlashColor", Color.white);
 
-        yield return new WaitForSeconds(duration);
+        yield return GlobalTimeManager.WaitForGlobalSeconds(duration);
 
 
         flashMaterial.SetFloat("_FlashAmount", 0f);
