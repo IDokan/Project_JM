@@ -33,9 +33,10 @@ public class AttackExecutor : MonoBehaviour
     [SerializeField, Tooltip("Optional. Must be assigned when using a multi-hit attack logic. Leave empty for single-hit enemies.")]
     protected Transform[] perHitTransforms;
     [Header("Ranged Attack")]
-    [SerializeField] private Vector3 hitTransformOffset;
+    [SerializeField] private Vector3[] hitTransformOffset;
 
-    public Vector3 HitTransformOffset => hitTransformOffset;
+    public Vector3[] HitTransformOffset => hitTransformOffset;
+    public Transform[] PerHitTransforms => perHitTransforms;
 
     protected AttackContext _context;
     public AttackContext Context => _context;
@@ -155,7 +156,7 @@ public class AttackExecutor : MonoBehaviour
         if (targetObject != null)
         {
             _context.HitTransform = attackEnemyAttackPoint != null ? attackEnemyAttackPoint : targetObject.transform;
-            _context.MultiHitTransformContainer = new MultiHitTransformContainer(perHitTransforms);
+            _context.HitTransformOffset = hitTransformOffset != null && hitTransformOffset.Length > 0 ? hitTransformOffset[0] : Vector3.zero;
 
             targetObject.GetComponent<AttackMotion>().RequestHurt(logicEnemy.GetTargetMotionOffset());
 
