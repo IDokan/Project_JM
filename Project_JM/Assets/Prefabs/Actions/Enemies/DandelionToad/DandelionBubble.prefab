@@ -104,10 +104,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57c78955602d61c43a69b807ac5aef6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DandelionBubbleProjectile
-  flyGlideCount: 0.4
-  glideCount: 0.4
-  glideAmplitude: 0.5
-  explosionPrefab: {fileID: 0}
+  flyGlideCount: 0.2
+  glideCount: 0.03
+  glideAmplitude: 1
+  explosionPrefab: {fileID: 7809139522307190198, guid: 1814bb926dbd95b4984551f41c57c73c, type: 3}
+  popSFX: {fileID: 11400000, guid: ca42226999263f64ba25a36ed029ddd9, type: 2}
 --- !u!114 &5591348916018820388
 MonoBehaviour:
   m_ObjectHideFlags: 0

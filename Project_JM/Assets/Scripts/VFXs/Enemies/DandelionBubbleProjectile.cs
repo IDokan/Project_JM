@@ -12,10 +12,11 @@ using UnityEngine;
 
 public class DandelionBubbleProjectile : MonoBehaviour
 {
-    [SerializeField] private float flyGlideCount = 2f;
-    [SerializeField] private float glideCount = 3f;
-    [SerializeField] private float glideAmplitude = 0.5f;
+    [SerializeField] private float flyGlideCount = 0.2f;
+    [SerializeField] private float glideCount = 0.03f;
+    [SerializeField] private float glideAmplitude = 1.0f;
     [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private AudioCueSO popSFX;
 
     public void Initialize(Transform target, Vector3 offset, float flyDuration, float glideDuration)
     {
@@ -61,6 +62,8 @@ public class DandelionBubbleProjectile : MonoBehaviour
         {
             Instantiate(explosionPrefab, end, Quaternion.identity);
         }
+
+        AudioManager.Instance.PlayEnemyActionSFX(popSFX);
 
         Destroy(gameObject);
     }
