@@ -527,6 +527,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4734252991028836222}
     - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: swingSfx
+      value: 
+      objectReference: {fileID: 11400000, guid: 63ed5600307deef4d8a993695163012f, type: 2}
+    - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: stateVisual
       value: 
       objectReference: {fileID: 8710302969198255180}
@@ -538,6 +542,14 @@ PrefabInstance:
       propertyPath: vfxAnchor
       value: 
       objectReference: {fileID: 579333049892345158}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageSfx
+      value: 
+      objectReference: {fileID: 11400000, guid: 29dce8a5819ca104db75b08030239bff, type: 2}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: baseCooldown
       value: 8
@@ -655,8 +667,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DandelionBubbleSpawner
   bubblePrefab: {fileID: 6263386555506660701, guid: 8926a26c21f53564ca95dd527dd4e444, type: 3}
   spawnPoint: {fileID: 5650860502093533510}
-  flyDuration: 0.6
-  glideDuration: 0.2
+  flyDuration: 0.7
+  glideDuration: 0.1
   spawnInterval: 0.1
 --- !u!4 &3621238678013305779 stripped
 Transform:
