@@ -23,6 +23,12 @@ public class MultiMeleeAttack : AttackLogic
         }
 
         Transform[] perHitTransforms = executor.PerHitTransforms;
+        if (perHitTransforms == null || perHitTransforms.Length == 0)
+        {
+            Debug.LogError($"[MultiMeleeAttack] PerHitTransforms is null or empty on {ctx.Attacker}.");
+            yield break;
+        }
+
         for (int i = 0; i < perHitTransforms.Length; i++)
         {
             ctx.HitTransform = perHitTransforms[i];
