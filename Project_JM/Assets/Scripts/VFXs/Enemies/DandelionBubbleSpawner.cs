@@ -14,9 +14,9 @@ public class DandelionBubbleSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject bubblePrefab;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private float flyDuration = 1f;
-    [SerializeField] private float glideDuration = 0.5f;
-    [SerializeField] private float spawnInterval = 0.2f;
+    [SerializeField] private float flyDuration = 0.7f;
+    [SerializeField] private float glideDuration = 0.1f;
+    [SerializeField] private float spawnInterval = 0.1f;
 
     private AttackExecutor _executor;
 
@@ -38,11 +38,16 @@ public class DandelionBubbleSpawner : MonoBehaviour
 
     private IEnumerator SpawnRoutine(Transform target)
     {
-        foreach (Vector3 offset in _executor.HitTransformOffset)
+        Vector3[] offsets = _executor.HitTransformOffset;
+        for (int i = 0; i < offsets.Length; i++)
         {
             var go = Instantiate(bubblePrefab, spawnPoint.position, Quaternion.identity);
-            go.GetComponent<DandelionBubbleProjectile>().Initialize(target, offset, flyDuration, glideDuration);
-            yield return GlobalTimeManager.WaitForGlobalSeconds(spawnInterval);
+            go.GetComponent<DandelionBubbleProjectile>().Initialize(target, offsets[i], flyDuration, glideDuration);
+
+            if (i < offsets.Length - 1)
+            {
+                yield return GlobalTimeManager.WaitForGlobalSeconds(spawnInterval);
+            }
         }
     }
 }
