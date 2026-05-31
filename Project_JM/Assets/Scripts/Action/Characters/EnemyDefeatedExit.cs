@@ -37,7 +37,7 @@ public class EnemyDefeatedExit : MonoBehaviour
 
     private IEnumerator ExitRoutine()
     {
-        yield return GlobalTimeManager.WaitForGlobalSeconds(exitDelay);
+        yield return new WaitForSeconds(exitDelay);
 
         Vector3 start = transform.position;
         Vector3 end = start + Vector3.down * exitDistance;
