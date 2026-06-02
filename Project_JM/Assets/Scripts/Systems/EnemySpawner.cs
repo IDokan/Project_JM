@@ -10,7 +10,14 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] protected EnemyBook enemyBook;
+    [SerializeField] private SaveDataManager saveDataManager;
+
+    [SerializeField] private EnemyBook easyEnemyBook;
+    [SerializeField] private EnemyBook mediumEnemyBook;
+    [SerializeField] private EnemyBook hardEnemyBook;
+
+    protected EnemyBook _enemyBook;
+
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
@@ -39,20 +46,33 @@ public class EnemySpawner : MonoBehaviour
 
     protected void Awake()
     {
+        if (saveDataManager.IsMediumPassed)
+        {
+            _enemyBook = hardEnemyBook;
+        }
+        else if (saveDataManager.IsEasyPassed)
+        {
+            _enemyBook = mediumEnemyBook;
+        }
+        else
+        {
+            _enemyBook = easyEnemyBook;
+        }
+
         _spawnOffsetToCamera = spawnPosition - Camera.main.transform.position;
     }
 
     protected void Clear()
     {
         _numSpanwed = 0;
-        enemyBook.ResetProgression();
+        _enemyBook.ResetProgression();
     }
 
     protected GameObject SpawnNextEnemy()
     {
         _numSpanwed++;
 
-        GameObject prefab = enemyBook.GetNextEnemy();
+        GameObject prefab = _enemyBook.GetNextEnemy();
 
         Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
         var spawnedEnemy = Instantiate(prefab, pos, Quaternion.identity);
