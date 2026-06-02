@@ -47,6 +47,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected Coroutine _stunRoutine = null;
 
     public bool IsStunned => _isStunned;
+    public bool IsEnraged => _isEnraged;
 
     protected void OnEnable()
     {
