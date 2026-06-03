@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
+using TutorialEnums;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -21,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected DifficultyCurves difficultyCurves;
+    [SerializeField] protected DifficultyCurvesSelector curvesSelector;
 
     [SerializeField] protected Vector3 spawnPosition;
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
@@ -46,11 +47,11 @@ public class EnemySpawner : MonoBehaviour
 
     protected void Awake()
     {
-        if (saveDataManager.IsMediumPassed)
+        if (saveDataManager.Progress >= TutorialProgress.MediumPassed)
         {
             _enemyBook = hardEnemyBook;
         }
-        else if (saveDataManager.IsEasyPassed)
+        else if (saveDataManager.Progress >= TutorialProgress.EasyPassed)
         {
             _enemyBook = mediumEnemyBook;
         }
@@ -77,7 +78,7 @@ public class EnemySpawner : MonoBehaviour
         Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
         var spawnedEnemy = Instantiate(prefab, pos, Quaternion.identity);
         var characterStatus = spawnedEnemy.GetComponent<CharacterStatus>();
-        characterStatus.Initialize(difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
+        characterStatus.Initialize(curvesSelector.ActiveCurves.GetDifficultyMultiplier(_numSpanwed));
         _spawnTime = Time.time;
         _spawnedEnemyName = characterStatus.CharacterName;
 

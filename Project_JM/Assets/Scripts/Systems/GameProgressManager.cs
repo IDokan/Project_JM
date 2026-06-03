@@ -9,13 +9,14 @@
 
 using GemEnums;
 using MatchEnums;
+using TutorialEnums;
 using UnityEngine;
 
 public class GameProgressManager : MonoBehaviour
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterDeathEventChannel deathChannel;
-    [SerializeField] protected DifficultyCurves curves;
+    [SerializeField] protected DifficultyCurvesSelector curvesSelector;
     [SerializeField] protected CharacterStatus partyStatus;
 
     [SerializeField] private BoardDisableEventChannel boardDisableChannel;
@@ -23,6 +24,8 @@ public class GameProgressManager : MonoBehaviour
     [SerializeField] private SaveDataManager saveDataManager;
 
     protected int _numEnemyDefeated = 0;
+
+    private TutorialProgress _progressAtRunStart;
 
     // Easy condition: none of the first 4 enemies were enraged when they died
     private bool _anyEnemyEnragedBeforeFourDefeats;
@@ -32,6 +35,15 @@ public class GameProgressManager : MonoBehaviour
     private bool _noneMatchedBeforeNextAttack;
     private int _totalDisableOpportunities;
     private int _rapidlyResolvedCount;
+
+    protected void Awake()
+    {
+        if (saveDataManager == null)
+        {
+            Debug.LogError("SaveDataManager is not assigned.", this);
+            enabled = false;
+        }
+    }
 
     protected void OnEnable()
     {
@@ -70,11 +82,6 @@ public class GameProgressManager : MonoBehaviour
         {
             Debug.LogWarning("MatchEventChannel is null", this);
         }
-
-        if (saveDataManager == null)
-        {
-            Debug.LogWarning("SaveDataManager is null", this);
-        }
     }
 
     protected void OnDisable()
@@ -100,6 +107,7 @@ public class GameProgressManager : MonoBehaviour
     public void Clear()
     {
         _numEnemyDefeated = 0;
+        _progressAtRunStart = saveDataManager.Progress;
 
         _anyEnemyEnragedBeforeFourDefeats = false;
 
@@ -127,43 +135,44 @@ public class GameProgressManager : MonoBehaviour
 
     protected void HandleAllyDied(CharacterStatus stat)
     {
-        if (saveDataManager == null || _numEnemyDefeated > 1)
+        if (_numEnemyDefeated > 1)
         {
             return;
         }
 
-        if (saveDataManager.IsAllPassed)
+        if (_progressAtRunStart == TutorialProgress.MediumPassed)
         {
             saveDataManager.ResetMediumPassed();
         }
-        else if (saveDataManager.IsEasyPassed)
+        else if (_progressAtRunStart == TutorialProgress.EasyPassed)
         {
             saveDataManager.ResetEasyPassed();
         }
+        // HardPassed is permanent — no reset.
     }
 
     protected void HandleEnemyDied(CharacterStatus stat)
     {
         ++_numEnemyDefeated;
-        partyStatus.Initialize(curves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
+        partyStatus.Initialize(curvesSelector.ActiveCurves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
 
-        if (_numEnemyDefeated <= 4
-            && stat.TryGetComponent<EnemyAttackBehaviour>(out var behaviour)
-            && behaviour.IsEnraged)
+        if (_progressAtRunStart == TutorialProgress.None)
         {
-            _anyEnemyEnragedBeforeFourDefeats = true;
-        }
+            if (_numEnemyDefeated <= 4
+                && stat.TryGetComponent<EnemyAttackBehaviour>(out var behaviour)
+                && behaviour.IsEnraged)
+            {
+                _anyEnemyEnragedBeforeFourDefeats = true;
+            }
 
-        if (_numEnemyDefeated == 4
-            && !_anyEnemyEnragedBeforeFourDefeats
-            && saveDataManager != null
-            && !saveDataManager.IsEasyPassed)
-        {
-            saveDataManager.SetEasyPassed();
+            if (_numEnemyDefeated == 4 && !_anyEnemyEnragedBeforeFourDefeats)
+            {
+                saveDataManager.SetEasyPassed();
+            }
         }
 
         // Close any open disable window when the enemy dies
-        if (_pendingDisableOpportunity)
+        if (_progressAtRunStart == TutorialProgress.EasyPassed && _pendingDisableOpportunity)
         {
             _totalDisableOpportunities++;
             if (_noneMatchedBeforeNextAttack)
@@ -172,6 +181,11 @@ public class GameProgressManager : MonoBehaviour
             }
             _pendingDisableOpportunity = false;
             CheckMediumCondition();
+        }
+
+        if (_progressAtRunStart == TutorialProgress.MediumPassed && _numEnemyDefeated >= 4)
+        {
+            saveDataManager.SetHardPassed();
         }
     }
 
@@ -186,6 +200,11 @@ public class GameProgressManager : MonoBehaviour
     private void OnBoardDisableEvent(BoardDisableEventContext context)
     {
         if (context.boardDisablePhase != BoardDisablePhase.Commit)
+        {
+            return;
+        }
+
+        if (_progressAtRunStart != TutorialProgress.EasyPassed)
         {
             return;
         }
@@ -207,6 +226,11 @@ public class GameProgressManager : MonoBehaviour
 
     private void OnMatchEvent(MatchEvent matchEvent)
     {
+        if (_progressAtRunStart != TutorialProgress.EasyPassed)
+        {
+            return;
+        }
+
         if (_pendingDisableOpportunity && matchEvent.Color == GemColor.None)
         {
             _noneMatchedBeforeNextAttack = true;
@@ -215,7 +239,7 @@ public class GameProgressManager : MonoBehaviour
 
     private void CheckMediumCondition()
     {
-        if (saveDataManager == null || saveDataManager.IsMediumPassed)
+        if (_progressAtRunStart != TutorialProgress.EasyPassed)
         {
             return;
         }
@@ -225,7 +249,7 @@ public class GameProgressManager : MonoBehaviour
             return;
         }
 
-        if ((float)_rapidlyResolvedCount / _totalDisableOpportunities >= 0.9f)
+        if ((float)_rapidlyResolvedCount / _totalDisableOpportunities >= 0.75f)
         {
             saveDataManager.SetMediumPassed();
         }

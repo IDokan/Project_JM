@@ -12,7 +12,7 @@ public class DamageMultiplierManager : MonoBehaviour
 {
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
-    [SerializeField] protected DifficultyCurves difficultyCurves;
+    [SerializeField] protected DifficultyCurvesSelector curvesSelector;
     [SerializeField] protected DamageBonusChangedEventChannel damageBonusChangedEventChannel;
 
     protected float _damageMultiplier = 1f;
@@ -78,6 +78,6 @@ public class DamageMultiplierManager : MonoBehaviour
     {
         _numEnemyDefeated = newNumEnemyDefeated;
 
-        _damageMultiplier = difficultyCurves.GetLevelMultiplier(_numEnemyDefeated);
+        _damageMultiplier = curvesSelector.ActiveCurves.GetLevelMultiplier(_numEnemyDefeated);
     }
 }
