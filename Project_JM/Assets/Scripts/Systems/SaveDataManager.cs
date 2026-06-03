@@ -45,4 +45,17 @@ public class SaveDataManager : MonoBehaviour
     }
 
     // No ResetHardPassed — HardPassed unlocks the ranking system and is permanent.
+
+    private const string KeyTutorialCompleted = "tutorialCompleted_";
+
+    public bool IsTutorialCompleted(TutorialProgress level)
+    {
+        return PlayerPrefs.GetInt(KeyTutorialCompleted + (int)level, 0) == 1;
+    }
+
+    public void SetTutorialCompleted(TutorialProgress level)
+    {
+        PlayerPrefs.SetInt(KeyTutorialCompleted + (int)level, 1);
+        PlayerPrefs.Save();
+    }
 }
