@@ -216,6 +216,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6231230550165760675}
+  - {fileID: 1500915789}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1011,6 +1012,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0e406a2a8b5d54499ae203dcdcf252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemSelectionHighlightManager
+--- !u!1 &1500915788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1500915789}
+  - component: {fileID: 1500915791}
+  - component: {fileID: 1500915790}
+  m_Layer: 5
+  m_Name: TutorialUIOverlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1500915789
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500915788}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 33780021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 5000, y: 5000}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1500915790
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500915788}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &1500915791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500915788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8dd275757052494e8216bc2bc4a6dad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialOverlayUI
+  container: {fileID: 1500915789}
 --- !u!114 &1635851511 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1609911731291094093, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
@@ -1110,6 +1173,7 @@ MonoBehaviour:
   gemSelectionHighlightManager: {fileID: 1485710722}
   transitionManager: {fileID: 1986252045}
   pauseButton: {fileID: 174084339}
+  tutorialOverlayUI: {fileID: 1500915791}
   dragThresholdPixels: 16
   moveRepeatRate: 0.12
   stickDeadZone: 0.25
@@ -2339,6 +2403,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1067353664549365659, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067353664549365659, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067353664549365659, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1144.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067353664549365659, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -583.01
+      objectReference: {fileID: 0}
     - target: {fileID: 1670055396459363335, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: partyStatus
       value: 
@@ -2427,6 +2507,22 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5551bcf34c4a2f148a4a9d9754357f43, type: 2}
+    - target: {fileID: 7476683255668338642, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3792506264265948325, guid: e407f89a9fae3ab478b6b2e2f6f8a8b0, type: 3}
+    - target: {fileID: 7476683255668338642, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_SortingLayer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7476683255668338642, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_SortingOrder
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7476683255668338642, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -237149231
+      objectReference: {fileID: 0}
     - target: {fileID: 8115716145221142382, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1150.58

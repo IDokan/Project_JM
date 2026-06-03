@@ -146,8 +146,12 @@ public class BoardManager : MonoBehaviour, IBoardInfo
 
     private int _numMovingGems = 0;
 
-    public bool InputEnabled => !_busy && _gems != null;
+    public bool InputEnabled => !_busy && _gems != null && !_tutorialBoardLocked;
+    public bool IsBoardPopulated => !_busy && _gems != null;
     protected bool _busy;
+
+    private bool _tutorialBoardLocked;
+    private Vector2Int? _tutorialAllowedCell;
 
     protected readonly List<FadeOnSpawnAndDeath> _disableFXs = new();
 
@@ -710,11 +714,44 @@ public class BoardManager : MonoBehaviour, IBoardInfo
         return count >= 3;
     }
 
+    public void SetTutorialBoardLocked(bool locked)
+    {
+        _tutorialBoardLocked = locked;
+        _tutorialAllowedCell = null;
+        if (locked)
+        {
+            StopHintRoutine();
+        }
+        else
+        {
+            StartHintRoutine();
+        }
+    }
+
+    public void SetTutorialAllowedCell(Vector2Int cell)
+    {
+        _tutorialAllowedCell = cell;
+        _tutorialBoardLocked = false;
+        StopHintRoutine();
+    }
+
+    public void ClearTutorialCellFilter()
+    {
+        _tutorialAllowedCell = null;
+        _tutorialBoardLocked = true;
+        StopHintRoutine();
+    }
+
     // Return false if player tried pass invalid direction (out of bounds).
     // and if board is busy
     public bool TrySwapFrom(Vector2Int index, Vector2Int dir)
     {
         if (_busy)
+        {
+            return false;
+        }
+
+        if (_tutorialAllowedCell.HasValue && index != _tutorialAllowedCell.Value)
         {
             return false;
         }
@@ -870,7 +907,10 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         _busy = false;
 
-        StartHintRoutine();
+        if (!_tutorialBoardLocked)
+        {
+            StartHintRoutine();
+        }
 
         _boardCoverController.HideCover();
     }
