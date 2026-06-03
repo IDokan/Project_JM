@@ -15,6 +15,7 @@ public class CombatController : BasePlayerController
     [SerializeField] private GemSelectionHighlightManager gemSelectionHighlightManager;
     [SerializeField] private TransitionManager transitionManager;
     [SerializeField] private PauseButton pauseButton;
+    [SerializeField] private TutorialOverlayUI tutorialOverlayUI;
 
     [Header("Tuning")]
     [SerializeField] private float dragThresholdPixels = 16f;
@@ -38,6 +39,11 @@ public class CombatController : BasePlayerController
 
     private bool _isConfirmPressing;
     private bool _isMoveHolding;
+
+    private void Awake()
+    {
+        Debug.Assert(tutorialOverlayUI != null, $"{nameof(CombatController)}: tutorialOverlayUI is not wired.", this);
+    }
 
     private void Start()
     {
@@ -87,6 +93,8 @@ public class CombatController : BasePlayerController
     // ------- Pointer events --------
     protected override void OnPressStarted(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         if (pauseButton.IsPaused)
         {
             clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
@@ -117,6 +125,8 @@ public class CombatController : BasePlayerController
 
     protected override void OnPressCanceled(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         transitionManager.EndSkipHold();
 
         if (pauseButton.IsPaused)
@@ -133,12 +143,16 @@ public class CombatController : BasePlayerController
     // Stick started latching.
     protected override void OnMoveStarted(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         _isMoveHolding = true;
     }
 
     // Stick returned to idle position.
     protected override void OnMoveCanceled(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         _isMoveHolding = false;
         _lastMovedDirection = Vector2Int.zero;
     }
@@ -146,6 +160,8 @@ public class CombatController : BasePlayerController
     // Called every time the stick value changes.
     protected override void OnMovePerformed(InputAction.CallbackContext context)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         _isPadMode = true;
 
         Vector2 direction = context.ReadValue<Vector2>();
@@ -185,6 +201,8 @@ public class CombatController : BasePlayerController
 
     protected override void OnConfirmStarted(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         transitionManager.BeginSkipHold();
         _isPadMode = true;
 
@@ -197,6 +215,8 @@ public class CombatController : BasePlayerController
 
     protected override void OnConfirmCanceled(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         transitionManager.EndSkipHold();
         _isConfirmPressing = false;
         gemSelectionHighlightManager.DisableArrows();
@@ -204,6 +224,8 @@ public class CombatController : BasePlayerController
 
     protected override void OnCancelPerformed(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         pauseButton.Open();
     }
 
