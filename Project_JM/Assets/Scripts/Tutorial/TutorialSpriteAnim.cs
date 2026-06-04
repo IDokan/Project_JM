@@ -16,7 +16,9 @@ public enum TutorialAnimType
     SlideFrom,
     Scale,
     PulseScale,
-    PingPongFade
+    PingPongFade,
+    Rotate,
+    PingPongSlide
 }
 
 [Serializable]

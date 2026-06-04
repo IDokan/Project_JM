@@ -14,12 +14,21 @@ using UnityEngine.UI;
 public class TutorialOverlayUI : MonoBehaviour
 {
     [SerializeField] private RectTransform container;
+    [SerializeField] private RectTransform brightZone;
+    [SerializeField] private Color backdropColor = new Color(0f, 0f, 0f, 0.5f);
+    [SerializeField] private float backdropFadeDuration = 0.3f;
 
     private readonly List<Image> _activeImages = new();
     private readonly List<Tween> _idleTweens = new();
+    private readonly List<Image> _persistentImages = new();
+    private readonly List<Tween> _persistentIdleTweens = new();
+    private readonly List<Image> _backdropPanels = new();
+    private IReadOnlyList<TutorialSpriteEntry> _persistentEntries;
     private TutorialStepData _currentStep;
     private bool _confirmed;
     private bool _waitingForConfirm;
+
+    public bool IsWaitingForConfirm => _waitingForConfirm;
 
     public bool TryConfirm()
     {
@@ -40,6 +49,103 @@ public class TutorialOverlayUI : MonoBehaviour
         _waitingForConfirm = false;
     }
 
+    public IEnumerator ShowPersistentSprites(IReadOnlyList<TutorialSpriteEntry> entries)
+    {
+        _persistentEntries = entries;
+
+        yield return StartCoroutine(ShowBackdrop());
+
+        if (entries == null || entries.Count == 0)
+        {
+            yield break;
+        }
+
+        Sequence showSeq = DOTween.Sequence().SetUpdate(true);
+        bool hasAnyTween = false;
+
+        foreach (TutorialSpriteEntry entry in entries)
+        {
+            Image img = CreateSpriteImage(entry);
+            _persistentImages.Add(img);
+
+            Tween t = BuildShowTween(img, entry);
+            if (t != null)
+            {
+                showSeq.Join(t);
+                hasAnyTween = true;
+            }
+        }
+
+        if (hasAnyTween)
+        {
+            yield return showSeq.WaitForCompletion();
+        }
+        else
+        {
+            showSeq.Kill();
+        }
+
+        for (int i = 0; i < _persistentImages.Count; i++)
+        {
+            Tween idle = BuildIdleTween(_persistentImages[i], entries[i]);
+            if (idle != null)
+            {
+                _persistentIdleTweens.Add(idle);
+            }
+        }
+    }
+
+    public IEnumerator HidePersistentSprites()
+    {
+        foreach (Tween t in _persistentIdleTweens)
+        {
+            t?.Kill();
+        }
+        _persistentIdleTweens.Clear();
+
+        if (_persistentImages.Count > 0)
+        {
+            Sequence hideSeq = DOTween.Sequence().SetUpdate(true);
+            bool hasAnyTween = false;
+
+            for (int i = 0; i < _persistentImages.Count; i++)
+            {
+                if (i >= _persistentEntries.Count)
+                {
+                    break;
+                }
+
+                Tween t = BuildHideTween(_persistentImages[i], _persistentEntries[i]);
+                if (t != null)
+                {
+                    hideSeq.Join(t);
+                    hasAnyTween = true;
+                }
+            }
+
+            if (hasAnyTween)
+            {
+                yield return hideSeq.WaitForCompletion();
+            }
+            else
+            {
+                hideSeq.Kill();
+            }
+
+            foreach (Image img in _persistentImages)
+            {
+                if (img != null)
+                {
+                    Destroy(img.gameObject);
+                }
+            }
+            _persistentImages.Clear();
+        }
+
+        _persistentEntries = null;
+        yield return StartCoroutine(HideBackdrop());
+    }
+
     public IEnumerator ShowStep(TutorialStepData step)
     {
         _currentStep = step;
@@ -50,7 +156,7 @@ public class TutorialOverlayUI : MonoBehaviour
             yield break;
         }
 
-        Sequence showSeq = DOTween.Sequence();
+        Sequence showSeq = DOTween.Sequence().SetUpdate(true);
         bool hasAnyTween = false;
 
         foreach (TutorialSpriteEntry entry in step.Sprites)
@@ -85,6 +191,85 @@ public class TutorialOverlayUI : MonoBehaviour
         }
     }
 
+    public IEnumerator TransitionStep(TutorialStepData nextStep)
+    {
+        KillIdleTweens();
+
+        int currentCount = _currentStep != null ? _currentStep.Sprites.Count : 0;
+        int nextCount = nextStep.Sprites.Count;
+        int sharedCount = Mathf.Min(currentCount, nextCount);
+
+        // Hide sprites that are being replaced or removed
+        List<Image> toDestroy = new List<Image>();
+        Sequence hideSeq = DOTween.Sequence().SetUpdate(true);
+        bool hasHide = false;
+
+        for (int i = 0; i < sharedCount; i++)
+        {
+            if (_currentStep.Sprites[i].sprite != nextStep.Sprites[i].sprite)
+            {
+                Tween hide = BuildHideTween(_activeImages[i], _currentStep.Sprites[i]);
+                if (hide != null) { hideSeq.Join(hide); hasHide = true; }
+                toDestroy.Add(_activeImages[i]);
+            }
+        }
+        for (int i = sharedCount; i < currentCount; i++)
+        {
+            Tween hide = BuildHideTween(_activeImages[i], _currentStep.Sprites[i]);
+            if (hide != null) { hideSeq.Join(hide); hasHide = true; }
+            toDestroy.Add(_activeImages[i]);
+        }
+
+        if (hasHide) { yield return hideSeq.WaitForCompletion(); }
+        else { hideSeq.Kill(); }
+
+        foreach (Image img in toDestroy)
+        {
+            if (img != null) { Destroy(img.gameObject); }
+        }
+
+        // Build next image list; create and show new sprites
+        List<Image> nextImages = new List<Image>();
+        Sequence showSeq = DOTween.Sequence().SetUpdate(true);
+        bool hasShow = false;
+
+        for (int i = 0; i < sharedCount; i++)
+        {
+            if (_currentStep.Sprites[i].sprite == nextStep.Sprites[i].sprite)
+            {
+                ResetImageToEntry(_activeImages[i], nextStep.Sprites[i]);
+                nextImages.Add(_activeImages[i]);
+            }
+            else
+            {
+                Image newImg = CreateSpriteImage(nextStep.Sprites[i]);
+                nextImages.Add(newImg);
+                Tween show = BuildShowTween(newImg, nextStep.Sprites[i]);
+                if (show != null) { showSeq.Join(show); hasShow = true; }
+            }
+        }
+        for (int i = sharedCount; i < nextCount; i++)
+        {
+            Image newImg = CreateSpriteImage(nextStep.Sprites[i]);
+            nextImages.Add(newImg);
+            Tween show = BuildShowTween(newImg, nextStep.Sprites[i]);
+            if (show != null) { showSeq.Join(show); hasShow = true; }
+        }
+
+        if (hasShow) { yield return showSeq.WaitForCompletion(); }
+        else { showSeq.Kill(); }
+
+        _activeImages.Clear();
+        _activeImages.AddRange(nextImages);
+        _currentStep = nextStep;
+
+        for (int i = 0; i < _activeImages.Count; i++)
+        {
+            Tween idle = BuildIdleTween(_activeImages[i], nextStep.Sprites[i]);
+            if (idle != null) { _idleTweens.Add(idle); }
+        }
+    }
+
     public IEnumerator HideStep()
     {
         KillIdleTweens();
@@ -95,7 +280,7 @@ public class TutorialOverlayUI : MonoBehaviour
             yield break;
         }
 
-        Sequence hideSeq = DOTween.Sequence();
+        Sequence hideSeq = DOTween.Sequence().SetUpdate(true);
         bool hasAnyTween = false;
 
         for (int i = 0; i < _activeImages.Count; i++)
@@ -123,6 +308,127 @@ public class TutorialOverlayUI : MonoBehaviour
         }
 
         ClearAll();
+    }
+
+    private IEnumerator ShowBackdrop()
+    {
+        BuildBackdropPanels();
+
+        if (_backdropPanels.Count == 0)
+        {
+            yield break;
+        }
+
+        Sequence seq = DOTween.Sequence().SetUpdate(true);
+        foreach (Image panel in _backdropPanels)
+        {
+            seq.Join(panel.DOFade(backdropColor.a, backdropFadeDuration));
+        }
+        yield return seq.WaitForCompletion();
+    }
+
+    private IEnumerator HideBackdrop()
+    {
+        if (_backdropPanels.Count == 0)
+        {
+            yield break;
+        }
+
+        Sequence seq = DOTween.Sequence().SetUpdate(true);
+        foreach (Image panel in _backdropPanels)
+        {
+            seq.Join(panel.DOFade(0f, backdropFadeDuration));
+        }
+        yield return seq.WaitForCompletion();
+
+        foreach (Image panel in _backdropPanels)
+        {
+            if (panel != null)
+            {
+                Destroy(panel.gameObject);
+            }
+        }
+        _backdropPanels.Clear();
+    }
+
+    private void BuildBackdropPanels()
+    {
+        foreach (Image panel in _backdropPanels)
+        {
+            if (panel != null)
+            {
+                Destroy(panel.gameObject);
+            }
+        }
+        _backdropPanels.Clear();
+
+        Color startColor = new Color(backdropColor.r, backdropColor.g, backdropColor.b, 0f);
+
+        if (brightZone == null)
+        {
+            Image panel = CreateBackdropPanel(startColor);
+            panel.rectTransform.anchorMin = Vector2.zero;
+            panel.rectTransform.anchorMax = Vector2.one;
+            panel.rectTransform.offsetMin = Vector2.zero;
+            panel.rectTransform.offsetMax = Vector2.zero;
+            _backdropPanels.Add(panel);
+            return;
+        }
+
+        GetNormalizedBoundsInParent(brightZone, container, out Vector2 nMin, out Vector2 nMax);
+
+        TryAddBackdropPanel(startColor, new Vector2(0f, nMax.y), new Vector2(1f, 1f));          // top
+        TryAddBackdropPanel(startColor, new Vector2(0f, 0f),     new Vector2(1f, nMin.y));       // bottom
+        TryAddBackdropPanel(startColor, new Vector2(0f, nMin.y), new Vector2(nMin.x, nMax.y));   // left
+        TryAddBackdropPanel(startColor, new Vector2(nMax.x, nMin.y), new Vector2(1f, nMax.y));   // right
+    }
+
+    private void TryAddBackdropPanel(Color color, Vector2 anchorMin, Vector2 anchorMax)
+    {
+        if (anchorMax.x <= anchorMin.x || anchorMax.y <= anchorMin.y)
+        {
+            return;
+        }
+
+        Image panel = CreateBackdropPanel(color);
+        panel.rectTransform.anchorMin = anchorMin;
+        panel.rectTransform.anchorMax = anchorMax;
+        panel.rectTransform.offsetMin = Vector2.zero;
+        panel.rectTransform.offsetMax = Vector2.zero;
+        _backdropPanels.Add(panel);
+    }
+
+    private Image CreateBackdropPanel(Color color)
+    {
+        GameObject go = new GameObject("BackdropPanel");
+        go.transform.SetParent(container, false);
+        go.transform.SetAsFirstSibling();
+        Image img = go.AddComponent<Image>();
+        img.color = color;
+        img.raycastTarget = true;
+        return img;
+    }
+
+    private void GetNormalizedBoundsInParent(RectTransform rt, RectTransform parent,
+        out Vector2 normMin, out Vector2 normMax)
+    {
+        Vector3[] rtCorners = new Vector3[4];
+        rt.GetWorldCorners(rtCorners);
+
+        Vector3[] parentCorners = new Vector3[4];
+        parent.GetWorldCorners(parentCorners);
+
+        float parentW = parentCorners[2].x - parentCorners[0].x;
+        float parentH = parentCorners[2].y - parentCorners[0].y;
+
+        normMin = new Vector2(
+            (rtCorners[0].x - parentCorners[0].x) / parentW,
+            (rtCorners[0].y - parentCorners[0].y) / parentH
+        );
+        normMax = new Vector2(
+            (rtCorners[2].x - parentCorners[0].x) / parentW,
+            (rtCorners[2].y - parentCorners[0].y) / parentH
+        );
     }
 
     private Image CreateSpriteImage(TutorialSpriteEntry entry)
@@ -193,16 +499,40 @@ public class TutorialOverlayUI : MonoBehaviour
                 return img.rectTransform
                     .DOScale(anim.targetValue, anim.duration)
                     .SetEase(anim.ease)
-                    .SetLoops(-1, LoopType.Yoyo);
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetUpdate(true);
 
             case TutorialAnimType.PingPongFade:
                 return img.DOFade(anim.targetValue, anim.duration)
                     .SetEase(anim.ease)
-                    .SetLoops(-1, LoopType.Yoyo);
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetUpdate(true);
+
+            case TutorialAnimType.Rotate:
+                return img.rectTransform
+                    .DOLocalRotate(new Vector3(0f, 0f, anim.targetValue), anim.duration)
+                    .SetEase(anim.ease)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetUpdate(true);
+
+            case TutorialAnimType.PingPongSlide:
+                return img.rectTransform
+                    .DOAnchorPos(entry.anchoredPosition + anim.offset, anim.duration)
+                    .SetEase(anim.ease)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetUpdate(true);
 
             default:
                 return null;
         }
+    }
+
+    private void ResetImageToEntry(Image img, TutorialSpriteEntry entry)
+    {
+        img.rectTransform.anchoredPosition = entry.anchoredPosition;
+        img.rectTransform.localScale = new Vector3(entry.scale.x, entry.scale.y, 1f);
+        img.rectTransform.localRotation = Quaternion.identity;
+        img.color = new Color(img.color.r, img.color.g, img.color.b, 1f);
     }
 
     private void KillIdleTweens()
