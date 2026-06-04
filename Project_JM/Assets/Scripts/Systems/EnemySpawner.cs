@@ -47,11 +47,11 @@ public class EnemySpawner : MonoBehaviour
 
     protected void Awake()
     {
-        if (saveDataManager.Progress >= TutorialProgress.MediumPassed)
+        if (saveDataManager.Progress >= TutorialProgress.Hard)
         {
             _enemyBook = hardEnemyBook;
         }
-        else if (saveDataManager.Progress >= TutorialProgress.EasyPassed)
+        else if (saveDataManager.Progress >= TutorialProgress.Medium)
         {
             _enemyBook = mediumEnemyBook;
         }

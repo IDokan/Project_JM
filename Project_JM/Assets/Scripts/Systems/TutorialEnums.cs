@@ -9,9 +9,9 @@ namespace TutorialEnums
 {
     public enum TutorialProgress
     {
-        None = 0,
-        EasyPassed = 1,
-        MediumPassed = 2,
-        HardPassed = 3
+        Easy = 0,
+        Medium = 1,
+        Hard = 2,
+        Challenge = 3
     }
 }

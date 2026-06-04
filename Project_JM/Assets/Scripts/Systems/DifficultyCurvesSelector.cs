@@ -25,7 +25,7 @@ public class DifficultyCurvesSelector : MonoBehaviour
             return;
         }
 
-        ActiveCurves = saveDataManager.Progress >= TutorialProgress.MediumPassed
+        ActiveCurves = saveDataManager.Progress >= TutorialProgress.Hard
             ? rankingCurves
             : tutorialCurves;
     }

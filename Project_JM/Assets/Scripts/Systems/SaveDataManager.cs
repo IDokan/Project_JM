@@ -14,37 +14,37 @@ public class SaveDataManager : MonoBehaviour
 
     public TutorialProgress Progress => (TutorialProgress)PlayerPrefs.GetInt(KeyProgress, 0);
 
-    public void SetEasyPassed()
+    public void SetMedium()
     {
-        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.EasyPassed);
+        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.Medium);
         PlayerPrefs.Save();
     }
 
-    public void SetMediumPassed()
+    public void SetHard()
     {
-        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.MediumPassed);
+        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.Hard);
         PlayerPrefs.Save();
     }
 
-    public void SetHardPassed()
+    public void SetChallenge()
     {
-        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.HardPassed);
+        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.Challenge);
         PlayerPrefs.Save();
     }
 
-    public void ResetEasyPassed()
+    public void ResetToEasy()
     {
-        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.None);
+        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.Easy);
         PlayerPrefs.Save();
     }
 
-    public void ResetMediumPassed()
+    public void ResetToMedium()
     {
-        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.EasyPassed);
+        PlayerPrefs.SetInt(KeyProgress, (int)TutorialProgress.Medium);
         PlayerPrefs.Save();
     }
 
-    // No ResetHardPassed — HardPassed unlocks the ranking system and is permanent.
+    // No ResetToChallenge — Challenge unlocks the ranking system and is permanent.
 
     private const string KeyTutorialCompleted = "tutorialCompleted_";
 
