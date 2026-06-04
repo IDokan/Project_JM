@@ -125,7 +125,7 @@ public class CombatController : BasePlayerController
 
     protected override void OnPressCanceled(InputAction.CallbackContext _)
     {
-        if (tutorialOverlayUI.TryConfirm()) { return; }
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
 
         transitionManager.EndSkipHold();
 
@@ -143,7 +143,7 @@ public class CombatController : BasePlayerController
     // Stick started latching.
     protected override void OnMoveStarted(InputAction.CallbackContext _)
     {
-        if (tutorialOverlayUI.TryConfirm()) { return; }
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
 
         _isMoveHolding = true;
     }
@@ -151,7 +151,7 @@ public class CombatController : BasePlayerController
     // Stick returned to idle position.
     protected override void OnMoveCanceled(InputAction.CallbackContext _)
     {
-        if (tutorialOverlayUI.TryConfirm()) { return; }
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
 
         _isMoveHolding = false;
         _lastMovedDirection = Vector2Int.zero;
@@ -160,7 +160,7 @@ public class CombatController : BasePlayerController
     // Called every time the stick value changes.
     protected override void OnMovePerformed(InputAction.CallbackContext context)
     {
-        if (tutorialOverlayUI.TryConfirm()) { return; }
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
 
         _isPadMode = true;
 
@@ -215,7 +215,7 @@ public class CombatController : BasePlayerController
 
     protected override void OnConfirmCanceled(InputAction.CallbackContext _)
     {
-        if (tutorialOverlayUI.TryConfirm()) { return; }
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
 
         transitionManager.EndSkipHold();
         _isConfirmPressing = false;
