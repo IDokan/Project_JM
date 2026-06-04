@@ -140,15 +140,15 @@ public class GameProgressManager : MonoBehaviour
             return;
         }
 
-        if (_progressAtRunStart == TutorialProgress.MediumPassed)
+        if (_progressAtRunStart == TutorialProgress.Hard)
         {
-            saveDataManager.ResetMediumPassed();
+            saveDataManager.ResetToMedium();
         }
-        else if (_progressAtRunStart == TutorialProgress.EasyPassed)
+        else if (_progressAtRunStart == TutorialProgress.Medium)
         {
-            saveDataManager.ResetEasyPassed();
+            saveDataManager.ResetToEasy();
         }
-        // HardPassed is permanent — no reset.
+        // Challenge is permanent — no reset.
     }
 
     protected void HandleEnemyDied(CharacterStatus stat)
@@ -156,7 +156,7 @@ public class GameProgressManager : MonoBehaviour
         ++_numEnemyDefeated;
         partyStatus.Initialize(curvesSelector.ActiveCurves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
 
-        if (_progressAtRunStart == TutorialProgress.None)
+        if (_progressAtRunStart == TutorialProgress.Easy)
         {
             if (_numEnemyDefeated <= 4
                 && stat.TryGetComponent<EnemyAttackBehaviour>(out var behaviour)
@@ -167,12 +167,12 @@ public class GameProgressManager : MonoBehaviour
 
             if (_numEnemyDefeated == 4 && !_anyEnemyEnragedBeforeFourDefeats)
             {
-                saveDataManager.SetEasyPassed();
+                saveDataManager.SetMedium();
             }
         }
 
         // Close any open disable window when the enemy dies
-        if (_progressAtRunStart == TutorialProgress.EasyPassed && _pendingDisableOpportunity)
+        if (_progressAtRunStart == TutorialProgress.Medium && _pendingDisableOpportunity)
         {
             _totalDisableOpportunities++;
             if (_noneMatchedBeforeNextAttack)
@@ -183,9 +183,9 @@ public class GameProgressManager : MonoBehaviour
             CheckMediumCondition();
         }
 
-        if (_progressAtRunStart == TutorialProgress.MediumPassed && _numEnemyDefeated >= 4)
+        if (_progressAtRunStart == TutorialProgress.Hard && _numEnemyDefeated >= 4)
         {
-            saveDataManager.SetHardPassed();
+            saveDataManager.SetChallenge();
         }
     }
 
@@ -204,7 +204,7 @@ public class GameProgressManager : MonoBehaviour
             return;
         }
 
-        if (_progressAtRunStart != TutorialProgress.EasyPassed)
+        if (_progressAtRunStart != TutorialProgress.Medium)
         {
             return;
         }
@@ -226,7 +226,7 @@ public class GameProgressManager : MonoBehaviour
 
     private void OnMatchEvent(MatchEvent matchEvent)
     {
-        if (_progressAtRunStart != TutorialProgress.EasyPassed)
+        if (_progressAtRunStart != TutorialProgress.Medium)
         {
             return;
         }
@@ -239,7 +239,7 @@ public class GameProgressManager : MonoBehaviour
 
     private void CheckMediumCondition()
     {
-        if (_progressAtRunStart != TutorialProgress.EasyPassed)
+        if (_progressAtRunStart != TutorialProgress.Medium)
         {
             return;
         }
@@ -251,7 +251,7 @@ public class GameProgressManager : MonoBehaviour
 
         if ((float)_rapidlyResolvedCount / _totalDisableOpportunities >= 0.75f)
         {
-            saveDataManager.SetMediumPassed();
+            saveDataManager.SetHard();
         }
     }
 }
