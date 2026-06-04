@@ -17,4 +17,7 @@ public class TutorialSequenceData : ScriptableObject
 
     [SerializeField] private List<TutorialStepData> steps = new();
     public IReadOnlyList<TutorialStepData> Steps => steps;
+
+    [SerializeField] private List<TutorialSpriteEntry> persistentSprites = new();
+    public IReadOnlyList<TutorialSpriteEntry> PersistentSprites => persistentSprites;
 }
