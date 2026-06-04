@@ -18,11 +18,13 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private TutorialOverlayUI overlayUI;
     [SerializeField] private TutorialBoardHighlighter boardHighlighter;
+    [SerializeField] private GlobalTimeManager globalTimeManager;
     [SerializeField] private MatchEventChannel matchEventChannel;
     [SerializeField] private EnemySpawnedEventChannel enemySpawnedEventChannel;
 
     private bool _matchReceived;
     private TutorialSequenceData _pendingSequence;
+    private EnemyAttackBehaviour _enemyAttackBehaviour;
 
     protected void OnEnable()
     {
@@ -57,8 +59,10 @@ public class TutorialManager : MonoBehaviour
 
     private void OnMatchRaised(MatchEvent _) => _matchReceived = true;
 
-    private void OnEnemySpawned(GameObject _)
+    private void OnEnemySpawned(GameObject enemy)
     {
+        _enemyAttackBehaviour = enemy.GetComponent<EnemyAttackBehaviour>();
+
         if (_pendingSequence == null)
         {
             return;
@@ -78,15 +82,30 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator RunSequence(TutorialSequenceData sequence)
     {
         boardManager.SetTutorialBoardLocked(true);
+        _enemyAttackBehaviour?.SetTutorialActive(true);
+        globalTimeManager.TutorialFreezeTimeScale();
 
-        foreach (TutorialStepData step in sequence.Steps)
+        yield return StartCoroutine(overlayUI.ShowPersistentSprites(sequence.PersistentSprites));
+
+        if (sequence.Steps.Count > 0)
         {
-            yield return StartCoroutine(overlayUI.ShowStep(step));
-            yield return StartCoroutine(RunStep(step));
+            yield return StartCoroutine(overlayUI.ShowStep(sequence.Steps[0]));
+            yield return StartCoroutine(RunStep(sequence.Steps[0]));
+
+            for (int i = 1; i < sequence.Steps.Count; i++)
+            {
+                yield return StartCoroutine(overlayUI.TransitionStep(sequence.Steps[i]));
+                yield return StartCoroutine(RunStep(sequence.Steps[i]));
+            }
+
             yield return StartCoroutine(overlayUI.HideStep());
         }
 
+        yield return StartCoroutine(overlayUI.HidePersistentSprites());
+
+        globalTimeManager.TutorialUnfreezeTimeScale();
         saveDataManager.SetTutorialCompleted(sequence.ForProgress);
+        _enemyAttackBehaviour?.SetTutorialActive(false);
         boardManager.SetTutorialBoardLocked(false);
     }
 
@@ -114,6 +133,7 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator RunBoardActionStep(BoardActionTutorialStep step)
     {
+        globalTimeManager.TutorialUnfreezeTimeScale();
         _matchReceived = false;
         boardManager.SetTutorialAllowedCell(step.HighlightedCell);
         boardHighlighter.ShowAt(step.HighlightedCell, boardManager);
@@ -122,12 +142,15 @@ public class TutorialManager : MonoBehaviour
 
         boardHighlighter.Hide();
         boardManager.ClearTutorialCellFilter();
+        globalTimeManager.TutorialFreezeTimeScale();
     }
 
     private IEnumerator RunTimerStep(TimerTutorialStep step)
     {
         boardManager.SetTutorialBoardLocked(true);
+        globalTimeManager.TutorialUnfreezeTimeScale();
         yield return new WaitForSeconds(step.Duration);
+        globalTimeManager.TutorialFreezeTimeScale();
     }
 
     private TutorialSequenceData FindSequenceFor(TutorialProgress progress)

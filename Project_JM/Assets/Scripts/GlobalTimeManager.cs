@@ -30,6 +30,7 @@ public class GlobalTimeManager : MonoBehaviour
 
     protected float _skipTimeScale = 3f;
     protected bool _isPaused = false;
+    private bool _isTutorialFrozen = false;
 
     public static IEnumerator WaitForGlobalSeconds(float seconds)
     {
@@ -105,7 +106,7 @@ public class GlobalTimeManager : MonoBehaviour
 
     public void SkipTransition(bool isSkipping)
     {
-        if (!_isPaused)
+        if (!_isPaused && !_isTutorialFrozen)
         {
             UnityEngine.Time.timeScale = isSkipping ? _skipTimeScale : 1f;
         }
@@ -113,7 +114,7 @@ public class GlobalTimeManager : MonoBehaviour
 
     public void RestoreTimeScaleFromSkip()
     {
-        if (!_isPaused)
+        if (!_isPaused && !_isTutorialFrozen)
         {
             UnityEngine.Time.timeScale = 1f;
         }
@@ -125,10 +126,28 @@ public class GlobalTimeManager : MonoBehaviour
         UnityEngine.Time.timeScale = 0f;
     }
 
+    public void TutorialFreezeTimeScale()
+    {
+        _isTutorialFrozen = true;
+        UnityEngine.Time.timeScale = 0f;
+    }
+
+    public void TutorialUnfreezeTimeScale()
+    {
+        _isTutorialFrozen = false;
+        if (!_isPaused)
+        {
+            UnityEngine.Time.timeScale = 1f;
+        }
+    }
+
     public void RestoreTimeScaleFromPause()
     {
         _isPaused = false;
-        UnityEngine.Time.timeScale = 1f;
+        if (!_isTutorialFrozen)
+        {
+            UnityEngine.Time.timeScale = 1f;
+        }
     }
 
     public void RestoreTimeScaleExitCombatScene()
