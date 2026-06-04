@@ -401,11 +401,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae26d33ed8709ac48ba17a5cc5724020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialManager
-  sequences: []
+  sequences:
+  - {fileID: 11400000, guid: 572892df1c051bb4fb41839f859ec852, type: 2}
   saveDataManager: {fileID: 8010854654812025098}
   boardManager: {fileID: 6343494840643666629}
   overlayUI: {fileID: 0}
-  boardHighlighter: {fileID: 0}
+  boardHighlighter: {fileID: 6179699163255718728}
+  globalTimeManager: {fileID: 8014777615325122021}
   matchEventChannel: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
   enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
 --- !u!1 &5463604227995541242
