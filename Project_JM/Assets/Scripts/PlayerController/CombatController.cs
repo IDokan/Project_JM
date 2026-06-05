@@ -93,13 +93,13 @@ public class CombatController : BasePlayerController
     // ------- Pointer events --------
     protected override void OnPressStarted(InputAction.CallbackContext _)
     {
-        if (tutorialOverlayUI.TryConfirm()) { return; }
-
         if (pauseButton.IsPaused)
         {
             clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
             return;
         }
+
+        if (tutorialOverlayUI.TryConfirm()) { return; }
 
         _isPadMode = false;
         transitionManager.BeginSkipHold();
@@ -201,6 +201,8 @@ public class CombatController : BasePlayerController
 
     protected override void OnConfirmStarted(InputAction.CallbackContext _)
     {
+        if (pauseButton.IsPaused) { return; }
+
         if (tutorialOverlayUI.TryConfirm()) { return; }
 
         transitionManager.BeginSkipHold();
@@ -224,8 +226,6 @@ public class CombatController : BasePlayerController
 
     protected override void OnCancelPerformed(InputAction.CallbackContext _)
     {
-        if (tutorialOverlayUI.TryConfirm()) { return; }
-
         pauseButton.Open();
     }
 
