@@ -67,7 +67,7 @@ public class PauseMenu : Menu
         IsPaused = false;
         playerInput.SwitchToGameplayMap();
         base.Hide();
-        GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+        GlobalTimeManager.Instance.RestoreTimeScaleFromPause();
         AudioManager.Instance.ResumeScaledSFX();
     }
 
