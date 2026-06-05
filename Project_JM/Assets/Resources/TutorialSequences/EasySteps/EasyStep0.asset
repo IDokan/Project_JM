@@ -13,6 +13,48 @@ MonoBehaviour:
   m_Name: EasyStep0
   m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
   sprites:
+  - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
+    anchoredPosition: {x: 350, y: 150}
+    scale: {x: 3.8, y: 3.8}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
+    anchoredPosition: {x: 630, y: -370}
+    scale: {x: 1.5, y: 1.5}
+    showAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: -600}
+      targetValue: 0
+    hideAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: -600}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 3
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
   - sprite: {fileID: -4128872201058128161, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
     anchoredPosition: {x: 330, y: 210}
     scale: {x: 3, y: 3}
@@ -34,3 +76,4 @@ MonoBehaviour:
       ease: 19
       offset: {x: 0, y: 0}
       targetValue: 60
+  brightZoneIndex: -1

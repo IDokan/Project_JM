@@ -21,6 +21,7 @@ public class TransitionManager : MonoBehaviour
 
     protected bool _isHoldingSkip = false;
     protected float _skipTimer = 0f;
+    private bool _skipHoldBlocked = false;
 
     protected readonly Queue<PendingTransitionRequest> _pendingTransitionRequests = new Queue<PendingTransitionRequest>();
 
@@ -76,9 +77,11 @@ public class TransitionManager : MonoBehaviour
         NotifySkipTimerChanged();
     }
 
+    public void SetSkipHoldBlocked(bool blocked) => _skipHoldBlocked = blocked;
+
     public void BeginSkipHold()
     {
-        if (_currentTransition == null)
+        if (_currentTransition == null || _skipHoldBlocked)
         {
             return;
         }
