@@ -17,6 +17,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private SaveDataManager saveDataManager;
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private TutorialOverlayUI overlayUI;
+    [SerializeField] private TransitionManager transitionManager;
     [SerializeField] private TutorialBoardHighlighter boardHighlighter;
     [SerializeField] private GlobalTimeManager globalTimeManager;
     [SerializeField] private MatchEventChannel matchEventChannel;
@@ -81,32 +82,46 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator RunSequence(TutorialSequenceData sequence)
     {
+        overlayUI.SetSequenceActive(true);
+        transitionManager.SetSkipHoldBlocked(true);
         boardManager.SetTutorialBoardLocked(true);
         _enemyAttackBehaviour?.SetTutorialActive(true);
         globalTimeManager.TutorialFreezeTimeScale();
 
-        yield return StartCoroutine(overlayUI.ShowPersistentSprites(sequence.PersistentSprites));
+        yield return StartCoroutine(overlayUI.ShowBackdrop());
 
         if (sequence.Steps.Count > 0)
         {
+            overlayUI.SetBrightZoneImmediate(sequence.Steps[0].BrightZoneIndex);
             yield return StartCoroutine(overlayUI.ShowStep(sequence.Steps[0]));
             yield return StartCoroutine(RunStep(sequence.Steps[0]));
 
             for (int i = 1; i < sequence.Steps.Count; i++)
             {
-                yield return StartCoroutine(overlayUI.TransitionStep(sequence.Steps[i]));
-                yield return StartCoroutine(RunStep(sequence.Steps[i]));
+                TutorialStepData step = sequence.Steps[i];
+                if (step is TimerTutorialStep timerStep)
+                {
+                    yield return StartCoroutine(RunTimerStep(timerStep));
+                }
+                else
+                {
+                    overlayUI.SetBrightZoneImmediate(step.BrightZoneIndex);
+                    yield return StartCoroutine(overlayUI.TransitionStep(step));
+                    yield return StartCoroutine(RunStep(step));
+                }
             }
 
             yield return StartCoroutine(overlayUI.HideStep());
         }
 
-        yield return StartCoroutine(overlayUI.HidePersistentSprites());
+        yield return StartCoroutine(overlayUI.HideBackdrop());
 
         globalTimeManager.TutorialUnfreezeTimeScale();
         saveDataManager.SetTutorialCompleted(sequence.ForProgress);
         _enemyAttackBehaviour?.SetTutorialActive(false);
         boardManager.SetTutorialBoardLocked(false);
+        transitionManager.SetSkipHoldBlocked(false);
+        overlayUI.SetSequenceActive(false);
     }
 
     private IEnumerator RunStep(TutorialStepData step)
@@ -147,10 +162,18 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator RunTimerStep(TimerTutorialStep step)
     {
+        yield return StartCoroutine(overlayUI.HideStep());
+        yield return StartCoroutine(overlayUI.HideBackdrop());
+
         boardManager.SetTutorialBoardLocked(true);
         globalTimeManager.TutorialUnfreezeTimeScale();
         yield return new WaitForSeconds(step.Duration);
         globalTimeManager.TutorialFreezeTimeScale();
+
+        yield return StartCoroutine(overlayUI.ShowBackdrop());
+        overlayUI.SetBrightZoneImmediate(step.BrightZoneIndex);
+        yield return StartCoroutine(overlayUI.ShowStep(step));
+        yield return StartCoroutine(overlayUI.WaitForConfirm());
     }
 
     private TutorialSequenceData FindSequenceFor(TutorialProgress progress)
@@ -164,4 +187,5 @@ public class TutorialManager : MonoBehaviour
         }
         return null;
     }
+
 }

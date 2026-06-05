@@ -15,20 +15,21 @@ public class TutorialOverlayUI : MonoBehaviour
 {
     [SerializeField] private RectTransform container;
     [SerializeField] private RectTransform brightZone;
+    [SerializeField] private List<RectTransform> brightZones;
     [SerializeField] private Color backdropColor = new Color(0f, 0f, 0f, 0.5f);
     [SerializeField] private float backdropFadeDuration = 0.3f;
 
     private readonly List<Image> _activeImages = new();
     private readonly List<Tween> _idleTweens = new();
-    private readonly List<Image> _persistentImages = new();
-    private readonly List<Tween> _persistentIdleTweens = new();
     private readonly List<Image> _backdropPanels = new();
-    private IReadOnlyList<TutorialSpriteEntry> _persistentEntries;
     private TutorialStepData _currentStep;
     private bool _confirmed;
     private bool _waitingForConfirm;
 
     public bool IsWaitingForConfirm => _waitingForConfirm;
+    public bool IsSequenceActive { get; private set; }
+
+    public void SetSequenceActive(bool active) => IsSequenceActive = active;
 
     public bool TryConfirm()
     {
@@ -47,103 +48,6 @@ public class TutorialOverlayUI : MonoBehaviour
         _waitingForConfirm = true;
         yield return new WaitUntil(() => _confirmed);
         _waitingForConfirm = false;
-    }
-
-    public IEnumerator ShowPersistentSprites(IReadOnlyList<TutorialSpriteEntry> entries)
-    {
-        _persistentEntries = entries;
-
-        yield return StartCoroutine(ShowBackdrop());
-
-        if (entries == null || entries.Count == 0)
-        {
-            yield break;
-        }
-
-        Sequence showSeq = DOTween.Sequence().SetUpdate(true);
-        bool hasAnyTween = false;
-
-        foreach (TutorialSpriteEntry entry in entries)
-        {
-            Image img = CreateSpriteImage(entry);
-            _persistentImages.Add(img);
-
-            Tween t = BuildShowTween(img, entry);
-            if (t != null)
-            {
-                showSeq.Join(t);
-                hasAnyTween = true;
-            }
-        }
-
-        if (hasAnyTween)
-        {
-            yield return showSeq.WaitForCompletion();
-        }
-        else
-        {
-            showSeq.Kill();
-        }
-
-        for (int i = 0; i < _persistentImages.Count; i++)
-        {
-            Tween idle = BuildIdleTween(_persistentImages[i], entries[i]);
-            if (idle != null)
-            {
-                _persistentIdleTweens.Add(idle);
-            }
-        }
-    }
-
-    public IEnumerator HidePersistentSprites()
-    {
-        foreach (Tween t in _persistentIdleTweens)
-        {
-            t?.Kill();
-        }
-        _persistentIdleTweens.Clear();
-
-        if (_persistentImages.Count > 0)
-        {
-            Sequence hideSeq = DOTween.Sequence().SetUpdate(true);
-            bool hasAnyTween = false;
-
-            for (int i = 0; i < _persistentImages.Count; i++)
-            {
-                if (i >= _persistentEntries.Count)
-                {
-                    break;
-                }
-
-                Tween t = BuildHideTween(_persistentImages[i], _persistentEntries[i]);
-                if (t != null)
-                {
-                    hideSeq.Join(t);
-                    hasAnyTween = true;
-                }
-            }
-
-            if (hasAnyTween)
-            {
-                yield return hideSeq.WaitForCompletion();
-            }
-            else
-            {
-                hideSeq.Kill();
-            }
-
-            foreach (Image img in _persistentImages)
-            {
-                if (img != null)
-                {
-                    Destroy(img.gameObject);
-                }
-            }
-            _persistentImages.Clear();
-        }
-
-        _persistentEntries = null;
-        yield return StartCoroutine(HideBackdrop());
     }
 
     public IEnumerator ShowStep(TutorialStepData step)
@@ -277,6 +181,7 @@ public class TutorialOverlayUI : MonoBehaviour
         if (_currentStep == null || _currentStep.Sprites.Count == 0 || _activeImages.Count == 0)
         {
             ClearAll();
+            _currentStep = null;
             yield break;
         }
 
@@ -308,11 +213,37 @@ public class TutorialOverlayUI : MonoBehaviour
         }
 
         ClearAll();
+        _currentStep = null;
     }
 
-    private IEnumerator ShowBackdrop()
+    public void SetBrightZoneImmediate(int index)
     {
-        BuildBackdropPanels();
+        RectTransform zone = (index >= 0 && index < brightZones.Count) ? brightZones[index] : null;
+        if (zone == brightZone)
+        {
+            return;
+        }
+
+        brightZone = zone;
+        if (_backdropPanels.Count == 0)
+        {
+            return;
+        }
+
+        foreach (Image panel in _backdropPanels)
+        {
+            if (panel != null)
+            {
+                Destroy(panel.gameObject);
+            }
+        }
+        _backdropPanels.Clear();
+        BuildBackdropPanels(backdropColor.a);
+    }
+
+    public IEnumerator ShowBackdrop()
+    {
+        BuildBackdropPanels(0f);
 
         if (_backdropPanels.Count == 0)
         {
@@ -327,7 +258,7 @@ public class TutorialOverlayUI : MonoBehaviour
         yield return seq.WaitForCompletion();
     }
 
-    private IEnumerator HideBackdrop()
+    public IEnumerator HideBackdrop()
     {
         if (_backdropPanels.Count == 0)
         {
@@ -351,7 +282,7 @@ public class TutorialOverlayUI : MonoBehaviour
         _backdropPanels.Clear();
     }
 
-    private void BuildBackdropPanels()
+    private void BuildBackdropPanels(float alpha)
     {
         foreach (Image panel in _backdropPanels)
         {
@@ -362,11 +293,11 @@ public class TutorialOverlayUI : MonoBehaviour
         }
         _backdropPanels.Clear();
 
-        Color startColor = new Color(backdropColor.r, backdropColor.g, backdropColor.b, 0f);
+        Color color = new Color(backdropColor.r, backdropColor.g, backdropColor.b, alpha);
 
         if (brightZone == null)
         {
-            Image panel = CreateBackdropPanel(startColor);
+            Image panel = CreateBackdropPanel(color);
             panel.rectTransform.anchorMin = Vector2.zero;
             panel.rectTransform.anchorMax = Vector2.one;
             panel.rectTransform.offsetMin = Vector2.zero;
@@ -377,10 +308,10 @@ public class TutorialOverlayUI : MonoBehaviour
 
         GetNormalizedBoundsInParent(brightZone, container, out Vector2 nMin, out Vector2 nMax);
 
-        TryAddBackdropPanel(startColor, new Vector2(0f, nMax.y), new Vector2(1f, 1f));          // top
-        TryAddBackdropPanel(startColor, new Vector2(0f, 0f),     new Vector2(1f, nMin.y));       // bottom
-        TryAddBackdropPanel(startColor, new Vector2(0f, nMin.y), new Vector2(nMin.x, nMax.y));   // left
-        TryAddBackdropPanel(startColor, new Vector2(nMax.x, nMin.y), new Vector2(1f, nMax.y));   // right
+        TryAddBackdropPanel(color, new Vector2(0f, nMax.y), new Vector2(1f, 1f));          // top
+        TryAddBackdropPanel(color, new Vector2(0f, 0f),     new Vector2(1f, nMin.y));       // bottom
+        TryAddBackdropPanel(color, new Vector2(0f, nMin.y), new Vector2(nMin.x, nMax.y));   // left
+        TryAddBackdropPanel(color, new Vector2(nMax.x, nMin.y), new Vector2(1f, nMax.y));   // right
     }
 
     private void TryAddBackdropPanel(Color color, Vector2 anchorMin, Vector2 anchorMax)

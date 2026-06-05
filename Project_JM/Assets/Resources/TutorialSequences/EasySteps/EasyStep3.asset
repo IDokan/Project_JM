@@ -13,6 +13,48 @@ MonoBehaviour:
   m_Name: EasyStep3
   m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
   sprites:
+  - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
+    anchoredPosition: {x: 350, y: 150}
+    scale: {x: 3.8, y: 3.8}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
+    anchoredPosition: {x: 630, y: -370}
+    scale: {x: 1.5, y: 1.5}
+    showAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: -600}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 3
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
   - sprite: {fileID: 5996017200718626766, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
     anchoredPosition: {x: 350, y: 20}
     scale: {x: 2, y: 2}
@@ -23,9 +65,9 @@ MonoBehaviour:
       offset: {x: 0, y: 0}
       targetValue: 0
     hideAnim:
-      type: 0
-      duration: 0
-      ease: 0
+      type: 1
+      duration: 0.5
+      ease: 2
       offset: {x: 0, y: 0}
       targetValue: 0
     idleAnim:
@@ -44,9 +86,9 @@ MonoBehaviour:
       offset: {x: 50, y: 0}
       targetValue: 1
     hideAnim:
-      type: 0
-      duration: 0
-      ease: 0
+      type: 1
+      duration: 0.5
+      ease: 2
       offset: {x: 0, y: 0}
       targetValue: 0
     idleAnim:
@@ -65,9 +107,9 @@ MonoBehaviour:
       offset: {x: 50, y: 0}
       targetValue: 1
     hideAnim:
-      type: 0
-      duration: 0
-      ease: 0
+      type: 1
+      duration: 0.5
+      ease: 2
       offset: {x: 0, y: 0}
       targetValue: 0
     idleAnim:
@@ -86,10 +128,10 @@ MonoBehaviour:
       offset: {x: 0, y: 0}
       targetValue: 0
     hideAnim:
-      type: 0
-      duration: 1
-      ease: 8
-      offset: {x: 1400, y: 0}
+      type: 1
+      duration: 0.5
+      ease: 2
+      offset: {x: 0, y: 0}
       targetValue: 0
     idleAnim:
       type: 7
@@ -97,3 +139,4 @@ MonoBehaviour:
       ease: 18
       offset: {x: -100, y: 0}
       targetValue: 0
+  brightZoneIndex: -1
