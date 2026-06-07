@@ -14,13 +14,16 @@ using UnityEngine.UI;
 public class TutorialOverlayUI : MonoBehaviour
 {
     [SerializeField] private RectTransform container;
-    [SerializeField] private RectTransform brightZone;
-    [SerializeField] private List<RectTransform> brightZones;
+    private RectTransform __brightZone;
+    [SerializeField] private List<RectTransform> _brightZones;
     [SerializeField] private Color backdropColor = new Color(0f, 0f, 0f, 0.5f);
     [SerializeField] private float backdropFadeDuration = 0.3f;
 
     private readonly List<Image> _activeImages = new();
     private readonly List<Tween> _idleTweens = new();
+    private readonly List<Image> _activeDialogueImages = new();
+    private readonly List<Tween> _dialogueIdleTweens = new();
+    private readonly List<TutorialSpriteEntry> _currentDialogueEntries = new();
     private readonly List<Image> _backdropPanels = new();
     private TutorialStepData _currentStep;
     private bool _confirmed;
@@ -55,63 +58,85 @@ public class TutorialOverlayUI : MonoBehaviour
         _currentStep = step;
         ClearAll();
 
-        if (step.Sprites.Count == 0)
+        if (step.Sprites.Count == 0 && step.DialogueSprites.Count == 0)
         {
             yield break;
         }
 
-        Sequence showSeq = DOTween.Sequence().SetUpdate(true);
-        bool hasAnyTween = false;
-
-        foreach (TutorialSpriteEntry entry in step.Sprites)
+        if (step.DialogueSprites.Count > 0)
         {
-            Image img = CreateSpriteImage(entry);
-            _activeImages.Add(img);
+            Sequence dialogueShowSeq = DOTween.Sequence().SetUpdate(true);
+            bool hasDialogueShow = false;
 
-            Tween t = BuildShowTween(img, entry);
-            if (t != null)
+            foreach (TutorialSpriteEntry entry in step.DialogueSprites)
             {
-                showSeq.Join(t);
-                hasAnyTween = true;
+                Image img = CreateSpriteImage(entry);
+                _activeDialogueImages.Add(img);
+                _currentDialogueEntries.Add(entry);
+
+                Tween t = BuildShowTween(img, entry);
+                if (t != null) { dialogueShowSeq.Join(t); hasDialogueShow = true; }
+            }
+
+            if (hasDialogueShow) { yield return dialogueShowSeq.WaitForCompletion(); }
+            else { dialogueShowSeq.Kill(); }
+
+            for (int i = 0; i < _activeDialogueImages.Count; i++)
+            {
+                _dialogueIdleTweens.Add(BuildIdleTween(_activeDialogueImages[i], _currentDialogueEntries[i]));
             }
         }
 
-        if (hasAnyTween)
+        if (step.Sprites.Count > 0)
         {
-            yield return showSeq.WaitForCompletion();
-        }
-        else
-        {
-            showSeq.Kill();
-        }
+            Sequence showSeq = DOTween.Sequence().SetUpdate(true);
+            bool hasAnyTween = false;
 
-        for (int i = 0; i < _activeImages.Count; i++)
-        {
-            Tween idle = BuildIdleTween(_activeImages[i], step.Sprites[i]);
-            if (idle != null)
+            foreach (TutorialSpriteEntry entry in step.Sprites)
             {
-                _idleTweens.Add(idle);
+                Image img = CreateSpriteImage(entry);
+                _activeImages.Add(img);
+
+                Tween t = BuildShowTween(img, entry);
+                if (t != null)
+                {
+                    showSeq.Join(t);
+                    hasAnyTween = true;
+                }
+            }
+
+            if (hasAnyTween)
+            {
+                yield return showSeq.WaitForCompletion();
+            }
+            else
+            {
+                showSeq.Kill();
+            }
+
+            for (int i = 0; i < _activeImages.Count; i++)
+            {
+                _idleTweens.Add(BuildIdleTween(_activeImages[i], step.Sprites[i]));
             }
         }
     }
 
     public IEnumerator TransitionStep(TutorialStepData nextStep)
     {
-        KillIdleTweens();
-
         int currentCount = _currentStep != null ? _currentStep.Sprites.Count : 0;
         int nextCount = nextStep.Sprites.Count;
         int sharedCount = Mathf.Min(currentCount, nextCount);
 
-        // Hide sprites that are being replaced or removed
         List<Image> toDestroy = new List<Image>();
         Sequence hideSeq = DOTween.Sequence().SetUpdate(true);
         bool hasHide = false;
 
+        // Regular sprites: kill idle tweens and hide only changed/removed; kept sprites' idle tweens stay running
         for (int i = 0; i < sharedCount; i++)
         {
             if (_currentStep.Sprites[i].sprite != nextStep.Sprites[i].sprite)
             {
+                if (i < _idleTweens.Count) { _idleTweens[i]?.Kill(); }
                 Tween hide = BuildHideTween(_activeImages[i], _currentStep.Sprites[i]);
                 if (hide != null) { hideSeq.Join(hide); hasHide = true; }
                 toDestroy.Add(_activeImages[i]);
@@ -119,21 +144,47 @@ public class TutorialOverlayUI : MonoBehaviour
         }
         for (int i = sharedCount; i < currentCount; i++)
         {
+            // No need to check they are the same sprites because index is greater than one of them.
+            if (i < _idleTweens.Count) { _idleTweens[i]?.Kill(); }
             Tween hide = BuildHideTween(_activeImages[i], _currentStep.Sprites[i]);
             if (hide != null) { hideSeq.Join(hide); hasHide = true; }
             toDestroy.Add(_activeImages[i]);
         }
 
+        // Dialogue sprites: hide those not present in next step
+        IReadOnlyList<TutorialSpriteEntry> nextDialogue = nextStep.DialogueSprites;
+        List<int> dialogueRemove = new List<int>();
+        for (int i = 0; i < _currentDialogueEntries.Count; i++)
+        {
+            bool foundInNext = false;
+            // Is current entry in among the next step's entries?
+            foreach (TutorialSpriteEntry e in nextDialogue)
+            {
+                if (e.sprite == _currentDialogueEntries[i].sprite) { foundInNext = true; break; }
+            }
+            if (!foundInNext)
+            {
+                dialogueRemove.Add(i);
+                _dialogueIdleTweens[i]?.Kill();
+                Tween hide = BuildHideTween(_activeDialogueImages[i], _currentDialogueEntries[i]);
+                if (hide != null) { hideSeq.Join(hide); hasHide = true; }
+                toDestroy.Add(_activeDialogueImages[i]);
+            }
+        }
+
+        // hasHide ==> Any item includes sprites and dialogue sprites needs Hide Tween?
         if (hasHide) { yield return hideSeq.WaitForCompletion(); }
         else { hideSeq.Kill(); }
 
+        // Delayed destroy
         foreach (Image img in toDestroy)
         {
             if (img != null) { Destroy(img.gameObject); }
         }
 
-        // Build next image list; create and show new sprites
+        // Regular sprites: build next list, show new/changed; carry kept images and their idle tweens
         List<Image> nextImages = new List<Image>();
+        List<Tween> nextIdleTweens = new List<Tween>();
         Sequence showSeq = DOTween.Sequence().SetUpdate(true);
         bool hasShow = false;
 
@@ -143,11 +194,21 @@ public class TutorialOverlayUI : MonoBehaviour
             {
                 ResetImageToEntry(_activeImages[i], nextStep.Sprites[i]);
                 nextImages.Add(_activeImages[i]);
+                if (_currentStep.Sprites[i].idleAnim.type != nextStep.Sprites[i].idleAnim.type)
+                {
+                    if (i < _idleTweens.Count) { _idleTweens[i]?.Kill(); }
+                    nextIdleTweens.Add(null);
+                }
+                else
+                {
+                    nextIdleTweens.Add(i < _idleTweens.Count ? _idleTweens[i] : null);
+                }
             }
             else
             {
                 Image newImg = CreateSpriteImage(nextStep.Sprites[i]);
                 nextImages.Add(newImg);
+                nextIdleTweens.Add(null);
                 Tween show = BuildShowTween(newImg, nextStep.Sprites[i]);
                 if (show != null) { showSeq.Join(show); hasShow = true; }
             }
@@ -156,29 +217,104 @@ public class TutorialOverlayUI : MonoBehaviour
         {
             Image newImg = CreateSpriteImage(nextStep.Sprites[i]);
             nextImages.Add(newImg);
+            nextIdleTweens.Add(null);
             Tween show = BuildShowTween(newImg, nextStep.Sprites[i]);
             if (show != null) { showSeq.Join(show); hasShow = true; }
+        }
+
+        // Dialogue sprites: create those not already showing
+        HashSet<int> removedSet = new HashSet<int>(dialogueRemove);
+        Dictionary<int, Image> createdDialogue = new Dictionary<int, Image>();
+        for (int j = 0; j < nextDialogue.Count; j++)
+        {
+            bool alreadyShowing = false;
+            foreach (TutorialSpriteEntry e in _currentDialogueEntries)
+            {
+                if (e.sprite == nextDialogue[j].sprite) { alreadyShowing = true; break; }
+            }
+            if (!alreadyShowing)
+            {
+                Image newImg = CreateSpriteImage(nextDialogue[j]);
+                createdDialogue[j] = newImg;
+                Tween show = BuildShowTween(newImg, nextDialogue[j]);
+                if (show != null) { showSeq.Join(show); hasShow = true; }
+            }
         }
 
         if (hasShow) { yield return showSeq.WaitForCompletion(); }
         else { showSeq.Kill(); }
 
+        // Regular sprites: finalize; build idle tweens for new sprites, carry kept ones
         _activeImages.Clear();
         _activeImages.AddRange(nextImages);
+        _idleTweens.Clear();
         _currentStep = nextStep;
 
         for (int i = 0; i < _activeImages.Count; i++)
         {
-            Tween idle = BuildIdleTween(_activeImages[i], nextStep.Sprites[i]);
-            if (idle != null) { _idleTweens.Add(idle); }
+            // ?? is the null-coalescing operator - it returns the left side if it's not null, otherwise the right side.
+            _idleTweens.Add(nextIdleTweens[i] ?? BuildIdleTween(_activeImages[i], nextStep.Sprites[i]));
         }
+
+        // Dialogue sprites: rebuild parallel lists in next-step order
+        List<Image> nextDialogueImages = new List<Image>();
+        List<Tween> nextDialogueTweens = new List<Tween>();
+        List<TutorialSpriteEntry> nextDialogueEntries = new List<TutorialSpriteEntry>();
+
+        for (int j = 0; j < nextDialogue.Count; j++)
+        {
+            // index that represents where nextDialogue[j] is in _currentDialogueEntries.
+            // if it is -1, there is no duplicated entry in next dialogue.
+            int keptOldIdx = -1;
+            for (int i = 0; i < _currentDialogueEntries.Count; i++)
+            {
+                if (!removedSet.Contains(i) && _currentDialogueEntries[i].sprite == nextDialogue[j].sprite)
+                {
+                    keptOldIdx = i;
+                    break;
+                }
+            }
+
+            if (keptOldIdx >= 0)
+            {
+                nextDialogueImages.Add(_activeDialogueImages[keptOldIdx]);
+                nextDialogueEntries.Add(_currentDialogueEntries[keptOldIdx]);
+                if (_currentDialogueEntries[keptOldIdx].idleAnim.type != nextDialogue[j].idleAnim.type)
+                {
+                    _dialogueIdleTweens[keptOldIdx]?.Kill();
+                    nextDialogueTweens.Add(BuildIdleTween(_activeDialogueImages[keptOldIdx], nextDialogue[j]));
+                }
+                else
+                {
+                    nextDialogueTweens.Add(_dialogueIdleTweens[keptOldIdx]);
+                }
+            }
+            else
+            {
+                Image newImg = createdDialogue[j];
+                nextDialogueImages.Add(newImg);
+                nextDialogueTweens.Add(BuildIdleTween(newImg, nextDialogue[j]));
+                nextDialogueEntries.Add(nextDialogue[j]);
+            }
+        }
+
+        _activeDialogueImages.Clear();
+        _activeDialogueImages.AddRange(nextDialogueImages);
+        _dialogueIdleTweens.Clear();
+        _dialogueIdleTweens.AddRange(nextDialogueTweens);
+        _currentDialogueEntries.Clear();
+        _currentDialogueEntries.AddRange(nextDialogueEntries);
     }
 
     public IEnumerator HideStep()
     {
         KillIdleTweens();
+        KillDialogueIdleTweens();
 
-        if (_currentStep == null || _currentStep.Sprites.Count == 0 || _activeImages.Count == 0)
+        bool hasRegular = _currentStep != null && _currentStep.Sprites.Count > 0 && _activeImages.Count > 0;
+        bool hasDialogue = _activeDialogueImages.Count > 0;
+
+        if (!hasRegular && !hasDialogue)
         {
             ClearAll();
             _currentStep = null;
@@ -188,29 +324,24 @@ public class TutorialOverlayUI : MonoBehaviour
         Sequence hideSeq = DOTween.Sequence().SetUpdate(true);
         bool hasAnyTween = false;
 
-        for (int i = 0; i < _activeImages.Count; i++)
+        if (hasRegular)
         {
-            if (i >= _currentStep.Sprites.Count)
+            for (int i = 0; i < _activeImages.Count; i++)
             {
-                break;
-            }
-
-            Tween t = BuildHideTween(_activeImages[i], _currentStep.Sprites[i]);
-            if (t != null)
-            {
-                hideSeq.Join(t);
-                hasAnyTween = true;
+                if (i >= _currentStep.Sprites.Count) { break; }
+                Tween t = BuildHideTween(_activeImages[i], _currentStep.Sprites[i]);
+                if (t != null) { hideSeq.Join(t); hasAnyTween = true; }
             }
         }
 
-        if (hasAnyTween)
+        for (int i = 0; i < _activeDialogueImages.Count; i++)
         {
-            yield return hideSeq.WaitForCompletion();
+            Tween t = BuildHideTween(_activeDialogueImages[i], _currentDialogueEntries[i]);
+            if (t != null) { hideSeq.Join(t); hasAnyTween = true; }
         }
-        else
-        {
-            hideSeq.Kill();
-        }
+
+        if (hasAnyTween) { yield return hideSeq.WaitForCompletion(); }
+        else { hideSeq.Kill(); }
 
         ClearAll();
         _currentStep = null;
@@ -218,13 +349,13 @@ public class TutorialOverlayUI : MonoBehaviour
 
     public void SetBrightZoneImmediate(int index)
     {
-        RectTransform zone = (index >= 0 && index < brightZones.Count) ? brightZones[index] : null;
-        if (zone == brightZone)
+        RectTransform zone = (index >= 0 && index < _brightZones.Count) ? _brightZones[index] : null;
+        if (zone == _brightZone)
         {
             return;
         }
 
-        brightZone = zone;
+        _brightZone = zone;
         if (_backdropPanels.Count == 0)
         {
             return;
@@ -280,6 +411,7 @@ public class TutorialOverlayUI : MonoBehaviour
             }
         }
         _backdropPanels.Clear();
+        _brightZone = null;
     }
 
     private void BuildBackdropPanels(float alpha)
@@ -295,7 +427,7 @@ public class TutorialOverlayUI : MonoBehaviour
 
         Color color = new Color(backdropColor.r, backdropColor.g, backdropColor.b, alpha);
 
-        if (brightZone == null)
+        if (_brightZone == null)
         {
             Image panel = CreateBackdropPanel(color);
             panel.rectTransform.anchorMin = Vector2.zero;
@@ -306,7 +438,7 @@ public class TutorialOverlayUI : MonoBehaviour
             return;
         }
 
-        GetNormalizedBoundsInParent(brightZone, container, out Vector2 nMin, out Vector2 nMax);
+        GetNormalizedBoundsInParent(_brightZone, container, out Vector2 nMin, out Vector2 nMax);
 
         TryAddBackdropPanel(color, new Vector2(0f, nMax.y), new Vector2(1f, 1f));          // top
         TryAddBackdropPanel(color, new Vector2(0f, 0f),     new Vector2(1f, nMin.y));       // bottom
@@ -475,16 +607,30 @@ public class TutorialOverlayUI : MonoBehaviour
         _idleTweens.Clear();
     }
 
+    private void KillDialogueIdleTweens()
+    {
+        foreach (Tween t in _dialogueIdleTweens)
+        {
+            t?.Kill();
+        }
+        _dialogueIdleTweens.Clear();
+    }
+
     private void ClearAll()
     {
         KillIdleTweens();
         foreach (Image img in _activeImages)
         {
-            if (img != null)
-            {
-                Destroy(img.gameObject);
-            }
+            if (img != null) { Destroy(img.gameObject); }
         }
         _activeImages.Clear();
+
+        KillDialogueIdleTweens();
+        foreach (Image img in _activeDialogueImages)
+        {
+            if (img != null) { Destroy(img.gameObject); }
+        }
+        _activeDialogueImages.Clear();
+        _currentDialogueEntries.Clear();
     }
 }
