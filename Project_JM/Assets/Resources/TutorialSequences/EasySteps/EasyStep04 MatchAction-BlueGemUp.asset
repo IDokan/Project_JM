@@ -10,51 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f69c6ad33a62951478ebc9bb1f3cbf79, type: 3}
-  m_Name: EasyStep4 MatchAction-BlueGemUp
+  m_Name: EasyStep04 MatchAction-BlueGemUp
   m_EditorClassIdentifier: Assembly-CSharp::BoardActionTutorialStep
   sprites:
-  - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
-    anchoredPosition: {x: 350, y: 150}
-    scale: {x: 3.8, y: 3.8}
-    showAnim:
-      type: 1
-      duration: 0.5
-      ease: 1
-      offset: {x: 0, y: 0}
-      targetValue: 0
-    hideAnim:
-      type: 1
-      duration: 0.5
-      ease: 1
-      offset: {x: 0, y: 0}
-      targetValue: 0
-    idleAnim:
-      type: 0
-      duration: 0
-      ease: 0
-      offset: {x: 0, y: 0}
-      targetValue: 0
-  - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
-    anchoredPosition: {x: 630, y: -370}
-    scale: {x: 1.5, y: 1.5}
-    showAnim:
-      type: 2
-      duration: 0.5
-      ease: 27
-      offset: {x: 0, y: 0}
-      targetValue: 0
-    hideAnim:
-      type: 2
-      duration: 0.5
-      ease: 27
-      offset: {x: 0, y: -600}
-      targetValue: 0
-    idleAnim:
-      type: 6
-      duration: 3
-      ease: 4
-      offset: {x: 0, y: 0}
-      targetValue: -10
   - sprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
     anchoredPosition: {x: 140, y: 270}
     scale: {x: 0.3, y: 0.3}
@@ -160,5 +118,48 @@ MonoBehaviour:
       ease: 13
       offset: {x: 0, y: 150}
       targetValue: 0
+  dialogueSprites:
+  - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
+    anchoredPosition: {x: 350, y: 150}
+    scale: {x: 3.8, y: 3.8}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
+    anchoredPosition: {x: 630, y: -370}
+    scale: {x: 1.5, y: 1.5}
+    showAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: -600}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 3
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
   brightZoneIndex: 0
   highlightedCell: {x: 1, y: 5}
