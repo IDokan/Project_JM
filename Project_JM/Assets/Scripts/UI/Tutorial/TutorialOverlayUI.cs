@@ -14,8 +14,8 @@ using UnityEngine.UI;
 public class TutorialOverlayUI : MonoBehaviour
 {
     [SerializeField] private RectTransform container;
-    private RectTransform __brightZone;
-    [SerializeField] private List<RectTransform> _brightZones;
+    private RectTransform _brightZone;
+    [SerializeField] private List<RectTransform> brightZones;
     [SerializeField] private Color backdropColor = new Color(0f, 0f, 0f, 0.5f);
     [SerializeField] private float backdropFadeDuration = 0.3f;
 
@@ -349,7 +349,7 @@ public class TutorialOverlayUI : MonoBehaviour
 
     public void SetBrightZoneImmediate(int index)
     {
-        RectTransform zone = (index >= 0 && index < _brightZones.Count) ? _brightZones[index] : null;
+        RectTransform zone = (index >= 0 && index < brightZones.Count) ? brightZones[index] : null;
         if (zone == _brightZone)
         {
             return;
