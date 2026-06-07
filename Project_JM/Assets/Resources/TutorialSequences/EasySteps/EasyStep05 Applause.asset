@@ -10,9 +10,52 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afc3bf1c7a57c9045a9ef3fe2f7d9dd6, type: 3}
-  m_Name: EasyStep1
+  m_Name: EasyStep05 Applause
   m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
   sprites:
+  - sprite: {fileID: -4399500055139675708, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: 344, y: 187}
+    scale: {x: 3, y: 3}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 2
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.2
+      ease: 20
+      offset: {x: -63, y: 6}
+      targetValue: 0
+  - sprite: {fileID: 649531475246501093, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: 332, y: 179}
+    scale: {x: 3, y: 3}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 2
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 2
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.2
+      ease: 20
+      offset: {x: 52, y: -31}
+      targetValue: 0
+  dialogueSprites:
   - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
     anchoredPosition: {x: 350, y: 150}
     scale: {x: 3.8, y: 3.8}
@@ -55,24 +98,4 @@ MonoBehaviour:
       ease: 4
       offset: {x: 0, y: 0}
       targetValue: -10
-  - sprite: {fileID: 5996017200718626766, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
-    anchoredPosition: {x: 350, y: 20}
-    scale: {x: 2, y: 2}
-    showAnim:
-      type: 1
-      duration: 0.5
-      ease: 2
-      offset: {x: 0, y: 0}
-      targetValue: 0
-    hideAnim:
-      type: 0
-      duration: 0
-      ease: 0
-      offset: {x: 0, y: 0}
-      targetValue: 0
-    idleAnim:
-      type: 7
-      duration: 1
-      ease: 4
-      offset: {x: 0, y: 20}
-      targetValue: 0
+  brightZoneIndex: 1
