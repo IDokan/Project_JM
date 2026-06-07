@@ -170,8 +170,8 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(step.Duration);
         globalTimeManager.TutorialFreezeTimeScale();
 
-        yield return StartCoroutine(overlayUI.ShowBackdrop());
         overlayUI.SetBrightZoneImmediate(step.BrightZoneIndex);
+        yield return StartCoroutine(overlayUI.ShowBackdrop());
         yield return StartCoroutine(overlayUI.ShowStep(step));
         yield return StartCoroutine(overlayUI.WaitForConfirm());
     }
