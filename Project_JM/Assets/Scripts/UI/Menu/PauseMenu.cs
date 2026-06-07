@@ -76,6 +76,7 @@ public class PauseMenu : Menu
         confirmationDialog.Show(restartConfirmIcon, () =>
         {
             Hide();
+            GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
             Scene currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.name);
         }, restartButton);
@@ -91,6 +92,7 @@ public class PauseMenu : Menu
         confirmationDialog.Show(homeConfirmIcon, () =>
         {
             Hide();
+            GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, homeButton);
     }
