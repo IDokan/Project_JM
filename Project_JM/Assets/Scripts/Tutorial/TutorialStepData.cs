@@ -11,9 +11,11 @@ using UnityEngine;
 public abstract class TutorialStepData : ScriptableObject
 {
     [SerializeField] private List<TutorialSpriteEntry> sprites = new();
+    [SerializeField] private List<TutorialSpriteEntry> dialogueSprites = new();
     [SerializeField] private int brightZoneIndex = -1;
 
     public IReadOnlyList<TutorialSpriteEntry> Sprites => sprites;
+    public IReadOnlyList<TutorialSpriteEntry> DialogueSprites => dialogueSprites;
     // -1 means no bright zone (full dark backdrop); >= 0 indexes TutorialManager.brightZones
     public int BrightZoneIndex => brightZoneIndex;
 }
