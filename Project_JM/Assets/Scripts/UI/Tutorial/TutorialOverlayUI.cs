@@ -192,11 +192,11 @@ public class TutorialOverlayUI : MonoBehaviour
         {
             if (_currentStep.Sprites[i].sprite == nextStep.Sprites[i].sprite)
             {
-                ResetImageToEntry(_activeImages[i], nextStep.Sprites[i]);
                 nextImages.Add(_activeImages[i]);
                 if (_currentStep.Sprites[i].idleAnim.type != nextStep.Sprites[i].idleAnim.type)
                 {
                     if (i < _idleTweens.Count) { _idleTweens[i]?.Kill(); }
+                    ResetImageToEntry(_activeImages[i], nextStep.Sprites[i]);
                     nextIdleTweens.Add(null);
                 }
                 else
@@ -282,6 +282,7 @@ public class TutorialOverlayUI : MonoBehaviour
                 if (_currentDialogueEntries[keptOldIdx].idleAnim.type != nextDialogue[j].idleAnim.type)
                 {
                     _dialogueIdleTweens[keptOldIdx]?.Kill();
+                    ResetImageToEntry(_activeDialogueImages[keptOldIdx], nextDialogue[j]);
                     nextDialogueTweens.Add(BuildIdleTween(_activeDialogueImages[keptOldIdx], nextDialogue[j]));
                 }
                 else
