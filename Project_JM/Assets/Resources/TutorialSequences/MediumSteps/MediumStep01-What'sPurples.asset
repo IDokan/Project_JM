@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc3bf1c7a57c9045a9ef3fe2f7d9dd6, type: 3}
+  m_Name: MediumStep01-What'sPurples
+  m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
+  sprites:
+  - sprite: {fileID: 3000365011314978155, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: -840, y: 120}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 21
+      offset: {x: -30, y: 30}
+      targetValue: 0
+  - sprite: {fileID: 6609394449195553851, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: -630, y: 30}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 21
+      offset: {x: 10, y: 30}
+      targetValue: 0
+  - sprite: {fileID: -2674858682100670668, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: -780, y: -150}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 21
+      offset: {x: 20, y: -40}
+      targetValue: 0
+  - sprite: {fileID: 6653539452374463789, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: 520, y: 180}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 0.5
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
+  - sprite: {fileID: 2163589383864982195, guid: 6b0ecc79491d42a4d8c133025915b736, type: 3}
+    anchoredPosition: {x: 220, y: 170}
+    scale: {x: 3, y: 3}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 18
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: 180
+  dialogueSprites:
+  - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
+    anchoredPosition: {x: 350, y: 150}
+    scale: {x: 3.8, y: 3.8}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
+    anchoredPosition: {x: 630, y: -370}
+    scale: {x: 1.5, y: 1.5}
+    showAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: -600}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 3
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
+  brightZoneIndex: -1

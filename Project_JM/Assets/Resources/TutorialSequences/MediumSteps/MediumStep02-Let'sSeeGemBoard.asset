@@ -10,9 +10,72 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afc3bf1c7a57c9045a9ef3fe2f7d9dd6, type: 3}
-  m_Name: EasyStep07-Let'sSee
+  m_Name: MediumStep02-Let'sSeeGemBoard
   m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
   sprites:
+  - sprite: {fileID: 3000365011314978155, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: -840, y: 120}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 21
+      offset: {x: -30, y: 30}
+      targetValue: 0
+  - sprite: {fileID: 6609394449195553851, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: -630, y: 30}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 21
+      offset: {x: 10, y: 30}
+      targetValue: 0
+  - sprite: {fileID: -2674858682100670668, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: -780, y: -150}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.2
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 21
+      offset: {x: 20, y: -40}
+      targetValue: 0
   - sprite: {fileID: -2919213063650604077, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
     anchoredPosition: {x: 340, y: 200}
     scale: {x: 5, y: 5}
@@ -33,27 +96,6 @@ MonoBehaviour:
       duration: 0.7
       ease: 2
       offset: {x: -160, y: 0}
-      targetValue: 0
-  - sprite: {fileID: 6609394449195553851, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
-    anchoredPosition: {x: -460, y: 55}
-    scale: {x: 3, y: 3}
-    showAnim:
-      type: 1
-      duration: 0.5
-      ease: 0
-      offset: {x: 0, y: 0}
-      targetValue: 0
-    hideAnim:
-      type: 1
-      duration: 0.1
-      ease: 0
-      offset: {x: 0, y: 0}
-      targetValue: 0
-    idleAnim:
-      type: 7
-      duration: 0.5
-      ease: 21
-      offset: {x: 10, y: 45}
       targetValue: 0
   dialogueSprites:
   - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
@@ -98,4 +140,4 @@ MonoBehaviour:
       ease: 4
       offset: {x: 0, y: 0}
       targetValue: -10
-  brightZoneIndex: 1
+  brightZoneIndex: 4
