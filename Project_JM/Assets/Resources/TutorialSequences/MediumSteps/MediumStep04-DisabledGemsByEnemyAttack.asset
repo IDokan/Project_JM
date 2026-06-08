@@ -1,0 +1,311 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc3bf1c7a57c9045a9ef3fe2f7d9dd6, type: 3}
+  m_Name: MediumStep04-DisabledGemsByEnemyAttack
+  m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
+  sprites:
+  - sprite: {fileID: 2163589383864982195, guid: 6b0ecc79491d42a4d8c133025915b736, type: 3}
+    anchoredPosition: {x: 100, y: 320}
+    scale: {x: 1, y: 1}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 1.1
+  - sprite: {fileID: 2454679161881955617, guid: f7ba048bb7ea9af41bf7f7ed0ed99e8e, type: 3}
+    anchoredPosition: {x: 100, y: 320}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 5
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0.6
+  - sprite: {fileID: 2163589383864982195, guid: 6b0ecc79491d42a4d8c133025915b736, type: 3}
+    anchoredPosition: {x: 180, y: 400}
+    scale: {x: 1, y: 1}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 1.1
+  - sprite: {fileID: 2987516899726745305, guid: f7ba048bb7ea9af41bf7f7ed0ed99e8e, type: 3}
+    anchoredPosition: {x: 180, y: 400}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 5
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0.6
+  - sprite: {fileID: 2163589383864982195, guid: 6b0ecc79491d42a4d8c133025915b736, type: 3}
+    anchoredPosition: {x: 260, y: 320}
+    scale: {x: 1, y: 1}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 1.1
+  - sprite: {fileID: -412334695770150456, guid: f7ba048bb7ea9af41bf7f7ed0ed99e8e, type: 3}
+    anchoredPosition: {x: 260, y: 320}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 5
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0.6
+  - sprite: {fileID: 6609394449195553851, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    anchoredPosition: {x: 185, y: 220}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 19
+      offset: {x: 0, y: -40}
+      targetValue: 0
+  - sprite: {fileID: -855611292896525477, guid: 6b0ecc79491d42a4d8c133025915b736, type: 3}
+    anchoredPosition: {x: 100, y: 10}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 2.2
+  - sprite: {fileID: -855611292896525477, guid: 6b0ecc79491d42a4d8c133025915b736, type: 3}
+    anchoredPosition: {x: 180, y: 90}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 2.2
+  - sprite: {fileID: -855611292896525477, guid: 6b0ecc79491d42a4d8c133025915b736, type: 3}
+    anchoredPosition: {x: 260, y: 10}
+    scale: {x: 2, y: 2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 2.2
+  - sprite: {fileID: -8768890818294855002, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
+    anchoredPosition: {x: 560, y: 300}
+    scale: {x: 1.5, y: 1.5}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 19
+      offset: {x: -40, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -2515130379638872276, guid: 176ae06927ab02d4b9d3be5d670cd6ef, type: 3}
+    anchoredPosition: {x: 410, y: 350}
+    scale: {x: 1.2, y: 1.2}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 19
+      offset: {x: -40, y: 0}
+      targetValue: 0
+  dialogueSprites:
+  - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
+    anchoredPosition: {x: 350, y: 150}
+    scale: {x: 3.8, y: 3.8}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
+    anchoredPosition: {x: 630, y: -370}
+    scale: {x: 1.5, y: 1.5}
+    showAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 0, y: -600}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 3
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
+  brightZoneIndex: 4
