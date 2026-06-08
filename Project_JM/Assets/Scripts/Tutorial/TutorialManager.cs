@@ -22,6 +22,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GlobalTimeManager globalTimeManager;
     [SerializeField] private MatchEventChannel matchEventChannel;
     [SerializeField] private EnemySpawnedEventChannel enemySpawnedEventChannel;
+    [SerializeField] private EnemyAttackEventChannel enemyAttackEventChannel;
+    [SerializeField] private CharacterStatus partyStatus;
 
     private bool _matchReceived;
     private TutorialSequenceData _pendingSequence;
@@ -99,7 +101,11 @@ public class TutorialManager : MonoBehaviour
             for (int i = 1; i < sequence.Steps.Count; i++)
             {
                 TutorialStepData step = sequence.Steps[i];
-                if (step is TimerTutorialStep timerStep)
+                if (step is EnemyAttackTutorialStep enemyAttackStep)
+                {
+                    yield return StartCoroutine(RunEnemyAttackStep(enemyAttackStep));
+                }
+                else if (step is TimerTutorialStep timerStep)
                 {
                     yield return StartCoroutine(RunTimerStep(timerStep));
                 }
@@ -134,6 +140,9 @@ public class TutorialManager : MonoBehaviour
             case BoardActionTutorialStep boardAction:
                 yield return StartCoroutine(RunBoardActionStep(boardAction));
                 break;
+            case EnemyAttackTutorialStep enemyAttack:
+                yield return StartCoroutine(RunEnemyAttackStep(enemyAttack));
+                break;
             case TimerTutorialStep timer:
                 yield return StartCoroutine(RunTimerStep(timer));
                 break;
@@ -158,6 +167,25 @@ public class TutorialManager : MonoBehaviour
         boardHighlighter.Hide();
         boardManager.ClearTutorialCellFilter();
         globalTimeManager.TutorialFreezeTimeScale();
+    }
+
+    private IEnumerator RunEnemyAttackStep(EnemyAttackTutorialStep step)
+    {
+        yield return StartCoroutine(overlayUI.HideStep());
+        yield return StartCoroutine(overlayUI.HideBackdrop());
+
+        boardManager.SetTutorialBoardLocked(true);
+        globalTimeManager.TutorialUnfreezeTimeScale();
+        yield return new WaitForSeconds(0.5f);
+        enemyAttackEventChannel.Raise();
+        yield return new WaitForSeconds(step.Delay);
+        partyStatus.Heal(1f);
+        globalTimeManager.TutorialFreezeTimeScale();
+
+        overlayUI.SetBrightZoneImmediate(step.BrightZoneIndex);
+        yield return StartCoroutine(overlayUI.ShowBackdrop());
+        yield return StartCoroutine(overlayUI.ShowStep(step));
+        yield return StartCoroutine(overlayUI.WaitForConfirm());
     }
 
     private IEnumerator RunTimerStep(TimerTutorialStep step)
