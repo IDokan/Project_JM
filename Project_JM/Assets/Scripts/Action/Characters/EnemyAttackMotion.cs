@@ -163,7 +163,7 @@ public class EnemyAttackMotion : MonoBehaviour
 
     private IEnumerator AutoAttackEndRoutine()
     {
-        yield return GlobalTimeManager.WaitForGlobalSeconds(3f);
+        yield return GlobalTimeManager.WaitForGlobalSeconds(2f);
         if (!_attackDone)
         {
             AnimEvent_RaiseAttackEnd();
