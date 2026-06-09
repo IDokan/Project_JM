@@ -4,11 +4,9 @@
 // File: GameProgressManager.cs
 // Summary: A class to manage whole game progress.
 //          Handles and judges game data produced during game progress (e.g. enemy defeat count,
-//          enrage state, board-disable resolution ratio) to evaluate save-worthy milestones.
+//          enrage state, party HP ratio) to evaluate save-worthy milestones.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
-using GemEnums;
-using MatchEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -19,8 +17,6 @@ public class GameProgressManager : MonoBehaviour
     [SerializeField] protected DifficultyCurvesSelector curvesSelector;
     [SerializeField] protected CharacterStatus partyStatus;
 
-    [SerializeField] private BoardDisableEventChannel boardDisableChannel;
-    [SerializeField] private MatchEventChannel matchChannel;
     [SerializeField] private SaveDataManager saveDataManager;
 
     protected int _numEnemyDefeated = 0;
@@ -30,11 +26,7 @@ public class GameProgressManager : MonoBehaviour
     // Easy condition: none of the first 4 enemies were enraged when they died
     private bool _anyEnemyEnragedBeforeFourDefeats;
 
-    // Medium condition: >=90% of board-disable windows resolved before the next disable attack
-    private bool _pendingDisableOpportunity;
-    private bool _noneMatchedBeforeNextAttack;
-    private int _totalDisableOpportunities;
-    private int _rapidlyResolvedCount;
+    // Medium condition: kill an enemy while party HP > 33% maxHP after 4 enemies defeated
 
     protected void Awake()
     {
@@ -65,23 +57,6 @@ public class GameProgressManager : MonoBehaviour
             Debug.LogWarning("TransitionEventChannel is null", this);
         }
 
-        if (boardDisableChannel != null)
-        {
-            boardDisableChannel.OnRaised += OnBoardDisableEvent;
-        }
-        else
-        {
-            Debug.LogWarning("BoardDisableEventChannel is null", this);
-        }
-
-        if (matchChannel != null)
-        {
-            matchChannel.OnRaised += OnMatchEvent;
-        }
-        else
-        {
-            Debug.LogWarning("MatchEventChannel is null", this);
-        }
     }
 
     protected void OnDisable()
@@ -93,15 +68,6 @@ public class GameProgressManager : MonoBehaviour
             transitionEventChannel.OnRaised -= OnTransitionEvent;
         }
 
-        if (boardDisableChannel != null)
-        {
-            boardDisableChannel.OnRaised -= OnBoardDisableEvent;
-        }
-
-        if (matchChannel != null)
-        {
-            matchChannel.OnRaised -= OnMatchEvent;
-        }
     }
 
     public void Clear()
@@ -110,11 +76,6 @@ public class GameProgressManager : MonoBehaviour
         _progressAtRunStart = saveDataManager.Progress;
 
         _anyEnemyEnragedBeforeFourDefeats = false;
-
-        _pendingDisableOpportunity = false;
-        _noneMatchedBeforeNextAttack = false;
-        _totalDisableOpportunities = 0;
-        _rapidlyResolvedCount = 0;
     }
 
     protected void OnCharacterDied(CharacterStatus stat)
@@ -171,16 +132,11 @@ public class GameProgressManager : MonoBehaviour
             }
         }
 
-        // Close any open disable window when the enemy dies
-        if (_progressAtRunStart == TutorialProgress.Medium && _pendingDisableOpportunity)
+        if (_progressAtRunStart == TutorialProgress.Medium
+            && _numEnemyDefeated >= 4
+            && partyStatus.CurrentHP > partyStatus.maxHP * 0.4f)
         {
-            _totalDisableOpportunities++;
-            if (_noneMatchedBeforeNextAttack)
-            {
-                _rapidlyResolvedCount++;
-            }
-            _pendingDisableOpportunity = false;
-            CheckMediumCondition();
+            saveDataManager.SetHard();
         }
 
         if (_progressAtRunStart == TutorialProgress.Hard && _numEnemyDefeated >= 4)
@@ -197,61 +153,4 @@ public class GameProgressManager : MonoBehaviour
         }
     }
 
-    private void OnBoardDisableEvent(BoardDisableEventContext context)
-    {
-        if (context.boardDisablePhase != BoardDisablePhase.Commit)
-        {
-            return;
-        }
-
-        if (_progressAtRunStart != TutorialProgress.Medium)
-        {
-            return;
-        }
-
-        // Close previous window before opening the next one
-        if (_pendingDisableOpportunity)
-        {
-            _totalDisableOpportunities++;
-            if (_noneMatchedBeforeNextAttack)
-            {
-                _rapidlyResolvedCount++;
-            }
-            CheckMediumCondition();
-        }
-
-        _pendingDisableOpportunity = true;
-        _noneMatchedBeforeNextAttack = false;
-    }
-
-    private void OnMatchEvent(MatchEvent matchEvent)
-    {
-        if (_progressAtRunStart != TutorialProgress.Medium)
-        {
-            return;
-        }
-
-        if (_pendingDisableOpportunity && matchEvent.Color == GemColor.None)
-        {
-            _noneMatchedBeforeNextAttack = true;
-        }
-    }
-
-    private void CheckMediumCondition()
-    {
-        if (_progressAtRunStart != TutorialProgress.Medium)
-        {
-            return;
-        }
-
-        if (_numEnemyDefeated < 4 || _totalDisableOpportunities == 0)
-        {
-            return;
-        }
-
-        if ((float)_rapidlyResolvedCount / _totalDisableOpportunities >= 0.75f)
-        {
-            saveDataManager.SetHard();
-        }
-    }
 }
