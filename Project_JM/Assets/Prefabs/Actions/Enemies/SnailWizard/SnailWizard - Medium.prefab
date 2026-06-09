@@ -50,8 +50,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2621932401753991514, guid: 7884452cb20e7e2498ffe5b9eb02f09d, type: 3}
       propertyPath: m_Name
-      value: SnailWizard - Easy
+      value: SnailWizard - Medium
       objectReference: {fileID: 0}
+    - target: {fileID: 5532388159818961409, guid: 7884452cb20e7e2498ffe5b9eb02f09d, type: 3}
+      propertyPath: enrageDelay
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532388159818961409, guid: 7884452cb20e7e2498ffe5b9eb02f09d, type: 3}
+      propertyPath: baseCooldown
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788982200535671853, guid: 7884452cb20e7e2498ffe5b9eb02f09d, type: 3}
+      propertyPath: logicEnemy
+      value: 
+      objectReference: {fileID: 11400000, guid: a7dd6716fffc76c42ad14dca87004555, type: 2}
     - target: {fileID: 8788982200535671853, guid: 7884452cb20e7e2498ffe5b9eb02f09d, type: 3}
       propertyPath: boardDisableLogic
       value: 

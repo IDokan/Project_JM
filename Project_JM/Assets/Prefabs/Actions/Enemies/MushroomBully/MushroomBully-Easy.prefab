@@ -9,9 +9,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1458726303502640255, guid: 2761899179fddef4ba4b38b43f73cab6, type: 3}
+      propertyPath: logicEnemy
+      value: 
+      objectReference: {fileID: 11400000, guid: 115db58c6c7ec8245894435fbe930316, type: 2}
+    - target: {fileID: 1458726303502640255, guid: 2761899179fddef4ba4b38b43f73cab6, type: 3}
       propertyPath: boardDisableLogic
       value: 
       objectReference: {fileID: 11400000, guid: c1eec355e943c66439cd6a29c0670e15, type: 2}
+    - target: {fileID: 2377952137649181267, guid: 2761899179fddef4ba4b38b43f73cab6, type: 3}
+      propertyPath: enrageDelay
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5306413292170897672, guid: 2761899179fddef4ba4b38b43f73cab6, type: 3}
       propertyPath: m_Name
       value: MushroomBully-Easy
