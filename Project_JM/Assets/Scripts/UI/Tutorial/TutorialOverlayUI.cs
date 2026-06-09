@@ -16,6 +16,7 @@ public class TutorialOverlayUI : MonoBehaviour
     [SerializeField] private RectTransform container;
     private RectTransform _brightZone;
     [SerializeField] private List<RectTransform> brightZones;
+    [SerializeField] private Image highlightImage;
     [SerializeField] private Color backdropColor = new Color(0f, 0f, 0f, 0.5f);
     [SerializeField] private float backdropFadeDuration = 0.3f;
 
@@ -413,6 +414,29 @@ public class TutorialOverlayUI : MonoBehaviour
         }
         _backdropPanels.Clear();
         _brightZone = null;
+        UpdateHighlightSprite();
+    }
+
+    private void UpdateHighlightSprite()
+    {
+        if (highlightImage == null)
+        {
+            return;
+        }
+
+        if (_brightZone == null)
+        {
+            highlightImage.gameObject.SetActive(false);
+            return;
+        }
+
+        highlightImage.gameObject.SetActive(true);
+        highlightImage.rectTransform.position = _brightZone.position;
+        highlightImage.rectTransform.localScale = new Vector3(
+            _brightZone.rect.width / 100f,
+            _brightZone.rect.height / 100f,
+            1f
+        );
     }
 
     private void BuildBackdropPanels(float alpha)
@@ -436,6 +460,7 @@ public class TutorialOverlayUI : MonoBehaviour
             panel.rectTransform.offsetMin = Vector2.zero;
             panel.rectTransform.offsetMax = Vector2.zero;
             _backdropPanels.Add(panel);
+            UpdateHighlightSprite();
             return;
         }
 
@@ -445,6 +470,8 @@ public class TutorialOverlayUI : MonoBehaviour
         TryAddBackdropPanel(color, new Vector2(0f, 0f),     new Vector2(1f, nMin.y));       // bottom
         TryAddBackdropPanel(color, new Vector2(0f, nMin.y), new Vector2(nMin.x, nMax.y));   // left
         TryAddBackdropPanel(color, new Vector2(nMax.x, nMin.y), new Vector2(1f, nMax.y));   // right
+
+        UpdateHighlightSprite();
     }
 
     private void TryAddBackdropPanel(Color color, Vector2 anchorMin, Vector2 anchorMax)
