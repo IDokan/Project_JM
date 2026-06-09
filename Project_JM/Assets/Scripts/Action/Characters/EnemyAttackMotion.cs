@@ -7,6 +7,7 @@
 
 using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class EnemyAttackMotion : MonoBehaviour
@@ -40,6 +41,7 @@ public class EnemyAttackMotion : MonoBehaviour
     protected bool _enragePlaying;
     protected Vector3 _pendingMoveOffset;
     private bool _moveSequenceFired;
+    private Coroutine _autoAttackEndRoutine;
 
     protected void Awake()
     {
@@ -144,6 +146,12 @@ public class EnemyAttackMotion : MonoBehaviour
     // Called via Animation Event at the first frame of the attack clip.
     public void AnimEvent_RaiseAttackBegin()
     {
+        if (_autoAttackEndRoutine != null)
+        {
+            StopCoroutine(_autoAttackEndRoutine);
+        }
+        _autoAttackEndRoutine = StartCoroutine(AutoAttackEndRoutine());
+
         _moveSequenceFired = true;
         AudioManager.Instance.PlayEnemyActionSFX(swingSfx);
         _moveSequence = stateVisual?.BuildAttackSequence(_pendingMoveOffset);
@@ -151,6 +159,16 @@ public class EnemyAttackMotion : MonoBehaviour
         {
             _moveSequence.timeScale = _timeScaler;
         }
+    }
+
+    private IEnumerator AutoAttackEndRoutine()
+    {
+        yield return GlobalTimeManager.WaitForGlobalSeconds(3f);
+        if (!_attackDone)
+        {
+            AnimEvent_RaiseAttackEnd();
+        }
+        _autoAttackEndRoutine = null;
     }
 
     // Called via Animation Event at the frame the attack connects.
@@ -212,6 +230,12 @@ public class EnemyAttackMotion : MonoBehaviour
         if (_moveSequence != null && _moveSequence.IsActive())
         {
             _moveSequence.Kill();
+        }
+
+        if (_autoAttackEndRoutine != null)
+        {
+            StopCoroutine(_autoAttackEndRoutine);
+            _autoAttackEndRoutine = null;
         }
 
         _attackDone = true;
