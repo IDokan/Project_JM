@@ -64,12 +64,13 @@ public class TutorialManager : MonoBehaviour
 
     private void OnEnemySpawned(GameObject enemy)
     {
-        _enemyAttackBehaviour = enemy.GetComponent<EnemyAttackBehaviour>();
-
         if (_pendingSequence == null)
         {
             return;
         }
+
+
+        _enemyAttackBehaviour = enemy.GetComponent<EnemyAttackBehaviour>();
 
         TutorialSequenceData seq = _pendingSequence;
         _pendingSequence = null;
@@ -79,6 +80,7 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator WaitThenRunSequence(TutorialSequenceData sequence)
     {
         yield return new WaitUntil(() => boardManager.IsBoardPopulated);
+        yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(RunSequence(sequence));
     }
 
