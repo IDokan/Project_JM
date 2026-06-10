@@ -9,6 +9,7 @@
 using UnityEditor;
 using UnityEngine;
 
+//[InitializeOnLoad]
 public static class PlayModeTutorialReset
 {
     static PlayModeTutorialReset()
@@ -23,10 +24,10 @@ public static class PlayModeTutorialReset
             return;
         }
 
-        PlayerPrefs.SetInt("tutorialProgress", 2);       // TutorialProgress.Hard
-        PlayerPrefs.SetInt("tutorialCompleted_2", 0);    // IsTutorialCompleted(Hard) = false
+        PlayerPrefs.SetInt("tutorialProgress", 1);       // TutorialProgress.Medium
+        PlayerPrefs.SetInt("tutorialCompleted_1", 0);    // IsTutorialCompleted(Medium) = false
         PlayerPrefs.Save();
 
-        Debug.Log("[PlayModeTutorialReset] Tutorial progress → Hard, Hard completed flag → false.");
+        Debug.Log("[PlayModeTutorialReset] Tutorial progress → Medium, Medium completed flag → false.");
     }
 }
