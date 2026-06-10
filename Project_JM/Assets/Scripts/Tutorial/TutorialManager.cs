@@ -80,7 +80,6 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator WaitThenRunSequence(TutorialSequenceData sequence)
     {
         yield return new WaitUntil(() => boardManager.IsBoardPopulated);
-        yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(RunSequence(sequence));
     }
 
@@ -90,6 +89,9 @@ public class TutorialManager : MonoBehaviour
         transitionManager.SetSkipHoldBlocked(true);
         boardManager.SetTutorialBoardLocked(true);
         _enemyAttackBehaviour?.SetTutorialActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+        
         globalTimeManager.TutorialFreezeTimeScale();
 
         yield return StartCoroutine(overlayUI.ShowBackdrop());
