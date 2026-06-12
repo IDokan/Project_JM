@@ -26,6 +26,8 @@ public class SlashWipePlayer : MonoBehaviour
     protected static readonly int AlphaID = Shader.PropertyToID("_Alpha");
     protected static readonly int TintID = Shader.PropertyToID("_Tint");
 
+    protected virtual float DeltaTime => Time.deltaTime;
+
     protected SpriteRenderer _spriteRenderer;
     protected MaterialPropertyBlock _materialPropertyBlock;
     protected float _t;
@@ -48,7 +50,7 @@ public class SlashWipePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _t += Time.deltaTime;
+        _t += DeltaTime;
 
         float p01 = duration <= 0f ? 1f : Mathf.Clamp01(_t / duration);
         float prog = progressCurve.Evaluate(p01);
