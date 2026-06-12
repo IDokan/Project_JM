@@ -29,6 +29,9 @@ public class AntGladiatorStateVisual : EnemyStateVisual
     [SerializeField] private string smallOpenMouthLabel;
     [SerializeField] private string bigOpenMouthLabel;
 
+    [Header("SFX")]
+    [SerializeField] private AudioCueSO greatSwordHitSFX;
+
     [Header("Attack Motion")]
     [SerializeField] private float moveDuration = 0.1f;
     [SerializeField] private float pauseDuration = 0.2f;
@@ -95,6 +98,8 @@ public class AntGladiatorStateVisual : EnemyStateVisual
         leftEyeSpriteResolver.SetCategoryAndLabel(leftEyeCategory, label);
         rightEyeSpriteResolver.SetCategoryAndLabel(rightEyeCategory, label);
     }
+
+    public void AnimEvent_GreatSwordHit() => AudioManager.Instance.PlayActionSFX(greatSwordHitSFX);
 
     private void SetMouth(string label)
     {
