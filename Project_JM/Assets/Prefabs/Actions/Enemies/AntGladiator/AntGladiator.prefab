@@ -288,6 +288,37 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
   m_Flip: 1
+--- !u!1 &3235726881800932190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6393855588818057264}
+  m_Layer: 0
+  m_Name: AntGladiatorSwordSlash_SpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6393855588818057264
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3235726881800932190}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.05, y: 2.76, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3621238678013305779}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4474908484654304789
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,7 +642,7 @@ PrefabInstance:
     - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: swingSfx
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: a6d9ba7255e8d964684aeb8b3d6e6ed1, type: 2}
     - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: stateVisual
       value: 
@@ -627,7 +658,7 @@ PrefabInstance:
     - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: enrageSfx
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: c93aa8e27a0faef429d92ae5c93b98be, type: 2}
     - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: enrageDelay
       value: 30
@@ -693,10 +724,16 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7592910946159918387, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3769627199548854069}
+    - targetCorrespondingSourceObject: {fileID: 7592910946159918387, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6393855588818057264}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6336809818200297988}
+    - targetCorrespondingSourceObject: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6156915100644161319}
   m_SourcePrefab: {fileID: 100100000, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
 --- !u!1 &1050946259736528144 stripped
 GameObject:
@@ -728,10 +765,28 @@ MonoBehaviour:
   normalMouthLabel: Normal
   smallOpenMouthLabel: SmallOpen
   bigOpenMouthLabel: BigOpen
+  greatSwordHitSFX: {fileID: 11400000, guid: 29e498b61f9af7b4ba887e172759ee6c, type: 2}
   moveDuration: 0.28
   pauseDuration: 0.12
   returnDuration: 0.6
   moveOffsetMultiplier: 0.5
+--- !u!114 &6156915100644161319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050946259736528144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3ace2368d6c904887ad1072f0063fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlashSpawner
+  prefab: {fileID: 1642782856149984603, guid: f3e935dc637e3fd4881435cee35a386f, type: 3}
+  parentTransform: {fileID: 6393855588818057264}
+  localOffset: {x: 0, y: 0, z: 0}
+  baseRotatingDeg: 0
+  sfx: {fileID: 0}
 --- !u!4 &3621238678013305779 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7592910946159918387, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
