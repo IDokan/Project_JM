@@ -28,6 +28,6 @@ public class StunAttack : AttackLogic
 
     public override Vector3 GetTargetMotionOffset()
     {
-        return new Vector3(2f, -0.5f, 0f);
+        return new Vector3(1f, -0.1f, 0f);
     }
 }
