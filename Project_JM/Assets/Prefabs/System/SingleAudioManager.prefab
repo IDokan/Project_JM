@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5470839450969365795}
   - component: {fileID: 9123462264303126556}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: SingleAudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ab8a15ee8e0d04181b77cf8e2da9fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  mainMixer: {fileID: 24100000, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
   bgmMixerGroup: {fileID: -3202996517405283289, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
   uiSfxMixerGroup: {fileID: 3471157596913494063, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
   puzzleSfxMixerGroup: {fileID: -2903586513060504370, guid: 7671341b603e90c47971d3b12314dcd1, type: 2}
