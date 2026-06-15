@@ -10,7 +10,6 @@ using UnityEngine;
 
 public class DifficultyCurvesSelector : MonoBehaviour
 {
-    [SerializeField] private SaveDataManager saveDataManager;
     [SerializeField] private DifficultyCurves tutorialCurves;
     [SerializeField] private DifficultyCurves rankingCurves;
 
@@ -18,14 +17,7 @@ public class DifficultyCurvesSelector : MonoBehaviour
 
     private void Awake()
     {
-        if (saveDataManager == null)
-        {
-            Debug.LogError("SaveDataManager is not assigned.", this);
-            enabled = false;
-            return;
-        }
-
-        ActiveCurves = saveDataManager.Progress >= TutorialProgress.Hard
+        ActiveCurves = SaveDataManager.Instance.Progress >= TutorialProgress.Hard
             ? rankingCurves
             : tutorialCurves;
     }

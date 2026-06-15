@@ -11,8 +11,6 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private SaveDataManager saveDataManager;
-
     [SerializeField] private EnemyBook easyEnemyBook;
     [SerializeField] private EnemyBook mediumEnemyBook;
     [SerializeField] private EnemyBook hardEnemyBook;
@@ -47,11 +45,11 @@ public class EnemySpawner : MonoBehaviour
 
     protected void Awake()
     {
-        if (saveDataManager.Progress >= TutorialProgress.Hard)
+        if (SaveDataManager.Instance.Progress >= TutorialProgress.Hard)
         {
             _enemyBook = hardEnemyBook;
         }
-        else if (saveDataManager.Progress >= TutorialProgress.Medium)
+        else if (SaveDataManager.Instance.Progress >= TutorialProgress.Medium)
         {
             _enemyBook = mediumEnemyBook;
         }

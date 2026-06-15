@@ -14,7 +14,6 @@ using UnityEngine;
 public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private List<TutorialSequenceData> sequences;
-    [SerializeField] private SaveDataManager saveDataManager;
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private TutorialOverlayUI overlayUI;
     [SerializeField] private TransitionManager transitionManager;
@@ -43,9 +42,9 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        TutorialProgress progress = saveDataManager.Progress;
+        TutorialProgress progress = SaveDataManager.Instance.Progress;
 
-        if (saveDataManager.IsTutorialCompleted(progress))
+        if (SaveDataManager.Instance.IsTutorialCompleted(progress))
         {
             return;
         }
@@ -127,7 +126,7 @@ public class TutorialManager : MonoBehaviour
         yield return StartCoroutine(overlayUI.HideBackdrop());
 
         globalTimeManager.TutorialUnfreezeTimeScale();
-        saveDataManager.SetTutorialCompleted(sequence.ForProgress);
+        SaveDataManager.Instance.SetTutorialCompleted(sequence.ForProgress);
         _enemyAttackBehaviour?.SetTutorialActive(false);
         boardManager.SetTutorialBoardLocked(false);
         transitionManager.SetSkipHoldBlocked(false);

@@ -17,8 +17,6 @@ public class GameProgressManager : MonoBehaviour
     [SerializeField] protected DifficultyCurvesSelector curvesSelector;
     [SerializeField] protected CharacterStatus partyStatus;
 
-    [SerializeField] private SaveDataManager saveDataManager;
-
     protected int _numEnemyDefeated = 0;
 
     private TutorialProgress _progressAtRunStart;
@@ -27,15 +25,6 @@ public class GameProgressManager : MonoBehaviour
     private bool _anyEnemyEnragedBeforeFourDefeats;
 
     // Medium condition: kill an enemy while party HP > 33% maxHP after 4 enemies defeated
-
-    protected void Awake()
-    {
-        if (saveDataManager == null)
-        {
-            Debug.LogError("SaveDataManager is not assigned.", this);
-            enabled = false;
-        }
-    }
 
     protected void OnEnable()
     {
@@ -73,7 +62,7 @@ public class GameProgressManager : MonoBehaviour
     public void Clear()
     {
         _numEnemyDefeated = 0;
-        _progressAtRunStart = saveDataManager.Progress;
+        _progressAtRunStart = SaveDataManager.Instance.Progress;
 
         _anyEnemyEnragedBeforeFourDefeats = false;
     }
@@ -103,11 +92,11 @@ public class GameProgressManager : MonoBehaviour
 
         if (_progressAtRunStart == TutorialProgress.Hard)
         {
-            saveDataManager.ResetToMedium();
+            SaveDataManager.Instance.ResetToMedium();
         }
         else if (_progressAtRunStart == TutorialProgress.Medium)
         {
-            saveDataManager.ResetToEasy();
+            SaveDataManager.Instance.ResetToEasy();
         }
         // Challenge is permanent — no reset.
     }
@@ -128,7 +117,7 @@ public class GameProgressManager : MonoBehaviour
 
             if (_numEnemyDefeated == 4 && !_anyEnemyEnragedBeforeFourDefeats)
             {
-                saveDataManager.SetMedium();
+                SaveDataManager.Instance.SetMedium();
             }
         }
 
@@ -136,12 +125,12 @@ public class GameProgressManager : MonoBehaviour
             && _numEnemyDefeated >= 4
             && partyStatus.CurrentHP > partyStatus.maxHP * 0.4f)
         {
-            saveDataManager.SetHard();
+            SaveDataManager.Instance.SetHard();
         }
 
         if (_progressAtRunStart == TutorialProgress.Hard && _numEnemyDefeated >= 4)
         {
-            saveDataManager.SetChallenge();
+            SaveDataManager.Instance.SetChallenge();
         }
     }
 
