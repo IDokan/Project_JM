@@ -30,6 +30,6 @@ public class ShieldAttack : AttackLogic
 
     public override Vector3 GetTargetMotionOffset()
     {
-        return new Vector3(0f, -1.5f, 0f);
+        return new Vector3(0f, -0.3f, 0f);
     }
 }

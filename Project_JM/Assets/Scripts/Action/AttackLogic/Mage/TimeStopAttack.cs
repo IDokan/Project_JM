@@ -26,6 +26,6 @@ public class TimeStopAttack : AttackLogic
 
     public override Vector3 GetTargetMotionOffset()
     {
-        return new Vector3(2f, 0f, 0f);
+        return new Vector3(1f, 0f, 0f);
     }
 }

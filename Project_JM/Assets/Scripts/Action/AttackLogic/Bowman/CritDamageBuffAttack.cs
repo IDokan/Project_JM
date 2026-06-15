@@ -27,6 +27,6 @@ public class CritDamageBuffAttack : AttackLogic
 
     public override Vector3 GetTargetMotionOffset()
     {
-        return new Vector3(1.5f, -0.2f, 0f);
+        return new Vector3(0.75f, -0.04f, 0f);
     }
 }
