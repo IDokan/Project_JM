@@ -10,6 +10,59 @@ using UnityEngine;
 
 public class SaveDataManager : MonoBehaviour
 {
+    private static SaveDataManager _instance;
+
+    public static SaveDataManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                InitializeInstance();
+            }
+            return _instance;
+        }
+    }
+
+    private static void InitializeInstance()
+    {
+        _instance = FindFirstObjectByType<SaveDataManager>();
+    }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    // ── Audio ─────────────────────────────────────────────────────────────────
+
+    private const string MasterVolumePref = "Audio_MasterVolume";
+    private const string BGMVolumePref    = "Audio_BGMVolume";
+    private const string SFXVolumePref    = "Audio_SFXVolume";
+
+    public const float DefaultVolume = 0.5f;
+
+    public float LoadMasterVolume() => PlayerPrefs.GetFloat(MasterVolumePref, DefaultVolume);
+    public float LoadBGMVolume()    => PlayerPrefs.GetFloat(BGMVolumePref,    DefaultVolume);
+    public float LoadSFXVolume()    => PlayerPrefs.GetFloat(SFXVolumePref,    DefaultVolume);
+
+    public void SaveAudioVolumes(float master, float bgm, float sfx)
+    {
+        PlayerPrefs.SetFloat(MasterVolumePref, master);
+        PlayerPrefs.SetFloat(BGMVolumePref,    bgm);
+        PlayerPrefs.SetFloat(SFXVolumePref,    sfx);
+        PlayerPrefs.Save();
+    }
+
+    // ── Tutorial / Progress ───────────────────────────────────────────────────
+
     private const string KeyProgress = "tutorialProgress";
 
     public TutorialProgress Progress => (TutorialProgress)PlayerPrefs.GetInt(KeyProgress, 0);
