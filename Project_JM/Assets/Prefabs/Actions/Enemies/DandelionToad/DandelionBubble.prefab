@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2205976423426981572}
   - component: {fileID: 4304799764171888324}
   - component: {fileID: 2922625923126708493}
-  - component: {fileID: 5591348916018820388}
+  - component: {fileID: 8663049077589898445}
   m_Layer: 0
   m_Name: DandelionBubble
   m_TagString: Untagged
@@ -109,7 +109,7 @@ MonoBehaviour:
   glideAmplitude: 1
   explosionPrefab: {fileID: 7809139522307190198, guid: 1814bb926dbd95b4984551f41c57c73c, type: 3}
   popSFX: {fileID: 11400000, guid: ca42226999263f64ba25a36ed029ddd9, type: 2}
---- !u!114 &5591348916018820388
+--- !u!114 &8663049077589898445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,9 +118,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6263386555506660701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3049a36980bf10419b712c0a366b8b9, type: 3}
+  m_Script: {fileID: 11500000, guid: fdf09c22fbdd0654fb4d777f22b61585, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FadeOut
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFadeOut
   duration: 1
   progressCurve:
     serializedVersion: 2
