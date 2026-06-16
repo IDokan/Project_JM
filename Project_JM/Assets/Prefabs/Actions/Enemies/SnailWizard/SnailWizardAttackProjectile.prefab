@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5010884438682366755}
   - component: {fileID: 2673015220879150762}
   - component: {fileID: 553302460202738174}
-  - component: {fileID: 2389716351869443110}
+  - component: {fileID: 2879831006453851781}
   m_Layer: 0
   m_Name: SnailWizardAttackProjectile
   m_TagString: Untagged
@@ -106,7 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CurvedProjectile
   arcHeight: 1.5
   rotateTowardMotion: 1
---- !u!114 &2389716351869443110
+  rotationMagnitude: 360
+--- !u!114 &2879831006453851781
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,9 +116,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8002074548382604252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3049a36980bf10419b712c0a366b8b9, type: 3}
+  m_Script: {fileID: 11500000, guid: fdf09c22fbdd0654fb4d777f22b61585, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FadeOut
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFadeOut
   duration: 0.5
   progressCurve:
     serializedVersion: 2

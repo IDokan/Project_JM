@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class FadeOut : MonoBehaviour
 {
+    protected virtual float DeltaTime => Time.deltaTime;
+
     [SerializeField] protected float duration = 1f;
     [SerializeField] protected AnimationCurve progressCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
@@ -40,7 +42,7 @@ public class FadeOut : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _t += Time.deltaTime;
+        _t += DeltaTime;
 
         UpdateOpacity(_t);
     }
