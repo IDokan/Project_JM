@@ -24,10 +24,10 @@ public static class PlayModeTutorialReset
             return;
         }
 
-        PlayerPrefs.SetInt("tutorialProgress", 2);       // TutorialProgress.Hard
-        PlayerPrefs.SetInt("tutorialCompleted_2", 0);    // IsTutorialCompleted(Hard) = false
+        PlayerPrefs.SetInt("tutorialProgress", 0);       // TutorialProgress.Easy
+        PlayerPrefs.SetInt("tutorialCompleted_0", 0);    // IsTutorialCompleted(Easy) = false
         PlayerPrefs.Save();
 
-        Debug.Log("[PlayModeTutorialReset] Tutorial progress → Hard, Hard completed flag → false.");
+        Debug.Log("[PlayModeTutorialReset] Tutorial progress → Easy, Easy completed flag → false.");
     }
 }
