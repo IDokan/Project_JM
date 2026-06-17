@@ -11,6 +11,7 @@
 
 
 using System.Collections;
+using TutorialEnums;
 using UnityEngine;
 
 public class CombatIntroController : TransitionController
@@ -152,11 +153,23 @@ public class CombatIntroController : TransitionController
         RequestTransitionStart(BeginIntroTransition);
     }
 
+    private const int TutorialDeterministicSeed = 525;
+
     private void BeginIntroTransition()
     {
         transitionEventChannel.Raise(TransitionPhase.IntroTransitionBegin);
 
-        GlobalRNG.Instance.ResetSeed();
+        TutorialProgress progress = SaveDataManager.Instance.Progress;
+        bool useRandomSeed = progress >= TutorialProgress.Hard
+            || SaveDataManager.Instance.IsTutorialCompleted(progress);
+        if (useRandomSeed)
+        {
+            GlobalRNG.Instance.Reseed(System.Environment.TickCount);
+        }
+        else
+        {
+            GlobalRNG.Instance.Reseed(TutorialDeterministicSeed);
+        }
 
         if (partyTransform != null)
         {
