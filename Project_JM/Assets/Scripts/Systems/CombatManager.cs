@@ -81,7 +81,8 @@ public class CombatManager : MonoBehaviour
         {
             Attacker = attacker,
             Target = _enemy,
-            DamageMultiplierManager = damageMultiplierManager
+            DamageMultiplierManager = damageMultiplierManager,
+            Tier = matchEvent.Tier
         };
         Debug.Log($"Color {matchEvent.Color} : Tier {matchEvent.Tier} happened");
 

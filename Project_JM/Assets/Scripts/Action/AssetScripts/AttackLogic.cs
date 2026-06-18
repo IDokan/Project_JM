@@ -22,6 +22,9 @@ public Vector3 HitTransformOffset;
 
     public DamageMultiplierManager DamageMultiplierManager;
 
+    // Null for enemy attacks; set to the match tier that triggered this ally attack.
+    public MatchTier? Tier;
+
     public GameObject ImpactAttachPrefab;
     public Vector3 ImpactAttachLocalOffset;
 }

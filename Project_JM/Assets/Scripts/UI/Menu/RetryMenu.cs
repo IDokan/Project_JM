@@ -6,6 +6,7 @@
 //          to main menu / quit with a confirmation dialog.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -26,6 +27,9 @@ public class RetryMenu : Menu
     [SerializeField] private ConfirmationDialog confirmationDialog;
     [SerializeField] private SceneTransition sceneTransition;
 
+    [Header("Score")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+
     [Header("Confirmation icons")]
     [SerializeField] private Image mainMenuConfirmIcon;
     [SerializeField] private Image quitConfirmIcon;
@@ -33,6 +37,12 @@ public class RetryMenu : Menu
     public override void Show(Selectable returnTo = null)
     {
         playerInput.SwitchToUIMap();
+
+        if (scoreText != null && ScoreManager.Instance != null)
+        {
+            scoreText.text = ScoreManager.Instance.TotalScore.ToString();
+        }
+
         base.Show(returnTo);
     }
 

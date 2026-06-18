@@ -49,6 +49,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
     public bool IsStunned => _isStunned;
     public bool IsEnraged => _isEnraged;
+    public float EnrageTimer => _enrageTimer;
 
     protected void OnEnable()
     {
