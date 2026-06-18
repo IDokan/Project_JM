@@ -53,14 +53,6 @@ public class PauseMenu : Menu
 
     public bool IsPaused { get; private set; }
 
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (!hasFocus && !IsPaused)
-        {
-            Show();
-        }
-    }
-
     public override void Show(Selectable returnTo = null)
     {
         IsPaused = true;
