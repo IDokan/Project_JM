@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using GemEnums;
+using MatchEnums;
 using UnityEngine;
 
 public interface ICombatant
@@ -89,6 +90,11 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         }
         // Spawn Damageui slightly above the origin of attacked target
         DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, shieldReduced, colorDamageMultiplier);
+
+        if (!isEnemyAttacker && TryGetComponent<EnemyTag>(out _) && attackContext.Tier.HasValue)
+        {
+            ScoreManager.Instance?.AddDamageScore(calculatedDamage, attackContext.DamageMultiplierManager.GetEnemyMultiplier, attackContext.Tier.Value);
+        }
 
         status.TakeDamage(damage);
 
