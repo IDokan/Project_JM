@@ -18,13 +18,11 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TransitionEventChannel transitionEventChannel;
 
     [Header("Tuning")]
-    [SerializeField] private float damageScoreScale = 1000f;
-    [SerializeField] private float enrageBonusScale = 1000f;
-    [SerializeField] private float progressionBonusPerEnemy = 1000f;
+    [SerializeField] private int damageScoreScale = 1000;
+    [SerializeField] private int enrageBonusScale = 1000;
+    [SerializeField] private int progressionBonusPerEnemy = 1000;
 
     public int TotalScore { get; private set; }
-
-    private int _enemiesDefeated;
 
     private void Awake()
     {
@@ -43,12 +41,17 @@ public class ScoreManager : MonoBehaviour
         transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
-    // Divides by LevelMultiplier only, leaving DifficultyMultiplier intact so harder
-    // enemies reward proportionally more total score while score per hit stays consistent.
-    // tier multiplier: Three→×1, Four→×2, Five→×3
-    public void AddDamageScore(int damage, float levelMultiplier, MatchTier tier)
+    // tier multiplier: Three→×1, Four→×2, Five→×4
+    public void AddDamageScore(int damage, float enemyMaxHP, MatchTier tier)
     {
-        float normalized = (damage / levelMultiplier) * ((int)tier - 2) * damageScoreScale;
+        int tierMultiplier = tier switch
+        {
+            MatchTier.Three => 1,
+            MatchTier.Four => 2,
+            MatchTier.Five => 4,
+            _ => 1
+        };
+        float normalized = (damage / enemyMaxHP) * tierMultiplier * damageScoreScale;
         TotalScore += Mathf.RoundToInt(normalized);
     }
 
@@ -59,8 +62,7 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
-        _enemiesDefeated++;
-        TotalScore += Mathf.RoundToInt(_enemiesDefeated * progressionBonusPerEnemy);
+        TotalScore += progressionBonusPerEnemy;
 
         if (!stat.TryGetComponent<EnemyAttackBehaviour>(out var behaviour) || behaviour.IsEnraged)
         {
@@ -76,7 +78,6 @@ public class ScoreManager : MonoBehaviour
         if (phase == TransitionPhase.IntroTransitionBegin)
         {
             TotalScore = 0;
-            _enemiesDefeated = 0;
         }
     }
 }
