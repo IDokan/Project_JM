@@ -16,6 +16,7 @@ public class CombatController : BasePlayerController
     [SerializeField] private TransitionManager transitionManager;
     [SerializeField] private PauseButton pauseButton;
     [SerializeField] private TutorialOverlayUI tutorialOverlayUI;
+    [SerializeField] private TransitionEventChannel transitionEventChannel;
 
     [Header("Tuning")]
     [SerializeField] private float dragThresholdPixels = 16f;
@@ -39,10 +40,23 @@ public class CombatController : BasePlayerController
 
     private bool _isConfirmPressing;
     private bool _isMoveHolding;
+    private bool _isCombatOngoing = true;
 
     private void Awake()
     {
         Debug.Assert(tutorialOverlayUI != null, $"{nameof(CombatController)}: tutorialOverlayUI is not wired.", this);
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        transitionEventChannel.OnRaised += OnTransitionEvent;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     private void Start()
@@ -226,7 +240,29 @@ public class CombatController : BasePlayerController
 
     protected override void OnCancelPerformed(InputAction.CallbackContext _)
     {
+        if (!_isCombatOngoing) { return; }
+
         pauseButton.Open();
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus && !pauseButton.IsPaused && _isCombatOngoing)
+        {
+            pauseButton.Open();
+        }
+    }
+
+    private void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin)
+        {
+            _isCombatOngoing = true;
+        }
+        else if (phase == TransitionPhase.EndTransitionBegin)
+        {
+            _isCombatOngoing = false;
+        }
     }
 
     // ----- Helpers ---------

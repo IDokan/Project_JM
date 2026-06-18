@@ -8,6 +8,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -61,6 +62,8 @@ public class RetryMenu : Menu
         mainMenuButton.onClick.RemoveListener(OnMainMenuButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
     }
+
+    public override void OnCancel(BaseEventData eventData) { }
 
     private void OnRestartButtonPressed()
     {
