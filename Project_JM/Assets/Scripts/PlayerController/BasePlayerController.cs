@@ -20,6 +20,12 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool _isPadMode = false;
     public bool IsPadMode => _isPadMode;
 
+    protected void SetPadMode(bool isPad)
+    {
+        _isPadMode = isPad;
+        Cursor.visible = !isPad;
+    }
+
     protected virtual void OnEnable()
     {
         playerInput.onActionTriggered += OnActionTriggered;
@@ -55,7 +61,7 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected virtual void OnPressStarted(InputAction.CallbackContext _)
     {
-        _isPadMode = false;
+        SetPadMode(false);
         clickVFXSpawner.SpawnClickVFX(GetCurrentFollowPoint());
     }
 
@@ -67,12 +73,12 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected virtual void OnMovePerformed(InputAction.CallbackContext context)
     {
-        _isPadMode = true;
+        SetPadMode(true);
     }
 
     protected virtual void OnConfirmStarted(InputAction.CallbackContext _)
     {
-        _isPadMode = true;
+        SetPadMode(true);
     }
 
     protected virtual void OnConfirmCanceled(InputAction.CallbackContext _) { }

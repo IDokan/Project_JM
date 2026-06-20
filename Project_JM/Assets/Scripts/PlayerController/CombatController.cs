@@ -115,7 +115,7 @@ public class CombatController : BasePlayerController
 
         if (tutorialOverlayUI.TryConfirm()) { return; }
 
-        _isPadMode = false;
+        SetPadMode(false);
         transitionManager.BeginSkipHold();
 
         if (!IsBoardInputEnabled())
@@ -176,7 +176,7 @@ public class CombatController : BasePlayerController
     {
         if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
 
-        _isPadMode = true;
+        SetPadMode(true);
 
         Vector2 direction = context.ReadValue<Vector2>();
 
@@ -220,7 +220,7 @@ public class CombatController : BasePlayerController
         if (tutorialOverlayUI.TryConfirm()) { return; }
 
         transitionManager.BeginSkipHold();
-        _isPadMode = true;
+        SetPadMode(true);
 
         if (IsBoardInputEnabled())
         {
