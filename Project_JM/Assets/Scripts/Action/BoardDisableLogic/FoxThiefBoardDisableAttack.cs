@@ -29,6 +29,7 @@ public class FoxThiefBoardDisableAttack : BoardDisableLogic
     };
 
     private const int MaxTries = 100;
+    private const int PatternGapDistance = 2;
 
     private readonly List<Vector2Int> _immediateIndices = new List<Vector2Int>();
     private readonly List<Vector2Int> _delayedIndices = new List<Vector2Int>();
@@ -89,10 +90,18 @@ public class FoxThiefBoardDisableAttack : BoardDisableLogic
                     break;
                 }
 
-                if (excluded != null && excluded.Contains(candidate))
+                if (excluded != null)
                 {
-                    allValid = false;
-                    break;
+                    foreach (Vector2Int ex in excluded)
+                    {
+                        int manhattan = Mathf.Abs(candidate.x - ex.x) + Mathf.Abs(candidate.y - ex.y);
+                        if (manhattan <= PatternGapDistance)
+                        {
+                            allValid = false;
+                            break;
+                        }
+                    }
+                    if (!allValid) { break; }
                 }
             }
 
