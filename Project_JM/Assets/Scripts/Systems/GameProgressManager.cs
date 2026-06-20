@@ -5,6 +5,11 @@
 // Summary: A class to manage whole game progress.
 //          Handles and judges game data produced during game progress (e.g. enemy defeat count,
 //          enrage state, party HP ratio) to evaluate save-worthy milestones.
+//
+//              Easy    condition: defeat the 4th enemy with party HP above 60% of max HP
+//              Medium  condition: defeat the 4th enemy with party HP above 40% of max HP
+//              Hard    condition: defeat 4 enemies
+//
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using TutorialEnums;
@@ -21,10 +26,6 @@ public class GameProgressManager : MonoBehaviour
 
     private TutorialProgress _progressAtRunStart;
 
-    // Easy condition: none of the first 4 enemies were enraged when they died
-    private bool _anyEnemyEnragedBeforeFourDefeats;
-
-    // Medium condition: kill an enemy while party HP > 33% maxHP after 4 enemies defeated
 
     protected void OnEnable()
     {
@@ -63,8 +64,6 @@ public class GameProgressManager : MonoBehaviour
     {
         _numEnemyDefeated = 0;
         _progressAtRunStart = SaveDataManager.Instance.Progress;
-
-        _anyEnemyEnragedBeforeFourDefeats = false;
     }
 
     protected void OnCharacterDied(CharacterStatus stat)
@@ -108,14 +107,7 @@ public class GameProgressManager : MonoBehaviour
 
         if (_progressAtRunStart == TutorialProgress.Easy)
         {
-            if (_numEnemyDefeated <= 4
-                && stat.TryGetComponent<EnemyAttackBehaviour>(out var behaviour)
-                && behaviour.IsEnraged)
-            {
-                _anyEnemyEnragedBeforeFourDefeats = true;
-            }
-
-            if (_numEnemyDefeated == 4 && !_anyEnemyEnragedBeforeFourDefeats)
+            if (_numEnemyDefeated == 4 && partyStatus.CurrentHP > partyStatus.maxHP * 0.6f)
             {
                 SaveDataManager.Instance.SetMedium();
             }
