@@ -106,17 +106,9 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnNextEnemy();
         }
-        else if (phase == TransitionPhase.MiddleTransitionStarts)
-        {
-            Debug.Log($"{_numSpanwed}th enemy => {_spawnedEnemyName}: defeated in {Time.time - _spawnTime:F1} seconds.");
-        }
         else if (phase == TransitionPhase.MiddleEnemySpawnBegin)
         {
             SpawnNextEnemy();
-        }
-        else if (phase == TransitionPhase.EndTransitionBegin)
-        {
-            Debug.Log($"{_numSpanwed}th enemy => {_spawnedEnemyName}: defeated in {Time.time - _spawnTime:F1} seconds.");
         }
         else if (phase == TransitionPhase.IntroTransitionBegin)
         {

@@ -84,7 +84,6 @@ public class CombatManager : MonoBehaviour
             DamageMultiplierManager = damageMultiplierManager,
             Tier = matchEvent.Tier
         };
-        Debug.Log($"Color {matchEvent.Color} : Tier {matchEvent.Tier} happened");
 
         PlayAttackMotion(context, matchEvent.Tier);
     }
