@@ -50,6 +50,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     public bool IsStunned => _isStunned;
     public bool IsEnraged => _isEnraged;
     public float EnrageTimer => _enrageTimer;
+    public float AttackTimer => _attackTimer;
 
     protected void OnEnable()
     {
@@ -98,6 +99,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
             }
 
             Attack();
+            _attackTimer = _currentCooldown;
 
             while (_isAttacking)
             {
