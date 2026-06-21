@@ -20,8 +20,15 @@ public class CritChanceBuffAttack : AttackLogic
     {
         ctx.ImpactAttachPrefab = impactPrefab;
 
+        float duplicateRatio = 0f;
+        if (ctx.Attacker is CharacterCombatant attacker && buffAmount > 0f)
+        {
+            float room = Mathf.Max(0f, 1f - attacker.Status.CriticalChance);
+            float wasted = Mathf.Max(0f, buffAmount - room);
+            duplicateRatio = wasted / buffAmount;
+        }
         ctx.Attacker?.AddBuffCritBonus(buffAmount, duration);
-        ctx.Target?.TakeDamage(baseDamage, ctx);
+        ctx.Target?.TakeDamage(baseDamage * (1f + duplicateRatio), ctx);
 
         yield break;
     }

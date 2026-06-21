@@ -17,8 +17,19 @@ public class HealAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        float overhealRatio = 0f;
+        if (ctx.Attacker is CharacterCombatant attacker && attacker.Status.maxHP > 0f)
+        {
+            float healAmount = healPercentage * attacker.Status.maxHP;
+            if (healAmount > 0f)
+            {
+                float missingHP = attacker.Status.maxHP - attacker.Status.CurrentHP;
+                float wastedHeal = Mathf.Max(0f, healAmount - missingHP);
+                overhealRatio = wastedHeal / healAmount;
+            }
+        }
         ctx.Attacker.Heal(healPercentage);
-        ctx.Target?.TakeDamage(baseDamage, ctx);
+        ctx.Target?.TakeDamage(baseDamage * (1f + overhealRatio), ctx);
 
         yield break;
     }

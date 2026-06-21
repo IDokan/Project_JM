@@ -17,12 +17,16 @@ public class DelayAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        float wastedRatio = 0f;
         if (ctx.Target is MonoBehaviour targetMB &&
             targetMB.TryGetComponent<EnemyAttackBehaviour>(out var enemy))
         {
+            float room = Mathf.Max(0f, enemy.Cooldown - enemy.AttackTimer);
+            float wasted = Mathf.Max(0f, delayAmount - room);
+            wastedRatio = delayAmount > 0f ? Mathf.Clamp01(wasted / delayAmount) : 0f;
             enemy.DelayAttack(delayAmount);
         }
-        ctx.Target?.TakeDamage(baseDamage, ctx);
+        ctx.Target?.TakeDamage(baseDamage * (1f + wastedRatio), ctx);
 
         yield break;
     }
