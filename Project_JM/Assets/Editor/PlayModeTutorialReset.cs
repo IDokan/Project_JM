@@ -9,7 +9,7 @@
 using UnityEditor;
 using UnityEngine;
 
-//[InitializeOnLoad]
+[InitializeOnLoad]
 public static class PlayModeTutorialReset
 {
     static PlayModeTutorialReset()
@@ -24,10 +24,10 @@ public static class PlayModeTutorialReset
             return;
         }
 
-        PlayerPrefs.SetInt("tutorialProgress", 0);       // TutorialProgress.Easy
-        PlayerPrefs.SetInt("tutorialCompleted_0", 0);    // IsTutorialCompleted(Easy) = false
+        PlayerPrefs.SetInt("tutorialProgress", 3);       // TutorialProgress.Challenge
+        PlayerPrefs.SetInt("tutorialCompleted_3", 0);    // IsTutorialCompleted(Challenge) = false
         PlayerPrefs.Save();
 
-        Debug.Log("[PlayModeTutorialReset] Tutorial progress → Easy, Easy completed flag → false.");
+        Debug.Log("[PlayModeTutorialReset] Tutorial progress → Challenge, Challenge completed flag → false.");
     }
 }
