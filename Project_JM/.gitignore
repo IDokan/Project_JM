@@ -97,3 +97,24 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# FirebaseCppApp native binaries excluded because they exceed GitHub's file size limits.
+#
+# FirebaseCppApp-13_12_0.bundle (macOS x86_64, ~106 MB):
+#   Exceeds GitHub's hard 100 MB limit; push is outright rejected by the
+#   pre-receive hook (GH001) regardless of LFS configuration.
+#
+# FirebaseCppApp-13_12_0.so (Linux x86_64, ~76 MB):
+#   Exceeds GitHub's 50 MB recommended threshold and was also rejected
+#   by the same pre-receive hook in the same push attempt.
+#
+# The Windows equivalent (FirebaseCppApp-13_12_0.dll, ~3 MB) is intentionally
+# kept in source control because it is required for the Unity Editor on Windows
+# to compile and it is well within GitHub's size limits.
+#
+# To restore these files: download the Firebase Unity SDK v13.12.0 unitypackage
+# from https://firebase.google.com/download/unity and import it into the project.
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp-*.bundle
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp-*.bundle.meta
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp-*.so
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp-*.so.meta
