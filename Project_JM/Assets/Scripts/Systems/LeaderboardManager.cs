@@ -80,9 +80,7 @@ public class LeaderboardManager : MonoBehaviour
             _auth = FirebaseAuth.DefaultInstance;
             _db = FirebaseFirestore.DefaultInstance;
 
-            FirebaseFirestoreSettings settings = _db.Settings;
-            settings.PersistenceEnabled = true;
-            _db.Settings = settings;
+            _db.Settings.PersistenceEnabled = true;
 
             TrySignIn();
         });
