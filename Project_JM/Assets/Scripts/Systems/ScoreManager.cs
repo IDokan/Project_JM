@@ -17,12 +17,30 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private CharacterDeathEventChannel deathChannel;
     [SerializeField] private TransitionEventChannel transitionEventChannel;
 
-    [Header("Tuning")]
-    [SerializeField] private int damageScoreScale = 1000;
-    [SerializeField] private int enrageBonusScale = 1000;
-    [SerializeField] private int progressionBonusPerEnemy = 1000;
+    private const int DamageScoreScale = 1500;
+    private const int EnrageBonusScale = 1500;
+    private const int ProgressionBonusPerEnemy = 1500;
 
-    public int TotalScore { get; private set; }
+    private ObfuscatedInt _totalScore;
+    private ObfuscatedInt _damageAccumulated;
+    private ObfuscatedInt _enemiesDefeated;
+    private ObfuscatedInt _enrageBonusAccumulated;
+
+    public int TotalScore
+    {
+        get
+        {
+            int expected = _damageAccumulated.Value
+                         + _enemiesDefeated.Value * ProgressionBonusPerEnemy
+                         + _enrageBonusAccumulated.Value;
+            if (expected != _totalScore.Value)
+            {
+                Debug.LogWarning("ScoreManager: score integrity check failed.");
+                return 0;
+            }
+            return _totalScore.Value;
+        }
+    }
 
     private void Awake()
     {
@@ -51,8 +69,15 @@ public class ScoreManager : MonoBehaviour
             MatchTier.Five => 4,
             _ => 1
         };
-        float normalized = (damage / enemyMaxHP) * tierMultiplier * damageScoreScale;
-        TotalScore += Mathf.RoundToInt(normalized);
+        if (damage > enemyMaxHP)
+        {
+            return;
+        }
+
+        float normalized = Mathf.Clamp01(damage / enemyMaxHP) * tierMultiplier * DamageScoreScale;
+        int contribution = Mathf.RoundToInt(normalized);
+        _totalScore.Value += contribution;
+        _damageAccumulated.Value += contribution;
     }
 
     private void OnCharacterDied(CharacterStatus stat)
@@ -62,22 +87,28 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
-        TotalScore += progressionBonusPerEnemy;
+        _totalScore.Value += ProgressionBonusPerEnemy;
+        _enemiesDefeated.Value += 1;
 
         if (!stat.TryGetComponent<EnemyAttackBehaviour>(out var behaviour) || behaviour.IsEnraged)
         {
             return;
         }
 
-        float bonus = (Mathf.Max(0f, behaviour.EnrageTimer) / behaviour.EnrageDelay) * enrageBonusScale;
-        TotalScore += Mathf.RoundToInt(bonus);
+        float bonus = (Mathf.Max(0f, behaviour.EnrageTimer) / behaviour.EnrageDelay) * EnrageBonusScale;
+        int enrageContribution = Mathf.RoundToInt(bonus);
+        _totalScore.Value += enrageContribution;
+        _enrageBonusAccumulated.Value += enrageContribution;
     }
 
     private void OnTransitionEvent(TransitionPhase phase)
     {
         if (phase == TransitionPhase.IntroTransitionBegin)
         {
-            TotalScore = 0;
+            _totalScore = new ObfuscatedInt(0);
+            _damageAccumulated = new ObfuscatedInt(0);
+            _enemiesDefeated = new ObfuscatedInt(0);
+            _enrageBonusAccumulated = new ObfuscatedInt(0);
         }
     }
 }
