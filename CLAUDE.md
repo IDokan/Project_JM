@@ -101,6 +101,7 @@ Assets/
 - Local variables: camelCase
 - Constants: PascalCase (matching C# convention)
 - All `public` methods must be called from outside the declaring script at least once
+- Avoid `var` for local variable declarations; always use explicit types. Exception: `out var` is acceptable when the type is already explicit in the method's generic parameter (e.g. `TryGetComponent<Foo>(out var foo)`)
 
 **File header** — every `.cs` file begins with:
 ```csharp
