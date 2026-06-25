@@ -215,9 +215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '#1
-
-'
+  m_text: '#'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8b7dc7a9b3c23c24f9a1a2646ae10b8d, type: 2}
   m_sharedMaterial: {fileID: -842562616172990547, guid: 8b7dc7a9b3c23c24f9a1a2646ae10b8d, type: 2}
@@ -430,7 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.1764706}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -524,6 +522,7 @@ MonoBehaviour:
   - {fileID: 419269994379380242}
   - {fileID: 5959843426166961996}
   - {fileID: 4874695547660896393}
+  rankText: {fileID: 1483774086068382467}
   scoreText: {fileID: 7211861032248715049}
   myRecordColor: {r: 1, g: 0.85, b: 0.2, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}

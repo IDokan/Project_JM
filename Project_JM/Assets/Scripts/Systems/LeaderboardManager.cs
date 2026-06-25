@@ -7,6 +7,7 @@
 //          Three-layer offline resilience: Firestore persistence, sign-in retry before submit,
 //          and PlayerPrefs queue for first-ever offline launch (supports multiple pending scores).
 //          Local top-6 leaderboard in PlayerPrefs avoids Firestore reads on submission.
+//          Exposes FetchGlobalScores and GetMyScores for LeaderboardMenu to populate rows.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
@@ -20,11 +21,21 @@ using Firebase.Firestore;
 using TutorialEnums;
 using UnityEngine;
 
+public struct LeaderboardEntry
+{
+    public int score;
+    public int icon0;
+    public int icon1;
+    public int icon2;
+    public bool isMyRecord;
+}
+
 public class LeaderboardManager : MonoBehaviour
 {
     private const string PendingEntriesKey = "Leaderboard_PendingEntries";
     private const string LocalLeaderboardKey = "Leaderboard_LocalTop6";
     private const int MaxScoresPerPlayer = 6;
+    public const int GlobalFetchLimit = 50;
 
     // Entry for the data not pushed to leader board becuase it was offline.
     [Serializable]
@@ -217,12 +228,17 @@ public class LeaderboardManager : MonoBehaviour
 
                     foreach (DocumentSnapshot doc in task.Result.Documents)
                     {
+                        if (!doc.ContainsField("score"))
+                        {
+                            continue;
+                        }
+
                         local.entries.Add(new LocalEntry
                         {
                             score = (int)doc.GetValue<long>("score"),
-                            icon0 = (int)doc.GetValue<long>("icon0"),
-                            icon1 = (int)doc.GetValue<long>("icon1"),
-                            icon2 = (int)doc.GetValue<long>("icon2"),
+                            icon0 = doc.ContainsField("icon0") ? (int)doc.GetValue<long>("icon0") : 0,
+                            icon1 = doc.ContainsField("icon1") ? (int)doc.GetValue<long>("icon1") : 0,
+                            icon2 = doc.ContainsField("icon2") ? (int)doc.GetValue<long>("icon2") : 0,
                             docId = doc.Id,
                             collection = collection,
                         });
@@ -317,10 +333,83 @@ public class LeaderboardManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private static string WeeklyCollectionName()
+    // TODO: remove before commit — for testing only
+    public static string WeeklyCollectionName() => "leaderboard_test";
+
+    /* public static string WeeklyCollectionName()
     {
         System.DateTime now = System.DateTime.UtcNow;
         int week = ISOWeek.GetWeekOfYear(now);
         return $"leaderboard_{now.Year}_W{week:D2}";
+    } */
+
+    public void FetchGlobalScores(Action<List<LeaderboardEntry>> onComplete)
+    {
+        if (!_isReady)
+        {
+            onComplete?.Invoke(new List<LeaderboardEntry>());
+            return;
+        }
+
+        string collection = WeeklyCollectionName();
+        string myUserId = _auth.CurrentUser?.UserId;
+
+        _db.Collection(collection)
+            .OrderByDescending("score")
+            .Limit(GlobalFetchLimit)
+            .GetSnapshotAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                List<LeaderboardEntry> result = new List<LeaderboardEntry>();
+
+                if (task.IsFaulted)
+                {
+                    Debug.LogError($"FetchGlobalScores failed: {task.Exception?.Message}");
+                    onComplete?.Invoke(result);
+                    return;
+                }
+
+                foreach (DocumentSnapshot doc in task.Result.Documents)
+                {
+                    if (!doc.ContainsField("score"))
+                    {
+                        continue;
+                    }
+
+                    result.Add(new LeaderboardEntry
+                    {
+                        score = (int)doc.GetValue<long>("score"),
+                        icon0 = doc.ContainsField("icon0") ? (int)doc.GetValue<long>("icon0") : 0,
+                        icon1 = doc.ContainsField("icon1") ? (int)doc.GetValue<long>("icon1") : 0,
+                        icon2 = doc.ContainsField("icon2") ? (int)doc.GetValue<long>("icon2") : 0,
+                        isMyRecord = doc.ContainsField("userId") && doc.GetValue<string>("userId") == myUserId,
+                    });
+                }
+
+                onComplete?.Invoke(result);
+            });
+    }
+
+    public List<LeaderboardEntry> GetMyScores()
+    {
+        string collection = WeeklyCollectionName();
+        LocalLeaderboard local = LoadLocalLeaderboard();
+        List<LeaderboardEntry> result = new List<LeaderboardEntry>();
+
+        foreach (LocalEntry entry in local.entries
+            .Where(e => e.collection == collection)
+            .OrderByDescending(e => e.score))
+        {
+            result.Add(new LeaderboardEntry
+            {
+                score = entry.score,
+                icon0 = entry.icon0,
+                icon1 = entry.icon1,
+                icon2 = entry.icon2,
+                isMyRecord = true,
+            });
+        }
+
+        return result;
     }
 }
