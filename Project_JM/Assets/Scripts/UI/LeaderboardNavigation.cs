@@ -24,7 +24,7 @@ public class LeaderboardNavigation : MonoBehaviour
 
     private Button _lastSelectedRightButton;
 
-    public void SetupNavigation(List<LeaderboardRow> rows, int initialIndex = 0)
+    public void SetupNavigation(List<LeaderboardRow> rows, int initialIndex = 0, bool centerScroll = false)
     {
         _lastSelectedRightButton = scopeButton;
 
@@ -34,7 +34,15 @@ public class LeaderboardNavigation : MonoBehaviour
         {
             int clampedIndex = Mathf.Clamp(initialIndex, 0, rows.Count - 1);
             Button initialButton = rows[clampedIndex].GetComponent<Button>();
-            OnRowSelected(initialButton);
+            SetRowNavigation(initialButton);
+            if (centerScroll)
+            {
+                ScrollToRowCentered(initialButton.transform as RectTransform);
+            }
+            else
+            {
+                ScrollToRow(initialButton.transform as RectTransform);
+            }
         }
     }
 
@@ -44,6 +52,12 @@ public class LeaderboardNavigation : MonoBehaviour
     }
 
     public void OnRowSelected(Button rowButton)
+    {
+        SetRowNavigation(rowButton);
+        ScrollToRow(rowButton.transform as RectTransform);
+    }
+
+    private void SetRowNavigation(Button rowButton)
     {
         Navigation titleNav = titleButton.navigation;
         titleNav.selectOnDown = rowButton;
@@ -64,8 +78,6 @@ public class LeaderboardNavigation : MonoBehaviour
         Navigation rowNav = rowButton.navigation;
         rowNav.selectOnRight = _lastSelectedRightButton;
         rowButton.navigation = rowNav;
-
-        ScrollToRow(rowButton.transform as RectTransform);
     }
 
     private void SetStaticNavigation(List<LeaderboardRow> rows)
@@ -125,7 +137,7 @@ public class LeaderboardNavigation : MonoBehaviour
         float currentScrollBottom = currentScrollTop + viewportHeight;
 
         float normalizedTarget;
-        
+
         if (rowTop < currentScrollTop)
         {
             // row is (at least partially) above the viewport
@@ -141,6 +153,31 @@ public class LeaderboardNavigation : MonoBehaviour
             // row is fully visible - do nothing
             return;
         }
+
+        scrollRect.DOKill();
+        scrollRect.DOVerticalNormalizedPos(normalizedTarget, rowScrollDuration)
+            .SetEase(Ease.OutCubic)
+            .SetUpdate(true)
+            .SetLink(scrollRect.gameObject);
+    }
+
+    private void ScrollToRowCentered(RectTransform target)
+    {
+        Canvas.ForceUpdateCanvases();
+
+        float contentHeight = scrollRect.content.rect.height;
+        float viewportHeight = scrollRect.viewport.rect.height;
+        float scrollableHeight = contentHeight - viewportHeight;
+
+        if (scrollableHeight <= 0f)
+        {
+            return;
+        }
+
+        Vector2 itemLocalCenter = scrollRect.content.InverseTransformPoint(target.position);
+        float distanceFromTop = -itemLocalCenter.y;
+        float centeredScrollTop = distanceFromTop - viewportHeight * 0.5f;
+        float normalizedTarget = 1f - Mathf.Clamp01(centeredScrollTop / scrollableHeight);
 
         scrollRect.DOKill();
         scrollRect.DOVerticalNormalizedPos(normalizedTarget, rowScrollDuration)
