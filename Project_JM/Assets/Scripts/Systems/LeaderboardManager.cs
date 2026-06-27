@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LicenseRef-Proprietary
+﻿// SPDX-License-Identifier: LicenseRef-Proprietary
 // Copyright (c) 22/06/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: LeaderboardManager.cs
@@ -8,6 +8,8 @@
 //          and PlayerPrefs queue for first-ever offline launch (supports multiple pending scores).
 //          Local top-6 leaderboard in PlayerPrefs avoids Firestore reads on submission.
 //          Exposes FetchGlobalScores and GetMyScores for LeaderboardMenu to populate rows.
+//          On sign-in, pending scores are flushed to Firestore before syncing so the local
+//          cache always reflects the settled Firestore state after startup.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
@@ -126,7 +128,7 @@ public class LeaderboardManager : MonoBehaviour
         if (_auth.CurrentUser != null)
         {
             _isReady = true;
-            SyncLocalLeaderboard(() => { FlushPendingScores(); onSuccess?.Invoke(); });
+            FlushPendingScores(() => SyncLocalLeaderboard(() => onSuccess?.Invoke()));
             return;
         }
 
@@ -140,7 +142,7 @@ public class LeaderboardManager : MonoBehaviour
             }
 
             _isReady = true;
-            SyncLocalLeaderboard(() => { FlushPendingScores(); onSuccess?.Invoke(); });
+            FlushPendingScores(() => SyncLocalLeaderboard(() => onSuccess?.Invoke()));
         });
     }
 
@@ -158,7 +160,7 @@ public class LeaderboardManager : MonoBehaviour
         SendToFirestore(score, WeeklyCollectionName(), icon0, icon1, icon2);
     }
 
-    private void SendToFirestore(int score, string collection, int icon0, int icon1, int icon2)
+    private void SendToFirestore(int score, string collection, int icon0, int icon1, int icon2, Action onComplete = null)
     {
         LocalLeaderboard local = LoadLocalLeaderboard();
         List<LocalEntry> weekEntries = local.entries.Where(e => e.collection == collection).ToList();
@@ -168,6 +170,7 @@ public class LeaderboardManager : MonoBehaviour
 
         if (!qualifies)
         {
+            onComplete?.Invoke();
             return;
         }
 
@@ -189,6 +192,7 @@ public class LeaderboardManager : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError($"Score submission failed: {task.Exception?.Message}");
+                onComplete?.Invoke();
                 return;
             }
 
@@ -210,6 +214,7 @@ public class LeaderboardManager : MonoBehaviour
             SaveLocalLeaderboard(local);
 
             Debug.Log($"Score {score} submitted to {collection}.");
+            onComplete?.Invoke();
         });
     }
 
@@ -246,7 +251,7 @@ public class LeaderboardManager : MonoBehaviour
 
                     List<LocalEntry> excess = local.entries
                         .OrderBy(e => e.score)
-                        .Take(local.entries.Count - MaxScoresPerPlayer)
+                        .Take(Math.Max(0, local.entries.Count - MaxScoresPerPlayer))
                         .ToList();
 
                     foreach (LocalEntry entry in excess)
@@ -286,10 +291,11 @@ public class LeaderboardManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void FlushPendingScores()
+    private void FlushPendingScores(Action onComplete = null)
     {
         if (!PlayerPrefs.HasKey(PendingEntriesKey))
         {
+            onComplete?.Invoke();
             return;
         }
 
@@ -299,9 +305,23 @@ public class LeaderboardManager : MonoBehaviour
         PlayerPrefs.DeleteKey(PendingEntriesKey);
         PlayerPrefs.Save();
 
+        if (list.entries.Count == 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        int remaining = list.entries.Count;
         foreach (PendingEntry entry in list.entries)
         {
-            SendToFirestore(entry.score, entry.collection, entry.icon0, entry.icon1, entry.icon2);
+            SendToFirestore(entry.score, entry.collection, entry.icon0, entry.icon1, entry.icon2, () =>
+            {
+                remaining--;
+                if (remaining == 0)
+                {
+                    onComplete?.Invoke();
+                }
+            });
         }
     }
 
@@ -347,7 +367,7 @@ public class LeaderboardManager : MonoBehaviour
     {
         if (!_isReady)
         {
-            onComplete?.Invoke(new List<LeaderboardEntry>());
+            onComplete?.Invoke(null);
             return;
         }
 
@@ -365,7 +385,7 @@ public class LeaderboardManager : MonoBehaviour
                 if (task.IsFaulted)
                 {
                     Debug.LogError($"FetchGlobalScores failed: {task.Exception?.Message}");
-                    onComplete?.Invoke(result);
+                    onComplete?.Invoke(null);
                     return;
                 }
 
@@ -413,3 +433,5 @@ public class LeaderboardManager : MonoBehaviour
         return result;
     }
 }
+
+
