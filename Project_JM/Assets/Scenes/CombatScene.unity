@@ -3043,6 +3043,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1754810531}
     - target: {fileID: 343100328019067674, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: showOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 343100328019067674, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: sceneTransition
       value: 
       objectReference: {fileID: 1312642492}
@@ -3088,7 +3092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 467289700372248707, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: showOnAwake
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 467289700372248707, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: leaderboardManager
@@ -4412,15 +4416,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8007173254244768873, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8007173254244768873, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8007173254244768873, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8010172740350160825, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x

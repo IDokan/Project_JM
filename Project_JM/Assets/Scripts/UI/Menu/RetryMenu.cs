@@ -30,6 +30,8 @@ public class RetryMenu : Menu
 
     [Header("Score")]
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private Button scoreButton;
+    [SerializeField] private LeaderboardMenu leaderboardMenu;
 
     [Header("Confirmation icons")]
     [SerializeField] private Image mainMenuConfirmIcon;
@@ -53,6 +55,7 @@ public class RetryMenu : Menu
         restartButton.onClick.AddListener(OnRestartButtonPressed);
         mainMenuButton.onClick.AddListener(OnMainMenuButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
+        scoreButton.onClick.AddListener(OnScoreButtonPressed);
     }
 
     protected override void OnDisable()
@@ -61,9 +64,15 @@ public class RetryMenu : Menu
         restartButton.onClick.RemoveListener(OnRestartButtonPressed);
         mainMenuButton.onClick.RemoveListener(OnMainMenuButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
+        scoreButton.onClick.RemoveListener(OnScoreButtonPressed);
     }
 
     public override void OnCancel(BaseEventData eventData) { }
+
+    private void OnScoreButtonPressed()
+    {
+        leaderboardMenu.Show(scoreButton);
+    }
 
     private void OnRestartButtonPressed()
     {
