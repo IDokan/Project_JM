@@ -24,7 +24,7 @@ public class LeaderboardNavigation : MonoBehaviour
 
     private Button _lastSelectedRightButton;
 
-    public void SetupNavigation(List<LeaderboardRow> rows)
+    public void SetupNavigation(List<LeaderboardRow> rows, int initialIndex = 0)
     {
         _lastSelectedRightButton = scopeButton;
 
@@ -32,7 +32,9 @@ public class LeaderboardNavigation : MonoBehaviour
 
         if (rows.Count > 0)
         {
-            OnRowSelected(rows[0].GetComponent<Button>());
+            int clampedIndex = Mathf.Clamp(initialIndex, 0, rows.Count - 1);
+            Button initialButton = rows[clampedIndex].GetComponent<Button>();
+            OnRowSelected(initialButton);
         }
     }
 
@@ -116,8 +118,29 @@ public class LeaderboardNavigation : MonoBehaviour
 
         Vector2 itemLocalCenter = scrollRect.content.InverseTransformPoint(target.position);
         float distanceFromTop = -itemLocalCenter.y;
-        float targetScrollTop = distanceFromTop - viewportHeight * 0.5f;
-        float normalizedTarget = 1f - Mathf.Clamp01(targetScrollTop / scrollableHeight);
+        float rowTop = distanceFromTop - target.rect.height;
+        float rowBottom = distanceFromTop + target.rect.height;
+
+        float currentScrollTop = scrollableHeight * (1f - scrollRect.verticalNormalizedPosition);
+        float currentScrollBottom = currentScrollTop + viewportHeight;
+
+        float normalizedTarget;
+        
+        if (rowTop < currentScrollTop)
+        {
+            // row is (at least partially) above the viewport
+            normalizedTarget = 1f - Mathf.Clamp01(rowTop / scrollableHeight);
+        }
+        else if (rowBottom > currentScrollBottom)
+        {
+            // row is (at least partially) below the viewport
+            normalizedTarget = 1f - Mathf.Clamp01((rowBottom - viewportHeight) / scrollableHeight);
+        }
+        else
+        {
+            // row is fully visible - do nothing
+            return;
+        }
 
         scrollRect.DOKill();
         scrollRect.DOVerticalNormalizedPos(normalizedTarget, rowScrollDuration)

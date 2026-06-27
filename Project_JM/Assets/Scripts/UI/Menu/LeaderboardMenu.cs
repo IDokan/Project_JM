@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LicenseRef-Proprietary
+﻿// SPDX-License-Identifier: LicenseRef-Proprietary
 // Copyright (c) 25/06/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: LeaderboardMenu.cs
@@ -6,6 +6,7 @@
 //          the player's own scores and the weekly global ranking.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -21,19 +22,25 @@ public class LeaderboardMenu : Menu
     [SerializeField] private RectTransform content;
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Button scopeButton;
+    [SerializeField] private Image scopeButtonImage;
     [SerializeField] private Button pageUpButton;
     [SerializeField] private Button pageDownButton;
+    [SerializeField] private CanvasGroup noInternetOverlay;
 
     [Header("Page scroll")]
     [SerializeField] private float pageScrollDuration = 0.3f;
 
     [Header("Icons")]
     [SerializeField] private Sprite[] iconSprites;
+    [SerializeField] private Sprite globalIconSprite;
+    [SerializeField] private Sprite portraitIconSprite;
 
     private bool _showingGlobal;
+    private bool _isFetchingGlobal;
     private List<LeaderboardEntry> _cachedGlobalEntries;
     private Dictionary<int, int> _globalRankByScore;
     private List<LeaderboardRow> _rows = new List<LeaderboardRow>();
+    private LeaderboardEntry? _lastSelectedEntry;
 
     protected override void OnEnable()
     {
@@ -51,7 +58,7 @@ public class LeaderboardMenu : Menu
         pageDownButton.onClick.RemoveListener(PageDown);
     }
 
-    // TODO: remove before commit — for testing only
+    // TODO: remove before commit ??for testing only
     protected void Start()
     {
         StartCoroutine(TestDelayedOpen());
@@ -59,13 +66,18 @@ public class LeaderboardMenu : Menu
 
     private IEnumerator TestDelayedOpen()
     {
-        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitForSecondsRealtime(4f);
 
         _showingGlobal = false;
         _cachedGlobalEntries = null;
 
-        leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
+        if (_cachedGlobalEntries == null && !_isFetchingGlobal)
+        {
+            _isFetchingGlobal = true;
+            leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
+        }
 
+        yield return new WaitForSecondsRealtime(2f);
         RefreshRows();
     }
 
@@ -73,16 +85,27 @@ public class LeaderboardMenu : Menu
     {
         base.Show(returnTo);
         _showingGlobal = false;
-        _cachedGlobalEntries = null;
-        _globalRankByScore = null;
+        _lastSelectedEntry = null;
 
-        leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
+        if (_cachedGlobalEntries == null && !_isFetchingGlobal)
+        {
+            _isFetchingGlobal = true;
+            leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
+        }
 
         RefreshRows();
     }
 
     private void OnGlobalScoresFetched(List<LeaderboardEntry> entries)
     {
+        _isFetchingGlobal = false;
+
+        if (entries == null)
+        {
+            RefreshRows();
+            return;
+        }
+
         _cachedGlobalEntries = entries;
         _globalRankByScore = new Dictionary<int, int>();
 
@@ -105,37 +128,53 @@ public class LeaderboardMenu : Menu
 
     private void OnScopeClicked()
     {
+        bool previousScope = _showingGlobal;
         _showingGlobal = !_showingGlobal;
-        RefreshRows();
+        RefreshRows(previousScope);
     }
 
-    private void RefreshRows()
+    private void RefreshRows(bool? previousScope = null)
     {
         ClearRows();
+        UpdateScopeButtonIcon();
+        UpdateNoInternetOverlay();
 
         if (_showingGlobal)
         {
-            if (_cachedGlobalEntries != null)
+            if (_cachedGlobalEntries == null)
             {
-                PopulateRows(_cachedGlobalEntries);
+                return;
             }
+
+            PopulateRows(_cachedGlobalEntries, previousScope);
         }
         else
         {
-            PopulateRows(leaderboardManager.GetMyScores());
+            PopulateRows(leaderboardManager.GetMyScores(), previousScope);
         }
+    }
+
+    private void UpdateScopeButtonIcon()
+    {
+        scopeButtonImage.sprite = _showingGlobal ? globalIconSprite : portraitIconSprite;
+    }
+
+    private void UpdateNoInternetOverlay()
+    {
+        noInternetOverlay.alpha = _showingGlobal && _cachedGlobalEntries == null ? 1f : 0f;
     }
 
     private void ClearRows()
     {
         foreach (LeaderboardRow row in _rows)
         {
+            row.gameObject.SetActive(false);
             Destroy(row.gameObject);
         }
         _rows.Clear();
     }
 
-    private void PopulateRows(List<LeaderboardEntry> entries)
+    private void PopulateRows(List<LeaderboardEntry> entries, bool? previousScope = null)
     {
         for (int i = 0; i < entries.Count; i++)
         {
@@ -147,12 +186,88 @@ public class LeaderboardMenu : Menu
                 GetSprite(entries[i].icon2),
                 entries[i].score,
                 GetGlobalRank(entries[i].score),
-                leaderboardNavigation.OnRowSelected
+                OnRowEntrySelected
             );
             _rows.Add(row);
         }
 
-        leaderboardNavigation.SetupNavigation(_rows);
+        int initialIndex = FindInitialSelectionIndex(entries, previousScope);
+        leaderboardNavigation.SetupNavigation(_rows, initialIndex);
+    }
+
+    private void OnRowEntrySelected(LeaderboardEntry entry)
+    {
+        _lastSelectedEntry = entry;
+    }
+
+    private int FindInitialSelectionIndex(List<LeaderboardEntry> entries, bool? previousScope)
+    {
+        if (_lastSelectedEntry == null || entries.Count == 0)
+        {
+            return 0;
+        }
+
+        LeaderboardEntry last = _lastSelectedEntry.Value;
+
+        if (previousScope == null)
+        {
+            // Same-scope refresh: restore exact score, fallback to closest
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].score == last.score)
+                {
+                    return i;
+                }
+            }
+            return FindClosestScoreIndex(entries, last.score);
+        }
+
+        bool wasShowingGlobal = previousScope.Value;
+
+        if (!wasShowingGlobal)
+        {
+            // Local -> Global: find exact score match
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].score == last.score)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        // Global -> Local
+        if (last.isMyRecord)
+        {
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].score == last.score)
+                {
+                    return i;
+                }
+            }
+        }
+
+        return FindClosestScoreIndex(entries, last.score);
+    }
+
+    private int FindClosestScoreIndex(List<LeaderboardEntry> entries, int targetScore)
+    {
+        int closestIndex = 0;
+        int closestDiff = int.MaxValue;
+        for (int i = 0; i < entries.Count; i++)
+        {
+            int diff = entries[i].score >= targetScore
+                ? entries[i].score - targetScore
+                : targetScore - entries[i].score;
+            if (diff < closestDiff)
+            {
+                closestDiff = diff;
+                closestIndex = i;
+            }
+        }
+        return closestIndex;
     }
 
     private void PageUp()
@@ -162,7 +277,8 @@ public class LeaderboardMenu : Menu
         scrollRect.DOVerticalNormalizedPos(target, pageScrollDuration)
             .SetEase(Ease.OutCubic)
             .SetUpdate(true)
-            .SetLink(scrollRect.gameObject);
+            .SetLink(scrollRect.gameObject)
+            .OnComplete(() => UpdateLastSelectedEntry(findTop: true));
     }
 
     private void PageDown()
@@ -172,7 +288,37 @@ public class LeaderboardMenu : Menu
         scrollRect.DOVerticalNormalizedPos(target, pageScrollDuration)
             .SetEase(Ease.OutCubic)
             .SetUpdate(true)
-            .SetLink(scrollRect.gameObject);
+            .SetLink(scrollRect.gameObject)
+            .OnComplete(() => UpdateLastSelectedEntry(findTop: false));
+    }
+
+    private void UpdateLastSelectedEntry(bool findTop)
+    {
+        if (_rows.Count == 0)
+        {
+            return;
+        }
+
+        Rect viewportRect = scrollRect.viewport.rect;
+        float targetY = findTop
+            ? scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMax)).y
+            : scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMin)).y;
+
+        LeaderboardRow nearest = _rows[0];
+        float nearestDist = float.MaxValue;
+
+        foreach (LeaderboardRow row in _rows)
+        {
+            float dist = Mathf.Abs(row.transform.position.y - targetY);
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                nearest = row;
+            }
+        }
+
+        _lastSelectedEntry = nearest.Entry;
+        leaderboardNavigation.OnRowSelected(nearest.GetComponent<Button>());
     }
 
     private float GetPageStep()
@@ -201,7 +347,7 @@ public class LeaderboardMenu : Menu
             return rank;
         }
 
-        // Score not in top GlobalFetchLimit — rank is unknown
+        // Score not in top GlobalFetchLimit ??rank is unknown
         return 0;
     }
 
@@ -215,3 +361,5 @@ public class LeaderboardMenu : Menu
         return iconSprites[index];
     }
 }
+
+
