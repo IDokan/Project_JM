@@ -7,7 +7,6 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -26,6 +25,7 @@ public class LeaderboardMenu : Menu
     [SerializeField] private Button pageUpButton;
     [SerializeField] private Button pageDownButton;
     [SerializeField] private CanvasGroup noInternetOverlay;
+    [SerializeField] private CanvasGroup noLocalRecordsOverlay;
 
     [Header("Page scroll")]
     [SerializeField] private float pageScrollDuration = 0.3f;
@@ -56,29 +56,6 @@ public class LeaderboardMenu : Menu
         scopeButton.onClick.RemoveListener(OnScopeClicked);
         pageUpButton.onClick.RemoveListener(PageUp);
         pageDownButton.onClick.RemoveListener(PageDown);
-    }
-
-    // TODO: remove before commit ??for testing only
-    protected void Start()
-    {
-        StartCoroutine(TestDelayedOpen());
-    }
-
-    private IEnumerator TestDelayedOpen()
-    {
-        yield return new WaitForSecondsRealtime(4f);
-
-        _showingGlobal = false;
-        _cachedGlobalEntries = null;
-
-        if (_cachedGlobalEntries == null && !_isFetchingGlobal)
-        {
-            _isFetchingGlobal = true;
-            leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
-        }
-
-        yield return new WaitForSecondsRealtime(2f);
-        RefreshRows();
     }
 
     public override void Show(Selectable returnTo)
@@ -130,6 +107,13 @@ public class LeaderboardMenu : Menu
     {
         bool previousScope = _showingGlobal;
         _showingGlobal = !_showingGlobal;
+
+        if (_showingGlobal && _cachedGlobalEntries == null && !_isFetchingGlobal)
+        {
+            _isFetchingGlobal = true;
+            leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
+        }
+
         RefreshRows(previousScope);
     }
 
@@ -141,6 +125,8 @@ public class LeaderboardMenu : Menu
 
         if (_showingGlobal)
         {
+            noLocalRecordsOverlay.alpha = 0f;
+
             if (_cachedGlobalEntries == null)
             {
                 return;
@@ -150,7 +136,9 @@ public class LeaderboardMenu : Menu
         }
         else
         {
-            PopulateRows(leaderboardManager.GetMyScores(), previousScope);
+            List<LeaderboardEntry> myScores = leaderboardManager.GetMyScores();
+            noLocalRecordsOverlay.alpha = myScores.Count == 0 ? 1f : 0f;
+            PopulateRows(myScores, previousScope);
         }
     }
 
@@ -192,7 +180,8 @@ public class LeaderboardMenu : Menu
         }
 
         int initialIndex = FindInitialSelectionIndex(entries, previousScope);
-        leaderboardNavigation.SetupNavigation(_rows, initialIndex);
+        bool centerScroll = previousScope != null;
+        leaderboardNavigation.SetupNavigation(_rows, initialIndex, centerScroll);
     }
 
     private void OnRowEntrySelected(LeaderboardEntry entry)
