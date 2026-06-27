@@ -187,7 +187,25 @@ public class LeaderboardManager : MonoBehaviour
             { "icon2", icon2 },
         };
 
-        _db.Collection(collection).AddAsync(data).ContinueWithOnMainThread(task =>
+        // Update local cache before the async write so GetMyScores() reflects the
+    // new score immediately, even if the Firestore task doesn't complete until
+    // connectivity returns. docId is empty until the server confirms.
+    if (displaced != null)
+    {
+        local.entries.Remove(displaced);
+    }
+    local.entries.Add(new LocalEntry
+    {
+        score = score,
+        icon0 = icon0,
+        icon1 = icon1,
+        icon2 = icon2,
+        docId = string.Empty,
+        collection = collection,
+    });
+    SaveLocalLeaderboard(local);
+
+    _db.Collection(collection).AddAsync(data).ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
@@ -199,19 +217,18 @@ public class LeaderboardManager : MonoBehaviour
             if (displaced != null)
             {
                 _db.Collection(displaced.collection).Document(displaced.docId).DeleteAsync();
-                local.entries.Remove(displaced);
             }
 
-            local.entries.Add(new LocalEntry
+            // Reload from PlayerPrefs in case other scores were written while waiting,
+            // then stamp the real server-assigned docId onto the placeholder entry.
+            LocalLeaderboard settled = LoadLocalLeaderboard();
+            LocalEntry placeholder = settled.entries
+                .FirstOrDefault(e => e.collection == collection && e.score == score && string.IsNullOrEmpty(e.docId));
+            if (placeholder != null)
             {
-                score = score,
-                icon0 = icon0,
-                icon1 = icon1,
-                icon2 = icon2,
-                docId = task.Result.Id,
-                collection = collection,
-            });
-            SaveLocalLeaderboard(local);
+                placeholder.docId = task.Result.Id;
+                SaveLocalLeaderboard(settled);
+            }
 
             Debug.Log($"Score {score} submitted to {collection}.");
             onComplete?.Invoke();
