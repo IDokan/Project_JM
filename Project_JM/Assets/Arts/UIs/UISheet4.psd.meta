@@ -5,6 +5,21 @@ TextureImporter:
   - first:
       213: 7400153367181120532
     second: UISheet4_0
+  - first:
+      213: 4121917737319099928
+    second: UISheet4_1
+  - first:
+      213: -2646640009387213372
+    second: UISheet4_2
+  - first:
+      213: -5417442586640445278
+    second: UISheet4_3
+  - first:
+      213: -7136894595632551461
+    second: UISheet4_4
+  - first:
+      213: -5822573152833614958
+    second: UISheet4_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,6 +112,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -134,11 +162,121 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Earth
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 143
+        width: 106
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81e694ed75ef33930800000000000000
+      internalID: 4121917737319099928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Portrait
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 143
+        width: 106
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cd73281fee354bd0800000000000000
+      internalID: -2646640009387213372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 50
+        width: 101
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a019389ba061d4b0800000000000000
+      internalID: -5417442586640445278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Down
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 45
+        width: 101
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd9aaeb9d28a4fc90800000000000000
+      internalID: -7136894595632551461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Impossible
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 46
+        width: 60
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29b40aa1190123fa0800000000000000
+      internalID: -5822573152833614958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: cdf63d4bfae74054b934f897abfb743b
+    spriteID: c66fa43f8df627243ad2fa8dc6b1aba3
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +286,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      Down: -7136894595632551461
+      Earth: 4121917737319099928
+      Impossible: -5822573152833614958
+      Portrait: -2646640009387213372
       Trophy: 7400153367181120532
+      Up: -5417442586640445278
   mipmapLimitGroupName: 
   pSDRemoveMatte: 1
   userData: 
