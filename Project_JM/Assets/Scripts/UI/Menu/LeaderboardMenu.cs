@@ -31,7 +31,7 @@ public class LeaderboardMenu : Menu
     [SerializeField] private float pageScrollDuration = 0.3f;
 
     [Header("Icons")]
-    [SerializeField] private Sprite[] iconSprites;
+    [SerializeField] private LeaderboardIconContainer iconContainer;
     [SerializeField] private Sprite globalIconSprite;
     [SerializeField] private Sprite portraitIconSprite;
 
@@ -340,14 +340,14 @@ public class LeaderboardMenu : Menu
         return 0;
     }
 
-    private Sprite GetSprite(int index)
+    private Sprite GetSprite(int id)
     {
-        if (iconSprites == null || index < 0 || index >= iconSprites.Length)
+        if (iconContainer == null)
         {
             return null;
         }
 
-        return iconSprites[index];
+        return iconContainer.GetSprite(id);
     }
 }
 

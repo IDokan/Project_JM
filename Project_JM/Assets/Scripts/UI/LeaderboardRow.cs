@@ -38,9 +38,9 @@ public class LeaderboardRow : MonoBehaviour, ISelectHandler
         _entry = new LeaderboardEntry { score = score, isMyRecord = isMyRecord };
         _onSelected = onSelected;
         background.color = isMyRecord ? myRecordColor : defaultColor;
-        icons[0].sprite = icon0;
-        icons[1].sprite = icon1;
-        icons[2].sprite = icon2;
+        SetIcon(icons[0], icon0);
+        SetIcon(icons[1], icon1);
+        SetIcon(icons[2], icon2);
         scoreText.text = score.ToString();
         rankText.text = rank > 0 ? $"#{rank}" : "#--";
     }
@@ -48,6 +48,12 @@ public class LeaderboardRow : MonoBehaviour, ISelectHandler
     public void SetRank(int rank)
     {
         rankText.text = rank > 0 ? $"#{rank}" : "#--";
+    }
+
+    private void SetIcon(Image image, Sprite sprite)
+    {
+        image.sprite = sprite;
+        image.SetNativeSize();
     }
 
     public void OnSelect(BaseEventData eventData)
