@@ -33,4 +33,6 @@ public class LeaderboardIconContainer : ScriptableObject
 
         return null;
     }
+
+    public IReadOnlyList<Entry> GetEntries() => entries;
 }
