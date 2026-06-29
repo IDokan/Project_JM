@@ -37,6 +37,14 @@ public class RetryMenu : Menu
     [SerializeField] private Image mainMenuConfirmIcon;
     [SerializeField] private Image quitConfirmIcon;
 
+    [Header("Icon selector")]
+    [SerializeField] private IconSelectorMenu iconSelectorMenu;
+    [SerializeField] private Button[] iconButtons;
+    [SerializeField] private Image[] iconButtonImages;
+    [SerializeField] private LeaderboardIconContainer iconContainer;
+
+    private int[] _selectedIconIds = new int[] { 0, 0, 0 };
+
     public override void Show(Selectable returnTo = null)
     {
         playerInput.SwitchToUIMap();
@@ -56,6 +64,9 @@ public class RetryMenu : Menu
         mainMenuButton.onClick.AddListener(OnMainMenuButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
         scoreButton.onClick.AddListener(OnScoreButtonPressed);
+        iconButtons[0].onClick.AddListener(OnIconButton0Pressed);
+        iconButtons[1].onClick.AddListener(OnIconButton1Pressed);
+        iconButtons[2].onClick.AddListener(OnIconButton2Pressed);
     }
 
     protected override void OnDisable()
@@ -65,6 +76,9 @@ public class RetryMenu : Menu
         mainMenuButton.onClick.RemoveListener(OnMainMenuButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
         scoreButton.onClick.RemoveListener(OnScoreButtonPressed);
+        iconButtons[0].onClick.RemoveListener(OnIconButton0Pressed);
+        iconButtons[1].onClick.RemoveListener(OnIconButton1Pressed);
+        iconButtons[2].onClick.RemoveListener(OnIconButton2Pressed);
     }
 
     public override void OnCancel(BaseEventData eventData) { }
@@ -72,6 +86,22 @@ public class RetryMenu : Menu
     private void OnScoreButtonPressed()
     {
         leaderboardMenu.Show(scoreButton);
+    }
+
+    private void OnIconButton0Pressed() => OpenIconSelector(0);
+    private void OnIconButton1Pressed() => OpenIconSelector(1);
+    private void OnIconButton2Pressed() => OpenIconSelector(2);
+
+    private void OpenIconSelector(int slot)
+    {
+        iconSelectorMenu.Open(iconButtons[slot], _selectedIconIds[slot], id => OnIconSelected(slot, id));
+    }
+
+    private void OnIconSelected(int slot, int id)
+    {
+        _selectedIconIds[slot] = id;
+        iconButtonImages[slot].sprite = iconContainer.GetSprite(id);
+        iconButtonImages[slot].SetNativeSize();
     }
 
     private void OnRestartButtonPressed()
