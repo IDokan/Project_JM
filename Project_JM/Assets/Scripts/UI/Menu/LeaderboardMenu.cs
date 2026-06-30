@@ -10,12 +10,12 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class LeaderboardMenu : Menu
 {
     [Header("Refs")]
-    [SerializeField] private LeaderboardManager leaderboardManager;
     [SerializeField] private LeaderboardNavigation leaderboardNavigation;
     [SerializeField] private LeaderboardRow rowPrefab;
     [SerializeField] private RectTransform content;
@@ -36,11 +36,11 @@ public class LeaderboardMenu : Menu
     [SerializeField] private Sprite portraitIconSprite;
 
     private bool _showingGlobal;
-    private bool _isFetchingGlobal;
-    private List<LeaderboardEntry> _cachedGlobalEntries;
-    private Dictionary<int, int> _globalRankByScore;
+    private bool _hasLiveEntry;
+    private LeaderboardEntry _liveEntry;
     private List<LeaderboardRow> _rows = new List<LeaderboardRow>();
     private LeaderboardEntry? _lastSelectedEntry;
+    private Button _initialButton;
 
     protected override void OnEnable()
     {
@@ -58,48 +58,23 @@ public class LeaderboardMenu : Menu
         pageDownButton.onClick.RemoveListener(PageDown);
     }
 
+    protected override void OnShowComplete()
+    {
+        base.OnShowComplete();
+        Selectable target = _initialButton != null ? (Selectable)_initialButton : GetFirstSelectable();
+        if (target != null)
+        {
+            EventSystem.current.SetSelectedGameObject(target.gameObject);
+        }
+    }
+
     public override void Show(Selectable returnTo)
     {
         base.Show(returnTo);
         _showingGlobal = false;
         _lastSelectedEntry = null;
 
-        if (_cachedGlobalEntries == null && !_isFetchingGlobal)
-        {
-            _isFetchingGlobal = true;
-            leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
-        }
-
-        RefreshRows();
-    }
-
-    private void OnGlobalScoresFetched(List<LeaderboardEntry> entries)
-    {
-        _isFetchingGlobal = false;
-
-        if (entries == null)
-        {
-            RefreshRows();
-            return;
-        }
-
-        _cachedGlobalEntries = entries;
-        _globalRankByScore = new Dictionary<int, int>();
-
-        int rank = 1;
-        for (int i = 0; i < entries.Count; i++)
-        {
-            if (i > 0 && entries[i].score < entries[i - 1].score)
-            {
-                rank = i + 1;
-            }
-
-            if (!_globalRankByScore.ContainsKey(entries[i].score))
-            {
-                _globalRankByScore[entries[i].score] = rank;
-            }
-        }
-
+        LeaderboardManager.Instance.FetchGlobalScores(() => RefreshRows());
         RefreshRows();
     }
 
@@ -108,10 +83,9 @@ public class LeaderboardMenu : Menu
         bool previousScope = _showingGlobal;
         _showingGlobal = !_showingGlobal;
 
-        if (_showingGlobal && _cachedGlobalEntries == null && !_isFetchingGlobal)
+        if (_showingGlobal)
         {
-            _isFetchingGlobal = true;
-            leaderboardManager.FetchGlobalScores(OnGlobalScoresFetched);
+            LeaderboardManager.Instance.FetchGlobalScores(() => RefreshRows());
         }
 
         RefreshRows(previousScope);
@@ -127,18 +101,18 @@ public class LeaderboardMenu : Menu
         {
             noLocalRecordsOverlay.alpha = 0f;
 
-            if (_cachedGlobalEntries == null)
+            if (!LeaderboardManager.Instance.HasCachedGlobalData)
             {
                 return;
             }
 
-            PopulateRows(_cachedGlobalEntries, previousScope);
+            PopulateRows(BuildBlendedEntries(), previousScope);
         }
         else
         {
-            List<LeaderboardEntry> myScores = leaderboardManager.GetMyScores();
-            noLocalRecordsOverlay.alpha = myScores.Count == 0 ? 1f : 0f;
-            PopulateRows(myScores, previousScope);
+            List<LeaderboardEntry> local = BuildLocalEntries();
+            noLocalRecordsOverlay.alpha = local.Count == 0 ? 1f : 0f;
+            PopulateRows(local, previousScope);
         }
     }
 
@@ -149,7 +123,56 @@ public class LeaderboardMenu : Menu
 
     private void UpdateNoInternetOverlay()
     {
-        noInternetOverlay.alpha = _showingGlobal && _cachedGlobalEntries == null ? 1f : 0f;
+        noInternetOverlay.alpha = _showingGlobal && !LeaderboardManager.Instance.HasCachedGlobalData ? 1f : 0f;
+    }
+
+    public void ShowWithLiveEntry(Selectable returnTo, int score, int icon0, int icon1, int icon2)
+    {
+        _hasLiveEntry = true;
+        _liveEntry = new LeaderboardEntry { score = score, icon0 = icon0, icon1 = icon1, icon2 = icon2, isMyRecord = true, isLiveEntry = true };
+        Show(returnTo);
+    }
+
+    private List<LeaderboardEntry> BuildBlendedEntries()
+    {
+        IReadOnlyList<LeaderboardEntry> global = LeaderboardManager.Instance.GetGlobalEntries();
+        List<LeaderboardEntry> result = new List<LeaderboardEntry>(global);
+
+        HashSet<int> myGlobalScores = new HashSet<int>();
+        foreach (LeaderboardEntry entry in result)
+        {
+            if (entry.isMyRecord) { myGlobalScores.Add(entry.score); }
+        }
+
+        foreach (LeaderboardEntry local in LeaderboardManager.Instance.GetMyScores())
+        {
+            if (!myGlobalScores.Contains(local.score))
+            {
+                result.Add(local);
+                myGlobalScores.Add(local.score);
+            }
+        }
+
+        if (_hasLiveEntry)
+        {
+            result.Add(_liveEntry);
+        }
+
+        result.Sort((a, b) => b.score.CompareTo(a.score));
+        return result;
+    }
+
+    private List<LeaderboardEntry> BuildLocalEntries()
+    {
+        List<LeaderboardEntry> result = LeaderboardManager.Instance.GetMyScores();
+
+        if (_hasLiveEntry)
+        {
+            result.Add(_liveEntry);
+            result.Sort((a, b) => b.score.CompareTo(a.score));
+        }
+
+        return result;
     }
 
     private void ClearRows()
@@ -166,6 +189,8 @@ public class LeaderboardMenu : Menu
     {
         for (int i = 0; i < entries.Count; i++)
         {
+            int rank = i < LeaderboardManager.GlobalFetchLimit ? i + 1 : 0;
+
             LeaderboardRow row = Instantiate(rowPrefab, content);
             row.Initialize(
                 entries[i].isMyRecord,
@@ -173,15 +198,27 @@ public class LeaderboardMenu : Menu
                 GetSprite(entries[i].icon1),
                 GetSprite(entries[i].icon2),
                 entries[i].score,
-                GetGlobalRank(entries[i].score),
+                rank,
                 OnRowEntrySelected
             );
+            if (entries[i].isLiveEntry) { row.Highlight(); }
             _rows.Add(row);
         }
 
         int initialIndex = FindInitialSelectionIndex(entries, previousScope);
         bool centerScroll = previousScope != null;
         leaderboardNavigation.SetupNavigation(_rows, initialIndex, centerScroll);
+        _initialButton = _rows.Count > 0 ? _rows[Mathf.Clamp(initialIndex, 0, _rows.Count - 1)].GetComponent<Button>() : null;
+
+        // Re-select after global fetch rebuilds rows mid-session; OnShowComplete handles the initial open case.
+        if (canvasGroup.interactable)
+        {
+            Selectable target = _initialButton != null ? (Selectable)_initialButton : GetFirstSelectable();
+            if (target != null)
+            {
+                EventSystem.current.SetSelectedGameObject(target.gameObject);
+            }
+        }
     }
 
     private void OnRowEntrySelected(LeaderboardEntry entry)
@@ -193,6 +230,13 @@ public class LeaderboardMenu : Menu
     {
         if (_lastSelectedEntry == null || entries.Count == 0)
         {
+            if (_hasLiveEntry)
+            {
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    if (entries[i].isLiveEntry) { return i; }
+                }
+            }
             return 0;
         }
 
@@ -283,31 +327,35 @@ public class LeaderboardMenu : Menu
 
     private void UpdateLastSelectedEntry(bool findTop)
     {
-        if (_rows.Count == 0)
-        {
-            return;
-        }
+        if (_rows.Count == 0) { return; }
 
         Rect viewportRect = scrollRect.viewport.rect;
-        float targetY = findTop
-            ? scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMax)).y
-            : scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMin)).y;
+        float viewportTop = scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMax)).y;
+        float viewportBottom = scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMin)).y;
 
-        LeaderboardRow nearest = _rows[0];
-        float nearestDist = float.MaxValue;
+        LeaderboardRow result = null;
+        Vector3[] corners = new Vector3[4];
 
         foreach (LeaderboardRow row in _rows)
         {
-            float dist = Mathf.Abs(row.transform.position.y - targetY);
-            if (dist < nearestDist)
-            {
-                nearestDist = dist;
-                nearest = row;
-            }
+            ((RectTransform)row.transform).GetWorldCorners(corners);
+            float rowTop = corners[1].y;
+            float rowBottom = corners[0].y;
+
+            if (rowTop > viewportTop || rowBottom < viewportBottom) { continue; }
+
+            if (result == null) { result = row; continue; }
+
+            float rowCenterY = row.transform.position.y;
+            float resultCenterY = result.transform.position.y;
+            if (findTop && rowCenterY > resultCenterY) { result = row; }
+            else if (!findTop && rowCenterY < resultCenterY) { result = row; }
         }
 
-        _lastSelectedEntry = nearest.Entry;
-        leaderboardNavigation.OnRowSelected(nearest.GetComponent<Button>());
+        if (result == null) { result = findTop ? _rows[0] : _rows[_rows.Count - 1]; }
+
+        _lastSelectedEntry = result.Entry;
+        leaderboardNavigation.OnRowSelected(result.GetComponent<Button>());
     }
 
     private float GetPageStep()
@@ -322,22 +370,6 @@ public class LeaderboardMenu : Menu
         }
 
         return viewportHeight / scrollableHeight;
-    }
-
-    private int GetGlobalRank(int score)
-    {
-        if (_globalRankByScore == null)
-        {
-            return 0;
-        }
-
-        if (_globalRankByScore.TryGetValue(score, out int rank))
-        {
-            return rank;
-        }
-
-        // Score not in top GlobalFetchLimit ??rank is unknown
-        return 0;
     }
 
     private Sprite GetSprite(int id)
