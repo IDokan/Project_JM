@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 770, y: 700}
+  m_SizeDelta: {x: 780, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8747692353545497230
 CanvasRenderer:
@@ -146,12 +146,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 0
+    m_Left: 10
     m_Right: 0
     m_Top: 30
     m_Bottom: 30
-  m_ChildAlignment: 1
-  m_Spacing: 0
+  m_ChildAlignment: 4
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -926,7 +926,6 @@ MonoBehaviour:
   style: {fileID: 11400000, guid: 62126d572e2733744941be9f33642fed, type: 2}
   showOnAwake: 0
   canvasGroup: {fileID: 0}
-  leaderboardManager: {fileID: 0}
   leaderboardNavigation: {fileID: 2881749314013926704}
   rowPrefab: {fileID: 6736277463906731053, guid: ab1059dcf60eaa642a27fe789432aa9e, type: 3}
   content: {fileID: 8833839638989957479}
