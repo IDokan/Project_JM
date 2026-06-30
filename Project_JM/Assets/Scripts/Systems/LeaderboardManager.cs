@@ -30,13 +30,14 @@ public struct LeaderboardEntry
     public int icon1;
     public int icon2;
     public bool isMyRecord;
+    public bool isLiveEntry;
 }
 
 public class LeaderboardManager : MonoBehaviour
 {
     private const string PendingEntriesKey = "Leaderboard_PendingEntries";
     private const string LocalLeaderboardKey = "Leaderboard_LocalTop6";
-    private const int MaxScoresPerPlayer = 6;
+    public const int MaxScoresPerPlayer = 6;
     public const int GlobalFetchLimit = 50;
 
     // Entry for the data not pushed to leader board becuase it was offline.
@@ -74,11 +75,31 @@ public class LeaderboardManager : MonoBehaviour
         public List<LocalEntry> entries = new List<LocalEntry>();
     }
 
-    [SerializeField] private TransitionEventChannel transitionEventChannel;
+    private const float GlobalCacheExpirySeconds = 600f;
+
+    public static LeaderboardManager Instance { get; private set; }
 
     private FirebaseAuth _auth;
     private FirebaseFirestore _db;
     private bool _isReady;
+    private List<LeaderboardEntry> _cachedGlobalEntries;
+    private bool _isFetchingGlobal;
+    private float _lastGlobalFetchTime = float.MinValue;
+    private readonly List<Action> _pendingGlobalCallbacks = new List<Action>();
+
+    public bool HasCachedGlobalData => _cachedGlobalEntries != null;
+    public IReadOnlyList<LeaderboardEntry> GetGlobalEntries() => _cachedGlobalEntries;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start()
     {
@@ -92,29 +113,9 @@ public class LeaderboardManager : MonoBehaviour
 
             _auth = FirebaseAuth.DefaultInstance;
             _db = FirebaseFirestore.DefaultInstance;
-
             _db.Settings.PersistenceEnabled = true;
-
             TrySignIn();
         });
-    }
-
-    private void OnEnable() => transitionEventChannel.OnRaised += OnTransitionEvent;
-    private void OnDisable() => transitionEventChannel.OnRaised -= OnTransitionEvent;
-
-    private void OnTransitionEvent(TransitionPhase phase)
-    {
-        if (phase != TransitionPhase.EndBoardMoveEnd)
-        {
-            return;
-        }
-
-        if (SaveDataManager.Instance.Progress < TutorialProgress.Challenge)
-        {
-            return;
-        }
-
-        SubmitScore(ScoreManager.Instance.TotalScore, 0, 0, 0);
     }
 
     private void TrySignIn(Action onSuccess = null, Action onFirstLaunchOffline = null)
@@ -146,8 +147,13 @@ public class LeaderboardManager : MonoBehaviour
         });
     }
 
-    private void SubmitScore(int score, int icon0, int icon1, int icon2)
+    public void SubmitScore(int score, int icon0, int icon1, int icon2)
     {
+        if (SaveDataManager.Instance.Progress < TutorialProgress.Challenge)
+        {
+            return;
+        }
+
         if (!_isReady)
         {
             TrySignIn(
@@ -204,6 +210,7 @@ public class LeaderboardManager : MonoBehaviour
         collection = collection,
     });
     SaveLocalLeaderboard(local);
+    UpdateGlobalCacheWithNewScore(score, icon0, icon1, icon2);
 
     _db.Collection(collection).AddAsync(data).ContinueWithOnMainThread(task =>
         {
@@ -370,6 +377,35 @@ public class LeaderboardManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    private void UpdateGlobalCacheWithNewScore(int score, int icon0, int icon1, int icon2)
+    {
+        if (_cachedGlobalEntries == null) { return; }
+
+        bool cacheNotFull = _cachedGlobalEntries.Count < GlobalFetchLimit;
+        bool beatsLowest = _cachedGlobalEntries.Count > 0
+            && score > _cachedGlobalEntries.Min(e => e.score);
+
+        if (!cacheNotFull && !beatsLowest) { return; }
+
+        if (!cacheNotFull)
+        {
+            int lowestScore = _cachedGlobalEntries.Min(e => e.score);
+            int lowestIndex = _cachedGlobalEntries.FindIndex(e => e.score == lowestScore);
+            _cachedGlobalEntries.RemoveAt(lowestIndex);
+        }
+
+        _cachedGlobalEntries.Add(new LeaderboardEntry
+        {
+            score = score,
+            icon0 = icon0,
+            icon1 = icon1,
+            icon2 = icon2,
+            isMyRecord = true,
+        });
+
+        _cachedGlobalEntries = _cachedGlobalEntries.OrderByDescending(e => e.score).ToList();
+    }
+
     // TODO: remove before commit — for testing only
     public static string WeeklyCollectionName() => "leaderboard_test";
 
@@ -380,13 +416,29 @@ public class LeaderboardManager : MonoBehaviour
         return $"leaderboard_{now.Year}_W{week:D2}";
     } */
 
-    public void FetchGlobalScores(Action<List<LeaderboardEntry>> onComplete)
+    public void FetchGlobalScores(Action onComplete)
     {
         if (!_isReady)
         {
-            onComplete?.Invoke(null);
+            onComplete?.Invoke();
             return;
         }
+
+        if (_cachedGlobalEntries != null
+            && Time.realtimeSinceStartup - _lastGlobalFetchTime < GlobalCacheExpirySeconds)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        if (_isFetchingGlobal)
+        {
+            if (onComplete != null) { _pendingGlobalCallbacks.Add(onComplete); }
+            return;
+        }
+
+        _isFetchingGlobal = true;
+        if (onComplete != null) { _pendingGlobalCallbacks.Add(onComplete); }
 
         string collection = WeeklyCollectionName();
         string myUserId = _auth.CurrentUser?.UserId;
@@ -397,33 +449,36 @@ public class LeaderboardManager : MonoBehaviour
             .GetSnapshotAsync()
             .ContinueWithOnMainThread(task =>
             {
-                List<LeaderboardEntry> result = new List<LeaderboardEntry>();
+                _isFetchingGlobal = false;
 
                 if (task.IsFaulted)
                 {
                     Debug.LogError($"FetchGlobalScores failed: {task.Exception?.Message}");
-                    onComplete?.Invoke(null);
-                    return;
                 }
-
-                foreach (DocumentSnapshot doc in task.Result.Documents)
+                else
                 {
-                    if (!doc.ContainsField("score"))
+                    List<LeaderboardEntry> result = new List<LeaderboardEntry>();
+
+                    foreach (DocumentSnapshot doc in task.Result.Documents)
                     {
-                        continue;
+                        if (!doc.ContainsField("score")) { continue; }
+
+                        result.Add(new LeaderboardEntry
+                        {
+                            score = (int)doc.GetValue<long>("score"),
+                            icon0 = doc.ContainsField("icon0") ? (int)doc.GetValue<long>("icon0") : 0,
+                            icon1 = doc.ContainsField("icon1") ? (int)doc.GetValue<long>("icon1") : 0,
+                            icon2 = doc.ContainsField("icon2") ? (int)doc.GetValue<long>("icon2") : 0,
+                            isMyRecord = doc.ContainsField("userId") && doc.GetValue<string>("userId") == myUserId,
+                        });
                     }
 
-                    result.Add(new LeaderboardEntry
-                    {
-                        score = (int)doc.GetValue<long>("score"),
-                        icon0 = doc.ContainsField("icon0") ? (int)doc.GetValue<long>("icon0") : 0,
-                        icon1 = doc.ContainsField("icon1") ? (int)doc.GetValue<long>("icon1") : 0,
-                        icon2 = doc.ContainsField("icon2") ? (int)doc.GetValue<long>("icon2") : 0,
-                        isMyRecord = doc.ContainsField("userId") && doc.GetValue<string>("userId") == myUserId,
-                    });
+                    _cachedGlobalEntries = result;
+                    _lastGlobalFetchTime = Time.realtimeSinceStartup;
                 }
 
-                onComplete?.Invoke(result);
+                foreach (Action cb in _pendingGlobalCallbacks) { cb?.Invoke(); }
+                _pendingGlobalCallbacks.Clear();
             });
     }
 
