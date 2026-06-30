@@ -112,7 +112,7 @@ public class Menu : MonoBehaviour, ICancelHandler
         }
     }
 
-    private void OnShowComplete()
+    protected virtual void OnShowComplete()
     {
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
