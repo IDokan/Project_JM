@@ -30,6 +30,7 @@ public class RetryMenu : Menu
 
     [Header("Score")]
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private Button scoreButton;
     [SerializeField] private LeaderboardMenu leaderboardMenu;
 
@@ -38,22 +39,32 @@ public class RetryMenu : Menu
     [SerializeField] private Image quitConfirmIcon;
 
     [Header("Icon selector")]
-    [SerializeField] private IconSelectorMenu iconSelectorMenu;
-    [SerializeField] private Button[] iconButtons;
-    [SerializeField] private Image[] iconButtonImages;
-    [SerializeField] private LeaderboardIconContainer iconContainer;
+    [SerializeField] private LeaderboardIconOpener[] iconOpeners;
 
-    private int[] _selectedIconIds = new int[] { 0, 0, 0 };
+    private int _cachedScore;
 
     public override void Show(Selectable returnTo = null)
     {
         playerInput.SwitchToUIMap();
 
-        if (scoreText != null && ScoreManager.Instance != null)
+        if (ScoreManager.Instance != null)
         {
-            scoreText.text = ScoreManager.Instance.TotalScore.ToString();
+            _cachedScore = ScoreManager.Instance.TotalScore;
+            if (scoreText != null)
+            {
+                scoreText.text = _cachedScore.ToString();
+            }
+            if (rankText != null)
+            {
+                int rank = ComputeLocalRank(_cachedScore);
+                rankText.text = rank <= LeaderboardManager.MaxScoresPerPlayer ? $"#{rank}" : "#--";
+            }
         }
 
+        for (int i = 0; i < iconOpeners.Length; i++)
+        {
+            iconOpeners[i].Init(i, PlayerPrefs.GetInt(LeaderboardIconPrefs.Keys[i], LeaderboardIconPrefs.Defaults[i]));
+        }
         base.Show(returnTo);
     }
 
@@ -64,48 +75,48 @@ public class RetryMenu : Menu
         mainMenuButton.onClick.AddListener(OnMainMenuButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
         scoreButton.onClick.AddListener(OnScoreButtonPressed);
-        iconButtons[0].onClick.AddListener(OnIconButton0Pressed);
-        iconButtons[1].onClick.AddListener(OnIconButton1Pressed);
-        iconButtons[2].onClick.AddListener(OnIconButton2Pressed);
     }
 
     protected override void OnDisable()
     {
+        PlayerPrefs.Save();
         base.OnDisable();
         restartButton.onClick.RemoveListener(OnRestartButtonPressed);
         mainMenuButton.onClick.RemoveListener(OnMainMenuButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
         scoreButton.onClick.RemoveListener(OnScoreButtonPressed);
-        iconButtons[0].onClick.RemoveListener(OnIconButton0Pressed);
-        iconButtons[1].onClick.RemoveListener(OnIconButton1Pressed);
-        iconButtons[2].onClick.RemoveListener(OnIconButton2Pressed);
     }
 
-    public override void OnCancel(BaseEventData eventData) { }
+    public override void OnCancel(BaseEventData eventData) 
+    {
+        // Do nothing becuase retry menu will not be hidden.
+    }
 
     private void OnScoreButtonPressed()
     {
-        leaderboardMenu.Show(scoreButton);
+        leaderboardMenu.ShowWithLiveEntry(scoreButton, _cachedScore, iconOpeners[0].SelectedId, iconOpeners[1].SelectedId, iconOpeners[2].SelectedId);
     }
 
-    private void OnIconButton0Pressed() => OpenIconSelector(0);
-    private void OnIconButton1Pressed() => OpenIconSelector(1);
-    private void OnIconButton2Pressed() => OpenIconSelector(2);
-
-    private void OpenIconSelector(int slot)
+    private int ComputeLocalRank(int score)
     {
-        iconSelectorMenu.Open(iconButtons[slot], _selectedIconIds[slot], id => OnIconSelected(slot, id));
+        if (LeaderboardManager.Instance == null) { return 1; }
+
+        int rank = 1;
+        foreach (LeaderboardEntry entry in LeaderboardManager.Instance.GetMyScores())
+        {
+            if (entry.score > score) { rank++; }
+        }
+        return rank;
     }
 
-    private void OnIconSelected(int slot, int id)
+    private void SubmitScore()
     {
-        _selectedIconIds[slot] = id;
-        iconButtonImages[slot].sprite = iconContainer.GetSprite(id);
-        iconButtonImages[slot].SetNativeSize();
+        LeaderboardManager.Instance.SubmitScore(_cachedScore, iconOpeners[0].SelectedId, iconOpeners[1].SelectedId, iconOpeners[2].SelectedId);
     }
 
     private void OnRestartButtonPressed()
     {
+        SubmitScore();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -113,6 +124,7 @@ public class RetryMenu : Menu
     {
         confirmationDialog.Show(mainMenuConfirmIcon, () =>
         {
+            SubmitScore();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, mainMenuButton);
     }
@@ -121,6 +133,7 @@ public class RetryMenu : Menu
     {
         confirmationDialog.Show(quitConfirmIcon, () =>
         {
+            SubmitScore();
             sceneTransition.FadeAndQuit();
         }, quitButton);
     }
