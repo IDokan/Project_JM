@@ -36,16 +36,10 @@ public class IconSelectorMenu : Menu
     [Header("Layout")]
     [SerializeField] private int columns = 10;
     [SerializeField] private float scrollDuration = 0.25f;
-    [SerializeField] private float doubleClickGuardDuration = 0.3f;
 
     private readonly List<GridIcon> _icons = new List<GridIcon>();
     private readonly Dictionary<int, Button> _slotToButton = new Dictionary<int, Button>();
     private int _selectedId = -1;
-    private bool _suppressNavCenter;
-    private int _pendingClickId = -1;
-    private float _pendingClickTime;
-    private Coroutine _pendingCenterRoutine;
-    private Coroutine _pendingHideRoutine;
     private Action<int> _onIconSelected;
 
     protected override void Awake()
@@ -76,14 +70,12 @@ public class IconSelectorMenu : Menu
     public void Open(Selectable returnTo, int initialId, Action<int> onIconSelected)
     {
         _selectedId = initialId;
-        _pendingClickId = -1;
         _onIconSelected = onIconSelected;
         Show(returnTo);
     }
 
     public override void Show(Selectable returnTo)
     {
-        _suppressNavCenter = true;
         base.Show(returnTo);
         StartCoroutine(InitialCenterRoutine());
     }
@@ -97,7 +89,6 @@ public class IconSelectorMenu : Menu
         ApplyPadding();
         Canvas.ForceUpdateCanvases();
         CenterOnItem(_selectedId, animate: false);
-        _suppressNavCenter = false;
     }
 
     private void BuildGrid()
@@ -279,79 +270,26 @@ public class IconSelectorMenu : Menu
         );
     }
 
-    public override void Hide()
-    {
-        CancelPending();
-        base.Hide();
-    }
-
     private void OnButtonNavigated(int id)
     {
-        if (_suppressNavCenter) { return; }
+        _selectedId = id;
         CenterOnItem(id, animate: true);
     }
 
     private void OnIconClicked(int id)
     {
-        // Double-click: second click on the pending icon within the window → hide immediately
-        if (_pendingClickId == id && Time.realtimeSinceStartup - _pendingClickTime <= doubleClickGuardDuration)
+
+        if (id == _selectedId)
         {
-            CancelPending();
+            if (DOTween.IsTweening(scrollRect)) { return; }
+
             _onIconSelected?.Invoke(_selectedId);
             Hide();
             return;
         }
 
-        // First click on already-selected icon → wait; hide on single-click expiry or second click
-        if (id == _selectedId)
-        {
-            CancelPending();
-            _pendingClickId = id;
-            _pendingClickTime = Time.realtimeSinceStartup;
-            _pendingHideRoutine = StartCoroutine(HideAfterDelay());
-            return;
-        }
-
-        // First click on non-selected icon → select, wait; center on single-click expiry or re-click elsewhere
         _selectedId = id;
-        CancelPending();
-        _pendingClickId = id;
-        _pendingClickTime = Time.realtimeSinceStartup;
-        _pendingCenterRoutine = StartCoroutine(CenterAfterDelay(id));
-    }
-
-    private IEnumerator HideAfterDelay()
-    {
-        yield return new WaitForSecondsRealtime(doubleClickGuardDuration);
-        _pendingClickId = -1;
-        _pendingHideRoutine = null;
-        _onIconSelected?.Invoke(_selectedId);
-        Hide();
-    }
-
-    private IEnumerator CenterAfterDelay(int id)
-    {
-        yield return new WaitForSecondsRealtime(doubleClickGuardDuration);
-        _pendingClickId = -1;
-        _pendingCenterRoutine = null;
         CenterOnItem(id, animate: true);
-    }
-
-    private void CancelPending()
-    {
-        if (_pendingCenterRoutine != null)
-        {
-            StopCoroutine(_pendingCenterRoutine);
-            _pendingCenterRoutine = null;
-        }
-
-        if (_pendingHideRoutine != null)
-        {
-            StopCoroutine(_pendingHideRoutine);
-            _pendingHideRoutine = null;
-        }
-
-        _pendingClickId = -1;
     }
 
     private void CenterOnItem(int id, bool animate)
