@@ -18,6 +18,7 @@ public class LeaderboardRow : MonoBehaviour, ISelectHandler
     [SerializeField] private Image[] icons;
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private NewRankIndicator newRankIndicator;
 
     [SerializeField] private Color myRecordColor = new Color(1f, 0.85f, 0.2f, 1f);
     [SerializeField] private Color defaultColor = Color.white;
@@ -31,6 +32,11 @@ public class LeaderboardRow : MonoBehaviour, ISelectHandler
     private void Awake()
     {
         _navigation = GetComponentInParent<LeaderboardNavigation>();
+    }
+
+    public void Highlight()
+    {
+        newRankIndicator.Highlight();
     }
 
     public void Initialize(bool isMyRecord, Sprite icon0, Sprite icon1, Sprite icon2, int score, int rank, Action<LeaderboardEntry> onSelected)
