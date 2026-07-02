@@ -42,6 +42,7 @@ public class EnemyAttackMotion : MonoBehaviour
     protected Vector3 _pendingMoveOffset;
     private bool _moveSequenceFired;
     private Coroutine _autoAttackEndRoutine;
+    private int _attackGeneration;
 
     protected void Awake()
     {
@@ -150,7 +151,8 @@ public class EnemyAttackMotion : MonoBehaviour
         {
             StopCoroutine(_autoAttackEndRoutine);
         }
-        _autoAttackEndRoutine = StartCoroutine(AutoAttackEndRoutine());
+        _attackGeneration++;
+        _autoAttackEndRoutine = StartCoroutine(AutoAttackEndRoutine(_attackGeneration));
 
         _moveSequenceFired = true;
         AudioManager.Instance.PlayEnemyActionSFX(swingSfx);
@@ -161,10 +163,10 @@ public class EnemyAttackMotion : MonoBehaviour
         }
     }
 
-    private IEnumerator AutoAttackEndRoutine()
+    private IEnumerator AutoAttackEndRoutine(int generation)
     {
-        yield return GlobalTimeManager.WaitForGlobalSeconds(2f);
-        if (!_attackDone)
+        yield return GlobalTimeManager.WaitForGlobalSeconds(3f);
+        if (!_attackDone && _attackGeneration == generation)
         {
             AnimEvent_RaiseAttackEnd();
         }
