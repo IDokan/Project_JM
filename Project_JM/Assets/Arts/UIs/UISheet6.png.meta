@@ -1,34 +1,31 @@
 fileFormatVersion: 2
-guid: 176ae06927ab02d4b9d3be5d670cd6ef
+guid: 2e3a9bd0115777845b59a6922f3ada55
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8777824922998612401
-    second: UISheet_0
+      213: -282161943687642289
+    second: UISheet6_0
   - first:
-      213: 3765853880425637702
-    second: UISheet_1
+      213: 1892036463889913304
+    second: UISheet6_1
   - first:
-      213: 1249985808958975487
-    second: UISheet_2
+      213: -7360122006881506226
+    second: UISheet6_2
   - first:
-      213: 8537368232269895075
-    second: UISheet_3
+      213: 4407844783131251380
+    second: UISheet6_3
   - first:
-      213: 7065759579151131531
-    second: UISheet_4
+      213: 6329448847233223039
+    second: UISheet6_4
   - first:
-      213: -2515130379638872276
-    second: UISheet_5
+      213: -1142901182806155701
+    second: UISheet6_5
   - first:
-      213: -3044407221058930715
-    second: UISheet_6
+      213: 8417139908447542006
+    second: UISheet6_6
   - first:
-      213: -6560312497393280637
-    second: UISheet_7
-  - first:
-      213: 8609931220251892044
-    second: UISheet_8
+      213: 9096533351360460341
+    second: UISheet6_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -121,7 +118,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -134,7 +131,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -150,57 +147,35 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Rect1
+      name: UISheet6_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 532
-        width: 498
-        height: 98
+        x: 15
+        y: 347
+        width: 151
+        height: 151
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 9, y: 9, z: 9, w: 9}
+      border: {x: 14, y: 14, z: 14, w: 14}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b127e3b24911d970800000000000000
-      internalID: 8777824922998612401
+      spriteID: f434d59053f851cf0800000000000000
+      internalID: -282161943687642289
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rect4_L
+      name: UISheet6_1
       rect:
         serializedVersion: 2
-        x: 11
-        y: 440
-        width: 13
-        height: 66
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 647ebc2e620034430800000000000000
-      internalID: 3765853880425637702
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Rect4_0
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 440
-        width: 363
-        height: 66
+        x: 201
+        y: 430
+        width: 76
+        height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -209,20 +184,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffd67457877d85110800000000000000
-      internalID: 1249985808958975487
+      spriteID: 8d59e34b32dd14a10800000000000000
+      internalID: 1892036463889913304
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rect4_R
+      name: Icon_Heart
       rect:
         serializedVersion: 2
-        x: 490
-        y: 440
-        width: 12
-        height: 66
+        x: 368
+        y: 416
+        width: 103
+        height: 81
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,20 +206,130 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a5d621ac23da7670800000000000000
-      internalID: 8537368232269895075
+      spriteID: e4cea44c7089bd990800000000000000
+      internalID: -7360122006881506226
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rect2
+      name: Icon_Sword
       rect:
         serializedVersion: 2
-        x: 19
-        y: 512
-        width: 482
-        height: 17
+        x: 205
+        y: 281
+        width: 107
+        height: 90
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b2d89bf97fcb2d30800000000000000
+      internalID: 4407844783131251380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon_Skull
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 290
+        width: 105
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7987531138b6d750800000000000000
+      internalID: 6329448847233223039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: heartSmall
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 192
+        width: 66
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4e1779fd699320f0800000000000000
+      internalID: -1142901182806155701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swordSmall
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 183
+        width: 74
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fa97cb9620bfc470800000000000000
+      internalID: 8417139908447542006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skull_small
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 189
+        width: 70
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 536755733e06d3e70800000000000000
+      internalID: 9096533351360460341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BackArrow
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 91
+        width: 152
+        height: 111
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -253,20 +338,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e63b7d4b086ee34897102b77bf14dfb
-      internalID: -945941308
+      spriteID: 39f756ac4a63bf449be39242fe4c3d2c
+      internalID: -698179751
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UISheet_9_R
+      name: RetryArrow
       rect:
         serializedVersion: 2
-        x: 501
-        y: 512
-        width: 8
-        height: 17
+        x: 26
+        y: 17
+        width: 129
+        height: 132
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -275,184 +360,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8e4b921fef4e14439a0ec68786c98e6
-      internalID: -1472734338
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UISheet_9_L
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 512
-        width: 8
-        height: 17
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 93411671de1ad184c906d6fffb39df09
-      internalID: -1988521637
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fire0
-      rect:
-        serializedVersion: 2
-        x: 517
-        y: 592
-        width: 38
-        height: 46
-      alignment: 9
-      pivot: {x: 0.5, y: 0.34}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d71e0e0bfaabf394bb2657e4ac33a7e3
-      internalID: 265375947
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fire1
-      rect:
-        serializedVersion: 2
-        x: 558
-        y: 592
-        width: 38
-        height: 46
-      alignment: 9
-      pivot: {x: 0.5, y: 0.34}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2878f91e4171a2444bd5a7a0a9bdcbe8
-      internalID: -617987072
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fire2
-      rect:
-        serializedVersion: 2
-        x: 598
-        y: 592
-        width: 38
-        height: 46
-      alignment: 9
-      pivot: {x: 0.5, y: 0.34}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b40b64937c7fa264ca2ff0cbca7ec6d6
-      internalID: 1900089304
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pause
-      rect:
-        serializedVersion: 2
-        x: 518
-        y: 441
-        width: 119
-        height: 149
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: be1fd72d0c63d994fa287a5524a75836
-      internalID: 580331038
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Play
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 144
-        width: 108
-        height: 148
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3878d100d41fe864c864d97b31bfb44b
-      internalID: -162046715
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UISheet_0
-      rect:
-        serializedVersion: 2
-        x: 499
-        y: 10
-        width: 134
-        height: 117
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 545658c8a74963343bc541165afbbedd
-      internalID: -1182102727
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UISheet_1
-      rect:
-        serializedVersion: 2
-        x: 9
-        y: 5
-        width: 110
-        height: 110
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 32cfa45cccb74f645b4924f48e7dacb7
-      internalID: -1185286630
+      spriteID: a65c78a1438a49e4f9399e9f515c2e71
+      internalID: 901349720
       vertices: []
       indices: 
       edges: []
@@ -461,7 +370,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 93f5760b09ecb804c99e0965d0cbfb61
+    spriteID: b0a8b6551d8df5b4b87462552fcaf1a3
     internalID: 0
     vertices: []
     indices: 
@@ -471,33 +380,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Circle: 8609931220251892044
-      Combo: -6560312497393280637
-      Fire0: 265375947
-      Fire1: -617987072
-      Fire2: 1900089304
-      Heart: 7065759579151131531
-      Pause: -849803474
-      Play: -162046715
-      Rect1: 8777824922998612401
-      Rect2: -945941308
-      Rect4_0: 1249985808958975487
-      Rect4_L: 3765853880425637702
-      Rect4_R: 8537368232269895075
-      Restart: 1758157431
-      Skull: -3044407221058930715
-      Sword: -2515130379638872276
-      UISheet_0: -1182102727
-      UISheet_0_B: 1223664030
-      UISheet_0_L: 1256235229
-      UISheet_0_R: 997019408
-      UISheet_0_T: 973230164
-      UISheet_1: -1185286630
-      UISheet_14: 1855759993
-      UISheet_9_L: -1988521637
-      UISheet_9_R: -1472734338
+      BackArrow: 668149417
+      Icon_Heart: -7360122006881506226
+      Icon_Skull: 6329448847233223039
+      Icon_Sword: 4407844783131251380
+      RetryArrow: 901349720
+      Skull_small: 9096533351360460341
+      UISheet6_0: -282161943687642289
+      UISheet6_1: 1892036463889913304
+      heartSmall: -1142901182806155701
+      swordSmall: 8417139908447542006
   mipmapLimitGroupName: 
-  pSDRemoveMatte: 1
+  pSDRemoveMatte: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
