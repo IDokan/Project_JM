@@ -85,7 +85,7 @@ public class LeaderboardMenu : Menu
 
         if (_showingGlobal)
         {
-            LeaderboardManager.Instance.FetchGlobalScores(() => RefreshRows());
+            LeaderboardManager.Instance.FetchGlobalScores(() => RefreshRows(previousScope));
         }
 
         RefreshRows(previousScope);
@@ -211,7 +211,8 @@ public class LeaderboardMenu : Menu
         _initialButton = _rows.Count > 0 ? _rows[Mathf.Clamp(initialIndex, 0, _rows.Count - 1)].GetComponent<Button>() : null;
 
         // Re-select after global fetch rebuilds rows mid-session; OnShowComplete handles the initial open case.
-        if (canvasGroup.interactable)
+        // Skip when previousScope != null: scope button triggered the rebuild, so focus stays on it.
+        if (canvasGroup.interactable && previousScope == null)
         {
             Selectable target = _initialButton != null ? (Selectable)_initialButton : GetFirstSelectable();
             if (target != null)
@@ -306,53 +307,54 @@ public class LeaderboardMenu : Menu
     private void PageUp()
     {
         float target = Mathf.Clamp01(scrollRect.verticalNormalizedPosition + GetPageStep());
+        UpdateLastSelectedEntry(target);
         scrollRect.DOKill();
         scrollRect.DOVerticalNormalizedPos(target, pageScrollDuration)
             .SetEase(Ease.OutCubic)
             .SetUpdate(true)
-            .SetLink(scrollRect.gameObject)
-            .OnComplete(() => UpdateLastSelectedEntry(findTop: true));
+            .SetLink(scrollRect.gameObject);
     }
 
     private void PageDown()
     {
         float target = Mathf.Clamp01(scrollRect.verticalNormalizedPosition - GetPageStep());
+        UpdateLastSelectedEntry(target);
         scrollRect.DOKill();
         scrollRect.DOVerticalNormalizedPos(target, pageScrollDuration)
             .SetEase(Ease.OutCubic)
             .SetUpdate(true)
-            .SetLink(scrollRect.gameObject)
-            .OnComplete(() => UpdateLastSelectedEntry(findTop: false));
+            .SetLink(scrollRect.gameObject);
     }
 
-    private void UpdateLastSelectedEntry(bool findTop)
+    private void UpdateLastSelectedEntry(float targetNormalizedPos)
     {
         if (_rows.Count == 0) { return; }
 
-        Rect viewportRect = scrollRect.viewport.rect;
-        float viewportTop = scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMax)).y;
-        float viewportBottom = scrollRect.viewport.TransformPoint(new Vector2(0f, viewportRect.yMin)).y;
+        float contentHeight = scrollRect.content.rect.height;
+        float viewportHeight = scrollRect.viewport.rect.height;
+        float scrollableHeight = contentHeight - viewportHeight;
+
+        if (scrollableHeight <= 0f) { return; }
+
+        float scrollTopFromContentTop = (1f - targetNormalizedPos) * scrollableHeight;
+        float viewportCenterFromContentTop = scrollTopFromContentTop + viewportHeight * 0.5f;
 
         LeaderboardRow result = null;
-        Vector3[] corners = new Vector3[4];
+        float closestDist = float.MaxValue;
 
         foreach (LeaderboardRow row in _rows)
         {
-            ((RectTransform)row.transform).GetWorldCorners(corners);
-            float rowTop = corners[1].y;
-            float rowBottom = corners[0].y;
-
-            if (rowTop > viewportTop || rowBottom < viewportBottom) { continue; }
-
-            if (result == null) { result = row; continue; }
-
-            float rowCenterY = row.transform.position.y;
-            float resultCenterY = result.transform.position.y;
-            if (findTop && rowCenterY > resultCenterY) { result = row; }
-            else if (!findTop && rowCenterY < resultCenterY) { result = row; }
+            Vector2 localCenter = scrollRect.content.InverseTransformPoint(row.transform.position);
+            float rowDistFromContentTop = -localCenter.y;
+            float dist = Mathf.Abs(rowDistFromContentTop - viewportCenterFromContentTop);
+            if (dist < closestDist)
+            {
+                closestDist = dist;
+                result = row;
+            }
         }
 
-        if (result == null) { result = findTop ? _rows[0] : _rows[_rows.Count - 1]; }
+        if (result == null) { result = _rows[_rows.Count / 2]; }
 
         _lastSelectedEntry = result.Entry;
         leaderboardNavigation.OnRowSelected(result.GetComponent<Button>());
