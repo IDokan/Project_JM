@@ -283,7 +283,6 @@ public class IconSelectorMenu : Menu
 
     private void OnButtonPointerUp(int id)
     {
-        Debug.Log("OnButtonPointerUp");
         _selectedId = id;
         CenterOnItem(id, animate: true);
     }
