@@ -8,17 +8,17 @@
 //          icon closes the menu. Half-viewport padding ensures edge icons can be centred.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class IconSelectorMenu : Menu
 {
-    private const int IdsPerCategory = 1000;
+    private const int IdsPerCategory = 250;
 
     private struct GridIcon
     {
@@ -205,10 +205,10 @@ public class IconSelectorMenu : Menu
             int s = icon.slotIndex;
             Navigation nav = icon.button.navigation;
             nav.mode = Navigation.Mode.Explicit;
-            nav.selectOnLeft  = s % columns > 0           ? GetButtonAt(s - 1)             : null;
-            nav.selectOnRight = s % columns < columns - 1 ? GetButtonAt(s + 1)             : null;
-            nav.selectOnUp    = FindButtonInDirection(s, -1, 0);
-            nav.selectOnDown  = FindButtonInDirection(s, +1, maxSlot);
+            nav.selectOnLeft = s % columns > 0 ? GetButtonAt(s - 1) : null;
+            nav.selectOnRight = s % columns < columns - 1 ? GetButtonAt(s + 1) : null;
+            nav.selectOnUp = FindButtonInDirection(s, -1, 0);
+            nav.selectOnDown = FindButtonInDirection(s, +1, maxSlot);
             icon.button.navigation = nav;
         }
     }
@@ -274,7 +274,6 @@ public class IconSelectorMenu : Menu
 
     private void OnButtonNavigated(int id)
     {
-        _selectedId = id;
         if (pressAction == null || !pressAction.action.IsPressed())
         {
             CenterOnItem(id, animate: true);
@@ -283,19 +282,18 @@ public class IconSelectorMenu : Menu
 
     private void OnButtonPointerUp(int id)
     {
-        _selectedId = id;
-        CenterOnItem(id, animate: true);
+        //_selectedId = id;
+        //CenterOnItem(id, animate: true);
     }
 
     private void OnIconClicked(int id)
     {
-        if (id == _selectedId)
-        {
-            if (DOTween.IsTweening(scrollRect)) { return; }
+        _selectedId = id;
 
-            _onIconSelected?.Invoke(_selectedId);
-            Hide();
-        }
+        if (DOTween.IsTweening(scrollRect)) { return; }
+
+        _onIconSelected?.Invoke(_selectedId);
+        Hide();
     }
 
     private void CenterOnItem(int id, bool animate)
