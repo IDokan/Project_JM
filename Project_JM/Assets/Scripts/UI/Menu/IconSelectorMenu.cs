@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class IconSelectorMenu : Menu
@@ -36,6 +37,7 @@ public class IconSelectorMenu : Menu
     [Header("Layout")]
     [SerializeField] private int columns = 10;
     [SerializeField] private float scrollDuration = 0.25f;
+    [SerializeField] private InputActionReference pressAction;
 
     private readonly List<GridIcon> _icons = new List<GridIcon>();
     private readonly Dictionary<int, Button> _slotToButton = new Dictionary<int, Button>();
@@ -162,7 +164,7 @@ public class IconSelectorMenu : Menu
         Button button = Instantiate(iconButtonPrefab, content);
         int capturedId = entry.id;
         button.onClick.AddListener(() => OnIconClicked(capturedId));
-        button.GetComponent<LeaderboardIconSelectNotifier>().Init(capturedId, OnButtonNavigated);
+        button.GetComponent<LeaderboardIconSelectNotifier>().Init(capturedId, OnButtonNavigated, OnButtonPointerUp);
 
         Image icon = null;
         foreach (Transform child in button.transform)
@@ -273,23 +275,28 @@ public class IconSelectorMenu : Menu
     private void OnButtonNavigated(int id)
     {
         _selectedId = id;
+        if (pressAction == null || !pressAction.action.IsPressed())
+        {
+            CenterOnItem(id, animate: true);
+        }
+    }
+
+    private void OnButtonPointerUp(int id)
+    {
+        Debug.Log("OnButtonPointerUp");
+        _selectedId = id;
         CenterOnItem(id, animate: true);
     }
 
     private void OnIconClicked(int id)
     {
-
         if (id == _selectedId)
         {
             if (DOTween.IsTweening(scrollRect)) { return; }
 
             _onIconSelected?.Invoke(_selectedId);
             Hide();
-            return;
         }
-
-        _selectedId = id;
-        CenterOnItem(id, animate: true);
     }
 
     private void CenterOnItem(int id, bool animate)

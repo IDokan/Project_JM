@@ -10,19 +10,29 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LeaderboardIconSelectNotifier : MonoBehaviour, ISelectHandler
+public class LeaderboardIconSelectNotifier : MonoBehaviour, ISelectHandler, IPointerUpHandler
 {
     private int _id;
-    private Action<int> _callback;
+    private Action<int> _onSelect;
+    private Action<int> _onPointerUp;
 
-    public void Init(int id, Action<int> callback)
+    public void Init(int id, Action<int> onSelect, Action<int> onPointerUp)
     {
         _id = id;
-        _callback = callback;
+        _onSelect = onSelect;
+        _onPointerUp = onPointerUp;
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        _callback?.Invoke(_id);
+        _onSelect?.Invoke(_id);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (!eventData.dragging)
+        {
+            _onPointerUp?.Invoke(_id);
+        }
     }
 }
