@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 149.3, y: 1.13}
+  m_AnchoredPosition: {x: 149.3, y: 0}
   m_SizeDelta: {x: 300, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5100810566647391329
@@ -126,7 +126,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -54.2, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 101.851845, y: 101.851845}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &34877546144486660
 CanvasRenderer:
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8609931220251892044, guid: 176ae06927ab02d4b9d3be5d670cd6ef, type: 3}
+  m_Sprite: {fileID: 2088030352122700922, guid: 90f3e2a010e0b874298c989fa1be83cd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -382,7 +382,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 8777824922998612401, guid: 176ae06927ab02d4b9d3be5d670cd6ef, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5475,7 +5475,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1917351183
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 15
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -5547,7 +5547,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 315.7, y: 0}
-  m_SizeDelta: {x: 136.29633, y: 136.2963}
+  m_SizeDelta: {x: 151.85185, y: 151.85185}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6060274332131711616
 CanvasRenderer:
@@ -5577,7 +5577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8609931220251892044, guid: 176ae06927ab02d4b9d3be5d670cd6ef, type: 3}
+  m_Sprite: {fileID: 934942876842158400, guid: 90f3e2a010e0b874298c989fa1be83cd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5653,7 +5653,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 8777824922998612401, guid: 176ae06927ab02d4b9d3be5d670cd6ef, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5967,8 +5967,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
-  m_SizeDelta: {x: 102.77777, y: 102.77777}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 101.851845, y: 101.851845}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8645418125540571840
 CanvasRenderer:
@@ -11010,7 +11010,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1917351183
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 15
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -11054,7 +11054,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 692286412839544671, guid: 8cbb91729e05c284e85fab884e132050, type: 3}
       propertyPath: m_SortingLayer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 907893981649707846, guid: 8cbb91729e05c284e85fab884e132050, type: 3}
       propertyPath: m_Pivot.x
