@@ -13,7 +13,6 @@ using System.Collections.Generic;
 public class GraphicsMenu : Menu
 {
     [Header("Graphics Modifiers")]
-    [SerializeField] protected Toggle vSyncToggle;
     [SerializeField] protected Toggle fullScreenModeToggle;
     [SerializeField] protected TMP_Dropdown resolutionDropdown;
     [SerializeField] protected ToggleImageBinder fullScreenModeToggleBinder;
@@ -26,7 +25,6 @@ public class GraphicsMenu : Menu
     {
         base.OnEnable();
 
-        vSyncToggle.onValueChanged.AddListener(OnVSyncToggled);
         fullScreenModeToggle.onValueChanged.AddListener(OnFullScreenModeToggled);
         resolutionDropdown.onValueChanged.AddListener(OnResolutionValueChanged);
 
@@ -39,14 +37,8 @@ public class GraphicsMenu : Menu
     {
         base.OnDisable();
 
-        vSyncToggle.onValueChanged.RemoveListener(OnVSyncToggled);
         fullScreenModeToggle.onValueChanged.RemoveListener(OnFullScreenModeToggled);
         resolutionDropdown.onValueChanged.RemoveListener(OnResolutionValueChanged);
-    }
-
-    protected void OnVSyncToggled(bool isOn)
-    {
-        QualitySettings.vSyncCount = isOn ? 1 : 0;
     }
 
     protected void OnFullScreenModeToggled(bool isOn)
@@ -66,7 +58,6 @@ public class GraphicsMenu : Menu
 
     protected void SyncGraphicsWidgets()
     {
-        vSyncToggle.SetIsOnWithoutNotify(QualitySettings.vSyncCount > 0);
         fullScreenModeToggle.SetIsOnWithoutNotify(Screen.fullScreen);
         fullScreenModeToggleBinder.Refresh();
     }
