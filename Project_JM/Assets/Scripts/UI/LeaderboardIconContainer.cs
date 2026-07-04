@@ -20,6 +20,7 @@ public class LeaderboardIconContainer : ScriptableObject
     }
 
     [SerializeField] private List<Entry> entries = new List<Entry>();
+    [SerializeField] private Sprite fallbackSprite;
 
     public Sprite GetSprite(int id)
     {
@@ -31,7 +32,7 @@ public class LeaderboardIconContainer : ScriptableObject
             }
         }
 
-        return null;
+        return fallbackSprite;
     }
 
     public IReadOnlyList<Entry> GetEntries() => entries;

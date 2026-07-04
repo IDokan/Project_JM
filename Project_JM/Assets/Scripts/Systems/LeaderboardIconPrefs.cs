@@ -8,5 +8,5 @@
 public static class LeaderboardIconPrefs
 {
     public static readonly string[] Keys = { "LeaderboardIconId_0", "LeaderboardIconId_1", "LeaderboardIconId_2" };
-    public static readonly int[] Defaults = { 0, 1, 2 };
+    public static readonly int[] Defaults = { 4, 8, 12 };
 }
