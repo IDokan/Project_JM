@@ -94,6 +94,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         if (!isEnemyAttacker && TryGetComponent<EnemyTag>(out _) && attackContext.Tier.HasValue)
         {
             ScoreManager.Instance?.AddDamageScore(calculatedDamage, status.maxHP, attackContext.Tier.Value);
+            attackContext.DamageRecordManager?.RecordDamage(attackContext.Attacker.Colors[0], calculatedDamage);
         }
 
         status.TakeDamage(damage);
