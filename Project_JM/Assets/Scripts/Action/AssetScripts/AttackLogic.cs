@@ -21,6 +21,7 @@ public Vector3 HitTransformOffset;
     public Vector3 GetHitPosition() => HitTransform.position + HitTransformOffset;
 
     public DamageMultiplierManager DamageMultiplierManager;
+    public DamageRecordManager DamageRecordManager;
 
     // Null for enemy attacks; set to the match tier that triggered this ally attack.
     public MatchTier? Tier;
