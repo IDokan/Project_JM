@@ -35,6 +35,7 @@ public class CharacterStatus : MonoBehaviour
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     public string CharacterName { get; }
+    public Sprite Icon => baseData.icon;
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
     // 0 means 0%, 1 means 100%

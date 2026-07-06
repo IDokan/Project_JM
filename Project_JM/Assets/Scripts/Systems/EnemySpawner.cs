@@ -18,6 +18,7 @@ public class EnemySpawner : MonoBehaviour
     protected EnemyBook _enemyBook;
 
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
+    [SerializeField] protected EnemyAlertEventChannel enemyAlertEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
     [SerializeField] protected DifficultyCurvesSelector curvesSelector;
@@ -105,6 +106,10 @@ public class EnemySpawner : MonoBehaviour
         if (phase == TransitionPhase.IntroPartyMoveEnd)
         {
             SpawnNextEnemy();
+        }
+        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            enemyAlertEventChannel.Raise(_enemyBook.PeekNextEnemy());
         }
         else if (phase == TransitionPhase.MiddleEnemySpawnBegin)
         {
