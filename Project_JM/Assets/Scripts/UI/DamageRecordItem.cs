@@ -19,11 +19,7 @@ public class DamageRecordItem : MonoBehaviour
     [SerializeField] protected float fillDuration = 0.6f;
     [SerializeField] protected float startDelay = 0.5f;
 
-    [Header("Icons by Gem Color")]
-    [SerializeField] protected Sprite redIcon;
-    [SerializeField] protected Sprite greenIcon;
-    [SerializeField] protected Sprite blueIcon;
-    [SerializeField] protected Sprite yellowIcon;
+    [SerializeField] protected GemColorIconData gemColorIconData;
 
     protected const float MaxSliderWidth = 2.36f;
     protected const float MinSliderWidth = 0.37f;
@@ -35,7 +31,7 @@ public class DamageRecordItem : MonoBehaviour
     {
         Color tint = color.ConvertGemColor();
 
-        iconImage.sprite = GetIconByColor(color);
+        iconImage.sprite = gemColorIconData.GetIconByColor(color);
         iconImage.SetNativeSize();
         sliderImage.color = tint;
         damageText.color = tint;
@@ -76,17 +72,5 @@ public class DamageRecordItem : MonoBehaviour
         _sliderTween = rectTransform.DOSizeDelta(new Vector2(targetWidth, sizeDelta.y), fillDuration)
             .SetDelay(startDelay)
             .SetEase(Ease.OutCubic);
-    }
-
-    protected Sprite GetIconByColor(GemColor color)
-    {
-        switch (color)
-        {
-            case GemColor.Red: return redIcon;
-            case GemColor.Green: return greenIcon;
-            case GemColor.Blue: return blueIcon;
-            case GemColor.Yellow: return yellowIcon;
-            default: return null;
-        }
     }
 }
