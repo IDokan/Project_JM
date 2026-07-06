@@ -19,6 +19,9 @@ public class EnemyBook : ScriptableObject
     private int _currentGroupIndex;
     private readonly List<int> _remainingInGroup = new List<int>();
 
+    private GameObject _peekedEnemy;
+    private int _peekedIndex = -1;
+
     private void OnEnable()
     {
         _groups = new[] { easyEnemies, mediumEnemies, hardEnemies };
@@ -32,8 +35,38 @@ public class EnemyBook : ScriptableObject
         SkipEmptyGroups();
     }
 
+    // Looks ahead at the next enemy without consuming it, so it can be previewed
+    // before GetNextEnemy() is actually called to spawn it.
+    public GameObject PeekNextEnemy()
+    {
+        if (_peekedEnemy != null)
+        {
+            return _peekedEnemy;
+        }
+
+        if (_remainingInGroup.Count == 0)
+        {
+            AdvanceToNextGroup();
+        }
+
+        _peekedIndex = Random.Range(0, _remainingInGroup.Count);
+        _peekedEnemy = _groups[_currentGroupIndex][_remainingInGroup[_peekedIndex]];
+
+        return _peekedEnemy;
+    }
+
     public GameObject GetNextEnemy()
     {
+        if (_peekedEnemy != null)
+        {
+            GameObject peekedEnemy = _peekedEnemy;
+            _remainingInGroup.RemoveAt(_peekedIndex);
+            _peekedEnemy = null;
+            _peekedIndex = -1;
+
+            return peekedEnemy;
+        }
+
         if (_remainingInGroup.Count == 0)
         {
             AdvanceToNextGroup();
