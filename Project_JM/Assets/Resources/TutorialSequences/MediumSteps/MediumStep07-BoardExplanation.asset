@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afc3bf1c7a57c9045a9ef3fe2f7d9dd6, type: 3}
-  m_Name: MediumStep07-Attack
+  m_Name: MediumStep07-BoardExplanation
   m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
   sprites:
-  - sprite: {fileID: 5849116356487370902, guid: f7ba048bb7ea9af41bf7f7ed0ed99e8e, type: 3}
-    anchoredPosition: {x: 325, y: 200}
-    scale: {x: 5, y: 5}
+  - sprite: {fileID: 821066118, guid: f7ba048bb7ea9af41bf7f7ed0ed99e8e, type: 3}
+    anchoredPosition: {x: 260, y: 70}
+    scale: {x: 1, y: 1}
     showAnim:
       type: 1
       duration: 0.5
@@ -29,11 +29,74 @@ MonoBehaviour:
       offset: {x: 0, y: 0}
       targetValue: 0
     idleAnim:
-      type: 7
+      type: 0
       duration: 0.5
       ease: 16
       offset: {x: 50, y: 0}
       targetValue: 0
+  - sprite: {fileID: -847939508, guid: f7ba048bb7ea9af41bf7f7ed0ed99e8e, type: 3}
+    anchoredPosition: {x: 260, y: 330}
+    scale: {x: 1, y: 1}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 2
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0.5
+      ease: 16
+      offset: {x: 50, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -1182102727, guid: 176ae06927ab02d4b9d3be5d670cd6ef, type: 3}
+    anchoredPosition: {x: 520, y: 330}
+    scale: {x: 1.5, y: 1.5}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 2
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: 1.75
+  - sprite: {fileID: -2473658385531419115, guid: 8af525868080d96429326d8aabe3591d, type: 3}
+    anchoredPosition: {x: 520, y: 70}
+    scale: {x: 1.3, y: 1.3}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 2
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 4
+      duration: 1
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: 1.5
   dialogueSprites:
   - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
     anchoredPosition: {x: 350, y: 150}
