@@ -142,7 +142,8 @@ MonoBehaviour:
   enemyAlertEventChannel: {fileID: 11400000, guid: 294d89add3b4f1d459f082498b94dae8, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   curvesSelector: {fileID: 1610682429086473757}
-  spawnPosition: {x: 12.4, y: -4, z: 0}
+  landscapeSpawnPosition: {x: 12.4, y: -4, z: 0}
+  portraitSpawnPosition: {x: 0, y: 0, z: 0}
   dispatchEventChannelDelay: 1
 --- !u!1 &1389493428556137630
 GameObject:
@@ -679,15 +680,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7421e26d41c59c40aefdc083447f5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefeatedTransitionController
-  transitionManager: {fileID: 0}
+  transitionManager: {fileID: 5839353086084169784}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   partyTransform: {fileID: 0}
-  partyYOffset: -5
   enemySpawnEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
-  enemyArrivalPosition: {x: -14, y: -4, z: 0}
   boardTransform: {fileID: 8115716145221142382}
-  boardArrivalPosition: {x: -1155.58, y: -583, z: 0}
+  landscapeLayoutProfile: {fileID: 11400000, guid: 1ea4d8402c234bfc95ab93cddc09e740, type: 2}
+  portraitLayoutProfile: {fileID: 11400000, guid: f42debd005d343bea5f63010e89ab6e7, type: 2}
   retryMenu: {fileID: 0}
   retryShowDelay: 1
   partyMoveDelay: 1
@@ -936,23 +936,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9dc80b08814df34f86360ab8af8f8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatIntroManager
-  transitionManager: {fileID: 0}
+  transitionManager: {fileID: 5839353086084169784}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   partyTransform: {fileID: 0}
-  partyStartPosition: {x: -13.76, y: -2.69, z: 0}
-  partyArrivalPosition: {x: 3.24, y: -2.69, z: 0}
   boardTransform: {fileID: 8115716145221142382}
-  boardStartPosition: {x: -1155.58, y: -583, z: 0}
-  boardArrivalPosition: {x: -1141.5, y: -583, z: 0}
   uiTransforms:
   - {fileID: 0}
   - {fileID: 0}
-  uiStartPositions:
-  - {x: 0, y: -400, z: 0}
-  - {x: 0, y: 400, z: 0}
-  uiArrivalPositions:
-  - {x: 0, y: -550, z: 0}
-  - {x: 0, y: 550, z: 0}
+  landscapeLayoutProfile: {fileID: 11400000, guid: 1ea4d8402c234bfc95ab93cddc09e740, type: 2}
+  portraitLayoutProfile: {fileID: 11400000, guid: f42debd005d343bea5f63010e89ab6e7, type: 2}
   partyMoveDuration: 5
   boardMoveDelay: 3.5
   boardMoveDuration: 1.5
