@@ -22,16 +22,25 @@ public class EnemyAlertUI : MonoBehaviour
 
     [SerializeField] protected GemColorIconData gemColorIconData;
 
-    [SerializeField] protected float hiddenX = 420f;
-    [SerializeField] protected float shownX = 20f;
+    [SerializeField] protected float landscapeHiddenX = 1400f;
+    [SerializeField] protected float portraitHiddenX = 1000f;
+    [SerializeField] protected float landscapeShownX = 970f;
+    [SerializeField] protected float portraitShownX = 550f;
     [SerializeField] protected float slideDuration = 0.5f;
+
+    protected float _hiddenX;
+    protected float _shownX;
 
     protected Tweener _tween;
 
     protected void Awake()
     {
+        bool isPortrait = Screen.height > Screen.width;
+        _hiddenX = isPortrait ? portraitHiddenX : landscapeHiddenX;
+        _shownX = isPortrait ? portraitShownX : landscapeShownX;
+
         Vector3 localPosition = transform.localPosition;
-        localPosition.x = hiddenX;
+        localPosition.x = _hiddenX;
         transform.localPosition = localPosition;
     }
 
@@ -62,13 +71,13 @@ public class EnemyAlertUI : MonoBehaviour
     protected void ShowAlert()
     {
         _tween?.Kill();
-        _tween = transform.DOLocalMoveX(shownX, slideDuration).SetEase(Ease.OutCubic);
+        _tween = transform.DOLocalMoveX(_shownX, slideDuration).SetEase(Ease.OutCubic);
     }
 
     protected void HideAlert()
     {
         _tween?.Kill();
-        _tween = transform.DOLocalMoveX(hiddenX, slideDuration).SetEase(Ease.InCubic);
+        _tween = transform.DOLocalMoveX(_hiddenX, slideDuration).SetEase(Ease.InCubic);
     }
 
     protected void OnEnemyAlert(GameObject enemyPrefab)
