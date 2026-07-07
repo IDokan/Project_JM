@@ -41,7 +41,9 @@ public class ParallaxLayer : MonoBehaviour
             cameraShake = Camera.main.GetComponent<CameraShake>();
         }
 
-        CacheParallaxOrigin();
+        CameraOrientationSetter cameraOrientationSetter = cameraTransform.GetComponent<CameraOrientationSetter>();
+        Vector3 initialCameraPosition = cameraOrientationSetter != null ? cameraOrientationSetter.OriginalPosition : cameraTransform.position;
+        CacheParallaxOrigin(initialCameraPosition);
     }
 
     void LateUpdate()
@@ -79,14 +81,14 @@ public class ParallaxLayer : MonoBehaviour
 
     public void SetParallaxMode()
     {
-        CacheParallaxOrigin();
+        CacheParallaxOrigin(cameraTransform.position);
         followMode = FollowMode.Parallax;
     }
 
-    protected void CacheParallaxOrigin()
+    protected void CacheParallaxOrigin(Vector3 cameraPosition)
     {
         _startPos = transform.position;
-        _startCamX = cameraTransform.position.x;
-        _startCamY = cameraTransform.position.y;
+        _startCamX = cameraPosition.x;
+        _startCamY = cameraPosition.y;
     }
 }
