@@ -15,6 +15,7 @@ public class ClickVFXSpawner : MonoBehaviour
     [SerializeField] protected RectTransform touchLayer;
 
     [SerializeField] protected GameObject clickVFX;
+    [SerializeField] protected float portraitScaleMultiplier = 3f;
 
     protected GemColor _lastGemColor = GemColor.None;
 
@@ -47,6 +48,15 @@ public class ClickVFXSpawner : MonoBehaviour
     public GameObject SpawnClickVFX(Vector2 screenPosition, GemColor gemColor)
     {
         GameObject result = Instantiate(clickVFX, touchLayer);
+
+        bool isPortrait = Screen.height > Screen.width;
+        if (isPortrait)
+        {
+            foreach (Transform descendant in result.GetComponentsInChildren<Transform>(true))
+            {
+                descendant.localScale *= portraitScaleMultiplier;
+            }
+        }
 
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             touchLayer,
