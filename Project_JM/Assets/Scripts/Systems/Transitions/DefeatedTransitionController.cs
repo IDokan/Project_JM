@@ -20,15 +20,16 @@ public class DefeatedTransitionController : TransitionController
 
     [Header("Party")]
     [SerializeField] protected Transform partyTransform;
-    [SerializeField] protected float partyYOffset = 0;
 
     [Header("Enemy")]
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnEventChannel;
-    [SerializeField] protected Vector3 enemyArrivalPosition;
 
     [Header("Board")]
     [SerializeField] protected Transform boardTransform;
-    [SerializeField] protected Vector3 boardArrivalPosition;
+
+    [Header("Layout Profiles")]
+    [SerializeField] protected CombatLayoutProfileData landscapeLayoutProfile;
+    [SerializeField] protected CombatLayoutProfileData portraitLayoutProfile;
 
     [Header("Retry Menu")]
     [SerializeField] private RetryMenu retryMenu;
@@ -45,12 +46,20 @@ public class DefeatedTransitionController : TransitionController
     Transform enemyTransform = null;
     protected Vector3 _enemyOffsetToCamera;
 
+    protected CombatLayoutProfileData _activeLayoutProfile;
+    protected float _partyYOffsetFromCamera;
+    protected Vector3 _boardArrivalPosition;
+
     protected override void Awake()
     {
         base.Awake();
-        Transform cameraTransform = Camera.main.transform;
-        partyYOffset = partyYOffset - cameraTransform.position.y;
-        _enemyOffsetToCamera = enemyArrivalPosition - cameraTransform.position;
+        _activeLayoutProfile = ResolveActiveLayoutProfile(landscapeLayoutProfile, portraitLayoutProfile);
+        _boardArrivalPosition = _activeLayoutProfile.DefeatedBoardArrivalPosition;
+
+        CameraOrientationSetter cameraOrientationSetter = Camera.main.GetComponent<CameraOrientationSetter>();
+        Vector3 cameraPosition = cameraOrientationSetter != null ? cameraOrientationSetter.OriginalPosition : Camera.main.transform.position;
+        _partyYOffsetFromCamera = _activeLayoutProfile.DefeatedPartyYOffset - cameraPosition.y;
+        _enemyOffsetToCamera = _activeLayoutProfile.DefeatedEnemyArrivalPosition - cameraPosition;
     }
 
     protected void OnEnable()
@@ -93,7 +102,7 @@ public class DefeatedTransitionController : TransitionController
     protected IEnumerator PartyRoutine()
     {
         Vector3 partyStartPosition = partyTransform.position;
-        Vector3 partyArrivalPosition = partyStartPosition + new Vector3(0f, partyYOffset, 0);
+        Vector3 partyArrivalPosition = partyStartPosition + new Vector3(0f, _partyYOffsetFromCamera, 0);
 
         yield return MoveParallaxObject(partyTransform, partyArrivalPosition, partyMoveDelay, partyMoveDuration, TransitionPhase.EndPartyMoveEnd);
     }
@@ -116,11 +125,11 @@ public class DefeatedTransitionController : TransitionController
         while (t < boardMoveDuration)
         {
             t += Time.deltaTime;
-            boardTransform.localPosition = Vector3.Lerp(boardStartPosition, boardArrivalPosition, t / boardMoveDuration);
+            boardTransform.localPosition = Vector3.Lerp(boardStartPosition, _boardArrivalPosition, t / boardMoveDuration);
             yield return null;
         }
 
-        boardTransform.localPosition = boardArrivalPosition;
+        boardTransform.localPosition = _boardArrivalPosition;
 
         transitionEventChannel.Raise(TransitionPhase.EndBoardMoveEnd);
     }
