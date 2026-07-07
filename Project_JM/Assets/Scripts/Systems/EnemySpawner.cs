@@ -23,7 +23,8 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] protected DifficultyCurvesSelector curvesSelector;
 
-    [SerializeField] protected Vector3 spawnPosition;
+    [SerializeField] protected Vector3 landscapeSpawnPosition;
+    [SerializeField] protected Vector3 portraitSpawnPosition;
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
 
     protected Vector3 _spawnOffsetToCamera;
@@ -59,7 +60,12 @@ public class EnemySpawner : MonoBehaviour
             _enemyBook = easyEnemyBook;
         }
 
-        _spawnOffsetToCamera = spawnPosition - Camera.main.transform.position;
+        bool isPortrait = Screen.height > Screen.width;
+        Vector3 spawnPosition = isPortrait ? portraitSpawnPosition : landscapeSpawnPosition;
+
+        CameraOrientationSetter cameraOrientationSetter = Camera.main.GetComponent<CameraOrientationSetter>();
+        Vector3 cameraPosition = cameraOrientationSetter != null ? cameraOrientationSetter.OriginalPosition : Camera.main.transform.position;
+        _spawnOffsetToCamera = spawnPosition - cameraPosition;
     }
 
     protected void Clear()
