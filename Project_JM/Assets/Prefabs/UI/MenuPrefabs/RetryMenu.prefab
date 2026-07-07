@@ -675,6 +675,7 @@ GameObject:
   - component: {fileID: 3942192021935277184}
   - component: {fileID: 8116361893462047488}
   - component: {fileID: 9097820347957802046}
+  - component: {fileID: 5473643898169267187}
   m_Layer: 5
   m_Name: RetryMenu
   m_TagString: Untagged
@@ -761,6 +762,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &5473643898169267187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5580724592346678818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126bc64bdd8f28240bbea9635fd24f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
+  landscapeAnchoredPosition: {x: 0, y: 0}
+  portraitAnchoredPosition: {x: 0, y: -350}
 --- !u!1 &5876436657841923857
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,6 +2650,18 @@ PrefabInstance:
     - target: {fileID: 80714431231417288, guid: 1bcdb6a042a839043bb8fafa5cb259d7, type: 3}
       propertyPath: m_Size
       value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138177888057547219, guid: 1bcdb6a042a839043bb8fafa5cb259d7, type: 3}
+      propertyPath: portraitAnchoredPosition.x
+      value: -80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138177888057547219, guid: 1bcdb6a042a839043bb8fafa5cb259d7, type: 3}
+      propertyPath: portraitAnchoredPosition.y
+      value: -400
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138177888057547219, guid: 1bcdb6a042a839043bb8fafa5cb259d7, type: 3}
+      propertyPath: landscapeAnchoredPosition.y
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 1745368375052084241, guid: 1bcdb6a042a839043bb8fafa5cb259d7, type: 3}
       propertyPath: m_Name

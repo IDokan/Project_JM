@@ -3148,6 +3148,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1410043820738014121, guid: afd885cf05adb2347acf660859eaa075, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1178742447810375012}
+    - targetCorrespondingSourceObject: {fileID: 1410043820738014121, guid: afd885cf05adb2347acf660859eaa075, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7099863523831396240}
   m_SourcePrefab: {fileID: 100100000, guid: afd885cf05adb2347acf660859eaa075, type: 3}
 --- !u!114 &1867735823326868157 stripped
 MonoBehaviour:
@@ -3187,6 +3190,20 @@ MonoBehaviour:
   audioSettingButton: {fileID: 5689616339535045678}
   graphicsMenu: {fileID: 2076948770133093115}
   audioMenu: {fileID: 2036369794490560073}
+--- !u!114 &7099863523831396240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4309255651934712371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126bc64bdd8f28240bbea9635fd24f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
+  landscapeAnchoredPosition: {x: 0, y: 0}
+  portraitAnchoredPosition: {x: 0, y: -500}
 --- !u!114 &4762551215003580800 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7659230252511518746, guid: afd885cf05adb2347acf660859eaa075, type: 3}

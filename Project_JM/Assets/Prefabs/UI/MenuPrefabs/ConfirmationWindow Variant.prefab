@@ -606,6 +606,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1410043820738014121, guid: afd885cf05adb2347acf660859eaa075, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7797161967513171332}
+    - targetCorrespondingSourceObject: {fileID: 1410043820738014121, guid: afd885cf05adb2347acf660859eaa075, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7173446471657849144}
   m_SourcePrefab: {fileID: 100100000, guid: afd885cf05adb2347acf660859eaa075, type: 3}
 --- !u!224 &1473067811911564816 stripped
 RectTransform:
@@ -671,6 +674,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7173446471657849144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4892493859145237160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126bc64bdd8f28240bbea9635fd24f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
+  landscapeAnchoredPosition: {x: 0, y: 0}
+  portraitAnchoredPosition: {x: 0, y: 0}
 --- !u!1001 &5946237231270949256
 PrefabInstance:
   m_ObjectHideFlags: 0
