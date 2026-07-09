@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 3277895668499468452}
   - component: {fileID: 2174272087045421457}
   - component: {fileID: 3365986187756035215}
+  - component: {fileID: 7195085815412915266}
   m_Layer: 0
   m_Name: EnemyAlertUI
   m_TagString: Untagged
@@ -324,9 +325,25 @@ MonoBehaviour:
   advantageIconA: {fileID: 2358831093528972651}
   advantageIconB: {fileID: 4525648126843153032}
   gemColorIconData: {fileID: 11400000, guid: 792b56a9d3ff1a743b0e0ce5e2a8c9a9, type: 2}
-  hiddenX: 1870
-  shownX: 970
+  landscapeHiddenX: 1400
+  portraitHiddenX: 1000
+  landscapeShownX: 970
+  portraitShownX: 550
   slideDuration: 0.5
+--- !u!114 &7195085815412915266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2957997588720268255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126bc64bdd8f28240bbea9635fd24f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
+  landscapeAnchoredPosition: {x: 1400, y: 210}
+  portraitAnchoredPosition: {x: 1000, y: 620}
 --- !u!1 &4438353456147164400
 GameObject:
   m_ObjectHideFlags: 0
