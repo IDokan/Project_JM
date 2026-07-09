@@ -27,17 +27,20 @@ public class DamageRecordUIManager : MonoBehaviour
     protected float _hiddenX;
     protected float _shownX;
 
+    protected RectTransform _rectTransform;
     protected Tweener _tween;
 
     protected void Awake()
     {
+        _rectTransform = GetComponent<RectTransform>();
+
         bool isPortrait = Screen.height > Screen.width;
         _hiddenX = isPortrait ? portraitHiddenX : landscapeHiddenX;
         _shownX = isPortrait ? portraitShownX : landscapeShownX;
 
-        Vector3 localPosition = transform.localPosition;
-        localPosition.x = _hiddenX;
-        transform.localPosition = localPosition;
+        Vector2 anchoredPosition = _rectTransform.anchoredPosition;
+        anchoredPosition.x = _hiddenX;
+        _rectTransform.anchoredPosition = anchoredPosition;
     }
 
     protected void OnEnable()
@@ -76,12 +79,12 @@ public class DamageRecordUIManager : MonoBehaviour
         }
 
         _tween?.Kill();
-        _tween = transform.DOLocalMoveX(_shownX, slideDuration).SetEase(Ease.OutCubic);
+        _tween = _rectTransform.DOAnchorPosX(_shownX, slideDuration).SetEase(Ease.OutCubic);
     }
 
     protected void HideRecords()
     {
         _tween?.Kill();
-        _tween = transform.DOLocalMoveX(_hiddenX, slideDuration).SetEase(Ease.InCubic);
+        _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic);
     }
 }

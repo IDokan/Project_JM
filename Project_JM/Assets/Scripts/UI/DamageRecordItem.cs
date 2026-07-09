@@ -21,8 +21,8 @@ public class DamageRecordItem : MonoBehaviour
 
     [SerializeField] protected GemColorIconData gemColorIconData;
 
-    protected const float MaxSliderWidth = 2.36f;
-    protected const float MinSliderWidth = 0.37f;
+    protected const float MaxSliderWidth = 236f;
+    protected const float MinSliderWidth = 37f;
 
     protected Tweener _sliderTween;
     protected Tweener _damageTween;
