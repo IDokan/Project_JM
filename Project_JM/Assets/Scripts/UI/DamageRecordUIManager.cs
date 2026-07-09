@@ -28,11 +28,13 @@ public class DamageRecordUIManager : MonoBehaviour
     protected float _shownX;
 
     protected RectTransform _rectTransform;
+    protected CanvasGroup _canvasGroup;
     protected Tweener _tween;
 
     protected void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+        _canvasGroup = GetComponent<CanvasGroup>();
 
         bool isPortrait = Screen.height > Screen.width;
         _hiddenX = isPortrait ? portraitHiddenX : landscapeHiddenX;
@@ -41,6 +43,8 @@ public class DamageRecordUIManager : MonoBehaviour
         Vector2 anchoredPosition = _rectTransform.anchoredPosition;
         anchoredPosition.x = _hiddenX;
         _rectTransform.anchoredPosition = anchoredPosition;
+
+        _canvasGroup.alpha = 0;
     }
 
     protected void OnEnable()
@@ -80,11 +84,14 @@ public class DamageRecordUIManager : MonoBehaviour
 
         _tween?.Kill();
         _tween = _rectTransform.DOAnchorPosX(_shownX, slideDuration).SetEase(Ease.OutCubic);
+
+        _canvasGroup.alpha = 1;
     }
 
     protected void HideRecords()
     {
         _tween?.Kill();
-        _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic);
+        _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic)
+            .OnComplete(() => _canvasGroup.alpha = 0);
     }
 }
