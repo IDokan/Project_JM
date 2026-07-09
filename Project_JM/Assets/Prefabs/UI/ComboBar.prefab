@@ -6059,6 +6059,7 @@ GameObject:
   - component: {fileID: 8680972237953726241}
   - component: {fileID: 2643368397486207608}
   - component: {fileID: 6068239254279764241}
+  - component: {fileID: 6224022452825778870}
   m_Layer: 5
   m_Name: ComboBar
   m_TagString: Untagged
@@ -6146,6 +6147,22 @@ MonoBehaviour:
   - {fileID: 7330197057451624720}
   - {fileID: 6532388121465647303}
   buffParticle: {fileID: 7726976040841915700}
+--- !u!114 &6224022452825778870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096662346950180759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c8b62503195ef4a8bb002d13fd4cdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationAnchor
+  landscapeAnchorMin: {x: 0, y: 0}
+  landscapeAnchorMax: {x: 0, y: 0}
+  portraitAnchorMin: {x: 0, y: 0.5}
+  portraitAnchorMax: {x: 0, y: 0.5}
 --- !u!1 &6528686492374626505
 GameObject:
   m_ObjectHideFlags: 0

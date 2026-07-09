@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 3092949153283241385}
   - component: {fileID: 3575660421060745512}
   - component: {fileID: 2204908039206265715}
+  - component: {fileID: 7925185746624189913}
   m_Layer: 5
   m_Name: AttackTimerUI
   m_TagString: Untagged
@@ -258,6 +259,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackTimerUI
   slowParticles: {fileID: 4522072904072286075}
+--- !u!114 &7925185746624189913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4821726216163003886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c8b62503195ef4a8bb002d13fd4cdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationAnchor
+  landscapeAnchorMin: {x: 1, y: 0}
+  landscapeAnchorMax: {x: 1, y: 0}
+  portraitAnchorMin: {x: 1, y: 0.5}
+  portraitAnchorMax: {x: 1, y: 0.5}
 --- !u!1 &4954338117272778075
 GameObject:
   m_ObjectHideFlags: 0
