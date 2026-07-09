@@ -18,16 +18,25 @@ public class DamageRecordUIManager : MonoBehaviour
     [SerializeField] protected DamageRecordManager damageRecordManager;
     [SerializeField] protected DamageRecordItem[] items;
 
-    [SerializeField] protected float hiddenX = -5.9f;
-    [SerializeField] protected float shownX = -1.9f;
+    [SerializeField] protected float landscapeHiddenX = -5.9f;
+    [SerializeField] protected float portraitHiddenX = -5.9f;
+    [SerializeField] protected float landscapeShownX = -1.9f;
+    [SerializeField] protected float portraitShownX = -1.9f;
     [SerializeField] protected float slideDuration = 0.5f;
+
+    protected float _hiddenX;
+    protected float _shownX;
 
     protected Tweener _tween;
 
     protected void Awake()
     {
+        bool isPortrait = Screen.height > Screen.width;
+        _hiddenX = isPortrait ? portraitHiddenX : landscapeHiddenX;
+        _shownX = isPortrait ? portraitShownX : landscapeShownX;
+
         Vector3 localPosition = transform.localPosition;
-        localPosition.x = hiddenX;
+        localPosition.x = _hiddenX;
         transform.localPosition = localPosition;
     }
 
@@ -67,12 +76,12 @@ public class DamageRecordUIManager : MonoBehaviour
         }
 
         _tween?.Kill();
-        _tween = transform.DOLocalMoveX(shownX, slideDuration).SetEase(Ease.OutCubic);
+        _tween = transform.DOLocalMoveX(_shownX, slideDuration).SetEase(Ease.OutCubic);
     }
 
     protected void HideRecords()
     {
         _tween?.Kill();
-        _tween = transform.DOLocalMoveX(hiddenX, slideDuration).SetEase(Ease.InCubic);
+        _tween = transform.DOLocalMoveX(_hiddenX, slideDuration).SetEase(Ease.InCubic);
     }
 }
