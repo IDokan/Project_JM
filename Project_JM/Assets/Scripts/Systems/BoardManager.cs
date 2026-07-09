@@ -54,6 +54,7 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected BoardAudioPlayer boardAudioPlayer;
 
     protected BoardCoverController _boardCoverController;
+    protected SpriteMask _boardMask;
 
 
 
@@ -173,6 +174,21 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     {
         _boardCoverController = GetComponent<BoardCoverController>();
         _boardCoverController.SetBoardSizeData(rows, cols, cellSize, spacing);
+
+        _boardMask = GetComponentInChildren<SpriteMask>();
+    }
+
+    public void SetGemsVisible(bool visible)
+    {
+        if (_boardMask == null)
+        {
+            _boardMask = GetComponentInChildren<SpriteMask>();
+        }
+
+        if (_boardMask != null)
+        {
+            _boardMask.enabled = visible;
+        }
     }
 
     // Update is called once per frame
