@@ -53,10 +53,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     [SerializeField] protected float hintDelay = 4f;
     [SerializeField] protected BoardAudioPlayer boardAudioPlayer;
 
-    [Header("Orientation Scale")]
-    [SerializeField] protected Vector3 landscapeScale = new Vector3(0.8f, 0.8f, 1f);
-    [SerializeField] protected Vector3 portraitScale = new Vector3(1f, 1f, 1f);
-
     protected BoardCoverController _boardCoverController;
 
 
@@ -183,12 +179,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     void Update()
     {
 
-    }
-
-    void Awake()
-    {
-        bool isPortrait = Screen.height > Screen.width;
-        transform.localScale = isPortrait ? portraitScale : landscapeScale;
     }
 
     // A function that resolve matches only when board initially generated.
