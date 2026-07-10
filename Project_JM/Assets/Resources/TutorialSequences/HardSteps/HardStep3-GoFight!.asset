@@ -14,8 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InputTutorialStep
   sprites:
   - sprite: {fileID: 5849116356487370902, guid: f7ba048bb7ea9af41bf7f7ed0ed99e8e, type: 3}
-    anchoredPosition: {x: -450, y: 230}
-    scale: {x: 6, y: 6}
+    landscapeAnchoredPosition: {x: -450, y: 230}
+    landscapeScale: {x: 6, y: 6}
+    portraitAnchoredPosition: {x: 450, y: -220}
+    portraitScale: {x: 6, y: 6}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 0, y: 0.5}
+    portraitAnchorMax: {x: 0, y: 0.5}
     showAnim:
       type: 1
       duration: 0.5
@@ -36,8 +42,14 @@ MonoBehaviour:
       targetValue: 0
   dialogueSprites:
   - sprite: {fileID: 3256701192813762039, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
-    anchoredPosition: {x: -350, y: 180}
-    scale: {x: 3.5, y: 3.5}
+    landscapeAnchoredPosition: {x: -350, y: 180}
+    landscapeScale: {x: 3.5, y: 3.5}
+    portraitAnchoredPosition: {x: 550, y: -270}
+    portraitScale: {x: 3.5, y: 3.5}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 0, y: 0.5}
+    portraitAnchorMax: {x: 0, y: 0.5}
     showAnim:
       type: 1
       duration: 0.5
@@ -57,8 +69,14 @@ MonoBehaviour:
       offset: {x: 0, y: 0}
       targetValue: 0
   - sprite: {fileID: 668119158643392202, guid: 51278c7f5b61e9b43b7f7d56541655fc, type: 3}
-    anchoredPosition: {x: -840, y: -250}
-    scale: {x: 1.5, y: 1.5}
+    landscapeAnchoredPosition: {x: -840, y: -250}
+    landscapeScale: {x: 1.5, y: 1.5}
+    portraitAnchoredPosition: {x: 180, y: -657}
+    portraitScale: {x: 1.5, y: 1.5}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 0, y: 0.5}
+    portraitAnchorMax: {x: 0, y: 0.5}
     showAnim:
       type: 2
       duration: 0.5
@@ -72,9 +90,10 @@ MonoBehaviour:
       offset: {x: -450, y: 0}
       targetValue: 0
     idleAnim:
-      type: 7
-      duration: 0.5
-      ease: 13
-      offset: {x: 100, y: 0}
-      targetValue: 0
-  brightZoneIndex: -1
+      type: 6
+      duration: 3
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
+  landscapeBrightZoneIndex: -1
+  portraitBrightZoneIndex: -1
