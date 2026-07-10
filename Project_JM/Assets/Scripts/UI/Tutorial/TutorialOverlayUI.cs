@@ -352,6 +352,12 @@ public class TutorialOverlayUI : MonoBehaviour
     public void SetBrightZoneImmediate(int index)
     {
         RectTransform zone = (index >= 0 && index < brightZones.Count) ? brightZones[index] : null;
+
+        if (zone != null && zone.TryGetComponent(out TutorialWorldTargetPositioner positioner))
+        {
+            positioner.SyncToWorldTarget();
+        }
+
         if (zone == _brightZone)
         {
             return;
