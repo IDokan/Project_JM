@@ -7,15 +7,18 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class TutorialStepData : ScriptableObject
 {
     [SerializeField] private List<TutorialSpriteEntry> sprites = new();
     [SerializeField] private List<TutorialSpriteEntry> dialogueSprites = new();
-    [SerializeField] private int brightZoneIndex = -1;
+    [FormerlySerializedAs("brightZoneIndex")]
+    [SerializeField] private int landscapeBrightZoneIndex = -1;
+    [SerializeField] private int portraitBrightZoneIndex = -1;
 
     public IReadOnlyList<TutorialSpriteEntry> Sprites => sprites;
     public IReadOnlyList<TutorialSpriteEntry> DialogueSprites => dialogueSprites;
-    // -1 means no bright zone (full dark backdrop); >= 0 indexes TutorialManager.brightZones
-    public int BrightZoneIndex => brightZoneIndex;
+    // -1 means no bright zone (full dark backdrop); >= 0 indexes TutorialOverlayUI.brightZones
+    public int BrightZoneIndex => Screen.height > Screen.width ? portraitBrightZoneIndex : landscapeBrightZoneIndex;
 }

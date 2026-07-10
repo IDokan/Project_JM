@@ -533,8 +533,10 @@ public class TutorialOverlayUI : MonoBehaviour
         img.raycastTarget = false;
 
         RectTransform rt = img.rectTransform;
-        rt.anchoredPosition = entry.anchoredPosition;
-        rt.localScale = new Vector3(entry.scale.x, entry.scale.y, 1f);
+        rt.anchorMin = entry.AnchorMin;
+        rt.anchorMax = entry.AnchorMax;
+        rt.anchoredPosition = entry.AnchoredPosition;
+        rt.localScale = new Vector3(entry.Scale.x, entry.Scale.y, 1f);
 
         return img;
     }
@@ -549,12 +551,12 @@ public class TutorialOverlayUI : MonoBehaviour
                 return img.DOFade(1f, anim.duration).SetEase(anim.ease);
 
             case TutorialAnimType.SlideFrom:
-                img.rectTransform.anchoredPosition = entry.anchoredPosition + anim.offset;
-                return img.rectTransform.DOAnchorPos(entry.anchoredPosition, anim.duration).SetEase(anim.ease);
+                img.rectTransform.anchoredPosition = entry.AnchoredPosition + anim.offset;
+                return img.rectTransform.DOAnchorPos(entry.AnchoredPosition, anim.duration).SetEase(anim.ease);
 
             case TutorialAnimType.Scale:
                 img.rectTransform.localScale = new Vector3(anim.targetValue, anim.targetValue, 1f);
-                return img.rectTransform.DOScale(new Vector3(entry.scale.x, entry.scale.y, 1f), anim.duration).SetEase(anim.ease);
+                return img.rectTransform.DOScale(new Vector3(entry.Scale.x, entry.Scale.y, 1f), anim.duration).SetEase(anim.ease);
 
             default:
                 return null;
@@ -570,7 +572,7 @@ public class TutorialOverlayUI : MonoBehaviour
                 return img.DOFade(0f, anim.duration).SetEase(anim.ease);
 
             case TutorialAnimType.SlideFrom:
-                return img.rectTransform.DOAnchorPos(entry.anchoredPosition + anim.offset, anim.duration).SetEase(anim.ease);
+                return img.rectTransform.DOAnchorPos(entry.AnchoredPosition + anim.offset, anim.duration).SetEase(anim.ease);
 
             case TutorialAnimType.Scale:
                 return img.rectTransform.DOScale(anim.targetValue, anim.duration).SetEase(anim.ease);
@@ -608,7 +610,7 @@ public class TutorialOverlayUI : MonoBehaviour
 
             case TutorialAnimType.PingPongSlide:
                 return img.rectTransform
-                    .DOAnchorPos(entry.anchoredPosition + anim.offset, anim.duration)
+                    .DOAnchorPos(entry.AnchoredPosition + anim.offset, anim.duration)
                     .SetEase(anim.ease)
                     .SetLoops(-1, LoopType.Yoyo)
                     .SetUpdate(true);
@@ -620,8 +622,10 @@ public class TutorialOverlayUI : MonoBehaviour
 
     private void ResetImageToEntry(Image img, TutorialSpriteEntry entry)
     {
-        img.rectTransform.anchoredPosition = entry.anchoredPosition;
-        img.rectTransform.localScale = new Vector3(entry.scale.x, entry.scale.y, 1f);
+        img.rectTransform.anchorMin = entry.AnchorMin;
+        img.rectTransform.anchorMax = entry.AnchorMax;
+        img.rectTransform.anchoredPosition = entry.AnchoredPosition;
+        img.rectTransform.localScale = new Vector3(entry.Scale.x, entry.Scale.y, 1f);
         img.rectTransform.localRotation = Quaternion.identity;
         img.color = new Color(img.color.r, img.color.g, img.color.b, 1f);
     }
