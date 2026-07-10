@@ -14,8 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardActionTutorialStep
   sprites:
   - sprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
-    anchoredPosition: {x: 140, y: 270}
-    scale: {x: 0.3, y: 0.3}
+    landscapeAnchoredPosition: {x: 140, y: 270}
+    landscapeScale: {x: 0.3, y: 0.3}
+    portraitAnchoredPosition: {x: -580, y: 270}
+    portraitScale: {x: 0.3, y: 0.3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
     showAnim:
       type: 1
       duration: 0.5
@@ -35,8 +41,14 @@ MonoBehaviour:
       offset: {x: 0, y: 0}
       targetValue: 0
   - sprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
-    anchoredPosition: {x: 340, y: 270}
-    scale: {x: 0.3, y: 0.3}
+    landscapeAnchoredPosition: {x: 340, y: 270}
+    landscapeScale: {x: 0.3, y: 0.3}
+    portraitAnchoredPosition: {x: -380, y: 270}
+    portraitScale: {x: 0.3, y: 0.3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
     showAnim:
       type: 1
       duration: 0.5
@@ -56,8 +68,14 @@ MonoBehaviour:
       offset: {x: 0, y: 0}
       targetValue: 0
   - sprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
-    anchoredPosition: {x: 540, y: 120}
-    scale: {x: 0.3, y: 0.3}
+    landscapeAnchoredPosition: {x: 540, y: 120}
+    landscapeScale: {x: 0.3, y: 0.3}
+    portraitAnchoredPosition: {x: -180, y: 120}
+    portraitScale: {x: 0.3, y: 0.3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
     showAnim:
       type: 1
       duration: 0.5
@@ -77,8 +95,14 @@ MonoBehaviour:
       offset: {x: 0, y: 150}
       targetValue: 0
   - sprite: {fileID: -2674858682100670668, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
-    anchoredPosition: {x: -310, y: -266}
-    scale: {x: 3, y: 3}
+    landscapeAnchoredPosition: {x: -310, y: -266}
+    landscapeScale: {x: 3, y: 3}
+    portraitAnchoredPosition: {x: 5000, y: 5000}
+    portraitScale: {x: 3, y: 3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 0.5, y: 0}
+    portraitAnchorMax: {x: 0.5, y: 0}
     showAnim:
       type: 1
       duration: 0.5
@@ -98,8 +122,14 @@ MonoBehaviour:
       offset: {x: 57, y: -74}
       targetValue: 0
   - sprite: {fileID: 3611696372693441181, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
-    anchoredPosition: {x: 610, y: 50}
-    scale: {x: 1.5, y: 1.5}
+    landscapeAnchoredPosition: {x: 610, y: 50}
+    landscapeScale: {x: 1.5, y: 1.5}
+    portraitAnchoredPosition: {x: -110, y: 50}
+    portraitScale: {x: 1.5, y: 1.5}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
     showAnim:
       type: 1
       duration: 0.5
@@ -120,8 +150,14 @@ MonoBehaviour:
       targetValue: 0
   dialogueSprites:
   - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
-    anchoredPosition: {x: 350, y: 150}
-    scale: {x: 3.8, y: 3.8}
+    landscapeAnchoredPosition: {x: 350, y: 150}
+    landscapeScale: {x: 3.8, y: 3.8}
+    portraitAnchoredPosition: {x: -370, y: 150}
+    portraitScale: {x: 3.8, y: 3.8}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
     showAnim:
       type: 1
       duration: 0.5
@@ -141,19 +177,25 @@ MonoBehaviour:
       offset: {x: 0, y: 0}
       targetValue: 0
   - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
-    anchoredPosition: {x: 630, y: -370}
-    scale: {x: 1.5, y: 1.5}
+    landscapeAnchoredPosition: {x: 630, y: -370}
+    landscapeScale: {x: 1.5, y: 1.5}
+    portraitAnchoredPosition: {x: -80, y: -290}
+    portraitScale: {x: 1.5, y: 1.5}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
     showAnim:
       type: 2
       duration: 0.5
       ease: 27
-      offset: {x: 0, y: 0}
+      offset: {x: 600, y: 0}
       targetValue: 0
     hideAnim:
       type: 2
       duration: 0.5
       ease: 27
-      offset: {x: 0, y: -600}
+      offset: {x: 600, y: 0}
       targetValue: 0
     idleAnim:
       type: 6
@@ -161,5 +203,6 @@ MonoBehaviour:
       ease: 4
       offset: {x: 0, y: 0}
       targetValue: -10
-  brightZoneIndex: 0
+  landscapeBrightZoneIndex: 0
+  portraitBrightZoneIndex: 5
   highlightedCell: {x: 1, y: 5}
