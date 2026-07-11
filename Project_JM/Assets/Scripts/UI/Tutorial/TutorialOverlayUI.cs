@@ -14,6 +14,7 @@ using UnityEngine.UI;
 public class TutorialOverlayUI : MonoBehaviour
 {
     [SerializeField] private RectTransform container;
+    [SerializeField] private RectTransform fullScreenRoot;
     private RectTransform _brightZone;
     [SerializeField] private List<RectTransform> brightZones;
     [SerializeField] private Image highlightImage;
@@ -470,7 +471,7 @@ public class TutorialOverlayUI : MonoBehaviour
             return;
         }
 
-        GetNormalizedBoundsInParent(_brightZone, container, out Vector2 nMin, out Vector2 nMax);
+        GetNormalizedBoundsInParent(_brightZone, fullScreenRoot, out Vector2 nMin, out Vector2 nMax);
 
         TryAddBackdropPanel(color, new Vector2(0f, nMax.y), new Vector2(1f, 1f));          // top
         TryAddBackdropPanel(color, new Vector2(0f, 0f),     new Vector2(1f, nMin.y));       // bottom
@@ -498,7 +499,7 @@ public class TutorialOverlayUI : MonoBehaviour
     private Image CreateBackdropPanel(Color color)
     {
         GameObject go = new GameObject("BackdropPanel");
-        go.transform.SetParent(container, false);
+        go.transform.SetParent(fullScreenRoot, false);
         go.transform.SetAsFirstSibling();
         Image img = go.AddComponent<Image>();
         img.color = color;

@@ -32,6 +32,9 @@ public class GlobalTimeManager : MonoBehaviour
     protected bool _isPaused = false;
     private bool _isTutorialFrozen = false;
 
+    public bool IsPaused => _isPaused;
+    public bool IsTutorialFrozen => _isTutorialFrozen;
+
     public static IEnumerator WaitForGlobalSeconds(float seconds)
     {
         float elapsed = 0f;
