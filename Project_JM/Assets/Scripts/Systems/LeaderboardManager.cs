@@ -2,7 +2,7 @@
 // Copyright (c) 22/06/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: LeaderboardManager.cs
-// Summary: Submits the player's end-of-run score to Firestore on Challenge difficulty or above.
+// Summary: Submits the player's end-of-run score to Firestore for any difficulty.
 //          Schema: one document per qualifying score entry (docId tracked locally).
 //          Three-layer offline resilience: Firestore persistence, sign-in retry before submit,
 //          and PlayerPrefs queue for first-ever offline launch (supports multiple pending scores).
@@ -20,7 +20,6 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using Firebase.Firestore;
-using TutorialEnums;
 using UnityEngine;
 
 public struct LeaderboardEntry
@@ -149,11 +148,6 @@ public class LeaderboardManager : MonoBehaviour
 
     public void SubmitScore(int score, int icon0, int icon1, int icon2)
     {
-        if (SaveDataManager.Instance.Progress < TutorialProgress.Challenge)
-        {
-            return;
-        }
-
         if (!_isReady)
         {
             TrySignIn(

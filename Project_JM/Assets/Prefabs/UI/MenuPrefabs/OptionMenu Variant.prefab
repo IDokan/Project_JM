@@ -3732,7 +3732,7 @@ PrefabInstance:
     - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1467950078340969770}
+      objectReference: {fileID: 5689616339535045678}
     - target: {fileID: 298600616816782432, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_SpriteState.m_DisabledSprite
       value: 
@@ -3862,6 +3862,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GraphicsButton
       objectReference: {fileID: 0}
+    - target: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4501502360705920532, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
       propertyPath: m_SizeDelta.x
       value: 129.62962
@@ -3973,7 +3977,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2954032114408169683}
+    - targetCorrespondingSourceObject: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1307432325557045019}
   m_SourcePrefab: {fileID: 100100000, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
 --- !u!224 &939241495657511740 stripped
 RectTransform:
@@ -3985,12 +3995,41 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5870633689261976348, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
   m_PrefabInstance: {fileID: 4983121855698411062}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6996375343212708574}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!1 &6996375343212708574 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+  m_PrefabInstance: {fileID: 4983121855698411062}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &2954032114408169683
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6996375343212708574}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &1307432325557045019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6996375343212708574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef5e64c26d03144caa5e9cbba63c4ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationVisibility
 --- !u!1001 &5315557587562018500
 PrefabInstance:
   m_ObjectHideFlags: 0

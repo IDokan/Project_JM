@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5780923409046654367}
   - component: {fileID: 7003953728488629489}
+  - component: {fileID: 8316320704471705130}
+  - component: {fileID: 1951363617135257910}
   m_Layer: 5
   m_Name: MainMenuUI
   m_TagString: Untagged
@@ -54,6 +56,36 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &8316320704471705130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507354582048836393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c49b7b6a330ca4385cc4c0f010fbf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CanvasScalerOrientationSetter
+  canvasScalers:
+  - {fileID: 0}
+  landscapeReferenceResolution: {x: 1920, y: 1080}
+  portraitReferenceResolution: {x: 1080, y: 1920}
+  landscapeMatchWidthOrHeight: 0
+  portraitMatchWidthOrHeight: 0
+--- !u!114 &1951363617135257910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507354582048836393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e120dce370a77d4ea74e1bd5cecc72d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SafeAreaFitter
 --- !u!1 &8701307073596032668
 GameObject:
   m_ObjectHideFlags: 0

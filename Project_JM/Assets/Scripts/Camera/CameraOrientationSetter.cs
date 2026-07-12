@@ -11,9 +11,9 @@ public class CameraOrientationSetter : MonoBehaviour
 {
     [SerializeField] protected Camera targetCamera;
     [SerializeField] protected float landscapeOrthographicSize = 5f;
-    [SerializeField] protected float portraitOrthographicSize = 5f;
-    [SerializeField] protected Vector3 landscapeCameraPosition;
-    [SerializeField] protected Vector3 portraitCameraPosition;
+    [SerializeField] protected float portraitOrthographicSize = 9f;
+    [SerializeField] protected Vector3 landscapeCameraPosition = new Vector3(0f, 0f, -50f);
+    [SerializeField] protected Vector3 portraitCameraPosition = new Vector3(0f, -4.2f, -50f);
 
     protected static bool IsPortrait => Screen.height > Screen.width;
 

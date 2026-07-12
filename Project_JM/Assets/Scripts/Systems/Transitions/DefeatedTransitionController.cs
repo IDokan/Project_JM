@@ -47,7 +47,7 @@ public class DefeatedTransitionController : TransitionController
     protected Vector3 _enemyOffsetToCamera;
 
     protected CombatLayoutProfileData _activeLayoutProfile;
-    protected float _partyYOffsetFromCamera;
+    protected float _partyYOffset;
     protected Vector3 _boardArrivalPosition;
 
     protected override void Awake()
@@ -58,7 +58,7 @@ public class DefeatedTransitionController : TransitionController
 
         CameraOrientationSetter cameraOrientationSetter = Camera.main.GetComponent<CameraOrientationSetter>();
         Vector3 cameraPosition = cameraOrientationSetter != null ? cameraOrientationSetter.OriginalPosition : Camera.main.transform.position;
-        _partyYOffsetFromCamera = _activeLayoutProfile.DefeatedPartyYOffset - cameraPosition.y;
+        _partyYOffset = _activeLayoutProfile.DefeatedPartyYOffset;
         _enemyOffsetToCamera = _activeLayoutProfile.DefeatedEnemyArrivalPosition - cameraPosition;
     }
 
@@ -102,7 +102,7 @@ public class DefeatedTransitionController : TransitionController
     protected IEnumerator PartyRoutine()
     {
         Vector3 partyStartPosition = partyTransform.position;
-        Vector3 partyArrivalPosition = partyStartPosition + new Vector3(0f, _partyYOffsetFromCamera, 0);
+        Vector3 partyArrivalPosition = partyStartPosition + new Vector3(0f, _partyYOffset, 0);
 
         yield return MoveParallaxObject(partyTransform, partyArrivalPosition, partyMoveDelay, partyMoveDuration, TransitionPhase.EndPartyMoveEnd);
     }
