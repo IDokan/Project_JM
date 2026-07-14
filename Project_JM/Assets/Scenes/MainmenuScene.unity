@@ -119,6 +119,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &4104465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4104467}
+  - component: {fileID: 4104466}
+  m_Layer: 0
+  m_Name: AndroidFrameRateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &4104466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4104465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d883b5b15488fca4cb279aced0d9d8ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FrameRateManager
+  mobileTargetFrameRate: 60
+--- !u!4 &4104467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4104465}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.3186, y: -3.22785, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &10802297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,7 +542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
   landscapeAnchoredPosition: {x: 90.75504, y: -107.6024}
-  portraitAnchoredPosition: {x: 90.75504, y: 432.3976}
+  portraitAnchoredPosition: {x: 0, y: 600}
 --- !u!114 &994116889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,18 +1462,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6592752652015900502, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6592752652015900502, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6592752652015900502, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 432.39755
-      objectReference: {fileID: 0}
     - target: {fileID: 6970572030738745872, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: style
       value: 
@@ -1719,3 +1752,4 @@ SceneRoots:
   - {fileID: 383901388}
   - {fileID: 654809401}
   - {fileID: 3536578076266945777}
+  - {fileID: 4104467}
