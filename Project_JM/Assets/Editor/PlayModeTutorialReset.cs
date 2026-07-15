@@ -24,8 +24,8 @@ public static class PlayModeTutorialReset
             return;
         }
 
-        PlayerPrefs.SetInt("tutorialProgress", 2);       // TutorialProgress.Challenge
-        PlayerPrefs.SetInt("tutorialCompleted_2", 0);    // IsTutorialCompleted(Challenge) = false
+        PlayerPrefs.SetInt("tutorialProgress", 3);       // TutorialProgress.Challenge
+        PlayerPrefs.SetInt("tutorialCompleted_3", 0);    // IsTutorialCompleted(Challenge) = false
         PlayerPrefs.Save();
 
         Debug.Log("[PlayModeTutorialReset] Tutorial progress → Challenge, Challenge completed flag → false.");
