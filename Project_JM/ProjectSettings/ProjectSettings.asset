@@ -147,7 +147,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 0.1
+  bundleVersion: 0.111
   preloadedAssets:
   - {fileID: -944628639613478452, guid: 5e0e7cf29b73458468da9ad6afb31d6e, type: 3}
   metroInputSource: 0
@@ -171,7 +171,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Android: com.HamsterWheelStudio.GemParty
+    Android: com.hwheelstudio.gemparty
     Standalone: com.DefaultCompany.2D-URP
   buildNumber:
     Standalone: 0
@@ -179,9 +179,9 @@ PlayerSettings:
     iPhone: 0
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 3
   AndroidMinSdkVersion: 23
-  AndroidTargetSdkVersion: 34
+  AndroidTargetSdkVersion: 35
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 1
@@ -262,7 +262,7 @@ PlayerSettings:
   clonedFromGUID: c19f32bac17ee4170b3bf8a6a0333fb9
   templatePackageId: com.unity.template.universal-2d@6.1.1
   templateDefaultScene: Assets/Scenes/SampleScene.unity
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 1
   useCustomLauncherGradleManifest: 0
@@ -292,7 +292,7 @@ PlayerSettings:
     height: 180
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
-  AndroidMinifyRelease: 0
+  AndroidMinifyRelease: 1
   AndroidMinifyDebug: 0
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
@@ -302,7 +302,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
+      m_Icon: {fileID: 2800000, guid: d803b6b8c6da7734280f5199656a37bc, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -310,22 +310,22 @@ PlayerSettings:
   - m_BuildTarget: Android
     m_Icons:
     - m_Textures:
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
+      - {fileID: 2800000, guid: 687a40d473cc11f4d8dc41f5cc601922, type: 3}
+      - {fileID: 2800000, guid: 687a40d473cc11f4d8dc41f5cc601922, type: 3}
       m_Width: 432
       m_Height: 432
       m_Kind: 2
       m_SubKind: 
     - m_Textures:
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
+      - {fileID: 2800000, guid: 687a40d473cc11f4d8dc41f5cc601922, type: 3}
+      - {fileID: 2800000, guid: 687a40d473cc11f4d8dc41f5cc601922, type: 3}
       m_Width: 324
       m_Height: 324
       m_Kind: 2
       m_SubKind: 
     - m_Textures:
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
+      - {fileID: 2800000, guid: d803b6b8c6da7734280f5199656a37bc, type: 3}
+      - {fileID: 2800000, guid: d803b6b8c6da7734280f5199656a37bc, type: 3}
       m_Width: 216
       m_Height: 216
       m_Kind: 2
@@ -346,7 +346,7 @@ PlayerSettings:
       m_Kind: 2
       m_SubKind: 
     - m_Textures:
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
+      - {fileID: 2800000, guid: d803b6b8c6da7734280f5199656a37bc, type: 3}
       m_Width: 192
       m_Height: 192
       m_Kind: 1
@@ -377,7 +377,7 @@ PlayerSettings:
       m_Kind: 1
       m_SubKind: 
     - m_Textures:
-      - {fileID: 2800000, guid: 49c03a3cab7bea246bd2dc4acee9e4f6, type: 3}
+      - {fileID: 2800000, guid: d803b6b8c6da7734280f5199656a37bc, type: 3}
       m_Width: 192
       m_Height: 192
       m_Kind: 0
