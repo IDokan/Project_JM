@@ -29,6 +29,8 @@ public class InputDiagnosticLogger : MonoBehaviour
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"[InputDiagnostic] reason={reason} realtime={Time.realtimeSinceStartup:F2}");
         sb.AppendLine($"  currentActionMap={playerInput.currentActionMap?.name ?? "null"}");
+        sb.AppendLine($"  currentControlScheme={playerInput.currentControlScheme ?? "null"}");
+        sb.AppendLine($"  neverAutoSwitchControlSchemes={playerInput.neverAutoSwitchControlSchemes}");
         sb.AppendLine($"  GameplayMap.enabled={gameplayMap != null && gameplayMap.enabled}");
         sb.AppendLine($"  UIMap.enabled={uiMap != null && uiMap.enabled}");
         sb.AppendLine($"  pauseButton.IsPaused={pauseButton.IsPaused}");
