@@ -23,5 +23,11 @@ public class UIOrientationVisibility : MonoBehaviour
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
         }
+        else
+        {
+            _canvasGroup.alpha = 1f;
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+        }
     }
 }
