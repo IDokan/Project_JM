@@ -31,6 +31,8 @@ public class EnemyBook : ScriptableObject
     public void ResetProgression()
     {
         _currentGroupIndex = 0;
+        _peekedEnemy = null;
+        _peekedIndex = -1;
         FillRemainingFromCurrentGroup();
         SkipEmptyGroups();
     }
