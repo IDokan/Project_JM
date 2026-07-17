@@ -400,7 +400,7 @@ public class LeaderboardManager : MonoBehaviour
         _cachedGlobalEntries = _cachedGlobalEntries.OrderByDescending(e => e.score).ToList();
     }
 
-    private const bool UseTestCollection = false;
+    private const bool UseTestCollection = true;
 
     public static string WeeklyCollectionName()
     {
