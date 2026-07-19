@@ -44,9 +44,13 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected bool _isEnraged = false;
     protected bool _isStunned = false;
     protected bool _isAttacking = false;
+    private bool _isTutorialActive = false;
     protected Coroutine _stunRoutine = null;
 
     public bool IsStunned => _isStunned;
+    public bool IsEnraged => _isEnraged;
+    public float EnrageTimer => _enrageTimer;
+    public float AttackTimer => _attackTimer;
 
     protected void OnEnable()
     {
@@ -68,6 +72,11 @@ public class EnemyAttackBehaviour : MonoBehaviour
         _currentCooldown = baseCooldown;
     }
 
+    public void SetTutorialActive(bool active)
+    {
+        _isTutorialActive = active;
+    }
+
     public void DelayAttack(float delay)
     {
         UpdateAttackTimer(delay);
@@ -81,7 +90,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
             while (_attackTimer > 0f)
             {
-                if (!_isStunned && !_isAttacking)
+                if (!_isStunned && !_isAttacking && !_isTutorialActive)
                 {
                     UpdateAttackTimer(-GlobalTimeManager.DeltaTime);
                 }
@@ -90,6 +99,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
             }
 
             Attack();
+            _attackTimer = _currentCooldown;
 
             while (_isAttacking)
             {
@@ -131,7 +141,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
         while (_enrageTimer > 0f)
         {
-            if (!_isStunned)
+            if (!_isStunned && !_isTutorialActive)
             {
                 _enrageTimer -= GlobalTimeManager.DeltaTime;
                 OnEnrageTimeChanged?.Invoke(_enrageTimer, enrageDelay);

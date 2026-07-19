@@ -17,14 +17,25 @@ public class HealAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        float overhealRatio = 0f;
+        if (ctx.Attacker is CharacterCombatant attacker && attacker.Status.maxHP > 0f)
+        {
+            float healAmount = healPercentage * attacker.Status.maxHP;
+            if (healAmount > 0f)
+            {
+                float missingHP = attacker.Status.maxHP - attacker.Status.CurrentHP;
+                float wastedHeal = Mathf.Max(0f, healAmount - missingHP);
+                overhealRatio = wastedHeal / healAmount;
+            }
+        }
         ctx.Attacker.Heal(healPercentage);
-        ctx.Target?.TakeDamage(baseDamage, ctx);
+        ctx.Target?.TakeDamage(baseDamage * (1f + overhealRatio), ctx);
 
         yield break;
     }
 
     public override Vector3 GetTargetMotionOffset()
     {
-        return new Vector3(1.5f, 0f, 0f);
+        return new Vector3(0.75f, 0f, 0f);
     }
 }

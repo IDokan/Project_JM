@@ -133,6 +133,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -146,7 +159,7 @@ TextureImporter:
         height: 98
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 9, y: 9, z: 9, w: 9}
       customData: 
       outline: []
       physicsShape: []
@@ -220,116 +233,6 @@ TextureImporter:
       bones: []
       spriteID: 3a5d621ac23da7670800000000000000
       internalID: 8537368232269895075
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Heart
-      rect:
-        serializedVersion: 2
-        x: 19
-        y: 323
-        width: 131
-        height: 103
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b83ed97b6ee9e0260800000000000000
-      internalID: 7065759579151131531
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sword
-      rect:
-        serializedVersion: 2
-        x: 179
-        y: 316
-        width: 138
-        height: 116
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c27e4d5de36781dd0800000000000000
-      internalID: -2515130379638872276
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Skull
-      rect:
-        serializedVersion: 2
-        x: 360
-        y: 321
-        width: 133
-        height: 114
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5e7f52d23c710c5d0800000000000000
-      internalID: -3044407221058930715
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Combo
-      rect:
-        serializedVersion: 2
-        x: 507
-        y: 301
-        width: 124
-        height: 137
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3895159aa8615f4a0800000000000000
-      internalID: -6560312497393280637
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Circle
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 119
-        width: 184
-        height: 184
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c49d8a3d3de9c7770800000000000000
-      internalID: 8609931220251892044
       vertices: []
       indices: 
       edges: []
@@ -467,28 +370,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Restart
-      rect:
-        serializedVersion: 2
-        x: 210
-        y: 90
-        width: 222
-        height: 222
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 28e768b189318e145af216054429380f
-      internalID: 1758157431
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Pause
       rect:
         serializedVersion: 2
@@ -559,11 +440,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 9
-        y: 4
-        width: 111
-        height: 111
+        y: 5
+        width: 110
+        height: 110
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -572,6 +453,28 @@ TextureImporter:
       bones: []
       spriteID: 32cfa45cccb74f645b4924f48e7dacb7
       internalID: -1185286630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skip
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 144
+        width: 168
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dcff421ec7e9a544aae81a17562becb
+      internalID: -1225163748
       vertices: []
       indices: 
       edges: []
@@ -604,6 +507,7 @@ TextureImporter:
       Rect4_L: 3765853880425637702
       Rect4_R: 8537368232269895075
       Restart: 1758157431
+      Skip: -1225163748
       Skull: -3044407221058930715
       Sword: -2515130379638872276
       UISheet_0: -1182102727

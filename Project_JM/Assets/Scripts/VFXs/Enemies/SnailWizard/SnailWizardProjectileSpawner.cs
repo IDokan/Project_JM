@@ -38,6 +38,6 @@ public class SnailWizardProjectileSpawner : MonoBehaviour
         }
 
         var go = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
-        go.GetComponent<CurvedProjectile>().Initialize(targetMB.transform, _executor.HitTransformOffset, travelDuration);
+        go.GetComponent<CurvedProjectile>().Initialize(targetMB.transform, _executor.HitTransformOffset[0], travelDuration);
     }
 }

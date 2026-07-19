@@ -15,6 +15,8 @@ public class CombatController : BasePlayerController
     [SerializeField] private GemSelectionHighlightManager gemSelectionHighlightManager;
     [SerializeField] private TransitionManager transitionManager;
     [SerializeField] private PauseButton pauseButton;
+    [SerializeField] private TutorialOverlayUI tutorialOverlayUI;
+    [SerializeField] private TransitionEventChannel transitionEventChannel;
 
     [Header("Tuning")]
     [SerializeField] private float dragThresholdPixels = 16f;
@@ -38,6 +40,24 @@ public class CombatController : BasePlayerController
 
     private bool _isConfirmPressing;
     private bool _isMoveHolding;
+    private bool _isCombatOngoing = true;
+
+    private void Awake()
+    {
+        Debug.Assert(tutorialOverlayUI != null, $"{nameof(CombatController)}: tutorialOverlayUI is not wired.", this);
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        transitionEventChannel.OnRaised += OnTransitionEvent;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
+    }
 
     private void Start()
     {
@@ -93,7 +113,9 @@ public class CombatController : BasePlayerController
             return;
         }
 
-        _isPadMode = false;
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
+        SetPadMode(false);
         transitionManager.BeginSkipHold();
 
         if (!IsBoardInputEnabled())
@@ -117,6 +139,8 @@ public class CombatController : BasePlayerController
 
     protected override void OnPressCanceled(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
+
         transitionManager.EndSkipHold();
 
         if (pauseButton.IsPaused)
@@ -133,12 +157,16 @@ public class CombatController : BasePlayerController
     // Stick started latching.
     protected override void OnMoveStarted(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
+
         _isMoveHolding = true;
     }
 
     // Stick returned to idle position.
     protected override void OnMoveCanceled(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
+
         _isMoveHolding = false;
         _lastMovedDirection = Vector2Int.zero;
     }
@@ -146,7 +174,9 @@ public class CombatController : BasePlayerController
     // Called every time the stick value changes.
     protected override void OnMovePerformed(InputAction.CallbackContext context)
     {
-        _isPadMode = true;
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
+
+        SetPadMode(true);
 
         Vector2 direction = context.ReadValue<Vector2>();
 
@@ -185,8 +215,12 @@ public class CombatController : BasePlayerController
 
     protected override void OnConfirmStarted(InputAction.CallbackContext _)
     {
+        if (pauseButton.IsPaused) { return; }
+
+        if (tutorialOverlayUI.TryConfirm()) { return; }
+
         transitionManager.BeginSkipHold();
-        _isPadMode = true;
+        SetPadMode(true);
 
         if (IsBoardInputEnabled())
         {
@@ -197,6 +231,8 @@ public class CombatController : BasePlayerController
 
     protected override void OnConfirmCanceled(InputAction.CallbackContext _)
     {
+        if (tutorialOverlayUI.IsWaitingForConfirm) { return; }
+
         transitionManager.EndSkipHold();
         _isConfirmPressing = false;
         gemSelectionHighlightManager.DisableArrows();
@@ -204,7 +240,29 @@ public class CombatController : BasePlayerController
 
     protected override void OnCancelPerformed(InputAction.CallbackContext _)
     {
+        if (!_isCombatOngoing) { return; }
+
         pauseButton.Open();
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus && !pauseButton.IsPaused && _isCombatOngoing)
+        {
+            pauseButton.Open();
+        }
+    }
+
+    private void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin)
+        {
+            _isCombatOngoing = true;
+        }
+        else if (phase == TransitionPhase.EndTransitionBegin)
+        {
+            _isCombatOngoing = false;
+        }
     }
 
     // ----- Helpers ---------

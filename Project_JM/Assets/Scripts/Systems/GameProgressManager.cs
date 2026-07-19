@@ -3,18 +3,29 @@
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GameProgressManager.cs
 // Summary: A class to manage whole game progress.
+//          Handles and judges game data produced during game progress (e.g. enemy defeat count,
+//          enrage state, party HP ratio) to evaluate save-worthy milestones.
+//
+//              Easy    condition: defeat the 4th enemy with party HP above 60% of max HP
+//              Medium  condition: defeat the 4th enemy with party HP above 40% of max HP
+//              Hard    condition: defeat 4 enemies
+//
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using TutorialEnums;
 using UnityEngine;
 
 public class GameProgressManager : MonoBehaviour
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterDeathEventChannel deathChannel;
-    [SerializeField] protected DifficultyCurves curves;
+    [SerializeField] protected DifficultyCurvesSelector curvesSelector;
     [SerializeField] protected CharacterStatus partyStatus;
 
     protected int _numEnemyDefeated = 0;
+
+    private TutorialProgress _progressAtRunStart;
+
 
     protected void OnEnable()
     {
@@ -35,6 +46,7 @@ public class GameProgressManager : MonoBehaviour
         {
             Debug.LogWarning("TransitionEventChannel is null", this);
         }
+
     }
 
     protected void OnDisable()
@@ -45,11 +57,13 @@ public class GameProgressManager : MonoBehaviour
         {
             transitionEventChannel.OnRaised -= OnTransitionEvent;
         }
+
     }
 
     public void Clear()
     {
         _numEnemyDefeated = 0;
+        _progressAtRunStart = SaveDataManager.Instance.Progress;
     }
 
     protected void OnCharacterDied(CharacterStatus stat)
@@ -70,13 +84,46 @@ public class GameProgressManager : MonoBehaviour
 
     protected void HandleAllyDied(CharacterStatus stat)
     {
-        // Need to handle 
+        if (_numEnemyDefeated > 1)
+        {
+            return;
+        }
+
+        if (_progressAtRunStart == TutorialProgress.Hard)
+        {
+            SaveDataManager.Instance.ResetToMedium();
+        }
+        else if (_progressAtRunStart == TutorialProgress.Medium)
+        {
+            SaveDataManager.Instance.ResetToEasy();
+        }
+        // Challenge is permanent — no reset.
     }
 
     protected void HandleEnemyDied(CharacterStatus stat)
     {
         ++_numEnemyDefeated;
-        partyStatus.Initialize(curves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
+        partyStatus.Initialize(curvesSelector.ActiveCurves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
+
+        if (_progressAtRunStart == TutorialProgress.Easy)
+        {
+            if (_numEnemyDefeated == 4 && partyStatus.CurrentHP > partyStatus.maxHP * 0.6f)
+            {
+                SaveDataManager.Instance.SetMedium();
+            }
+        }
+
+        if (_progressAtRunStart == TutorialProgress.Medium
+            && _numEnemyDefeated >= 4
+            && partyStatus.CurrentHP > partyStatus.maxHP * 0.4f)
+        {
+            SaveDataManager.Instance.SetHard();
+        }
+
+        if (_progressAtRunStart == TutorialProgress.Hard && _numEnemyDefeated >= 4)
+        {
+            SaveDataManager.Instance.SetChallenge();
+        }
     }
 
     protected void OnTransitionEvent(TransitionPhase phase)
@@ -86,4 +133,5 @@ public class GameProgressManager : MonoBehaviour
             Clear();
         }
     }
+
 }

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f163698af0ab76e4b86d07c3c52c5c78, type: 3}
+  m_Name: CombatLayoutProfile_Portrait
+  m_EditorClassIdentifier: Assembly-CSharp::CombatLayoutProfileData
+  introPartyStartPosition: {x: -7.66, y: -2.69, z: 0}
+  introPartyArrivalPosition: {x: -0.66, y: -2.69, z: 0}
+  introBoardStartPosition: {x: -1137.38, y: -603, z: 0}
+  introBoardArrivalPosition: {x: -1137.38, y: -593, z: 0}
+  introUIStartPositions:
+  - {x: -285, y: 300, z: 0}
+  - {x: 35, y: 300, z: 0}
+  - {x: 400, y: -25, z: 0}
+  - {x: -240, y: -25, z: 0}
+  - {x: -100, y: 340, z: 0}
+  introUIArrivalPositions:
+  - {x: -285, y: -50, z: 0}
+  - {x: 35, y: -50, z: 0}
+  - {x: -120, y: -25, z: 0}
+  - {x: 280, y: -25, z: 0}
+  - {x: -110, y: -10, z: 0}
+  introPartyMoveDuration: 2
+  introBoardMoveDelay: 0.5
+  introBoardMoveDuration: 1.5
+  introUIMoveDelay: 2.5
+  introUIMoveDuration: 1
+  defeatedPartyYOffset: -5
+  defeatedEnemyArrivalPosition: {x: -14, y: -4, z: 0}
+  defeatedBoardArrivalPosition: {x: -1137.38, y: -603, z: 0}

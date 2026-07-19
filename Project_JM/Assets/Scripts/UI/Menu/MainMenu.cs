@@ -15,6 +15,7 @@ public class MainMenu : Menu
 {
     [Header("Buttons")]
     [SerializeField] private Button gameStartButton;
+    [SerializeField] private Button leaderboardButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private Button quitButton;
 
@@ -22,6 +23,7 @@ public class MainMenu : Menu
     [SerializeField] private MainMenuController mainMenuController;
     [SerializeField] private SceneTransition sceneTransition;
     [SerializeField] private OptionMenu optionMenu;
+    [SerializeField] private LeaderboardMenu leaderboardMenu;
     [SerializeField] private ConfirmationDialog confirmationDialog;
 
     [Header("Transition")]
@@ -35,6 +37,7 @@ public class MainMenu : Menu
         base.OnEnable();
 
         gameStartButton.onClick.AddListener(OnGameStartClicked);
+        leaderboardButton.onClick.AddListener(OnLeaderboardClicked);
         optionButton.onClick.AddListener(OnOptionClicked);
         quitButton.onClick.AddListener(OnQuitClicked);
     }
@@ -44,6 +47,7 @@ public class MainMenu : Menu
         base.OnDisable();
 
         gameStartButton.onClick.RemoveListener(OnGameStartClicked);
+        leaderboardButton.onClick.RemoveListener(OnLeaderboardClicked);
         optionButton.onClick.RemoveListener(OnOptionClicked);
         quitButton.onClick.RemoveListener(OnQuitClicked);
     }
@@ -66,6 +70,11 @@ public class MainMenu : Menu
         canvasGroup.DOFade(0f, exitFadeDuration)
             .SetUpdate(true)
             .OnComplete(() => loadOp.allowSceneActivation = true);
+    }
+
+    private void OnLeaderboardClicked()
+    {
+        leaderboardMenu.Show(leaderboardButton);
     }
 
     private void OnOptionClicked()

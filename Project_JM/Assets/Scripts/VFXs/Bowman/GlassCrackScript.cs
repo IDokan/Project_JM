@@ -11,6 +11,7 @@ using UnityEngine;
 public class GlassCrackScript : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer spriteRenderer;
+    [SerializeField] private AudioCueSO sfx;
     [SerializeField] protected string revealProperty = "Reveal";
     [SerializeField] protected float revealDuration = 0.5f;
     [SerializeField] protected AnimationCurve revealCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -31,6 +32,10 @@ public class GlassCrackScript : MonoBehaviour
 
     protected void OnEnable()
     {
+        if (sfx != null)
+        {
+            AudioManager.Instance.PlayActionSFX(sfx);
+        }
         StartCoroutine(Run());
     }
 

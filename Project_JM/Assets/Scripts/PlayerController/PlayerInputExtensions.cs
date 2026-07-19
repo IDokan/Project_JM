@@ -13,6 +13,7 @@ public static class PlayerInputExtensions
     {
         playerInput.SwitchCurrentActionMap("UI");
         playerInput.actions.FindActionMap("Gameplay").FindAction("press").Enable();
+        playerInput.actions.FindActionMap("Gameplay").FindAction("point").Enable();
     }
 
     public static void SwitchToGameplayMap(this PlayerInput playerInput)

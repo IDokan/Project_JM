@@ -1,0 +1,208 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69c6ad33a62951478ebc9bb1f3cbf79, type: 3}
+  m_Name: EasyStep04 MatchAction-BlueGemUp
+  m_EditorClassIdentifier: Assembly-CSharp::BoardActionTutorialStep
+  sprites:
+  - sprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
+    landscapeAnchoredPosition: {x: 140, y: 270}
+    landscapeScale: {x: 0.3, y: 0.3}
+    portraitAnchoredPosition: {x: -580, y: 270}
+    portraitScale: {x: 0.3, y: 0.3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 9
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
+    landscapeAnchoredPosition: {x: 340, y: 270}
+    landscapeScale: {x: 0.3, y: 0.3}
+    portraitAnchoredPosition: {x: -380, y: 270}
+    portraitScale: {x: 0.3, y: 0.3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 9
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: 6528285954514067804, guid: 01ac96e4bd6cb294e8b83ced959d2b37, type: 3}
+    landscapeAnchoredPosition: {x: 540, y: 120}
+    landscapeScale: {x: 0.3, y: 0.3}
+    portraitAnchoredPosition: {x: -180, y: 120}
+    portraitScale: {x: 0.3, y: 0.3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 9
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 1
+      ease: 13
+      offset: {x: 0, y: 150}
+      targetValue: 0
+  - sprite: {fileID: -2674858682100670668, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    landscapeAnchoredPosition: {x: -310, y: -266}
+    landscapeScale: {x: 3, y: 3}
+    portraitAnchoredPosition: {x: 5000, y: 5000}
+    portraitScale: {x: 3, y: 3}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 0.5, y: 0}
+    portraitAnchorMax: {x: 0.5, y: 0}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 9
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 0.5
+      ease: 21
+      offset: {x: 57, y: -74}
+      targetValue: 0
+  - sprite: {fileID: 3611696372693441181, guid: 23343f323047e48489ff5ddc124391f2, type: 3}
+    landscapeAnchoredPosition: {x: 610, y: 50}
+    landscapeScale: {x: 1.5, y: 1.5}
+    portraitAnchoredPosition: {x: -110, y: 50}
+    portraitScale: {x: 1.5, y: 1.5}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 9
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 7
+      duration: 1
+      ease: 13
+      offset: {x: 0, y: 150}
+      targetValue: 0
+  dialogueSprites:
+  - sprite: {fileID: 1679078365059767153, guid: c5bc780315f9c9a43ae1164743125f19, type: 3}
+    landscapeAnchoredPosition: {x: 350, y: 150}
+    landscapeScale: {x: 3.8, y: 3.8}
+    portraitAnchoredPosition: {x: -370, y: 150}
+    portraitScale: {x: 3.8, y: 3.8}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
+    showAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 1
+      duration: 0.5
+      ease: 1
+      offset: {x: 0, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 0
+      duration: 0
+      ease: 0
+      offset: {x: 0, y: 0}
+      targetValue: 0
+  - sprite: {fileID: -1379700000831496873, guid: 6dca71296b62efc42a73201e38e8b7e2, type: 3}
+    landscapeAnchoredPosition: {x: 630, y: -370}
+    landscapeScale: {x: 1.5, y: 1.5}
+    portraitAnchoredPosition: {x: -80, y: -290}
+    portraitScale: {x: 1.5, y: 1.5}
+    landscapeAnchorMin: {x: 0.5, y: 0.5}
+    landscapeAnchorMax: {x: 0.5, y: 0.5}
+    portraitAnchorMin: {x: 1, y: 0.5}
+    portraitAnchorMax: {x: 1, y: 0.5}
+    showAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 600, y: 0}
+      targetValue: 0
+    hideAnim:
+      type: 2
+      duration: 0.5
+      ease: 27
+      offset: {x: 600, y: 0}
+      targetValue: 0
+    idleAnim:
+      type: 6
+      duration: 3
+      ease: 4
+      offset: {x: 0, y: 0}
+      targetValue: -10
+  landscapeBrightZoneIndex: 0
+  portraitBrightZoneIndex: 5
+  highlightedCell: {x: 1, y: 5}

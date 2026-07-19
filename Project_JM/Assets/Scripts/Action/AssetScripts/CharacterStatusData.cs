@@ -16,6 +16,7 @@ public struct StatusMultiplier
 public class CharacterStatusData : ScriptableObject
 {
     public string characterName;
+    public Sprite icon;
     public float baseHP = 100f;
     public float baseCriticalChance = 0f;           // [0, 100] -> 100 means 100% critical chance
     public float baseCriticalDamage = 1.5f;

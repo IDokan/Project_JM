@@ -6,17 +6,25 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
+using TutorialEnums;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] protected EnemyBook enemyBook;
+    [SerializeField] private EnemyBook easyEnemyBook;
+    [SerializeField] private EnemyBook mediumEnemyBook;
+    [SerializeField] private EnemyBook hardEnemyBook;
+
+    protected EnemyBook _enemyBook;
+
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
+    [SerializeField] protected EnemyAlertEventChannel enemyAlertEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected DifficultyCurves difficultyCurves;
+    [SerializeField] protected DifficultyCurvesSelector curvesSelector;
 
-    [SerializeField] protected Vector3 spawnPosition;
+    [SerializeField] protected Vector3 landscapeSpawnPosition;
+    [SerializeField] protected Vector3 portraitSpawnPosition;
     [SerializeField] protected float dispatchEventChannelDelay = 1f;
 
     protected Vector3 _spawnOffsetToCamera;
@@ -39,25 +47,43 @@ public class EnemySpawner : MonoBehaviour
 
     protected void Awake()
     {
-        _spawnOffsetToCamera = spawnPosition - Camera.main.transform.position;
+        if (SaveDataManager.Instance.Progress >= TutorialProgress.Hard)
+        {
+            _enemyBook = hardEnemyBook;
+        }
+        else if (SaveDataManager.Instance.Progress >= TutorialProgress.Medium)
+        {
+            _enemyBook = mediumEnemyBook;
+        }
+        else
+        {
+            _enemyBook = easyEnemyBook;
+        }
+
+        bool isPortrait = Screen.height > Screen.width;
+        Vector3 spawnPosition = isPortrait ? portraitSpawnPosition : landscapeSpawnPosition;
+
+        CameraOrientationSetter cameraOrientationSetter = Camera.main.GetComponent<CameraOrientationSetter>();
+        Vector3 cameraPosition = cameraOrientationSetter != null ? cameraOrientationSetter.OriginalPosition : Camera.main.transform.position;
+        _spawnOffsetToCamera = spawnPosition - cameraPosition;
     }
 
     protected void Clear()
     {
         _numSpanwed = 0;
-        enemyBook.ResetProgression();
+        _enemyBook.ResetProgression();
     }
 
     protected GameObject SpawnNextEnemy()
     {
         _numSpanwed++;
 
-        GameObject prefab = enemyBook.GetNextEnemy();
+        GameObject prefab = _enemyBook.GetNextEnemy();
 
         Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
         var spawnedEnemy = Instantiate(prefab, pos, Quaternion.identity);
         var characterStatus = spawnedEnemy.GetComponent<CharacterStatus>();
-        characterStatus.Initialize(difficultyCurves.GetDifficultyMultiplier(_numSpanwed));
+        characterStatus.Initialize(curvesSelector.ActiveCurves.GetDifficultyMultiplier(_numSpanwed));
         _spawnTime = Time.time;
         _spawnedEnemyName = characterStatus.CharacterName;
 
@@ -89,15 +115,11 @@ public class EnemySpawner : MonoBehaviour
         }
         else if (phase == TransitionPhase.MiddleTransitionStarts)
         {
-            Debug.Log($"{_numSpanwed}th enemy => {_spawnedEnemyName}: defeated in {Time.time - _spawnTime:F1} seconds.");
+            enemyAlertEventChannel.Raise(_enemyBook.PeekNextEnemy());
         }
         else if (phase == TransitionPhase.MiddleEnemySpawnBegin)
         {
             SpawnNextEnemy();
-        }
-        else if (phase == TransitionPhase.EndTransitionBegin)
-        {
-            Debug.Log($"{_numSpanwed}th enemy => {_spawnedEnemyName}: defeated in {Time.time - _spawnTime:F1} seconds.");
         }
         else if (phase == TransitionPhase.IntroTransitionBegin)
         {

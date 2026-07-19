@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using GemEnums;
+using MatchEnums;
 using UnityEngine;
 
 public interface ICombatant
@@ -90,6 +91,12 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         // Spawn Damageui slightly above the origin of attacked target
         DamageUIManager.Instance.SpawnDamage(calculatedDamage, attackContext, isCritical, shieldReduced, colorDamageMultiplier);
 
+        if (!isEnemyAttacker && TryGetComponent<EnemyTag>(out _) && attackContext.Tier.HasValue)
+        {
+            ScoreManager.Instance?.AddDamageScore(calculatedDamage, status.maxHP, attackContext.Tier.Value);
+            attackContext.DamageRecordManager?.RecordDamage(attackContext.Attacker.Colors[0], calculatedDamage);
+        }
+
         status.TakeDamage(damage);
 
         if (status.IsDead
@@ -143,7 +150,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             return;
         }
 
-        var hitBurst = Instantiate(hitBurstPrefab, attackContext.HitTransform.position, Quaternion.identity,
+        var hitBurst = Instantiate(hitBurstPrefab, attackContext.GetHitPosition(), Quaternion.identity,
             woundParentTransform == null ? gameObject.transform : woundParentTransform);
 
         GemColor gemColor;
@@ -172,7 +179,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
         Transform parent = (woundParentTransform == null ? transform : woundParentTransform);
 
-        Vector3 spawnPos = attackContext.HitTransform.position;
+        Vector3 spawnPos = attackContext.GetHitPosition();
 
         var go = Instantiate(attackContext.ImpactAttachPrefab, spawnPos, Quaternion.identity, parent);
 

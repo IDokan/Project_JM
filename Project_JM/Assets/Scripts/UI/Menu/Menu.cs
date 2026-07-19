@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour, ICancelHandler
 
     [Header("Gamepad navigation")]
     [SerializeField] private Selectable firstSelected;
-    public Selectable GetFirstSelectable()
+    public virtual Selectable GetFirstSelectable()
         => firstSelected != null ? firstSelected : GetComponentInChildren<Selectable>();
 
     [Header("Style")]
@@ -112,7 +112,7 @@ public class Menu : MonoBehaviour, ICancelHandler
         }
     }
 
-    private void OnShowComplete()
+    protected virtual void OnShowComplete()
     {
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;

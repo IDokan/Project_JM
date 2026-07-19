@@ -10,6 +10,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -17,6 +18,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
+    [SerializeField] private AudioMixer mainMixer;
     [SerializeField] private AudioMixerGroup bgmMixerGroup;
     [SerializeField] private AudioMixerGroup uiSfxMixerGroup;
     [SerializeField] private AudioMixerGroup puzzleSfxMixerGroup;
@@ -48,8 +50,15 @@ public class AudioManager : MonoBehaviour
 
     private float _timeScaler = 1f;
 
+    private readonly HashSet<AudioCueSO> _playedThisFrame = new HashSet<AudioCueSO>();
+    private int _lastDedupeFrame = -1;
+
     // Pitch Shifter pitch input range is 0.5–2; compensation (1/newScale) breaks outside that range.
     private const string EnemyPitchShiftParam = "EnemyActionSFXPitchShift";
+
+    private const string MasterVolumeParam = "MasterVolume";
+    private const string BGMVolumeParam    = "BGMVolume";
+    private const string SFXVolumeParam    = "SFXVolume";
 
     private void Awake()
     {
@@ -75,10 +84,31 @@ public class AudioManager : MonoBehaviour
         _actionSfxStartTimes = new float[actionSfxPoolSize];
         _enemyActionSfxStartTimes = new float[enemyActionSfxPoolSize];
         _enemyActionSfxBasePitches = new float[enemyActionSfxPoolSize];
+
+    }
+
+    private void Start()
+    {
+        LoadVolumes();
     }
 
     private void OnEnable()  => GlobalTimeManager.OnScaleChanged += OnTimeScaleChanged;
     private void OnDisable() => GlobalTimeManager.OnScaleChanged -= OnTimeScaleChanged;
+
+    // ── Volume ───────────────────────────────────────────────────────────────
+
+    public void SetMasterVolume(float linear) => ApplyVolume(MasterVolumeParam, linear);
+    public void SetBGMVolume(float linear)    => ApplyVolume(BGMVolumeParam,    linear);
+    public void SetSFXVolume(float linear)    => ApplyVolume(SFXVolumeParam,    linear);
+
+    public void SaveVolumes()
+    {
+        SaveDataManager.Instance.SaveAudioVolumes(GetMasterVolume(), GetBGMVolume(), GetSFXVolume());
+    }
+
+    public float GetMasterVolume() => ReadVolume(MasterVolumeParam);
+    public float GetBGMVolume()    => ReadVolume(BGMVolumeParam);
+    public float GetSFXVolume()    => ReadVolume(SFXVolumeParam);
 
     // ── BGM ──────────────────────────────────────────────────────────────────
 
@@ -161,6 +191,38 @@ public class AudioManager : MonoBehaviour
 
     // ── Private helpers ───────────────────────────────────────────────────────
 
+    private void LoadVolumes()
+    {
+        ApplyVolume(MasterVolumeParam, SaveDataManager.Instance.LoadMasterVolume());
+        ApplyVolume(BGMVolumeParam,    SaveDataManager.Instance.LoadBGMVolume());
+        ApplyVolume(SFXVolumeParam,    SaveDataManager.Instance.LoadSFXVolume());
+    }
+
+    private void ApplyVolume(string param, float linear)
+    {
+        if (mainMixer == null) { return; }
+        mainMixer.SetFloat(param, LinearToDb(linear));
+    }
+
+    private float ReadVolume(string param)
+    {
+        if (mainMixer == null || !mainMixer.GetFloat(param, out float db)) { return SaveDataManager.DefaultVolume; }
+        return DbToLinear(db);
+    }
+
+    private static float LinearToDb(float linear) => Mathf.Log10(Mathf.Max(linear, 0.0001f)) * 20f;
+    private static float DbToLinear(float db)      => Mathf.Pow(10f, db / 20f);
+
+    private bool IsDuplicateThisFrame(AudioCueSO cue)
+    {
+        if (Time.frameCount != _lastDedupeFrame)
+        {
+            _playedThisFrame.Clear();
+            _lastDedupeFrame = Time.frameCount;
+        }
+        return !_playedThisFrame.Add(cue);
+    }
+
     private void OnTimeScaleChanged(float newScale)
     {
         _timeScaler = newScale;
@@ -191,6 +253,7 @@ public class AudioManager : MonoBehaviour
     private void PlayOnPoolWithClip(AudioSource[] pool, float[] startTimes, AudioCueSO cue, AudioClip clip)
     {
         if (clip == null) return;
+        if (IsDuplicateThisFrame(cue)) return;
 
         for (int i = 0; i < pool.Length; i++)
         {
@@ -217,6 +280,7 @@ public class AudioManager : MonoBehaviour
     private void PlayOnEnemyPool(AudioCueSO cue)
     {
         if (cue == null) return;
+        if (IsDuplicateThisFrame(cue)) return;
 
         AudioClip clip = cue.GetClip();
         if (clip == null) return;

@@ -20,6 +20,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
     [SerializeField] protected PartyRoster party;
     [SerializeField] protected DamageMultiplierManager damageMultiplierManager;
+    [SerializeField] protected DamageRecordManager damageRecordManager;
 
     protected CharacterCombatant _enemy;    // @@ TODO: Need to implement enemy spawner...
     public CharacterCombatant Enemy => _enemy;
@@ -81,9 +82,10 @@ public class CombatManager : MonoBehaviour
         {
             Attacker = attacker,
             Target = _enemy,
-            DamageMultiplierManager = damageMultiplierManager
+            DamageMultiplierManager = damageMultiplierManager,
+            DamageRecordManager = damageRecordManager,
+            Tier = matchEvent.Tier
         };
-        Debug.Log($"Color {matchEvent.Color} : Tier {matchEvent.Tier} happened");
 
         PlayAttackMotion(context, matchEvent.Tier);
     }

@@ -16,9 +16,15 @@ public struct AttackContext
 
     // Must always be a valid (non-null) Transform before TakeDamage is called.
     public Transform HitTransform;
-    public MultiHitTransformContainer MultiHitTransformContainer;
+public Vector3 HitTransformOffset;
+
+    public Vector3 GetHitPosition() => HitTransform.position + HitTransformOffset;
 
     public DamageMultiplierManager DamageMultiplierManager;
+    public DamageRecordManager DamageRecordManager;
+
+    // Null for enemy attacks; set to the match tier that triggered this ally attack.
+    public MatchTier? Tier;
 
     public GameObject ImpactAttachPrefab;
     public Vector3 ImpactAttachLocalOffset;

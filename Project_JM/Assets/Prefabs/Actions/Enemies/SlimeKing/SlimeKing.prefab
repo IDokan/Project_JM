@@ -102,6 +102,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 325963819189281011, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: m_Size.x
+      value: 1.7902199
+      objectReference: {fileID: 0}
+    - target: {fileID: 325963819189281011, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: m_Size.y
+      value: 4.605609
+      objectReference: {fileID: 0}
+    - target: {fileID: 325963819189281011, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.30688542
+      objectReference: {fileID: 0}
+    - target: {fileID: 325963819189281011, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: m_Offset.y
+      value: 2.451981
+      objectReference: {fileID: 0}
     - target: {fileID: 581450553150658279, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: logicEnemy
       value: 
@@ -130,6 +146,14 @@ PrefabInstance:
       propertyPath: woundParentTransform
       value: 
       objectReference: {fileID: 6931968183049290336}
+    - target: {fileID: 2116809620627168524, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116809620627168524, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.37
+      objectReference: {fileID: 0}
     - target: {fileID: 2704363247957855842, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: swingSfx
       value: 
@@ -150,6 +174,10 @@ PrefabInstance:
       propertyPath: enrageSfx
       value: 
       objectReference: {fileID: 11400000, guid: bfb5416f4926a884595549e541958d91, type: 2}
+    - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: enrageDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4409018762775306443, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       propertyPath: baseCooldown
       value: 8
@@ -202,6 +230,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8101063488301794313, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 6446055175640743682}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

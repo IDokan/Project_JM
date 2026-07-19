@@ -43,4 +43,9 @@ public abstract class TransitionController : MonoBehaviour
             transitionManager.CompleteTransition(this);
         }
     }
+
+    protected static CombatLayoutProfileData ResolveActiveLayoutProfile(CombatLayoutProfileData landscapeProfile, CombatLayoutProfileData portraitProfile)
+    {
+        return Screen.height > Screen.width ? portraitProfile : landscapeProfile;
+    }
 }

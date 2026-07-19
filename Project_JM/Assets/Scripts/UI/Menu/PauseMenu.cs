@@ -27,6 +27,7 @@ public class PauseMenu : Menu
     [SerializeField] protected OptionMenu optionPanel;
     [SerializeField] private ConfirmationDialog confirmationDialog;
     [SerializeField] private SceneTransition sceneTransition;
+    [SerializeField] private BoardManager boardManager;
 
     [Header("Confirmation icons")]
     [SerializeField] private Image restartConfirmIcon;
@@ -60,6 +61,7 @@ public class PauseMenu : Menu
         base.Show(returnTo);
         GlobalTimeManager.Instance.PauseTimeScale();
         AudioManager.Instance.PauseScaledSFX();
+        boardManager.SetGemsVisible(false);
     }
 
     public override void Hide()
@@ -67,8 +69,9 @@ public class PauseMenu : Menu
         IsPaused = false;
         playerInput.SwitchToGameplayMap();
         base.Hide();
-        GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+        GlobalTimeManager.Instance.RestoreTimeScaleFromPause();
         AudioManager.Instance.ResumeScaledSFX();
+        boardManager.SetGemsVisible(true);
     }
 
     protected void OnRestartButtonPressed()
@@ -76,6 +79,7 @@ public class PauseMenu : Menu
         confirmationDialog.Show(restartConfirmIcon, () =>
         {
             Hide();
+            GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
             Scene currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.name);
         }, restartButton);
@@ -91,6 +95,7 @@ public class PauseMenu : Menu
         confirmationDialog.Show(homeConfirmIcon, () =>
         {
             Hide();
+            GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, homeButton);
     }

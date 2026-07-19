@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SliderUIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDeselectHandler, ICancelHandler, IPointerDownHandler
+public class SliderUIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDeselectHandler, ICancelHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] protected GameObject selectedEffect;
     [SerializeField] protected Animator animator;
@@ -23,6 +23,7 @@ public class SliderUIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDese
 
     private Slider _slider;
     private Vector3 _handleInitialScale;
+    private bool _pointerDragging;
 
     private void Awake()
     {
@@ -75,6 +76,7 @@ public class SliderUIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDese
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        _pointerDragging = true;
         AudioManager.Instance.PlayUISFX(pressSFX);
         if (style != null && handleTransform != null)
         {
@@ -86,6 +88,11 @@ public class SliderUIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDese
         }
     }
 
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        _pointerDragging = false;
+    }
+
     public void OnCancel(BaseEventData eventData)
     {
         AudioManager.Instance.PlayUISFX(cancelSFX);
@@ -94,6 +101,11 @@ public class SliderUIEffectPlayerOnSelect : MonoBehaviour, ISelectHandler, IDese
 
     private void OnValueChanged(float value)
     {
+        if (!_pointerDragging)
+        {
+            AudioManager.Instance.PlayUISFX(pressSFX);
+        }
+
         if (style == null || handleTransform == null)
         {
             return;

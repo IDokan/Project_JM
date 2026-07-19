@@ -6,7 +6,9 @@
 //          to main menu / quit with a confirmation dialog.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -26,13 +28,43 @@ public class RetryMenu : Menu
     [SerializeField] private ConfirmationDialog confirmationDialog;
     [SerializeField] private SceneTransition sceneTransition;
 
+    [Header("Score")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI rankText;
+    [SerializeField] private Button scoreButton;
+    [SerializeField] private LeaderboardMenu leaderboardMenu;
+
     [Header("Confirmation icons")]
     [SerializeField] private Image mainMenuConfirmIcon;
     [SerializeField] private Image quitConfirmIcon;
 
+    [Header("Icon selector")]
+    [SerializeField] private LeaderboardIconOpener[] iconOpeners;
+
+    private int _cachedScore;
+
     public override void Show(Selectable returnTo = null)
     {
         playerInput.SwitchToUIMap();
+
+        if (ScoreManager.Instance != null)
+        {
+            _cachedScore = ScoreManager.Instance.TotalScore;
+            if (scoreText != null)
+            {
+                scoreText.text = _cachedScore.ToString();
+            }
+            if (rankText != null)
+            {
+                int rank = ComputeLocalRank(_cachedScore);
+                rankText.text = rank <= LeaderboardManager.MaxScoresPerPlayer ? $"#{rank}" : "#--";
+            }
+        }
+
+        for (int i = 0; i < iconOpeners.Length; i++)
+        {
+            iconOpeners[i].Init(i, PlayerPrefs.GetInt(LeaderboardIconPrefs.Keys[i], LeaderboardIconPrefs.Defaults[i]));
+        }
         base.Show(returnTo);
     }
 
@@ -42,18 +74,49 @@ public class RetryMenu : Menu
         restartButton.onClick.AddListener(OnRestartButtonPressed);
         mainMenuButton.onClick.AddListener(OnMainMenuButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
+        scoreButton.onClick.AddListener(OnScoreButtonPressed);
     }
 
     protected override void OnDisable()
     {
+        PlayerPrefs.Save();
         base.OnDisable();
         restartButton.onClick.RemoveListener(OnRestartButtonPressed);
         mainMenuButton.onClick.RemoveListener(OnMainMenuButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
+        scoreButton.onClick.RemoveListener(OnScoreButtonPressed);
+    }
+
+    public override void OnCancel(BaseEventData eventData) 
+    {
+        // Do nothing becuase retry menu will not be hidden.
+    }
+
+    private void OnScoreButtonPressed()
+    {
+        leaderboardMenu.ShowWithLiveEntry(scoreButton, _cachedScore, iconOpeners[0].SelectedId, iconOpeners[1].SelectedId, iconOpeners[2].SelectedId);
+    }
+
+    private int ComputeLocalRank(int score)
+    {
+        if (LeaderboardManager.Instance == null) { return 1; }
+
+        int rank = 1;
+        foreach (LeaderboardEntry entry in LeaderboardManager.Instance.GetMyScores())
+        {
+            if (entry.score > score) { rank++; }
+        }
+        return rank;
+    }
+
+    private void SubmitScore()
+    {
+        LeaderboardManager.Instance.SubmitScore(_cachedScore, iconOpeners[0].SelectedId, iconOpeners[1].SelectedId, iconOpeners[2].SelectedId);
     }
 
     private void OnRestartButtonPressed()
     {
+        SubmitScore();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -61,6 +124,7 @@ public class RetryMenu : Menu
     {
         confirmationDialog.Show(mainMenuConfirmIcon, () =>
         {
+            SubmitScore();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, mainMenuButton);
     }
@@ -69,6 +133,7 @@ public class RetryMenu : Menu
     {
         confirmationDialog.Show(quitConfirmIcon, () =>
         {
+            SubmitScore();
             sceneTransition.FadeAndQuit();
         }, quitButton);
     }
