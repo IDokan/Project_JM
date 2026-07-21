@@ -57,6 +57,8 @@ public class SteamManager : MonoBehaviour
         {
             case AchievementId.Welcome:
                 return "ACH_WELCOME";
+            case AchievementId.FastLearner:
+                return "ACH_FASTLEARNER";
             default:
                 Debug.LogError($"[SteamManager] No API name mapped for {achievementId}");
                 return string.Empty;

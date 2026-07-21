@@ -9,6 +9,7 @@ namespace AchievementEnums
 {
     public enum AchievementId
     {
-        Welcome
+        Welcome,
+        FastLearner
     }
 }

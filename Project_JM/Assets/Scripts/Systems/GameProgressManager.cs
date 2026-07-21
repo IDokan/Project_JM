@@ -124,6 +124,11 @@ public class GameProgressManager : MonoBehaviour
             && partyStatus.CurrentHP > partyStatus.maxHP * 0.4f)
         {
             SaveDataManager.Instance.SetHard();
+
+            if (SteamManager.Instance != null)
+            {
+                SteamManager.Instance.UnlockAchievement(AchievementId.FastLearner);
+            }
         }
 
         if (_progressAtRunStart == TutorialProgress.Hard && _numEnemyDefeated >= 4)
