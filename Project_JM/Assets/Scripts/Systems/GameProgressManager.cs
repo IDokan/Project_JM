@@ -12,6 +12,7 @@
 //
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using AchievementEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -110,6 +111,11 @@ public class GameProgressManager : MonoBehaviour
             if (_numEnemyDefeated == 4 && partyStatus.CurrentHP > partyStatus.maxHP * 0.6f)
             {
                 SaveDataManager.Instance.SetMedium();
+
+                if (SteamManager.Instance != null)
+                {
+                    SteamManager.Instance.UnlockAchievement(AchievementId.Welcome);
+                }
             }
         }
 
