@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CharacterEnums;
 using UnityEngine;
 
 public class TimedModifier
@@ -34,7 +35,7 @@ public class CharacterStatus : MonoBehaviour
     [SerializeField] protected CharacterDeathEventChannel deathEvent;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    public string CharacterName { get; }
+    public CharacterId CharacterId { get; private set; }
     public Sprite Icon => baseData.icon;
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
@@ -267,6 +268,7 @@ public class CharacterStatus : MonoBehaviour
 
     protected void Clear()
     {
+        CharacterId = baseData.characterId;
         CurrentHP = baseData.baseHP;
         maxHP = CurrentHP;
 

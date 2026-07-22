@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
+using CharacterEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
     protected Coroutine _dispatchRoutine = null;
 
     private float _spawnTime;
-    private string _spawnedEnemyName;
+    private CharacterId _spawnedEnemyId;
 
     protected void OnEnable()
     {
@@ -85,7 +86,7 @@ public class EnemySpawner : MonoBehaviour
         var characterStatus = spawnedEnemy.GetComponent<CharacterStatus>();
         characterStatus.Initialize(curvesSelector.ActiveCurves.GetDifficultyMultiplier(_numSpanwed));
         _spawnTime = Time.time;
-        _spawnedEnemyName = characterStatus.CharacterName;
+        _spawnedEnemyId = characterStatus.CharacterId;
 
         if (_dispatchRoutine != null)
         {
