@@ -5,6 +5,7 @@
 // Summary: Manages all cross-session persistent data via PlayerPrefs.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using CharacterEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -110,5 +111,22 @@ public class SaveDataManager : MonoBehaviour
     {
         PlayerPrefs.SetInt(KeyTutorialCompleted + (int)level, 1);
         PlayerPrefs.Save();
+    }
+
+    // ── Enemy Defeat Counts ───────────────────────────────────────────────────
+
+    private const string KeyEnemyDefeatCountPrefix = "enemyDefeatCount_";
+
+    public int GetEnemyDefeatCount(CharacterId characterId)
+    {
+        return PlayerPrefs.GetInt(KeyEnemyDefeatCountPrefix + characterId, 0);
+    }
+
+    public int IncrementEnemyDefeatCount(CharacterId characterId)
+    {
+        int count = GetEnemyDefeatCount(characterId) + 1;
+        PlayerPrefs.SetInt(KeyEnemyDefeatCountPrefix + characterId, count);
+        PlayerPrefs.Save();
+        return count;
     }
 }

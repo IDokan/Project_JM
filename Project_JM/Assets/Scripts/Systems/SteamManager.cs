@@ -59,6 +59,18 @@ public class SteamManager : MonoBehaviour
                 return "ACH_WELCOME";
             case AchievementId.FastLearner:
                 return "ACH_FASTLEARNER";
+            case AchievementId.SlimeKingSlayer:
+                return "ACH_SLIME_KING_10";
+            case AchievementId.AntGladiatorConqueror:
+                return "ACH_ANT_GLADIATOR_10";
+            case AchievementId.MushroomBullySubduer:
+                return "ACH_MUSHROOM_BULLY_10";
+            case AchievementId.FoxThiefHunter:
+                return "ACH_FOX_THIEF_10";
+            case AchievementId.SnailWizardVanquisher:
+                return "ACH_SNAIL_WIZARD_10";
+            case AchievementId.DandelionToadExterminator:
+                return "ACH_DANDELION_TOAD_10";
             default:
                 Debug.LogError($"[SteamManager] No API name mapped for {achievementId}");
                 return string.Empty;

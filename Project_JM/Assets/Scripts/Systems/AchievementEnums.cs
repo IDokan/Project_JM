@@ -10,6 +10,12 @@ namespace AchievementEnums
     public enum AchievementId
     {
         Welcome,
-        FastLearner
+        FastLearner,
+        SlimeKingSlayer,
+        AntGladiatorConqueror,
+        MushroomBullySubduer,
+        FoxThiefHunter,
+        SnailWizardVanquisher,
+        DandelionToadExterminator
     }
 }

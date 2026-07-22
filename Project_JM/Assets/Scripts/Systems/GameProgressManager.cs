@@ -9,10 +9,13 @@
 //              Easy    condition: defeat the 4th enemy with party HP above 60% of max HP
 //              Medium  condition: defeat the 4th enemy with party HP above 40% of max HP
 //              Hard    condition: defeat 4 enemies
+//              Enemy defeat achievements: defeat a specific enemy type 10 times total,
+//                  tracked per CharacterId across runs via SaveDataManager
 //
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using AchievementEnums;
+using CharacterEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -106,6 +109,8 @@ public class GameProgressManager : MonoBehaviour
         ++_numEnemyDefeated;
         partyStatus.Initialize(curvesSelector.ActiveCurves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
 
+        TryUnlockEnemyDefeatAchievement(stat.CharacterId);
+
         if (_progressAtRunStart == TutorialProgress.Easy)
         {
             if (_numEnemyDefeated == 4 && partyStatus.CurrentHP > partyStatus.maxHP * 0.6f)
@@ -134,6 +139,42 @@ public class GameProgressManager : MonoBehaviour
         if (_progressAtRunStart == TutorialProgress.Hard && _numEnemyDefeated >= 4)
         {
             SaveDataManager.Instance.SetChallenge();
+        }
+    }
+
+    protected void TryUnlockEnemyDefeatAchievement(CharacterId characterId)
+    {
+        int defeatCount = SaveDataManager.Instance.IncrementEnemyDefeatCount(characterId);
+        if (defeatCount != 10)
+        {
+            return;
+        }
+
+        AchievementId? achievementId = GetEnemyDefeatAchievementId(characterId);
+        if (achievementId.HasValue && SteamManager.Instance != null)
+        {
+            SteamManager.Instance.UnlockAchievement(achievementId.Value);
+        }
+    }
+
+    protected static AchievementId? GetEnemyDefeatAchievementId(CharacterId characterId)
+    {
+        switch (characterId)
+        {
+            case CharacterId.SlimeKing:
+                return AchievementId.SlimeKingSlayer;
+            case CharacterId.AntGladiator:
+                return AchievementId.AntGladiatorConqueror;
+            case CharacterId.MushroomBully:
+                return AchievementId.MushroomBullySubduer;
+            case CharacterId.FoxThief:
+                return AchievementId.FoxThiefHunter;
+            case CharacterId.SnailWizard:
+                return AchievementId.SnailWizardVanquisher;
+            case CharacterId.DandelionToad:
+                return AchievementId.DandelionToadExterminator;
+            default:
+                return null;
         }
     }
 
