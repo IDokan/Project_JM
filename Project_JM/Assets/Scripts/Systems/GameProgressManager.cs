@@ -11,11 +11,17 @@
 //              Hard    condition: defeat 4 enemies
 //              Enemy defeat achievements: defeat a specific enemy type 10 times total,
 //                  tracked per CharacterId across runs via SaveDataManager
+//              Character damage achievements: deal 10,000 / 100,000 lifetime damage
+//                  as a given party class (Knight/Bowman/Mage/Cleric, keyed by GemColor),
+//                  flushed from DamageRecordManager into SaveDataManager on every
+//                  character death (ally or enemy)
 //
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using System.Collections.Generic;
 using AchievementEnums;
 using CharacterEnums;
+using GemEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -25,6 +31,7 @@ public class GameProgressManager : MonoBehaviour
     [SerializeField] protected CharacterDeathEventChannel deathChannel;
     [SerializeField] protected DifficultyCurvesSelector curvesSelector;
     [SerializeField] protected CharacterStatus partyStatus;
+    [SerializeField] protected DamageRecordManager damageRecordManager;
 
     protected int _numEnemyDefeated = 0;
 
@@ -72,6 +79,8 @@ public class GameProgressManager : MonoBehaviour
 
     protected void OnCharacterDied(CharacterStatus stat)
     {
+        FlushDamageRecordToSaveData();
+
         if (stat.TryGetComponent<EnemyTag>(out _))
         {
             HandleEnemyDied(stat);
@@ -173,6 +182,85 @@ public class GameProgressManager : MonoBehaviour
                 return AchievementId.SnailWizardVanquisher;
             case CharacterId.DandelionToad:
                 return AchievementId.DandelionToadExterminator;
+            default:
+                return null;
+        }
+    }
+
+    protected void FlushDamageRecordToSaveData()
+    {
+        List<KeyValuePair<GemColor, int>> encounterDamage = damageRecordManager.GetSortedDamage();
+        for (int i = 0; i < encounterDamage.Count; i++)
+        {
+            GemColor color = encounterDamage[i].Key;
+            int amount = encounterDamage[i].Value;
+            if (amount <= 0)
+            {
+                continue;
+            }
+
+            int previousTotal = SaveDataManager.Instance.GetDamageDealt(color);
+            int newTotal = SaveDataManager.Instance.AddDamageDealt(color, amount);
+
+            TryUnlockDamageAchievement(color, previousTotal, newTotal);
+        }
+    }
+
+    protected void TryUnlockDamageAchievement(GemColor color, int previousTotal, int newTotal)
+    {
+        if (SteamManager.Instance == null)
+        {
+            return;
+        }
+
+        if (previousTotal < 10000 && newTotal >= 10000)
+        {
+            AchievementId? id = GetDamage10KAchievementId(color);
+            if (id.HasValue)
+            {
+                SteamManager.Instance.UnlockAchievement(id.Value);
+            }
+        }
+
+        if (previousTotal < 100000 && newTotal >= 100000)
+        {
+            AchievementId? id = GetDamage100KAchievementId(color);
+            if (id.HasValue)
+            {
+                SteamManager.Instance.UnlockAchievement(id.Value);
+            }
+        }
+    }
+
+    protected static AchievementId? GetDamage10KAchievementId(GemColor color)
+    {
+        switch (color)
+        {
+            case GemColor.Red:
+                return AchievementId.KnightDamage10K;
+            case GemColor.Yellow:
+                return AchievementId.BowmanDamage10K;
+            case GemColor.Blue:
+                return AchievementId.MageDamage10K;
+            case GemColor.Green:
+                return AchievementId.ClericDamage10K;
+            default:
+                return null;
+        }
+    }
+
+    protected static AchievementId? GetDamage100KAchievementId(GemColor color)
+    {
+        switch (color)
+        {
+            case GemColor.Red:
+                return AchievementId.KnightDamage100K;
+            case GemColor.Yellow:
+                return AchievementId.BowmanDamage100K;
+            case GemColor.Blue:
+                return AchievementId.MageDamage100K;
+            case GemColor.Green:
+                return AchievementId.ClericDamage100K;
             default:
                 return null;
         }

@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using CharacterEnums;
+using GemEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -128,5 +129,22 @@ public class SaveDataManager : MonoBehaviour
         PlayerPrefs.SetInt(KeyEnemyDefeatCountPrefix + characterId, count);
         PlayerPrefs.Save();
         return count;
+    }
+
+    // ── Damage Dealt ──────────────────────────────────────────────────────────
+
+    private const string KeyDamageDealtPrefix = "damageDealt_";
+
+    public int GetDamageDealt(GemColor color)
+    {
+        return PlayerPrefs.GetInt(KeyDamageDealtPrefix + color, 0);
+    }
+
+    public int AddDamageDealt(GemColor color, int damage)
+    {
+        int total = GetDamageDealt(color) + damage;
+        PlayerPrefs.SetInt(KeyDamageDealtPrefix + color, total);
+        PlayerPrefs.Save();
+        return total;
     }
 }

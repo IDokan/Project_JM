@@ -16,6 +16,14 @@ namespace AchievementEnums
         MushroomBullySubduer,
         FoxThiefHunter,
         SnailWizardVanquisher,
-        DandelionToadExterminator
+        DandelionToadExterminator,
+        KnightDamage10K,
+        KnightDamage100K,
+        BowmanDamage10K,
+        BowmanDamage100K,
+        MageDamage10K,
+        MageDamage100K,
+        ClericDamage10K,
+        ClericDamage100K
     }
 }

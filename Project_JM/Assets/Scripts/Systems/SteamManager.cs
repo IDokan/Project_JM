@@ -82,6 +82,22 @@ public class SteamManager : MonoBehaviour
                 return "ACH_SNAIL_WIZARD_10";
             case AchievementId.DandelionToadExterminator:
                 return "ACH_DANDELION_TOAD_10";
+            case AchievementId.KnightDamage10K:
+                return "ACH_KNIGHT_DAMAGE_10K";
+            case AchievementId.KnightDamage100K:
+                return "ACH_KNIGHT_DAMAGE_100K";
+            case AchievementId.BowmanDamage10K:
+                return "ACH_BOWMAN_DAMAGE_10K";
+            case AchievementId.BowmanDamage100K:
+                return "ACH_BOWMAN_DAMAGE_100K";
+            case AchievementId.MageDamage10K:
+                return "ACH_MAGE_DAMAGE_10K";
+            case AchievementId.MageDamage100K:
+                return "ACH_MAGE_DAMAGE_100K";
+            case AchievementId.ClericDamage10K:
+                return "ACH_CLERIC_DAMAGE_10K";
+            case AchievementId.ClericDamage100K:
+                return "ACH_CLERIC_DAMAGE_100K";
             default:
                 Debug.LogError($"[SteamManager] No API name mapped for {achievementId}");
                 return string.Empty;
