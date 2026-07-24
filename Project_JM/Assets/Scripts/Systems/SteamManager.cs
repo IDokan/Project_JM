@@ -3,18 +3,21 @@
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: SteamManager.cs
 // Summary: Persistent singleton that initializes the Steamworks API, pumps
-//          SteamAPI.RunCallbacks() every frame, and exposes UnlockAchievement() for
-//          other systems to call. Steam calls only compile when the Active Build
-//          Target is Windows Standalone (UNITY_STANDALONE_WIN covers both Editor
-//          testing and real builds under that target - UNITY_EDITOR_WIN must NOT
-//          be used here, it tracks the Editor's host OS and stays true even when the
-//          Active Build Target is switched to Android). IsInitialized stays false on
-//          every other platform so calling code never needs its own platform guards.
+//          SteamAPI.RunCallbacks() every frame, exposes UnlockAchievement() for
+//          other systems to call, and raises OnOverlayActivated when the Steam
+//          Overlay opens/closes (controller home button, Shift+Tab, Steam Deck
+//          combo - all surface through this one callback). Steam calls only
+//          compile when the Active Build Target is Windows Standalone
+//          (UNITY_STANDALONE_WIN covers both Editor testing and real builds under
+//          that target - UNITY_EDITOR_WIN must NOT be used here, it tracks the
+//          Editor's host OS and stays true even when the Active Build Target is
+//          switched to Android). IsInitialized stays false on every other
+//          platform so calling code never needs its own platform guards.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using System;
 using AchievementEnums;
 #if UNITY_STANDALONE_WIN
-using System;
 using Steamworks;
 #endif
 using UnityEngine;
@@ -25,15 +28,23 @@ public class SteamManager : MonoBehaviour
 
     public bool IsInitialized { get; private set; }
 
+    public static event Action<bool> OnOverlayActivated;
+
 #if UNITY_STANDALONE_WIN
     private const uint AppId = 4459610;
 
     private SteamAPIWarningMessageHook_t _warningMessageHook;
+    private Callback<GameOverlayActivated_t> _overlayActivatedCallback;
 
     [AOT.MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
     private static void OnSteamAPIDebugTextHook(int severity, System.Text.StringBuilder debugText)
     {
         Debug.LogWarning(debugText);
+    }
+
+    private static void OnGameOverlayActivated(GameOverlayActivated_t callback)
+    {
+        OnOverlayActivated?.Invoke(callback.m_bActive != 0);
     }
 #endif
 
@@ -126,6 +137,8 @@ public class SteamManager : MonoBehaviour
 
         _warningMessageHook = new SteamAPIWarningMessageHook_t(OnSteamAPIDebugTextHook);
         SteamClient.SetWarningMessageHook(_warningMessageHook);
+
+        _overlayActivatedCallback = Callback<GameOverlayActivated_t>.Create(OnGameOverlayActivated);
 #endif
     }
 
@@ -150,6 +163,8 @@ public class SteamManager : MonoBehaviour
         }
 
         Instance = null;
+
+        _overlayActivatedCallback?.Dispose();
 
         if (IsInitialized)
         {

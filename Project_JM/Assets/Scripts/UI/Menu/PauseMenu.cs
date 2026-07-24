@@ -41,6 +41,8 @@ public class PauseMenu : Menu
         optionButton.onClick.AddListener(OnOptionButtonPressed);
         homeButton.onClick.AddListener(OnHomeButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
+        SteamManager.OnOverlayActivated += OnSteamOverlayActivated;
+        playerInput.onDeviceLost += OnDeviceLost;
     }
 
     protected override void OnDisable()
@@ -50,9 +52,27 @@ public class PauseMenu : Menu
         optionButton.onClick.RemoveListener(OnOptionButtonPressed);
         homeButton.onClick.RemoveListener(OnHomeButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
+        SteamManager.OnOverlayActivated -= OnSteamOverlayActivated;
+        playerInput.onDeviceLost -= OnDeviceLost;
     }
 
     public bool IsPaused { get; private set; }
+
+    protected void OnSteamOverlayActivated(bool isActive)
+    {
+        if (isActive && !IsPaused)
+        {
+            Show();
+        }
+    }
+
+    protected void OnDeviceLost(PlayerInput player)
+    {
+        if (!IsPaused)
+        {
+            Show();
+        }
+    }
 
     public override void Show(Selectable returnTo = null)
     {
