@@ -56,8 +56,17 @@ public class SteamManager : MonoBehaviour
             return;
         }
 
-        SteamUserStats.SetAchievement(GetAchievementApiName(achievementId));
-        SteamUserStats.StoreStats();
+        string apiName = GetAchievementApiName(achievementId);
+        if (!SteamUserStats.SetAchievement(apiName))
+        {
+            Debug.LogError($"[SteamManager] SetAchievement({apiName}) failed for {achievementId}.");
+            return;
+        }
+
+        if (!SteamUserStats.StoreStats())
+        {
+            Debug.LogError($"[SteamManager] StoreStats() failed while unlocking {achievementId}.");
+        }
 #endif
     }
 
