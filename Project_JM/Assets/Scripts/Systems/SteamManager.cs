@@ -166,6 +166,8 @@ public class SteamManager : MonoBehaviour
             return;
         }
 
+        Debug.Log($"[SteamManager] SteamAPI.Init() succeeded for AppId {AppId}.");
+
         _warningMessageHook = new SteamAPIWarningMessageHook_t(OnSteamAPIDebugTextHook);
         SteamClient.SetWarningMessageHook(_warningMessageHook);
 
