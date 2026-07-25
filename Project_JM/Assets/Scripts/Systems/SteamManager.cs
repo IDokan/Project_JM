@@ -98,6 +98,12 @@ public class SteamManager : MonoBehaviour
                 return "ACH_CLERIC_DAMAGE_10K";
             case AchievementId.ClericDamage100K:
                 return "ACH_CLERIC_DAMAGE_100K";
+            case AchievementId.BronzeCompetitor:
+                return "ACH_SCORE_20K";
+            case AchievementId.SilverCompetitor:
+                return "ACH_SCORE_25K";
+            case AchievementId.GoldCompetitor:
+                return "ACH_SCORE_30K";
             default:
                 Debug.LogError($"[SteamManager] No API name mapped for {achievementId}");
                 return string.Empty;

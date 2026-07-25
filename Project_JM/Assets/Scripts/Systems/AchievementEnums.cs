@@ -24,6 +24,9 @@ namespace AchievementEnums
         MageDamage10K,
         MageDamage100K,
         ClericDamage10K,
-        ClericDamage100K
+        ClericDamage100K,
+        BronzeCompetitor,
+        SilverCompetitor,
+        GoldCompetitor
     }
 }
