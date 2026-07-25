@@ -615,41 +615,6 @@ MonoBehaviour:
   landscapeAnchorMax: {x: 0.5, y: 0.5}
   portraitAnchorMin: {x: 0.5, y: 0}
   portraitAnchorMax: {x: 0.5, y: 0}
---- !u!1 &1133038903 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8793194609537643643, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
-  m_PrefabInstance: {fileID: 710247270863006509}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1133038906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133038903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36c8b62503195ef4a8bb002d13fd4cdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationAnchor
-  landscapeAnchorMin: {x: 0.5, y: 0.5}
-  landscapeAnchorMax: {x: 0.5, y: 0.5}
-  portraitAnchorMin: {x: 0.5, y: 0}
-  portraitAnchorMax: {x: 0.5, y: 0}
---- !u!114 &1133038907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133038903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 126bc64bdd8f28240bbea9635fd24f27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
-  landscapeAnchoredPosition: {x: -525, y: 10}
-  portraitAnchoredPosition: {x: 0, y: 360}
 --- !u!114 &1169785143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1280,15 +1245,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4607956388615466974, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4607956388615466974, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4607956388615466974, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253469988181360141, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       propertyPath: leaderboardManager
@@ -1608,12 +1573,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3639626747582491883, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 739420004}
-    - targetCorrespondingSourceObject: {fileID: 8793194609537643643, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1133038907}
-    - targetCorrespondingSourceObject: {fileID: 8793194609537643643, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1133038906}
     - targetCorrespondingSourceObject: {fileID: 7180302405363383850, guid: d0472914cef3fd6458f41567b4bff1dc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 710247270863006512}
