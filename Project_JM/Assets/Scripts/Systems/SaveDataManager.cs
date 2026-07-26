@@ -7,6 +7,7 @@
 
 using CharacterEnums;
 using GemEnums;
+using MatchEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -146,5 +147,46 @@ public class SaveDataManager : MonoBehaviour
         PlayerPrefs.SetInt(KeyDamageDealtPrefix + color, total);
         PlayerPrefs.Save();
         return total;
+    }
+
+    // ── Jewel Match Counts ────────────────────────────────────────────────────
+
+    private const string KeyJewelMatchCountPrefix = "jewelMatchCount_";
+
+    public int GetJewelMatchCount(GemColor color, MatchTier tier)
+    {
+        return PlayerPrefs.GetInt(BuildJewelMatchCountKey(color, tier), 0);
+    }
+
+    public int AddJewelMatchCount(GemColor color, MatchTier tier, int delta)
+    {
+        string key = BuildJewelMatchCountKey(color, tier);
+        int total = PlayerPrefs.GetInt(key, 0) + delta;
+        PlayerPrefs.SetInt(key, total);
+        PlayerPrefs.Save();
+        return total;
+    }
+
+    // GemColor.None collapses all tiers into one counter, so its key omits the tier suffix.
+    private static string BuildJewelMatchCountKey(GemColor color, MatchTier tier)
+    {
+        return color == GemColor.None
+            ? KeyJewelMatchCountPrefix + color
+            : KeyJewelMatchCountPrefix + color + "_" + tier;
+    }
+
+    // ── Max Combo ─────────────────────────────────────────────────────────────
+
+    private const string KeyMaxCombo = "maxComboRecorded";
+
+    public int GetMaxCombo() => PlayerPrefs.GetInt(KeyMaxCombo, 0);
+
+    public void TrySetMaxCombo(int combo)
+    {
+        if (combo > GetMaxCombo())
+        {
+            PlayerPrefs.SetInt(KeyMaxCombo, combo);
+            PlayerPrefs.Save();
+        }
     }
 }

@@ -13,6 +13,7 @@ using UnityEngine;
 public class ComboManager : MonoBehaviour
 {
     [SerializeField] protected MatchEventChannel matchEvents;
+    [SerializeField] protected CharacterDeathEventChannel deathChannel;
     [SerializeField] protected CharacterStatus partyStatus;
     [SerializeField] protected float comboResetTime = 3f;
 
@@ -30,16 +31,19 @@ public class ComboManager : MonoBehaviour
 
     protected int _comboCount = 0;
     protected float _timer = 0f;
+    protected int _maxComboThisRun = 0;
 
 
     private void OnEnable()
     {
         matchEvents.OnRaised += OnMatch;
+        deathChannel.OnRaised += OnCharacterDied;
     }
 
     private void OnDisable()
     {
         matchEvents.OnRaised -= OnMatch;
+        deathChannel.OnRaised -= OnCharacterDied;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -80,6 +84,7 @@ public class ComboManager : MonoBehaviour
 
         // On Match, increase combo for a duration.
         _comboCount += (int)matchEvent.Tier;
+        _maxComboThisRun = Mathf.Max(_maxComboThisRun, _comboCount);
         _timer = comboResetTime;
         OnComboUpdated.Invoke(_comboCount, _timer);
 
@@ -103,5 +108,10 @@ public class ComboManager : MonoBehaviour
         partyStatus.SetComboCritBonus(_comboCount);
         _timer = 0f;
         OnComboUpdated.Invoke(_comboCount, _timer);
+    }
+
+    protected void OnCharacterDied(CharacterStatus stat)
+    {
+        SaveDataManager.Instance.TrySetMaxCombo(_maxComboThisRun);
     }
 }
