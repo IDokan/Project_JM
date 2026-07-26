@@ -189,4 +189,19 @@ public class SaveDataManager : MonoBehaviour
             PlayerPrefs.Save();
         }
     }
+
+    // ── Best Score ────────────────────────────────────────────────────────────
+
+    private const string KeyBestScore = "bestScoreLifetime";
+
+    public int GetBestScore() => PlayerPrefs.GetInt(KeyBestScore, 0);
+
+    public void TrySetBestScore(int score)
+    {
+        if (score > GetBestScore())
+        {
+            PlayerPrefs.SetInt(KeyBestScore, score);
+            PlayerPrefs.Save();
+        }
+    }
 }

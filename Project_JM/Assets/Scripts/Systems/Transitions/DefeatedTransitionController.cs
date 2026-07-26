@@ -145,6 +145,7 @@ public class DefeatedTransitionController : TransitionController
 
         if (ScoreManager.Instance != null)
         {
+            SaveDataManager.Instance.TrySetBestScore(ScoreManager.Instance.TotalScore);
             TryUnlockScoreAchievements(ScoreManager.Instance.TotalScore);
         }
 
