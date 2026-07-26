@@ -16,6 +16,7 @@ public class MainMenu : Menu
     [Header("Buttons")]
     [SerializeField] private Button gameStartButton;
     [SerializeField] private Button leaderboardButton;
+    [SerializeField] private Button statsButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private Button quitButton;
 
@@ -24,6 +25,7 @@ public class MainMenu : Menu
     [SerializeField] private SceneTransition sceneTransition;
     [SerializeField] private OptionMenu optionMenu;
     [SerializeField] private LeaderboardMenu leaderboardMenu;
+    [SerializeField] private StatsMenu statsMenu;
     [SerializeField] private ConfirmationDialog confirmationDialog;
 
     [Header("Transition")]
@@ -38,6 +40,7 @@ public class MainMenu : Menu
 
         gameStartButton.onClick.AddListener(OnGameStartClicked);
         leaderboardButton.onClick.AddListener(OnLeaderboardClicked);
+        statsButton.onClick.AddListener(OnStatsClicked);
         optionButton.onClick.AddListener(OnOptionClicked);
         quitButton.onClick.AddListener(OnQuitClicked);
     }
@@ -48,6 +51,7 @@ public class MainMenu : Menu
 
         gameStartButton.onClick.RemoveListener(OnGameStartClicked);
         leaderboardButton.onClick.RemoveListener(OnLeaderboardClicked);
+        statsButton.onClick.RemoveListener(OnStatsClicked);
         optionButton.onClick.RemoveListener(OnOptionClicked);
         quitButton.onClick.RemoveListener(OnQuitClicked);
     }
@@ -75,6 +79,11 @@ public class MainMenu : Menu
     private void OnLeaderboardClicked()
     {
         leaderboardMenu.Show(leaderboardButton);
+    }
+
+    private void OnStatsClicked()
+    {
+        statsMenu.Show(statsButton);
     }
 
     private void OnOptionClicked()
