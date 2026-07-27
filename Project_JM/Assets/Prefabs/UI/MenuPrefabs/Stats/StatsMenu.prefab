@@ -2060,7 +2060,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5233538650263636401}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -3645,7 +3645,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8381096397141176059}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -4405,6 +4405,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1410043820738014121, guid: afd885cf05adb2347acf660859eaa075, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5998017242689296601}
+    - targetCorrespondingSourceObject: {fileID: 1410043820738014121, guid: afd885cf05adb2347acf660859eaa075, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4290481300105382620}
   m_SourcePrefab: {fileID: 100100000, guid: afd885cf05adb2347acf660859eaa075, type: 3}
 --- !u!1 &1745368375052084241 stripped
 GameObject:
@@ -4424,7 +4427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
   landscapeAnchoredPosition: {x: -450, y: -30}
-  portraitAnchoredPosition: {x: 0, y: 0}
+  portraitAnchoredPosition: {x: -80, y: 540}
 --- !u!114 &5998017242689296601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4443,6 +4446,22 @@ MonoBehaviour:
   style: {fileID: 11400000, guid: 62126d572e2733744941be9f33642fed, type: 2}
   showOnAwake: 0
   canvasGroup: {fileID: 0}
+--- !u!114 &4290481300105382620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745368375052084241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c8b62503195ef4a8bb002d13fd4cdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationAnchor
+  landscapeAnchorMin: {x: 0.5, y: 0.5}
+  landscapeAnchorMax: {x: 0.5, y: 0.5}
+  portraitAnchorMin: {x: 0.5, y: 0}
+  portraitAnchorMax: {x: 0.5, y: 0}
 --- !u!224 &5740973703836145833 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4901527191394703121, guid: afd885cf05adb2347acf660859eaa075, type: 3}
@@ -4785,9 +4804,25 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
       objectReference: {fileID: 6464358306147986987}
+    - target: {fileID: 467250080796224675, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 467250080796224675, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 1261260677962004625, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_Name
       value: Title
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005648518173296167, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005648518173296167, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 4701934142523276012, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_Pivot.x
@@ -4869,10 +4904,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4774816248897527446, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774816248897527446, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -80
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326649518755297148, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6688601864453736081, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 715713493480916705, guid: bfdcaadea8a331d48baf6a10344b5beb, type: 3}
+    - target: {fileID: 7180146322125304931, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 7180146322125304931, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -80
+      objectReference: {fileID: 0}
     - target: {fileID: 8831369618520559083, guid: 7376b0126f3a29f45889956a3f51c2d7, type: 3}
       propertyPath: m_SizeDelta.x
       value: 151.38885
@@ -5238,6 +5293,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: JewelCheckbox
       objectReference: {fileID: 0}
+    - target: {fileID: 1702853735104104637, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1702853735104104637, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1702853735104104637, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4478354526463417950, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5344,6 +5411,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6374680564214279510, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538241364399660673, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      propertyPath: m_IsOn
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7538241364399660673, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
