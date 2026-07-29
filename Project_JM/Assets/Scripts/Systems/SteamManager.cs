@@ -6,7 +6,11 @@
 //          SteamAPI.RunCallbacks() every frame, exposes UnlockAchievement() for
 //          other systems to call, and raises OnOverlayActivated when the Steam
 //          Overlay opens/closes (controller home button, Shift+Tab, Steam Deck
-//          combo - all surface through this one callback). Steam calls only
+//          combo - all surface through this one callback), and mirrors
+//          SaveDataManager's PlayerPrefs data to a Steam Cloud file via
+//          PushSaveSnapshot()/TryPullSaveSnapshot() (PlayerPrefs itself stays
+//          the source of truth on every platform; Cloud is an additive mirror
+//          only present on this build target). Steam calls only
 //          compile when the Active Build Target is Windows Standalone
 //          (UNITY_STANDALONE_WIN covers both Editor testing and real builds under
 //          that target - UNITY_EDITOR_WIN must NOT be used here, it tracks the
@@ -32,6 +36,7 @@ public class SteamManager : MonoBehaviour
 
 #if UNITY_STANDALONE_WIN
     private const uint AppId = 4459610;
+    private const string SaveFileName = "save.json";
 
     private SteamAPIWarningMessageHook_t _warningMessageHook;
     private Callback<GameOverlayActivated_t> _overlayActivatedCallback;
@@ -67,6 +72,52 @@ public class SteamManager : MonoBehaviour
         {
             Debug.LogError($"[SteamManager] StoreStats() failed while unlocking {achievementId}.");
         }
+#endif
+    }
+
+    public void PushSaveSnapshot(string json)
+    {
+#if UNITY_STANDALONE_WIN
+        if (!IsInitialized)
+        {
+            return;
+        }
+
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
+        if (!SteamRemoteStorage.FileWrite(SaveFileName, bytes, bytes.Length))
+        {
+            Debug.LogError("[SteamManager] FileWrite(save.json) failed.");
+        }
+#endif
+    }
+
+    public bool TryPullSaveSnapshot(out string json)
+    {
+        json = null;
+#if UNITY_STANDALONE_WIN
+        if (!IsInitialized || !SteamRemoteStorage.FileExists(SaveFileName))
+        {
+            return false;
+        }
+
+        int size = SteamRemoteStorage.GetFileSize(SaveFileName);
+        if (size <= 0)
+        {
+            return false;
+        }
+
+        byte[] buffer = new byte[size];
+        int bytesRead = SteamRemoteStorage.FileRead(SaveFileName, buffer, size);
+        if (bytesRead <= 0)
+        {
+            Debug.LogError("[SteamManager] FileRead(save.json) returned no data.");
+            return false;
+        }
+
+        json = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        return true;
+#else
+        return false;
 #endif
     }
 

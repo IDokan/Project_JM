@@ -116,6 +116,7 @@ public class PauseMenu : Menu
         {
             Hide();
             GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+            SaveDataManager.Instance.PushToSteamCloud();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, homeButton);
     }

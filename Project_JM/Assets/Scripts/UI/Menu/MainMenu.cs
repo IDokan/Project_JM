@@ -68,6 +68,8 @@ public class MainMenu : Menu
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
+        SaveDataManager.Instance.PushToSteamCloud();
+
         AsyncOperation loadOp = SceneManager.LoadSceneAsync("CombatScene");
         loadOp.allowSceneActivation = false;
 
