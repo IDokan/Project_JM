@@ -4,13 +4,17 @@
 // File: SteamManager.cs
 // Summary: Persistent singleton that initializes the Steamworks API, pumps
 //          SteamAPI.RunCallbacks() every frame, exposes UnlockAchievement() for
-//          other systems to call, and raises OnOverlayActivated when the Steam
+//          other systems to call, raises OnOverlayActivated when the Steam
 //          Overlay opens/closes (controller home button, Shift+Tab, Steam Deck
-//          combo - all surface through this one callback), and mirrors
+//          combo - all surface through this one callback), mirrors
 //          SaveDataManager's PlayerPrefs data to a Steam Cloud file via
 //          PushSaveSnapshot()/TryPullSaveSnapshot() (PlayerPrefs itself stays
 //          the source of truth on every platform; Cloud is an additive mirror
-//          only present on this build target). Steam calls only
+//          only present on this build target), and exposes
+//          AddInstantaneousTimelineMarker() so other systems can drop markers
+//          onto the Steam Timeline (title/description text renders only in the
+//          Steam overlay, so it is exempt from the project's text-less in-game
+//          UI rule). Steam calls only
 //          compile when the Active Build Target is Windows Standalone
 //          (UNITY_STANDALONE_WIN covers both Editor testing and real builds under
 //          that target - UNITY_EDITOR_WIN must NOT be used here, it tracks the
@@ -88,6 +92,18 @@ public class SteamManager : MonoBehaviour
         {
             Debug.LogError("[SteamManager] FileWrite(save.json) failed.");
         }
+#endif
+    }
+
+    public void AddInstantaneousTimelineMarker(string title, string description, string icon, uint priority = 0)
+    {
+#if UNITY_STANDALONE_WIN
+        if (!IsInitialized)
+        {
+            return;
+        }
+
+        SteamTimeline.AddInstantaneousTimelineEvent(title, description, icon, priority);
 #endif
     }
 
