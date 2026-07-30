@@ -400,15 +400,8 @@ public class LeaderboardManager : MonoBehaviour
         _cachedGlobalEntries = _cachedGlobalEntries.OrderByDescending(e => e.score).ToList();
     }
 
-    private const bool UseTestCollection = true;
-
     public static string WeeklyCollectionName()
     {
-        if (UseTestCollection)
-        {
-            return "leaderboard_test";
-        }
-
         System.DateTime now = System.DateTime.UtcNow;
         int week = ISOWeek.GetWeekOfYear(now);
         return $"leaderboard_{now.Year}_W{week:D2}";
