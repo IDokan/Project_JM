@@ -4,8 +4,9 @@
 // File: IconSelectorMenu.cs
 // Summary: Scrollable icon-grid menu for picking a leaderboard icon. Icons are sorted by ID
 //          and separated into visual row-groups every IdsPerCategory IDs. Clicking an icon
-//          centres it in the viewport and fires onIconSelected; clicking the already-selected
-//          icon closes the menu. Half-viewport padding ensures edge icons can be centred.
+//          immediately fires onIconSelected and closes the menu. Navigating focus (keyboard/
+//          gamepad) only centres the viewport without applying a selection. Half-viewport
+//          padding ensures edge icons can be centred.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using DG.Tweening;
@@ -164,7 +165,7 @@ public class IconSelectorMenu : Menu
         Button button = Instantiate(iconButtonPrefab, content);
         int capturedId = entry.id;
         button.onClick.AddListener(() => OnIconClicked(capturedId));
-        button.GetComponent<LeaderboardIconSelectNotifier>().Init(capturedId, OnButtonNavigated, OnButtonPointerUp);
+        button.GetComponent<LeaderboardIconSelectNotifier>().Init(capturedId, OnButtonNavigated);
 
         Image icon = null;
         foreach (Transform child in button.transform)
@@ -280,17 +281,9 @@ public class IconSelectorMenu : Menu
         }
     }
 
-    private void OnButtonPointerUp(int id)
-    {
-        //_selectedId = id;
-        //CenterOnItem(id, animate: true);
-    }
-
     private void OnIconClicked(int id)
     {
         _selectedId = id;
-
-        if (DOTween.IsTweening(scrollRect)) { return; }
 
         _onIconSelected?.Invoke(_selectedId);
         Hide();
