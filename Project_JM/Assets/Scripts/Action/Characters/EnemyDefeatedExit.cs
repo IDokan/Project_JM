@@ -2,7 +2,7 @@
 // Copyright (c) 05/11/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: EnemyDefeatedExit.cs
-// Summary: Moves a defeated enemy downward off screen when the middle transition begins.
+// Summary: Moves a defeated enemy downward off screen when the reward transition begins.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
@@ -29,7 +29,7 @@ public class EnemyDefeatedExit : MonoBehaviour
 
     private void OnTransitionPhase(TransitionPhase phase)
     {
-        if (phase == TransitionPhase.MiddleCameraMoveBegin && characterStatus.IsDead)
+        if (phase == TransitionPhase.RewardTransitionStarts && characterStatus.IsDead)
         {
             StartCoroutine(ExitRoutine());
         }

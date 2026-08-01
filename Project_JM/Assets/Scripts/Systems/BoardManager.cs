@@ -1336,10 +1336,17 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected void OnTransitionEvent(TransitionPhase phase)
     {
         if (phase == TransitionPhase.IntroTransitionBegin ||
-            phase == TransitionPhase.MiddleTransitionStarts ||
+            phase == TransitionPhase.RewardTransitionStarts ||
             phase == TransitionPhase.EndTransitionBegin)
         {
-            EnableCover(phase != TransitionPhase.EndTransitionBegin);
+            // Only the intro board setup schedules a delayed refill; the reward
+            // transition only needs the cover, and the actual refill happens
+            // immediately once the real middle transition begins (still covered).
+            EnableCover(phase == TransitionPhase.IntroTransitionBegin);
+        }
+        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            ClearAndRefillGems();
         }
     }
 }

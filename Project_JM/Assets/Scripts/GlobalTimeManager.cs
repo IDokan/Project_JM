@@ -100,7 +100,7 @@ public class GlobalTimeManager : MonoBehaviour
 
     protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == TransitionPhase.MiddleTransitionStarts ||
+        if (phase == TransitionPhase.RewardTransitionStarts ||
             phase == TransitionPhase.EndTransitionBegin)
         {
             EndRoutine();

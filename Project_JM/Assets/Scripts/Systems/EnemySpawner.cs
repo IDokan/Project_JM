@@ -114,7 +114,7 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnNextEnemy();
         }
-        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        else if (phase == TransitionPhase.RewardTransitionStarts)
         {
             enemyAlertEventChannel.Raise(_enemyBook.PeekNextEnemy());
         }

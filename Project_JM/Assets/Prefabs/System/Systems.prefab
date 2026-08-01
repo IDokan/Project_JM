@@ -285,6 +285,7 @@ Transform:
   - {fileID: 7977332482991831798}
   - {fileID: 2405939552609032351}
   - {fileID: 1049317832024940350}
+  - {fileID: 7398407600414546201}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8348092773870949786
@@ -352,6 +353,102 @@ MonoBehaviour:
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   curvesSelector: {fileID: 1610682429086473757}
   damageBonusChangedEventChannel: {fileID: 11400000, guid: 41019213f5534874c9e4df7fd2bcd834, type: 2}
+--- !u!1 &4248698735551314310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7398407600414546201}
+  - component: {fileID: 1371772693544022494}
+  m_Layer: 0
+  m_Name: RewardChestSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7398407600414546201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4248698735551314310}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 935236977859202638}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1371772693544022494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4248698735551314310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0515f27b620111e4fb1b30e4000e94fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardChestSpawner
+  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  chestPrefab: {fileID: 6297779400747536397, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+  landscapeSpawnPosition: {x: 3.2, y: -2.7, z: 0}
+  portraitSpawnPosition: {x: 3.2, y: -2.7, z: 0}
+--- !u!1 &4376410492948454814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1586530840875355174}
+  - component: {fileID: 2119271594995646175}
+  m_Layer: 0
+  m_Name: RewardTransitionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1586530840875355174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4376410492948454814}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 642504370684030821}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2119271594995646175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4376410492948454814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfd1e2b0f95ccb84cbf8529dda0c74ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardTransitionController
+  transitionManager: {fileID: 5839353086084169784}
+  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  rewardChosenEventChannel: {fileID: 11400000, guid: 099b1f32c8367674ebfb4a6bf126ab96, type: 2}
 --- !u!1 &4459710661837427515
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,9 +692,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1910bb58875f754ca0057c5e7fded1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiddleTransitionManager
-  transitionManager: {fileID: 0}
+  transitionManager: {fileID: 5839353086084169784}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
-  characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   cameraStartDelay: 1
   enemySpawnDelay: 4
   middleTransitionDuration: 6
@@ -692,6 +788,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8966201012242255051}
+  - {fileID: 1586530840875355174}
   - {fileID: 2337702124212408917}
   - {fileID: 6576699504397149851}
   m_Father: {fileID: 935236977859202638}
@@ -710,6 +807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TransitionManager
   transitionControllers:
   - {fileID: 2655240604946002307}
+  - {fileID: 2119271594995646175}
   - {fileID: 1369642959996047647}
   - {fileID: 2770614653617851893}
   skipHoldingTime: 0.5

@@ -14,7 +14,6 @@ using UnityEngine;
 public class MiddleTransitionController : TransitionController
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
-    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
 
     [SerializeField] protected float cameraStartDelay = 1f;
     [SerializeField] protected float enemySpawnDelay = 3f;
@@ -22,17 +21,17 @@ public class MiddleTransitionController : TransitionController
 
     protected void OnEnable()
     {
-        characterDeathEventChannel.OnRaised += OnAnyoneDied;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
 
     protected void OnDisable()
     {
-        characterDeathEventChannel.OnRaised -= OnAnyoneDied;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
-    protected void OnAnyoneDied(CharacterStatus stat)
+    protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (stat.TryGetComponent<EnemyTag>(out _))
+        if (phase == TransitionPhase.RewardTransitionEnd)
         {
             RequestTransitionStart(BeginMiddleTransition);
         }

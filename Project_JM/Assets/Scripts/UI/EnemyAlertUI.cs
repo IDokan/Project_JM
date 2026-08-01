@@ -61,7 +61,7 @@ public class EnemyAlertUI : MonoBehaviour
 
     protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == TransitionPhase.MiddleTransitionStarts)
+        if (phase == TransitionPhase.RewardTransitionStarts)
         {
             ShowAlert();
         }
