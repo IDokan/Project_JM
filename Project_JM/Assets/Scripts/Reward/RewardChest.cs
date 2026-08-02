@@ -2,88 +2,39 @@
 // Copyright (c) 01/08/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: RewardChest.cs
-// Summary: Opens after a short delay to reveal reward buttons, raises
-//          RewardChosenEventChannel once the player picks one, and moves
-//          itself off-screen once the middle transition begins.
+// Summary: A purely visual reward chest prop with no transition-event
+//          knowledge of its own; RewardChestManager tells it when to show
+//          and hide via Show/Hide. One instance is reused for every enemy
+//          defeat rather than being instantiated fresh each time.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RewardChest : MonoBehaviour
 {
-    [SerializeField] protected TransitionEventChannel transitionEventChannel;
-    [SerializeField] protected RewardChosenEventChannel rewardChosenEventChannel;
+    [SerializeField] protected float exitDistance = 6f;
+    [SerializeField] protected float exitDuration = 3f;
 
-    [SerializeField] protected float openDelay = 1f;
-    [SerializeField] protected float exitDistance = 10f;
-    [SerializeField] protected float exitDuration = 1f;
+    protected Coroutine _exitRoutine;
 
-    protected Button[] _rewardButtons;
-    protected CanvasGroup _rewardButtonsGroup;
-
-    protected void OnEnable()
+    // Called by RewardChestManager when the reward transition starts.
+    public void Show(Vector3 position)
     {
-        transitionEventChannel.OnRaised += OnTransitionEvent;
-        StartCoroutine(OpenAfterDelay());
+        transform.position = position;
+        gameObject.SetActive(true);
     }
 
-    protected void OnDisable()
+    // Called by RewardChestManager when the middle transition starts; slides
+    // the chest off-screen and deactivates it once the slide finishes.
+    public void Hide()
     {
-        transitionEventChannel.OnRaised -= OnTransitionEvent;
-
-        if (_rewardButtons != null)
+        if (_exitRoutine != null)
         {
-            for (int i = 0; i < _rewardButtons.Length; i++)
-            {
-                _rewardButtons[i].onClick.RemoveListener(OnRewardButtonPressed);
-            }
-        }
-    }
-
-    // Called by RewardChestSpawner right after Instantiate, since the reward
-    // buttons live in the scene's UI canvas rather than under this prefab.
-    public void Initialize(Button[] rewardButtons, CanvasGroup rewardButtonsGroup)
-    {
-        _rewardButtons = rewardButtons;
-        _rewardButtonsGroup = rewardButtonsGroup;
-
-        for (int i = 0; i < _rewardButtons.Length; i++)
-        {
-            _rewardButtons[i].onClick.AddListener(OnRewardButtonPressed);
+            StopCoroutine(_exitRoutine);
         }
 
-        SetButtonsVisible(false);
-    }
-
-    protected void OnTransitionEvent(TransitionPhase phase)
-    {
-        if (phase == TransitionPhase.MiddleTransitionStarts)
-        {
-            StartCoroutine(ExitRoutine());
-        }
-    }
-
-    protected IEnumerator OpenAfterDelay()
-    {
-        yield return new WaitForSeconds(openDelay);
-
-        SetButtonsVisible(true);
-    }
-
-    protected void OnRewardButtonPressed()
-    {
-        SetButtonsVisible(false);
-
-        rewardChosenEventChannel.Raise();
-    }
-
-    protected void SetButtonsVisible(bool visible)
-    {
-        _rewardButtonsGroup.alpha = visible ? 1f : 0f;
-        _rewardButtonsGroup.interactable = visible;
-        _rewardButtonsGroup.blocksRaycasts = visible;
+        _exitRoutine = StartCoroutine(ExitRoutine());
     }
 
     protected IEnumerator ExitRoutine()
@@ -100,5 +51,7 @@ public class RewardChest : MonoBehaviour
         }
 
         transform.position = end;
+        _exitRoutine = null;
+        gameObject.SetActive(false);
     }
 }

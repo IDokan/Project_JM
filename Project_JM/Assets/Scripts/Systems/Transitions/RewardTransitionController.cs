@@ -18,18 +18,17 @@ public class RewardTransitionController : TransitionController
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
-    [SerializeField] protected RewardChosenEventChannel rewardChosenEventChannel;
 
     protected void OnEnable()
     {
         characterDeathEventChannel.OnRaised += OnAnyoneDied;
-        rewardChosenEventChannel.OnRaised += OnRewardChosen;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
 
     protected void OnDisable()
     {
         characterDeathEventChannel.OnRaised -= OnAnyoneDied;
-        rewardChosenEventChannel.OnRaised -= OnRewardChosen;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
     protected void OnAnyoneDied(CharacterStatus stat)
@@ -45,9 +44,12 @@ public class RewardTransitionController : TransitionController
         transitionEventChannel.Raise(TransitionPhase.RewardTransitionStarts);
     }
 
-    protected void OnRewardChosen()
+    protected void OnTransitionEvent(TransitionPhase phase)
     {
-        transitionEventChannel.Raise(TransitionPhase.RewardTransitionEnd);
-        CompleteTransition();
+        if (phase == TransitionPhase.RewardChosen)
+        {
+            transitionEventChannel.Raise(TransitionPhase.RewardTransitionEnd);
+            CompleteTransition();
+        }
     }
 }

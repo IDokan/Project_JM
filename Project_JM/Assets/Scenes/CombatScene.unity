@@ -2249,6 +2249,17 @@ MonoBehaviour:
   worldTarget: {fileID: 1364631697}
   worldCamera: {fileID: 519420031}
   canvas: {fileID: 33780020}
+--- !u!114 &1811725020 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3995537851798041511, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736e09ea56ece5f4ab4c83916e2fec72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardChest
 --- !u!1 &1890510005
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,6 +3611,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1371772693544022494, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: chest
+      value: 
+      objectReference: {fileID: 1811725020}
+    - target: {fileID: 1371772693544022494, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: rewardButtonsGroup
       value: 
       objectReference: {fileID: 809152661}
@@ -3783,10 +3798,26 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7661109956345959131, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1183.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661109956345959131, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -583.4587
+      objectReference: {fileID: 0}
     - target: {fileID: 7784887393510410484, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: m_LocalPosition.y
       value: -160
       objectReference: {fileID: 0}
+    - target: {fileID: 7858995295406063370, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: partyRoster
+      value: 
+      objectReference: {fileID: 1233718908}
+    - target: {fileID: 7858995295406063370, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: partyStatus
+      value: 
+      objectReference: {fileID: 1233718909}
     - target: {fileID: 8115716145221142382, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -3841,6 +3872,17 @@ PrefabInstance:
       addedObject: {fileID: 904578680}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+--- !u!114 &5760348805556038936 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7858995295406063370, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2593368634f5b0845aec0dcd4dd97973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardManager
 --- !u!1001 &6231230550165760674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5409,6 +5451,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: rewardManager
+      value: 
+      objectReference: {fileID: 5760348805556038936}
     - target: {fileID: 6818245997280360303, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

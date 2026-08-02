@@ -28,6 +28,17 @@ public class PartyRoster : MonoBehaviour
         return null;
     }
 
+    public CharacterCombatant[] GetAll()
+    {
+        CharacterCombatant[] characters = new CharacterCombatant[slots.Length];
+        for (int i = 0; i < slots.Length; i++)
+        {
+            characters[i] = slots[i].Character;
+        }
+
+        return characters;
+    }
+
     public Transform GetCharacterTransform(GemColor color)
     {
         for (int i = 0; i < slots.Length; i++)

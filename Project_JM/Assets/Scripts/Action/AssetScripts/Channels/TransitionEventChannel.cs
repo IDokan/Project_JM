@@ -15,6 +15,7 @@ public enum TransitionPhase
     IntroPartyMoveEnd,
     IntroBoardMoveEnd,
     RewardTransitionStarts,
+    RewardChosen,
     RewardTransitionEnd,
     MiddleTransitionStarts,
     MiddleCameraMoveBegin,

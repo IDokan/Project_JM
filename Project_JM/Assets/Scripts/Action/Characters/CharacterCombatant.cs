@@ -74,7 +74,21 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             if (isCritical)
             {
                 damage *= attackerObject.Status.CriticalDamage;
+
+                // Reward-granted critical damage only ever applies to ally attackers;
+                // GemColor is also used to type enemies, so this must not read for enemy attackers.
+                if (!isEnemyAttacker)
+                {
+                    damage *= attackContext.DamageMultiplierManager.GetRewardCriticalDamageMultiplier(attackContext.Attacker.Colors[0]);
+                }
             }
+        }
+
+        // Reward-granted attack power only ever applies to ally attackers; GemColor
+        // is also used to type enemies, so this must not read for enemy attackers.
+        if (!isEnemyAttacker)
+        {
+            damage *= attackContext.DamageMultiplierManager.GetRewardAttackPowerMultiplier(attackContext.Attacker.Colors[0]);
         }
 
         float colorDamageMultiplier = GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
@@ -118,6 +132,37 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
         SpawnHitBurstParticle(attackContext);
         SpawnImpactAttachment(attackContext);
+    }
+
+    // Plays the same hit reaction TakeDamage would (flash, hurt SFX, damage popup)
+    // without touching HP. Used when HP was already changed elsewhere (e.g. a
+    // reward reducing the party's shared CharacterStatus once, then telling every
+    // color's CharacterCombatant to react to it).
+    public void PlayDamageFeedback(int amount)
+    {
+        if (status.IsDead)
+        {
+            return;
+        }
+
+        var context = new AttackContext
+        {
+            Attacker = this,
+            Target = this,
+            HitTransform = transform
+        };
+
+        DamageUIManager.Instance.SpawnDamage(amount, context, false, false, 1f);
+
+        if (flashSprite != null)
+        {
+            flashSprite.Flash();
+        }
+
+        if (hurtSfx != null)
+        {
+            AudioManager.Instance.PlayActionSFX(hurtSfx);
+        }
     }
 
     public void AddBuffCritBonus(float value)

@@ -91,6 +91,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DifficultyCurvesSelector
   tutorialCurves: {fileID: 11400000, guid: 9644fa005bbb8704994cb7088739b41c, type: 2}
   rankingCurves: {fileID: 11400000, guid: abab430dfa1ecc844bf888de0d444f01, type: 2}
+--- !u!1 &560215430669289488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471535609275553575}
+  - component: {fileID: 7858995295406063370}
+  m_Layer: 0
+  m_Name: RewardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471535609275553575
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560215430669289488}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 935236977859202638}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7858995295406063370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560215430669289488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2593368634f5b0845aec0dcd4dd97973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardManager
+  rewardBook: {fileID: 11400000, guid: d7cbf9f85da5f7f418377c31b68a3748, type: 2}
+  damageMultiplierManager: {fileID: 6656491438921996846}
+  partyStatus: {fileID: 0}
+  partyRoster: {fileID: 0}
+  comboManager: {fileID: 4130428429056873238}
+  offerCount: 3
 --- !u!1 &682670706797471294
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,6 +290,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRecordManager
   enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
+--- !u!1 &2475550318583199419
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3231195885349223897}
+  - component: {fileID: 6809671845844113891}
+  m_Layer: 0
+  m_Name: RewardChestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3231195885349223897
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475550318583199419}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7661109956345959131}
+  m_Father: {fileID: 935236977859202638}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6809671845844113891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475550318583199419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c080b049a4cd44b81b75162529c4e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardChestManager
+  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  chest: {fileID: 3995537851798041511}
+  landscapeSpawnPosition: {x: 7, y: -2.7, z: 0}
+  portraitSpawnPosition: {x: 3.2, y: -2.7, z: 0}
 --- !u!1 &2987994210524115475
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +384,8 @@ Transform:
   - {fileID: 7977332482991831798}
   - {fileID: 2405939552609032351}
   - {fileID: 1049317832024940350}
-  - {fileID: 7398407600414546201}
+  - {fileID: 1471535609275553575}
+  - {fileID: 3231195885349223897}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8348092773870949786
@@ -353,54 +453,6 @@ MonoBehaviour:
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   curvesSelector: {fileID: 1610682429086473757}
   damageBonusChangedEventChannel: {fileID: 11400000, guid: 41019213f5534874c9e4df7fd2bcd834, type: 2}
---- !u!1 &4248698735551314310
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7398407600414546201}
-  - component: {fileID: 1371772693544022494}
-  m_Layer: 0
-  m_Name: RewardChestSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7398407600414546201
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4248698735551314310}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 935236977859202638}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1371772693544022494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4248698735551314310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0515f27b620111e4fb1b30e4000e94fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RewardChestSpawner
-  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
-  chestPrefab: {fileID: 6297779400747536397, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
-  landscapeSpawnPosition: {x: 3.2, y: -2.7, z: 0}
-  portraitSpawnPosition: {x: 3.2, y: -2.7, z: 0}
 --- !u!1 &4376410492948454814
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +500,6 @@ MonoBehaviour:
   transitionManager: {fileID: 5839353086084169784}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
-  rewardChosenEventChannel: {fileID: 11400000, guid: 099b1f32c8367674ebfb4a6bf126ab96, type: 2}
 --- !u!1 &4459710661837427515
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,6 +1003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ComboManager
   matchEvents: {fileID: 11400000, guid: 6ee4fc15b211afa46a6d40a41d70f9c7, type: 2}
   deathChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   partyStatus: {fileID: 0}
   comboResetTime: 3
   gemMatchSfx: {fileID: 11400000, guid: dfbbd10a34feb524ab5e17cae7d786c4, type: 2}
@@ -1009,6 +1061,83 @@ MonoBehaviour:
   - {fileID: 0}
   landscapeLayoutProfile: {fileID: 11400000, guid: 1ea4d8402c234bfc95ab93cddc09e740, type: 2}
   portraitLayoutProfile: {fileID: 11400000, guid: f42debd005d343bea5f63010e89ab6e7, type: 2}
+--- !u!1001 &4214199121671346847
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3231195885349223897}
+    m_Modifications:
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1116.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -588.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297779400747536397, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_Name
+      value: Chest
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297779400747536397, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+--- !u!114 &3995537851798041511 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 939237210387343672, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+  m_PrefabInstance: {fileID: 4214199121671346847}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736e09ea56ece5f4ab4c83916e2fec72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardChest
+--- !u!4 &7661109956345959131 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5776549524022380612, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+  m_PrefabInstance: {fileID: 4214199121671346847}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7087120515144774686
 PrefabInstance:
   m_ObjectHideFlags: 0

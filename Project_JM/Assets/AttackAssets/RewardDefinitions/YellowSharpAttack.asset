@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: def7bcd8ba6ddad4084bbeb142ca1cfe, type: 3}
-  m_Name: RewardChosenEventChannel
-  m_EditorClassIdentifier: Assembly-CSharp::RewardChosenEventChannel
+  m_Script: {fileID: 11500000, guid: e721598ffdf101a4f8736ca473e8ee87, type: 3}
+  m_Name: YellowSharpAttack
+  m_EditorClassIdentifier: Assembly-CSharp::SharpAttackReward
+  id: 7
+  targetColor: 4
+  criticalDamageIncrease: 0.15

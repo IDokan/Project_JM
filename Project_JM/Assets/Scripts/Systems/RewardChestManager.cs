@@ -1,20 +1,22 @@
 // SPDX-License-Identifier: LicenseRef-Proprietary
 // Copyright (c) 01/08/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
-// File: RewardChestSpawner.cs
-// Summary: Spawns the reward chest prefab when the reward transition begins.
+// File: RewardChestManager.cs
+// Summary: Owns all transition-event handling for the reward chest prop:
+//          shows it at the reward transition's spawn position on
+//          RewardTransitionStarts, and hides it on MiddleTransitionStarts.
+//          Stays active for the whole scene (unlike the chest itself) so it
+//          can always hear RewardTransitionStarts and bring the chest back,
+//          even between uses when the chest is inactive.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using UnityEngine;
-using UnityEngine.UI;
 
-public class RewardChestSpawner : MonoBehaviour
+public class RewardChestManager : MonoBehaviour
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected GameObject chestPrefab;
-    [SerializeField] protected Button[] rewardButtons;
-    [SerializeField] protected CanvasGroup rewardButtonsGroup;
+    [SerializeField] protected RewardChest chest;
 
     [SerializeField] protected Vector3 landscapeSpawnPosition;
     [SerializeField] protected Vector3 portraitSpawnPosition;
@@ -45,14 +47,12 @@ public class RewardChestSpawner : MonoBehaviour
     {
         if (phase == TransitionPhase.RewardTransitionStarts)
         {
-            SpawnChest();
+            Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
+            chest.Show(pos);
         }
-    }
-
-    protected void SpawnChest()
-    {
-        Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
-        GameObject chestInstance = Instantiate(chestPrefab, pos, Quaternion.identity);
-        chestInstance.GetComponent<RewardChest>().Initialize(rewardButtons, rewardButtonsGroup);
+        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            chest.Hide();
+        }
     }
 }
