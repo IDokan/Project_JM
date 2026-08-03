@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
+using System.Collections.Generic;
 using GemEnums;
 using RewardEnums;
 using UnityEngine;
@@ -29,10 +30,16 @@ public abstract class RewardDefinition : ScriptableObject
 {
     [SerializeField] protected RewardId id;
 
+    // 2 to 4 icons illustrating what this reward does, shown on the
+    // selectable UI button; see RewardIconGroup.
+    [SerializeField] protected Sprite[] icons;
+
     public RewardId Id => id;
 
     // Used later to tint the selectable UI; GemColor.None for rewards with no single color.
     public abstract GemColor AssociatedColor { get; }
+
+    public IReadOnlyList<Sprite> Icons => icons;
 
     public abstract IEnumerator Apply(RewardContext context);
 }

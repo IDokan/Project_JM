@@ -3,10 +3,11 @@
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: RewardOfferUI.cs
 // Summary: Rolls a reward offer from RewardManager and reveals it as
-//          selectable buttons at the start of the reward transition. Applies
-//          whichever reward the player picks through RewardManager and
-//          raises TransitionPhase.RewardChosen. Owns the reward buttons so
-//          RewardChest can stay a purely visual prop.
+//          selectable buttons, tinted and iconed per reward, at the start of
+//          the reward transition. Applies whichever reward the player picks
+//          through RewardManager and raises TransitionPhase.RewardChosen.
+//          Owns the reward buttons so RewardChest can stay a purely visual
+//          prop.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
@@ -18,9 +19,11 @@ using UnityEngine.UI;
 public class RewardOfferUI : MonoBehaviour
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
+    [SerializeField] protected TransitionManager transitionManager;
     [SerializeField] protected RewardManager rewardManager;
 
     [SerializeField] protected Button[] rewardButtons;
+    [SerializeField] protected RewardIconGroup[] rewardIconGroups;
     [SerializeField] protected CanvasGroup rewardButtonsGroup;
     [SerializeField] protected float revealDelay = 1f;
 
@@ -87,7 +90,8 @@ public class RewardOfferUI : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GemColor color = _currentOffer[i].AssociatedColor;
-            rewardButtons[i].targetGraphic.color = color != GemColor.None ? color.ConvertGemColor() : Color.white;
+            rewardButtons[i].targetGraphic.color = color.GetSoftenedGemColor();
+            rewardIconGroups[i].SetIcons(_currentOffer[i].Icons);
         }
     }
 
@@ -95,12 +99,14 @@ public class RewardOfferUI : MonoBehaviour
     {
         yield return new WaitForSeconds(revealDelay);
 
+        transitionManager.SetSkipHoldBlocked(true);
         SetButtonsVisible(true);
         _revealRoutine = null;
     }
 
     protected void OnRewardButtonPressed(int index)
     {
+        transitionManager.SetSkipHoldBlocked(false);
         SetButtonsVisible(false);
 
         rewardManager.ChooseReward(_currentOffer[index]);
