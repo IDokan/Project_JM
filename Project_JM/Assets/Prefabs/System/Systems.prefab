@@ -337,8 +337,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RewardChestManager
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   chest: {fileID: 3995537851798041511}
-  landscapeSpawnPosition: {x: 7, y: -2.7, z: 0}
-  portraitSpawnPosition: {x: 3.2, y: -2.7, z: 0}
+  landscapeSpawnPosition: {x: 7, y: -3.1, z: 0}
+  portraitSpawnPosition: {x: 3.2, y: -3.1, z: 0}
 --- !u!1 &2987994210524115475
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,6 +1116,10 @@ PrefabInstance:
     - target: {fileID: 6297779400747536397, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777251551276315339, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
+      propertyPath: m_labelHash
+      value: 2.903573e-17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
