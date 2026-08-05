@@ -823,6 +823,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585078424}
   m_CullTransparentMesh: 1
+--- !u!114 &590682738 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 661363124383035301, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e387c0867ab1d96418202ddc48c95edc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardParticleMover
+--- !u!114 &592839430 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5518228998828708514, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e387c0867ab1d96418202ddc48c95edc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardParticleMover
 --- !u!114 &594975000 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6343494840643666629, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
@@ -993,7 +1015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 665240455520531067, guid: 376a519ee0b0ad647985678c63302ddb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -380
+      value: -379.99997
       objectReference: {fileID: 0}
     - target: {fileID: 665240455520531067, guid: 376a519ee0b0ad647985678c63302ddb, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2238,6 +2260,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736e09ea56ece5f4ab4c83916e2fec72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardChest
+--- !u!114 &1838648795 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8792027661867701048, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+  m_PrefabInstance: {fileID: 5760348805556038935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e387c0867ab1d96418202ddc48c95edc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardParticleMover
 --- !u!1 &1890510005
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,6 +2346,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!1 &1988209850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1988209851}
+  m_Layer: 0
+  m_Name: TEST__FallbackParticleDestination
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1988209851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988209850}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -49.48771, y: -2.10181, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2007659803 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5931316084057072174, guid: 5c7ae80388ae690418ed6b89cea0f1b6, type: 3}
@@ -5175,7 +5239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5094240340758896645, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000038146973
+      value: 0.000011444092
       objectReference: {fileID: 0}
     - target: {fileID: 5132932385938972131, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5522,6 +5586,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: chest
+      value: 
+      objectReference: {fileID: 1811725020}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: partyRoster
+      value: 
+      objectReference: {fileID: 1233718908}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: rewardManager
       value: 
       objectReference: {fileID: 5760348805556038936}
@@ -5529,6 +5601,26 @@ PrefabInstance:
       propertyPath: transitionManager
       value: 
       objectReference: {fileID: 1986252045}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: fallbackAbsorbTarget
+      value: 
+      objectReference: {fileID: 1988209851}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: particleMovers.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: 'particleMovers.Array.data[0]'
+      value: 
+      objectReference: {fileID: 590682738}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: 'particleMovers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 592839430}
+    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: 'particleMovers.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1838648795}
     - target: {fileID: 6818245997280360303, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6180,3 +6272,4 @@ SceneRoots:
   - {fileID: 1742562496}
   - {fileID: 867738044}
   - {fileID: 817513081}
+  - {fileID: 1988209851}

@@ -65,7 +65,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardOfferUI
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  transitionManager: {fileID: 0}
   rewardManager: {fileID: 0}
+  chest: {fileID: 0}
   rewardButtons:
   - {fileID: 7485834094415906797}
   - {fileID: 2134287932614874018}
@@ -76,6 +78,8 @@ MonoBehaviour:
   - {fileID: 5748510016822407350}
   rewardButtonsGroup: {fileID: 4397043960787461632}
   revealDelay: 1
+  particleMovers: []
+  particleLaunchDelay: 1.4
 --- !u!1001 &1678365630453411877
 PrefabInstance:
   m_ObjectHideFlags: 0

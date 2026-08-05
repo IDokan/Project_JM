@@ -21,15 +21,27 @@ public class RewardOfferUI : MonoBehaviour
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected TransitionManager transitionManager;
     [SerializeField] protected RewardManager rewardManager;
+    [SerializeField] protected RewardChest chest;
 
     [SerializeField] protected Button[] rewardButtons;
     [SerializeField] protected RewardIconGroup[] rewardIconGroups;
     [SerializeField] protected CanvasGroup rewardButtonsGroup;
     [SerializeField] protected float revealDelay = 1f;
 
+    [Header("Particles")]
+    // One pre-placed mover per button slot, reused for every reward offer —
+    // the chest itself is a single persistent scene object (see
+    // RewardChest), so these are scene-authored the same way rather than
+    // instantiated/destroyed at runtime. Position doesn't matter where you
+    // place them; SpawnParticlesAfterDelay repositions each to the chest
+    // before every use.
+    [SerializeField] protected RewardParticleMover[] particleMovers;
+    [SerializeField] protected float particleLaunchDelay = 0.6f;
+
     protected UnityAction[] _buttonListeners;
     protected RewardDefinition[] _currentOffer;
     protected Coroutine _revealRoutine;
+    protected Coroutine _particleSpawnRoutine;
 
     protected void Awake()
     {
@@ -71,6 +83,12 @@ public class RewardOfferUI : MonoBehaviour
             StopCoroutine(_revealRoutine);
             _revealRoutine = null;
         }
+
+        if (_particleSpawnRoutine != null)
+        {
+            StopCoroutine(_particleSpawnRoutine);
+            _particleSpawnRoutine = null;
+        }
     }
 
     protected void OnTransitionEvent(TransitionPhase phase)
@@ -79,6 +97,7 @@ public class RewardOfferUI : MonoBehaviour
         {
             BindOffer();
             _revealRoutine = StartCoroutine(RevealAfterDelay());
+            _particleSpawnRoutine = StartCoroutine(SpawnParticlesAfterDelay());
         }
     }
 
@@ -102,6 +121,20 @@ public class RewardOfferUI : MonoBehaviour
         transitionManager.SetSkipHoldBlocked(true);
         SetButtonsVisible(true);
         _revealRoutine = null;
+    }
+
+    protected IEnumerator SpawnParticlesAfterDelay()
+    {
+        yield return new WaitForSeconds(particleLaunchDelay);
+
+        int count = Mathf.Min(Mathf.Min(rewardButtons.Length, particleMovers.Length), _currentOffer.Length);
+        for (int i = 0; i < count; i++)
+        {
+            particleMovers[i].transform.position = chest.transform.position;
+            particleMovers[i].Init(rewardButtons[i].GetComponent<RectTransform>(), chest.transform.position.z);
+        }
+
+        _particleSpawnRoutine = null;
     }
 
     protected void OnRewardButtonPressed(int index)

@@ -19,13 +19,13 @@ public class ParticleBazierMover : MonoBehaviour
 
     [Header("Spring (tune these)")]
     [Tooltip("Bigger = pulls harder toward desired position.")]
-    [SerializeField] private float stiffness = 60f;
+    [SerializeField] private float stiffness = 12f;
 
     [Tooltip("Bigger = damps motion more quickly (units: 1/sec).")]
-    [SerializeField] protected float damping = 12f;
+    [SerializeField] protected float damping = 9f;
 
-    [SerializeField] protected float endOffsetWeight;
-    [SerializeField] protected float bendScale = 1f;
+    [SerializeField] protected float endOffsetWeight = 0.2f;
+    [SerializeField] protected float bendScale = 3f;
     [SerializeField] private float fadeRadius = 2f;
 
     public event Action Completed;
