@@ -1339,13 +1339,17 @@ public class BoardManager : MonoBehaviour, IBoardInfo
             phase == TransitionPhase.RewardTransitionStarts ||
             phase == TransitionPhase.EndTransitionBegin)
         {
-            // Only the intro board setup schedules a delayed refill; the reward
-            // transition only needs the cover, and the actual refill happens
-            // immediately once the real middle transition begins (still covered).
+            // Only the intro board setup schedules a delayed refill; the
+            // reward transition only needs the cover here, and its actual
+            // refill happens once the player picks (see RewardChosen below).
             EnableCover(phase == TransitionPhase.IntroTransitionBegin);
         }
-        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        else if (phase == TransitionPhase.RewardChosen)
         {
+            // Refilled here rather than at MiddleTransitionStarts so the
+            // board regenerates during the reward's apply-particle travel
+            // time instead of adding its own delay once the middle
+            // transition begins — the board stays covered either way.
             ClearAndRefillGems();
         }
     }

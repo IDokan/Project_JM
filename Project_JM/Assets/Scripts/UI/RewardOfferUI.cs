@@ -12,6 +12,7 @@
 
 using System.Collections;
 using GemEnums;
+using RewardEnums;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,6 +23,7 @@ public class RewardOfferUI : MonoBehaviour
     [SerializeField] protected TransitionManager transitionManager;
     [SerializeField] protected RewardManager rewardManager;
     [SerializeField] protected RewardChest chest;
+    [SerializeField] protected PartyRoster partyRoster;
 
     [SerializeField] protected Button[] rewardButtons;
     [SerializeField] protected RewardIconGroup[] rewardIconGroups;
@@ -38,10 +40,29 @@ public class RewardOfferUI : MonoBehaviour
     [SerializeField] protected RewardParticleMover[] particleMovers;
     [SerializeField] protected float particleLaunchDelay = 0.6f;
 
+    // One pre-placed mover per button slot, mirroring particleMovers above —
+    // reused across every reward offer rather than instantiated per pick.
+    // Position doesn't matter where placed; OnRewardButtonPressed
+    // repositions the picked slot's mover onto that button before use. The
+    // target(s) aren't fixed — see ResolveApplyTargets: colored rewards
+    // resolve their character via partyRoster (same as Gem.Resolve does for
+    // GemResolver), colorless ones route by RewardId instead.
+    [SerializeField] protected RewardApplyParticleMover[] applyParticleMovers;
+
+    // Convergence points for colorless rewards, whose AssociatedColor can't
+    // resolve a character via partyRoster. See ResolveApplyTargets.
+    [SerializeField] protected RectTransform hpIconTarget;
+    [SerializeField] protected RectTransform comboIconTarget;
+
     protected UnityAction[] _buttonListeners;
     protected RewardDefinition[] _currentOffer;
     protected Coroutine _revealRoutine;
     protected Coroutine _particleSpawnRoutine;
+
+    // Which targets the pick currently in flight should flash once
+    // RaiseRewardGiven fires, from mover.Completed.
+    protected Transform[] _pendingTargets;
+    protected bool _rewardGivenFired;
 
     protected void Awake()
     {
@@ -66,6 +87,16 @@ public class RewardOfferUI : MonoBehaviour
             _buttonListeners[i] = listener;
             rewardButtons[i].onClick.AddListener(listener);
         }
+
+        // applyParticleMovers are scene-persistent (reused every offer, not
+        // instantiated/destroyed per pick like GemResolver), so it's safe to
+        // subscribe every slot up front rather than per pick — at most one
+        // is ever actually traveling (Init'd) at a time, so RaiseRewardGiven
+        // only ever fires for the pick _pendingTargets currently belongs to.
+        for (int i = 0; i < applyParticleMovers.Length; i++)
+        {
+            applyParticleMovers[i].Completed += RaiseRewardGiven;
+        }
     }
 
     protected void OnDisable()
@@ -77,6 +108,11 @@ public class RewardOfferUI : MonoBehaviour
             rewardButtons[i].onClick.RemoveListener(_buttonListeners[i]);
         }
         _buttonListeners = null;
+
+        for (int i = 0; i < applyParticleMovers.Length; i++)
+        {
+            applyParticleMovers[i].Completed -= RaiseRewardGiven;
+        }
 
         if (_revealRoutine != null)
         {
@@ -131,7 +167,7 @@ public class RewardOfferUI : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             particleMovers[i].transform.position = chest.transform.position;
-            particleMovers[i].Init(rewardButtons[i].GetComponent<RectTransform>(), chest.transform.position.z);
+            particleMovers[i].Init(rewardButtons[i].GetComponent<RectTransform>(), _currentOffer[i].AssociatedColor, chest.transform.position.z);
         }
 
         _particleSpawnRoutine = null;
@@ -142,8 +178,92 @@ public class RewardOfferUI : MonoBehaviour
         transitionManager.SetSkipHoldBlocked(false);
         SetButtonsVisible(false);
 
+        (Transform[] targets, GemColor[] colors) = index < applyParticleMovers.Length ? ResolveApplyTargets(_currentOffer[index]) : (null, null);
+        RewardApplyParticleMover mover = null;
+        if (targets != null && targets.Length > 0)
+        {
+            RectTransform buttonRect = rewardButtons[index].GetComponent<RectTransform>();
+            mover = applyParticleMovers[index];
+            mover.Init(buttonRect, targets, colors, chest.transform.position.z);
+        }
+
         rewardManager.ChooseReward(_currentOffer[index]);
         transitionEventChannel.Raise(TransitionPhase.RewardChosen);
+
+        _rewardGivenFired = false;
+        _pendingTargets = targets;
+
+        // mover == null means no particle swarm will ever finish for this
+        // pick (no mover slot, or no resolvable target) — RewardTransitionController
+        // only advances on RewardGiven, so this pick would otherwise softlock
+        // the reward screen forever. Nothing to wait for in that case, so
+        // fire immediately; otherwise mover.Completed (subscribed in
+        // OnEnable) fires RaiseRewardGiven once the swarm actually finishes.
+        if (mover == null)
+        {
+            RaiseRewardGiven();
+        }
+    }
+
+    // Fires once per pick, from mover.Completed. _rewardGivenFired guards
+    // against a mover somehow firing Completed twice for the same pick.
+    protected void RaiseRewardGiven()
+    {
+        if (_rewardGivenFired)
+        {
+            return;
+        }
+        _rewardGivenFired = true;
+
+        FlashAbsorbedCharacters(_pendingTargets);
+        transitionEventChannel.Raise(TransitionPhase.RewardGiven);
+    }
+
+    // Flashes whichever targets turn out to be characters, through the same
+    // GemPowerGlowEffect.PlayGlow() gem-power absorption already uses — HUD
+    // icon targets (HP/combo, for Blessings/Fortify/Focus) simply have no
+    // GemPowerGlowEffect to find there and are skipped.
+    protected void FlashAbsorbedCharacters(Transform[] targets)
+    {
+        if (targets == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < targets.Length; i++)
+        {
+            GemPowerGlowEffect glow = targets[i] ? targets[i].GetComponentInParent<GemPowerGlowEffect>() : null;
+            glow?.PlayGlow();
+        }
+    }
+
+    // Colored rewards (PowerUp/SharpAttack) fly to their matching character
+    // via partyRoster, same lookup Gem.Resolve uses for GemResolver, tinted
+    // with that same color. Colorless rewards (AssociatedColor ==
+    // GemColor.None) instead route by RewardId: Berserked splits the swarm
+    // evenly across every party member, each quarter tinted with that
+    // character's own color (partyRoster.GetAllCharacterColors is
+    // index-aligned with GetAllCharacterTransforms); Blessings/Fortify
+    // converge on the HP icon and Focus on the combo icon, both untinted
+    // (GemColor.None → white).
+    protected (Transform[] targets, GemColor[] colors) ResolveApplyTargets(RewardDefinition reward)
+    {
+        switch (reward.Id)
+        {
+            case RewardId.Berserked:
+                return (partyRoster.GetAllCharacterTransforms(), partyRoster.GetAllCharacterColors());
+
+            case RewardId.Blessings:
+            case RewardId.Fortify:
+                return (new Transform[] { hpIconTarget }, new[] { GemColor.None });
+
+            case RewardId.Focus:
+                return (new Transform[] { comboIconTarget }, new[] { GemColor.None });
+
+            default:
+                Transform target = partyRoster.GetCharacterTransform(reward.AssociatedColor);
+                return target ? (new[] { target }, new[] { reward.AssociatedColor }) : (null, null);
+        }
     }
 
     protected void SetButtonsVisible(bool visible)

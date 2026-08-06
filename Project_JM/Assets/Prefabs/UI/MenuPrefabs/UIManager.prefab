@@ -1142,6 +1142,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7399508311914134771, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
+      propertyPath: hpIconTarget
+      value: 
+      objectReference: {fileID: 2442690368399721005}
+    - target: {fileID: 7399508311914134771, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
+      propertyPath: comboIconTarget
+      value: 
+      objectReference: {fileID: 3637841413306434551}
     - target: {fileID: 7731693809526077880, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1441,6 +1449,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
+--- !u!224 &2442690368399721005 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1925463916140318197, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
+  m_PrefabInstance: {fileID: 4278053269552205784}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8461559449878973298 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5635073737422881962, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
@@ -1870,6 +1883,11 @@ PrefabInstance:
 --- !u!224 &81694175677609877 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5635073737422881962, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
+  m_PrefabInstance: {fileID: 5697600942929752895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &3637841413306434551 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 9038096231931834568, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
   m_PrefabInstance: {fileID: 5697600942929752895}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6192216513197768585
@@ -2806,7 +2824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4577247319158699192, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000011444092
+      value: 0.0000038146973
       objectReference: {fileID: 0}
     - target: {fileID: 5024481684449728659, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Pivot.x

@@ -95,6 +95,28 @@ ScriptedImporter:
     spritePosition: {x: 0, y: 0}
   multiSpriteImportData: []
   layeredSpriteImportData:
+  - name: Layer 15
+    originalName: 
+    pivot: {x: 0.9836652, y: 0.26814806}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 399
+      width: 349
+      height: 179
+    spriteID: 41c86477353d447488dbb613500dd0b3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: -36, y: 399}
+    spritePosition: {x: 73, y: 154}
   - name: Layer 17
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -104,7 +126,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 212
+      y: 919
       width: 312
       height: 81
     spriteID: 24bc61f95272b804eb46de356f1bec82
@@ -412,7 +434,7 @@ ScriptedImporter:
     - {x: 24, y: 25}
     - {x: 25, y: 26}
     tessellationDetail: 0
-    uvTransform: {x: 0, y: 212}
+    uvTransform: {x: 0, y: 919}
     spritePosition: {x: 86, y: 161}
   - name: Emerald
     originalName: 
@@ -766,6 +788,72 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 3, y: 4}
     spritePosition: {x: 73, y: 6}
+  - name: UpperChestInside
+    originalName: 
+    pivot: {x: 0.9569032, y: 0.04241984}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 586
+      width: 338
+      height: 150
+    spriteID: 1ed08c9c5a3fab140a72970d038e3a9e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 586}
+    spritePosition: {x: 92, y: 193}
+  - name: Layer 16
+    originalName: 
+    pivot: {x: 0.9024341, y: 0.03183759}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 212
+      width: 354
+      height: 179
+    spriteID: 404ba22b5b7e9db42bf2673455354856
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 211}
+    spritePosition: {x: 99, y: 194}
+  - name: UpperChestInside
+    originalName: 
+    pivot: {x: 0.7934899, y: 0.023359288}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 744
+      width: 289
+      height: 167
+    spriteID: 09a90dbbf1178c14cb0d44489b2276e7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 3, y: 743}
+    spritePosition: {x: 186, y: 193}
   spriteImportData: []
   rigSpriteImportData: []
   sharedRigSpriteImportData: []
@@ -946,7 +1034,7 @@ ScriptedImporter:
     mosaicPosition: {x: 0, y: 0}
     flatten: 0
     isImported: 0
-    isVisible: 0
+    isVisible: 1
   - name: Layer 15
     spriteName: Layer 15
     isGroup: 0
@@ -955,7 +1043,7 @@ ScriptedImporter:
     layerID: 167
     mosaicPosition: {x: 4, y: 399}
     flatten: 0
-    isImported: 0
+    isImported: 1
     isVisible: 1
   - name: Reward
     spriteName: 
@@ -973,7 +1061,7 @@ ScriptedImporter:
     parentIndex: 3
     spriteID: 24bc61f95272b804eb46de356f1bec82
     layerID: 169
-    mosaicPosition: {x: 4, y: 212}
+    mosaicPosition: {x: 4, y: 919}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -995,8 +1083,8 @@ ScriptedImporter:
     layerID: 145
     mosaicPosition: {x: 4, y: 586}
     flatten: 0
-    isImported: 0
-    isVisible: 0
+    isImported: 1
+    isVisible: 1
   - name: Layer 16
     spriteName: Layer 16
     isGroup: 0
@@ -1005,8 +1093,8 @@ ScriptedImporter:
     layerID: 168
     mosaicPosition: {x: 4, y: 212}
     flatten: 0
-    isImported: 0
-    isVisible: 0
+    isImported: 1
+    isVisible: 1
   - name: UpperChestInside
     spriteName: UpperChestInside
     isGroup: 0
@@ -1015,8 +1103,8 @@ ScriptedImporter:
     layerID: 157
     mosaicPosition: {x: 4, y: 744}
     flatten: 0
-    isImported: 0
-    isVisible: 0
+    isImported: 1
+    isVisible: 1
   - name: Layer 4
     spriteName: 
     isGroup: 0

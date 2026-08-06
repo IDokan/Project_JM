@@ -68,6 +68,7 @@ MonoBehaviour:
   transitionManager: {fileID: 0}
   rewardManager: {fileID: 0}
   chest: {fileID: 0}
+  partyRoster: {fileID: 0}
   rewardButtons:
   - {fileID: 7485834094415906797}
   - {fileID: 2134287932614874018}
@@ -77,9 +78,12 @@ MonoBehaviour:
   - {fileID: 693570836782594473}
   - {fileID: 5748510016822407350}
   rewardButtonsGroup: {fileID: 4397043960787461632}
-  revealDelay: 1
+  revealDelay: 3.2
   particleMovers: []
   particleLaunchDelay: 1.4
+  applyParticleMovers: []
+  hpIconTarget: {fileID: 0}
+  comboIconTarget: {fileID: 0}
 --- !u!1001 &1678365630453411877
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,7 +2,11 @@
 // Copyright (c) 06/05/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: GemPowerGlowEffect.cs
-// Summary: Pulses a material flash effect on a character sprite when gem power matching its color arrives.
+// Summary: Pulses a material flash effect on a character sprite. Fires on
+//          two independent triggers that share this one component so
+//          neither stomps the other's material properties: gem power
+//          matching myColor arriving (via GemPowerArrivedEventChannel), and
+//          reward absorption (RewardOfferUI calling PlayGlow() directly).
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
@@ -52,7 +56,24 @@ public class GemPowerGlowEffect : MonoBehaviour
 
     private void OnPowerArrived(MatchEvent e)
     {
-        if (e.Color != myColor || _material == null)
+        if (e.Color != myColor)
+        {
+            return;
+        }
+
+        PlayGlow();
+    }
+
+    // Starts (or restarts) the glow pulse on this character's sprite
+    // material. Called both from gem-power arrival above (filtered by
+    // myColor) and from reward absorption (see RewardOfferUI), so every
+    // source of this character's "absorbed something" flash funnels through
+    // this one coroutine instead of separate components independently
+    // writing the same _FlashAmount/_FlashColor properties and fighting
+    // each other.
+    public void PlayGlow()
+    {
+        if (_material == null)
         {
             return;
         }

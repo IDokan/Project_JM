@@ -9,8 +9,10 @@
 //                                          2. Preview the next enemy and show its alert.
 //                                          3. Show the damage record breakdown for the enemy that just died.
 //                                          4. Play the defeated enemy's exit animation.
-//                      It then waits for the player to confirm a reward before
-//                      handing off to the middle transition.
+//                      It then waits for the player to confirm a reward, and
+//                      once RewardGiven confirms the reward's apply-particle
+//                      swarm has actually finished arriving, hands off to
+//                      the middle transition.
 
 using UnityEngine;
 
@@ -46,7 +48,7 @@ public class RewardTransitionController : TransitionController
 
     protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == TransitionPhase.RewardChosen)
+        if (phase == TransitionPhase.RewardGiven)
         {
             transitionEventChannel.Raise(TransitionPhase.RewardTransitionEnd);
             CompleteTransition();
