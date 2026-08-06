@@ -5,13 +5,17 @@
 // Summary: Flies a particle swarm from wherever this GameObject is placed
 //          (the reward chest) to a point uniformly chosen over an offer
 //          button's rectangle, each particle along its own spring-damped
-//          Bezier arc. The controlled ParticleSystem is a single burst —
-//          every particle exists by the time BeginTravel runs, so the whole
-//          swarm shares one travel timer.
+//          Bezier arc, tinted with a single GemColor for the whole burst
+//          (white for GemColor.None) — unlike RewardApplyParticleMover,
+//          this leg never splits across multiple targets/colors, since it
+//          only ever has the one button as its destination. The controlled
+//          ParticleSystem is a single burst — every particle exists by the
+//          time BeginTravel runs, so the whole swarm shares one travel timer.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
 using System.Collections.Generic;
+using GemEnums;
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
@@ -29,11 +33,11 @@ public class RewardParticleMover : MonoBehaviour
     [SerializeField] protected float damping = 9f;
     [SerializeField] protected float bendScale = 3f;
 
-    [Header("Fade (after arrival)")]
-    // Particles stay fully opaque throughout travel, then, once arrived and
-    // holding at their destination, linearly fade to transparent over this
-    // many seconds.
-    [SerializeField] protected float fadeOutDuration = 1f;
+    [Header("Fade (proximity to target)")]
+    // Squared against distance to destination each frame, not sqrt'd — a
+    // particle is fully opaque once farther than this from its target and
+    // fades linearly to transparent as it closes the remaining distance.
+    [SerializeField] protected float fadeRadius = 2f;
 
     protected struct TravelInfo
     {
@@ -71,13 +75,14 @@ public class RewardParticleMover : MonoBehaviour
 
     // Starts the swarm's journey from wherever this GameObject was placed
     // (the chest) toward a point uniformly chosen over buttonRect, one per
-    // particle. worldDepthZ pins those points onto the gameplay plane,
-    // since the button's own RectTransform world z belongs to the UI
-    // canvas, not gameplay space. Safe to call again on the same instance
-    // for a later chest — any particles and travel state left over from a
-    // previous run are cleared first, so this one mover can be reused for
-    // every reward offer.
-    public void Init(RectTransform buttonRect, float worldDepthZ)
+    // particle, every particle tinted with color (GemColor.None reads as
+    // white). worldDepthZ pins those points onto the gameplay plane, since
+    // the button's own RectTransform world z belongs to the UI canvas, not
+    // gameplay space. Safe to call again on the same instance for a later
+    // chest — any particles and travel state left over from a previous run
+    // are cleared first, so this one mover can be reused for every reward
+    // offer.
+    public void Init(RectTransform buttonRect, GemColor color, float worldDepthZ)
     {
         _buttonRect = buttonRect;
         _worldDepthZ = worldDepthZ;
@@ -87,6 +92,13 @@ public class RewardParticleMover : MonoBehaviour
         {
             StopCoroutine(_travelDelayRoutine);
         }
+
+        // Applied through the Main module (rather than an explicit Emit()
+        // per particle, like RewardApplyParticleMover) since this mover
+        // still relies on the ParticleSystem's own authored burst to spawn
+        // particles — every particle Play() spawns picks up this startColor.
+        ParticleSystem.MainModule main = controlledParticleSystem.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(color.ConvertGemColorOrWhite());
 
         controlledParticleSystem.Clear(true);
         controlledParticleSystem.Play(true);
@@ -169,14 +181,6 @@ public class RewardParticleMover : MonoBehaviour
             float u = info.duration <= 1e-6f ? 1f : Mathf.Clamp01((Time.time - _travelStartTime) / info.duration);
             float eased = u * u * (3f - 2f * u);
 
-            // Stays 0 (no fade) until this particle has actually arrived
-            // (u = 1), then counts seconds since its own arrival toward
-            // fadeOutDuration.
-            float arrivalElapsed = Mathf.Max(0f, (Time.time - _travelStartTime) - info.duration);
-            float fadeT = Mathf.InverseLerp(0f, fadeOutDuration, arrivalElapsed);
-            float alpha = Mathf.Lerp(1f, 0f, fadeT);
-            byte alphaByte = (byte)Mathf.RoundToInt(255f * alpha);
-
             // Live-recomputed from this frame's corners (not cached), so a
             // particle's destination stays proportionally correct within
             // the button even if the layout reflows mid-travel.
@@ -203,6 +207,16 @@ public class RewardParticleMover : MonoBehaviour
             IntegrateSpring(ref pos, ref vel, guide, dt, stiffness, damping);
             p.velocity = vel;
             p.position = pos;
+
+            // Opacity tracks actual remaining distance to the destination
+            // (not travel time), same as ParticleBazierMover — fully opaque
+            // until within fadeRadius, then fades to fully transparent by
+            // the time it's down to a quarter of that distance, rather than
+            // stretching the fade all the way down to 0 distance.
+            float distSqr = (pos - endPosition).sqrMagnitude;
+            float quarterFadeRadius = fadeRadius * 0.25f;
+            float alpha = Mathf.InverseLerp(quarterFadeRadius * quarterFadeRadius, fadeRadius * fadeRadius, distSqr);
+            byte alphaByte = (byte)Mathf.RoundToInt(255f * alpha);
 
             Color32 color = p.startColor;
             color.a = alphaByte;
