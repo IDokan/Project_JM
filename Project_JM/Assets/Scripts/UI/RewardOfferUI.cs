@@ -28,7 +28,9 @@ public class RewardOfferUI : MonoBehaviour
     [SerializeField] protected Button[] rewardButtons;
     [SerializeField] protected RewardIconGroup[] rewardIconGroups;
     [SerializeField] protected CanvasGroup rewardButtonsGroup;
-    [SerializeField] protected float revealDelay = 1f;
+
+    // How long the group's alpha takes to reach 0 once a reward is picked.
+    [SerializeField] protected float pickedFadeOutDuration = 0.3f;
 
     [Header("Particles")]
     // One pre-placed mover per button slot, reused for every reward offer —
@@ -49,6 +51,13 @@ public class RewardOfferUI : MonoBehaviour
     // GemResolver), colorless ones route by RewardId instead.
     [SerializeField] protected RewardApplyParticleMover[] applyParticleMovers;
 
+    // One pre-placed mover per button slot, index-aligned with
+    // applyParticleMovers — each lives on the same GameObject as its
+    // applyParticleMovers counterpart, sharing its ParticleSystem, since the
+    // two are mutually exclusive per offer (a button either gets picked and
+    // applies, or doesn't and dismisses).
+    [SerializeField] protected RewardDismissParticleMover[] dismissParticleMovers;
+
     // Convergence points for colorless rewards, whose AssociatedColor can't
     // resolve a character via partyRoster. See ResolveApplyTargets.
     [SerializeField] protected RectTransform hpIconTarget;
@@ -58,6 +67,7 @@ public class RewardOfferUI : MonoBehaviour
     protected RewardDefinition[] _currentOffer;
     protected Coroutine _revealRoutine;
     protected Coroutine _particleSpawnRoutine;
+    protected Coroutine _fadeOutRoutine;
 
     // Which targets the pick currently in flight should flash once
     // RaiseRewardGiven fires, from mover.Completed.
@@ -125,6 +135,12 @@ public class RewardOfferUI : MonoBehaviour
             StopCoroutine(_particleSpawnRoutine);
             _particleSpawnRoutine = null;
         }
+
+        if (_fadeOutRoutine != null)
+        {
+            StopCoroutine(_fadeOutRoutine);
+            _fadeOutRoutine = null;
+        }
     }
 
     protected void OnTransitionEvent(TransitionPhase phase)
@@ -145,14 +161,52 @@ public class RewardOfferUI : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GemColor color = _currentOffer[i].AssociatedColor;
-            rewardButtons[i].targetGraphic.color = color.GetSoftenedGemColor();
+            Color softened = color.GetSoftenedGemColor();
+
+            rewardButtons[i].targetGraphic.color = softened;
             rewardIconGroups[i].SetIcons(_currentOffer[i].Icons);
+
+            ColorBlock colors = rewardButtons[i].colors;
+            colors.normalColor = softened;
+            colors.disabledColor = softened;
+            rewardButtons[i].colors = colors;
         }
     }
 
+    // Fades rewardButtonsGroup.alpha in from 0, timed against the chest→
+    // button swarm's own arrival window (particleMovers[0].MinTravelDuration
+    // to .MaxTravelDuration, both measured from the same particleLaunchDelay
+    // SpawnParticlesAfterDelay waits on) rather than a flat reveal delay —
+    // held at 0 until the earliest particle could land, then ramping to 1 by
+    // the time the slowest one does, so the buttons visibly materialize
+    // alongside the swarm converging on them. Only the first slot's mover is
+    // sampled since every slot shares the same authored travel timing; the
+    // group fades as one.
     protected IEnumerator RevealAfterDelay()
     {
-        yield return new WaitForSeconds(revealDelay);
+        yield return new WaitForSeconds(particleLaunchDelay);
+
+        float minDuration = particleMovers.Length > 0 ? particleMovers[0].MinTravelDuration : 0f;
+        float maxDuration = particleMovers.Length > 0 ? particleMovers[0].MaxTravelDuration : 0f;
+
+        rewardButtonsGroup.alpha = 0f;
+
+        if (minDuration > 0f)
+        {
+            yield return new WaitForSeconds(minDuration);
+        }
+
+        float rampDuration = maxDuration - minDuration;
+        if (rampDuration > 0f)
+        {
+            float elapsed = 0f;
+            while (elapsed < rampDuration)
+            {
+                elapsed += Time.deltaTime;
+                rewardButtonsGroup.alpha = Mathf.Clamp01(elapsed / rampDuration);
+                yield return null;
+            }
+        }
 
         transitionManager.SetSkipHoldBlocked(true);
         SetButtonsVisible(true);
@@ -176,7 +230,15 @@ public class RewardOfferUI : MonoBehaviour
     protected void OnRewardButtonPressed(int index)
     {
         transitionManager.SetSkipHoldBlocked(false);
-        SetButtonsVisible(false);
+
+        rewardButtonsGroup.interactable = false;
+        rewardButtonsGroup.blocksRaycasts = false;
+
+        if (_fadeOutRoutine != null)
+        {
+            StopCoroutine(_fadeOutRoutine);
+        }
+        _fadeOutRoutine = StartCoroutine(FadeOutButtons());
 
         (Transform[] targets, GemColor[] colors) = index < applyParticleMovers.Length ? ResolveApplyTargets(_currentOffer[index]) : (null, null);
         RewardApplyParticleMover mover = null;
@@ -186,6 +248,8 @@ public class RewardOfferUI : MonoBehaviour
             mover = applyParticleMovers[index];
             mover.Init(buttonRect, targets, colors, chest.transform.position.z);
         }
+
+        DismissUnpickedButtons(index);
 
         rewardManager.ChooseReward(_currentOffer[index]);
         transitionEventChannel.Raise(TransitionPhase.RewardChosen);
@@ -202,6 +266,42 @@ public class RewardOfferUI : MonoBehaviour
         if (mover == null)
         {
             RaiseRewardGiven();
+        }
+    }
+
+    // Fades rewardButtonsGroup.alpha from 1 to 0 over pickedFadeOutDuration,
+    // starting the instant a reward is picked.
+    protected IEnumerator FadeOutButtons()
+    {
+        rewardButtonsGroup.alpha = 1f;
+
+        float elapsed = 0f;
+        while (elapsed < pickedFadeOutDuration)
+        {
+            elapsed += Time.deltaTime;
+            rewardButtonsGroup.alpha = 1f - Mathf.Clamp01(elapsed / pickedFadeOutDuration);
+            yield return null;
+        }
+
+        SetButtonsVisible(false);
+        _fadeOutRoutine = null;
+    }
+
+    // Bursts every other slot's dismiss mover in place on its own button,
+    // skipping pickedIndex — the picked button's swarm instead travels via
+    // applyParticleMovers, handled separately in OnRewardButtonPressed.
+    protected void DismissUnpickedButtons(int pickedIndex)
+    {
+        int count = Mathf.Min(Mathf.Min(rewardButtons.Length, dismissParticleMovers.Length), _currentOffer.Length);
+        for (int i = 0; i < count; i++)
+        {
+            if (i == pickedIndex)
+            {
+                continue;
+            }
+
+            RectTransform buttonRect = rewardButtons[i].GetComponent<RectTransform>();
+            dismissParticleMovers[i].Init(buttonRect, _currentOffer[i].AssociatedColor, chest.transform.position.z);
         }
     }
 

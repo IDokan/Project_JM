@@ -157,6 +157,14 @@ public class RewardApplyParticleMover : MonoBehaviour
             StopCoroutine(_travelDelayRoutine);
         }
 
+        // Claims Color over Lifetime off this shared ParticleSystem —
+        // RewardDismissParticleMover turns it on for its own use of the
+        // same component, and this mover's own alpha is driven entirely by
+        // code (see UpdateTravel's distance-based fade), so it can't be
+        // left enabled or the two would multiply together.
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime = controlledParticleSystem.colorOverLifetime;
+        colorOverLifetime.enabled = false;
+
         controlledParticleSystem.Clear(true);
         controlledParticleSystem.Play(true);
 

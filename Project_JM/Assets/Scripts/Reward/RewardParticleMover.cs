@@ -39,6 +39,17 @@ public class RewardParticleMover : MonoBehaviour
     // fades linearly to transparent as it closes the remaining distance.
     [SerializeField] protected float fadeRadius = 2f;
 
+    // Earliest/latest a particle in this swarm can arrive at its
+    // destination, measured from Init() — delay (the pre-travel hold
+    // BeginTravelAfterDelay waits out before BeginTravel actually starts
+    // moving anything) plus travelTime scaled by the fastest/slowest a
+    // particle's own duration can randomize to (see
+    // TravelTimeScaleFromSeed). RewardOfferUI uses this pair to time its
+    // buttons' fade-in so they reach full opacity in step with the swarm
+    // actually arriving.
+    public float MinTravelDuration => delay + travelTime * travelTimeScaleMin;
+    public float MaxTravelDuration => delay + travelTime * travelTimeScaleMax;
+
     protected struct TravelInfo
     {
         public Vector3 startPos;
