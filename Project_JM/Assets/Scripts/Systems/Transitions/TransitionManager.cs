@@ -77,7 +77,20 @@ public class TransitionManager : MonoBehaviour
         NotifySkipTimerChanged();
     }
 
-    public void SetSkipHoldBlocked(bool blocked) => _skipHoldBlocked = blocked;
+    // Blocking mid-hold (e.g. reward buttons popping up while the player is
+    // already holding skip) must force the hold off immediately, not just
+    // refuse new presses in BeginSkipHold — otherwise Update() keeps
+    // accumulating _skipTimer off the stale _isHoldingSkip and skip keeps
+    // running straight through the block.
+    public void SetSkipHoldBlocked(bool blocked)
+    {
+        _skipHoldBlocked = blocked;
+
+        if (blocked && _isHoldingSkip)
+        {
+            ResetSkipState();
+        }
+    }
 
     public void BeginSkipHold()
     {
@@ -133,7 +146,17 @@ public class TransitionManager : MonoBehaviour
 
         _currentTransition = null;
 
-        ResetSkipState();
+        // Only reset the skip hold when nothing is queued to chain into —
+        // a queued handoff (e.g. reward transition -> middle transition)
+        // should let an in-progress hold carry straight through instead of
+        // cutting to zero and forcing the player to release and press again.
+        // TryStartNextTransition no longer resets either, so this is the
+        // single decision point per completion: chaining or a genuine gap.
+        if (_pendingTransitionRequests.Count == 0)
+        {
+            ResetSkipState();
+        }
+
         TryStartNextTransition();
     }
 
@@ -176,7 +199,10 @@ public class TransitionManager : MonoBehaviour
 
             _currentTransition = pendingRequest.Controller;
 
-            ResetSkipState();
+            // No ResetSkipState here — CompleteTransition already decided
+            // whether this handoff is a genuine gap (reset) or a chain
+            // (carry the hold through); duplicating the reset here would
+            // undo that decision for the chained case.
             pendingRequest.StartAction();
         }
     }
