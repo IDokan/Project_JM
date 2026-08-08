@@ -90,12 +90,6 @@ public class Menu : MonoBehaviour, ICancelHandler
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
-        Selectable selected = GetFirstSelectable();
-        if (selected != null)
-        {
-            EventSystem.current.SetSelectedGameObject(selected.gameObject);
-        }
-
         if (style != null)
         {
             transform.DOKill();
@@ -116,6 +110,17 @@ public class Menu : MonoBehaviour, ICancelHandler
     {
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+
+        // Selected only once the pop-in tween finishes, not at the start of
+        // Show() — selecting earlier put the selected object's transform
+        // scale at zero for the tween's first frame(s), a singular matrix
+        // that made EventSystem's per-frame navigation math divide by zero
+        // and spam "Screen position out of view frustum (-nan)" warnings.
+        Selectable selected = GetFirstSelectable();
+        if (selected != null)
+        {
+            EventSystem.current.SetSelectedGameObject(selected.gameObject);
+        }
     }
 
     public virtual void OnCancel(BaseEventData eventData)
