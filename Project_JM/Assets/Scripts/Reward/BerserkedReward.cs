@@ -29,6 +29,7 @@ public class BerserkedReward : RewardDefinition
         // Total loss is fixed up front (quarter of current HP), then spread as
         // equal flat chunks across each party member's staggered hit feedback.
         CharacterCombatant[] party = context.Roster.GetAll();
+        Transform[] transforms = context.Roster.GetAllCharacterTransforms();
         float totalLoss = context.PartyStatus.CurrentHP - context.PartyStatus.CurrentHP / currentHPDivisor;
         float perStepLoss = totalLoss / party.Length;
 
@@ -39,6 +40,7 @@ public class BerserkedReward : RewardDefinition
             int lostHP = Mathf.RoundToInt(previousHP - context.PartyStatus.CurrentHP);
 
             party[i]?.PlayDamageFeedback(lostHP);
+            FlashGlow(transforms[i]);
 
             if (i < party.Length - 1)
             {

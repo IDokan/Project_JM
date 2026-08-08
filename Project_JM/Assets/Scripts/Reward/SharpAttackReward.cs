@@ -20,6 +20,7 @@ public class SharpAttackReward : RewardDefinition
     public override IEnumerator Apply(RewardContext context)
     {
         context.DamageMultiplierManager.AddRewardCriticalDamageBonus(targetColor, criticalDamageIncrease);
+        FlashGlow(context.Roster.GetCharacterTransform(targetColor));
         yield break;
     }
 }

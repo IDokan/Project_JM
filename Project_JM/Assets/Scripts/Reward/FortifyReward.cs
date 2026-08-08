@@ -19,6 +19,7 @@ public class FortifyReward : RewardDefinition
     public override IEnumerator Apply(RewardContext context)
     {
         context.PartyStatus.AddRewardHPBonus(hpIncrease);
+        PlayVfx(context.HpBarVfx);
         yield break;
     }
 }

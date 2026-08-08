@@ -20,6 +20,7 @@ public class BlessingsReward : RewardDefinition
     {
         context.PartyStatus.Heal(1f);
         context.PartyStatus.AddShield(shieldPercentage);
+        PlayVfx(context.HpBarVfx);
         yield break;
     }
 }

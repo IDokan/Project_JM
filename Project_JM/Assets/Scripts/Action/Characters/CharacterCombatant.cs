@@ -134,10 +134,13 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         SpawnImpactAttachment(attackContext);
     }
 
-    // Plays the same hit reaction TakeDamage would (flash, hurt SFX, damage popup)
-    // without touching HP. Used when HP was already changed elsewhere (e.g. a
-    // reward reducing the party's shared CharacterStatus once, then telling every
-    // color's CharacterCombatant to react to it).
+    // Plays the same hit reaction TakeDamage would (flash, hurt SFX, damage popup,
+    // hurt animation) without touching HP. Used when HP was already changed
+    // elsewhere (e.g. a reward reducing the party's shared CharacterStatus once,
+    // then telling every color's CharacterCombatant to react to it). Ally-only:
+    // the hurt animation is normally triggered by AttackExecutor.RequestHurt on
+    // AttackMotion, which enemies don't have (they use EnemyAttackMotion instead),
+    // so GetComponent below simply finds nothing on an enemy and no-ops.
     public void PlayDamageFeedback(int amount)
     {
         if (status.IsDead)
@@ -163,6 +166,8 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
         {
             AudioManager.Instance.PlayActionSFX(hurtSfx);
         }
+
+        GetComponent<AttackMotion>()?.RequestHurt(Vector3.zero);
     }
 
     public void AddBuffCritBonus(float value)

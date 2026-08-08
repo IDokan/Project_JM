@@ -19,6 +19,7 @@ public class FocusReward : RewardDefinition
     public override IEnumerator Apply(RewardContext context)
     {
         context.ComboManager.AddComboResetTimeBonus(comboResetTimeIncrease);
+        PlayVfx(context.ComboBarVfx);
         yield break;
     }
 }

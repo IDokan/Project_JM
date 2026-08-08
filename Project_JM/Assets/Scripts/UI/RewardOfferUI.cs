@@ -4,8 +4,9 @@
 // File: RewardOfferUI.cs
 // Summary: Rolls a reward offer from RewardManager and reveals it as
 //          selectable buttons, tinted and iconed per reward, at the start of
-//          the reward transition. Applies whichever reward the player picks
-//          through RewardManager and raises TransitionPhase.RewardChosen.
+//          the reward transition. Raises TransitionPhase.RewardChosen on
+//          pick, then applies the reward through RewardManager once its
+//          apply particle swarm arrives, raising TransitionPhase.RewardGiven.
 //          Owns the reward buttons so RewardChest can stay a purely visual
 //          prop.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
@@ -29,8 +30,14 @@ public class RewardOfferUI : MonoBehaviour
     [SerializeField] protected RewardIconGroup[] rewardIconGroups;
     [SerializeField] protected CanvasGroup rewardButtonsGroup;
 
-    // How long the group's alpha takes to reach 0 once a reward is picked.
-    [SerializeField] protected float pickedFadeOutDuration = 0.3f;
+    // One pre-placed overlay Image per button slot, inactive until any
+    // button is picked — see BindOffer (tinted, reset inactive) and
+    // OnRewardButtonPressed (all slots activated together on pick) below.
+    [SerializeField] protected Image[] flashImages;
+
+    // How long every button's flash Image stays up before
+    // rewardButtonsGroup.alpha is cut to 0.
+    [SerializeField] protected float flashDuration = 0.1f;
 
     [Header("Particles")]
     // One pre-placed mover per button slot, reused for every reward offer —
@@ -69,10 +76,12 @@ public class RewardOfferUI : MonoBehaviour
     protected Coroutine _particleSpawnRoutine;
     protected Coroutine _fadeOutRoutine;
 
-    // Which targets the pick currently in flight should flash once
-    // RaiseRewardGiven fires, from mover.Completed.
-    protected Transform[] _pendingTargets;
     protected bool _rewardGivenFired;
+
+    // The reward picked, held until RaiseRewardGiven actually applies it —
+    // application is deferred to particle arrival rather than click, so the
+    // effect lands in sync with the swarm reaching its target.
+    protected RewardDefinition _pendingReward;
 
     protected void Awake()
     {
@@ -102,7 +111,7 @@ public class RewardOfferUI : MonoBehaviour
         // instantiated/destroyed per pick like GemResolver), so it's safe to
         // subscribe every slot up front rather than per pick — at most one
         // is ever actually traveling (Init'd) at a time, so RaiseRewardGiven
-        // only ever fires for the pick _pendingTargets currently belongs to.
+        // only ever fires for the pick _pendingReward currently belongs to.
         for (int i = 0; i < applyParticleMovers.Length; i++)
         {
             applyParticleMovers[i].Completed += RaiseRewardGiven;
@@ -170,6 +179,9 @@ public class RewardOfferUI : MonoBehaviour
             colors.normalColor = softened;
             colors.disabledColor = softened;
             rewardButtons[i].colors = colors;
+
+            flashImages[i].color = color.ConvertGemColorOrWhite();
+            flashImages[i].gameObject.SetActive(false);
         }
     }
 
@@ -231,6 +243,10 @@ public class RewardOfferUI : MonoBehaviour
     {
         transitionManager.SetSkipHoldBlocked(false);
 
+        for (int i = 0; i < flashImages.Length; i++)
+        {
+            flashImages[i].gameObject.SetActive(true);
+        }
         rewardButtonsGroup.interactable = false;
         rewardButtonsGroup.blocksRaycasts = false;
 
@@ -238,7 +254,7 @@ public class RewardOfferUI : MonoBehaviour
         {
             StopCoroutine(_fadeOutRoutine);
         }
-        _fadeOutRoutine = StartCoroutine(FadeOutButtons());
+        _fadeOutRoutine = StartCoroutine(HideButtonsAfterFlash());
 
         (Transform[] targets, GemColor[] colors) = index < applyParticleMovers.Length ? ResolveApplyTargets(_currentOffer[index]) : (null, null);
         RewardApplyParticleMover mover = null;
@@ -251,11 +267,10 @@ public class RewardOfferUI : MonoBehaviour
 
         DismissUnpickedButtons(index);
 
-        rewardManager.ChooseReward(_currentOffer[index]);
         transitionEventChannel.Raise(TransitionPhase.RewardChosen);
 
         _rewardGivenFired = false;
-        _pendingTargets = targets;
+        _pendingReward = _currentOffer[index];
 
         // mover == null means no particle swarm will ever finish for this
         // pick (no mover slot, or no resolvable target) — RewardTransitionController
@@ -269,19 +284,11 @@ public class RewardOfferUI : MonoBehaviour
         }
     }
 
-    // Fades rewardButtonsGroup.alpha from 1 to 0 over pickedFadeOutDuration,
-    // starting the instant a reward is picked.
-    protected IEnumerator FadeOutButtons()
+    // Holds every button's flash Image up for flashDuration, then cuts
+    // rewardButtonsGroup.alpha straight to 0 — a snap, not a gradual fade.
+    protected IEnumerator HideButtonsAfterFlash()
     {
-        rewardButtonsGroup.alpha = 1f;
-
-        float elapsed = 0f;
-        while (elapsed < pickedFadeOutDuration)
-        {
-            elapsed += Time.deltaTime;
-            rewardButtonsGroup.alpha = 1f - Mathf.Clamp01(elapsed / pickedFadeOutDuration);
-            yield return null;
-        }
+        yield return new WaitForSeconds(flashDuration);
 
         SetButtonsVisible(false);
         _fadeOutRoutine = null;
@@ -315,26 +322,11 @@ public class RewardOfferUI : MonoBehaviour
         }
         _rewardGivenFired = true;
 
-        FlashAbsorbedCharacters(_pendingTargets);
+        // The reward's own Apply() now owns its target-facing feedback (see
+        // RewardDefinition.FlashGlow) — RewardOfferUI no longer reaches into
+        // character VFX directly.
+        rewardManager.ChooseReward(_pendingReward);
         transitionEventChannel.Raise(TransitionPhase.RewardGiven);
-    }
-
-    // Flashes whichever targets turn out to be characters, through the same
-    // GemPowerGlowEffect.PlayGlow() gem-power absorption already uses — HUD
-    // icon targets (HP/combo, for Blessings/Fortify/Focus) simply have no
-    // GemPowerGlowEffect to find there and are skipped.
-    protected void FlashAbsorbedCharacters(Transform[] targets)
-    {
-        if (targets == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < targets.Length; i++)
-        {
-            GemPowerGlowEffect glow = targets[i] ? targets[i].GetComponentInParent<GemPowerGlowEffect>() : null;
-            glow?.PlayGlow();
-        }
     }
 
     // Colored rewards (PowerUp/SharpAttack) fly to their matching character

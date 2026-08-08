@@ -491,6 +491,11 @@ Canvas:
   m_SortingLayerID: -1917351183
   m_SortingOrder: 40
   m_TargetDisplay: 0
+--- !u!198 &497811498 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 9188082589188728046, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+  m_PrefabInstance: {fileID: 6231230550165760674}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +753,11 @@ MonoBehaviour:
   worldTarget: {fileID: 1371267576}
   worldCamera: {fileID: 519420031}
   canvas: {fileID: 33780020}
+--- !u!198 &534208173 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 9194187386882252664, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+  m_PrefabInstance: {fileID: 6231230550165760674}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &549795424
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4035,6 +4045,14 @@ PrefabInstance:
       value: -160
       objectReference: {fileID: 0}
     - target: {fileID: 7858995295406063370, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: hpBarVfx
+      value: 
+      objectReference: {fileID: 497811498}
+    - target: {fileID: 7858995295406063370, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: comboBarVfx
+      value: 
+      objectReference: {fileID: 534208173}
+    - target: {fileID: 7858995295406063370, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: partyRoster
       value: 
       objectReference: {fileID: 1233718908}
@@ -5420,7 +5438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5094240340758896645, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000038146973
+      value: -0.0000038146973
       objectReference: {fileID: 0}
     - target: {fileID: 5132932385938972131, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5795,10 +5813,6 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: particleMovers.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: 'particleMovers.Array.data[0]'
       value: 
       objectReference: {fileID: 590682738}
@@ -5810,14 +5824,6 @@ PrefabInstance:
       propertyPath: 'particleMovers.Array.data[2]'
       value: 
       objectReference: {fileID: 1838648795}
-    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: applyParticleMovers.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: dismissParticleMovers.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6796416861161661648, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: 'applyParticleMovers.Array.data[0]'
       value: 
@@ -6430,6 +6436,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9188082589188728046, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194187386882252664, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9201682368988007455, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: boundEnemyAI
       value: 
@@ -6442,6 +6456,7 @@ PrefabInstance:
     - {fileID: 6816558048383230377, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
     - {fileID: 7658584221803931746, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
     - {fileID: 3626411100653850102, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+    - {fileID: 1304596581362870136, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7278162365482035236, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       insertIndex: 1
