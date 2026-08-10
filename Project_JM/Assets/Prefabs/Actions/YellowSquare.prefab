@@ -5200,6 +5200,7 @@ GameObject:
   - component: {fileID: 1946331997644894319}
   - component: {fileID: 7377259155823782126}
   - component: {fileID: 5469740557828920212}
+  - component: {fileID: 2250681356792645524}
   m_Layer: 0
   m_Name: YellowSquare
   m_TagString: Untagged
@@ -5267,6 +5268,7 @@ MonoBehaviour:
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  stateVisual: {fileID: 2250681356792645524}
 --- !u!95 &3104464448260749938
 Animator:
   serializedVersion: 7
@@ -5490,6 +5492,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpVfxSpawner
   levelUpVfxPrefab: {fileID: 3400897040288304857, guid: 0783d34438b30fb41aeade259d1f58a6, type: 3}
   spawnPoint: {fileID: 85286471684451799}
+--- !u!114 &2250681356792645524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5114379530251128962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b577be0eae540408d71333e94b64fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClericStateVisual
+  eyeSpriteResolver: {fileID: 1638120866744977958}
+  beakSpriteResolver: {fileID: 4937330230251515784}
+  eyeCategory: Eye
+  normalEyeLabel: normal
+  victoryEyeLabel: Victory
+  damagedEyeLabel: Damaged
+  beakCategory: Beak
+  normalBeakLabel: Normal
+  victoryBeakLabel: Victory
+  damagedBeakLabel: Damaged
 --- !u!1 &5573824307224507408
 GameObject:
   m_ObjectHideFlags: 0
@@ -5762,7 +5786,7 @@ Transform:
   m_GameObject: {fileID: 7518124026404999089}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.64260197, y: 0.4098246, z: 0}
+  m_LocalPosition: {x: -0.642602, y: 0.4098246, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6611,6 +6635,8 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 6603907323573145375, guid: 8941b916b2aacea40a62fa9365a9fd26, type: 3}
     - {fileID: 403210313510539975, guid: 8941b916b2aacea40a62fa9365a9fd26, type: 3}
+    - {fileID: -5923910614867286775, guid: 8941b916b2aacea40a62fa9365a9fd26, type: 3}
+    - {fileID: 9003414192364772346, guid: 8941b916b2aacea40a62fa9365a9fd26, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 8941b916b2aacea40a62fa9365a9fd26, type: 3}
       insertIndex: -1

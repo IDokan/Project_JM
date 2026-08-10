@@ -628,6 +628,7 @@ GameObject:
   - component: {fileID: 5361054748474371118}
   - component: {fileID: 7977238903656477660}
   - component: {fileID: 2964506678718090411}
+  - component: {fileID: 321158606129339822}
   m_Layer: 0
   m_Name: RedSquare
   m_TagString: Untagged
@@ -687,6 +688,7 @@ MonoBehaviour:
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   enemySpawnedEventChannel: {fileID: 11400000, guid: 7e3f405b12d69784582f13af0af725ff, type: 2}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  stateVisual: {fileID: 321158606129339822}
 --- !u!95 &5112802853265039420
 Animator:
   serializedVersion: 7
@@ -879,6 +881,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpVfxSpawner
   levelUpVfxPrefab: {fileID: 3400897040288304857, guid: f438663428e0ff242a5186b9cc9db984, type: 3}
   spawnPoint: {fileID: 6816816052667332688}
+--- !u!114 &321158606129339822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7378609590189185883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4e872f34199914d8a87166e2417cc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnightStateVisual
+  eyeSpriteResolver: {fileID: 8901417189170537330}
+  mouthSpriteResolver: {fileID: 5466415882056385088}
+  eyeCategory: Eyes
+  normalEyeLabel: Normal
+  victoryEyeLabel: Victory
+  damagedEyeLabel: Damaged
+  mouthCategory: Mouths
+  normalMouthLabel: Normal
+  victoryMouthLabel: Victory
+  damagedMouthLabel: Mouth
 --- !u!1 &7774183868671680934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1628,6 +1652,8 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: -8070267185509557244, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
     - {fileID: 3290087597373437068, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
+    - {fileID: -5923910614867286775, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
+    - {fileID: 4402722572987729059, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -7552582706839291426, guid: 0db76a90065bf9943ad1251f80c77e26, type: 3}
       insertIndex: -1
