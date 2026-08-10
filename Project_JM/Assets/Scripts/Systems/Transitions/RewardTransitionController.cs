@@ -14,12 +14,15 @@
 //                      swarm has actually finished arriving, hands off to
 //                      the middle transition.
 
+using System.Collections;
 using UnityEngine;
 
 public class RewardTransitionController : TransitionController
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+
+    [SerializeField] protected float rewardTransitionEndDelay = 2f;
 
     protected void OnEnable()
     {
@@ -50,8 +53,15 @@ public class RewardTransitionController : TransitionController
     {
         if (phase == TransitionPhase.RewardGiven)
         {
-            transitionEventChannel.Raise(TransitionPhase.RewardTransitionEnd);
-            CompleteTransition();
+            StartCoroutine(DelayedRaiseRewardTransitionEnd());
         }
+    }
+
+    protected IEnumerator DelayedRaiseRewardTransitionEnd()
+    {
+        yield return new WaitForSeconds(rewardTransitionEndDelay);
+
+        transitionEventChannel.Raise(TransitionPhase.RewardTransitionEnd);
+        CompleteTransition();
     }
 }

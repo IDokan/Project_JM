@@ -15,7 +15,6 @@ public class MiddleTransitionController : TransitionController
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected float cameraStartDelay = 1f;
     [SerializeField] protected float enemySpawnDelay = 3f;
     [SerializeField] protected float middleTransitionDuration = 5f;
 
@@ -45,14 +44,12 @@ public class MiddleTransitionController : TransitionController
     protected IEnumerator MiddleTransitionRoutine()
     {
         transitionEventChannel.Raise(TransitionPhase.MiddleTransitionStarts);
-
-        yield return new WaitForSeconds(cameraStartDelay);
         transitionEventChannel.Raise(TransitionPhase.MiddleCameraMoveBegin);
 
         yield return new WaitForSeconds(enemySpawnDelay);
         transitionEventChannel.Raise(TransitionPhase.MiddleEnemySpawnBegin);
 
-        yield return new WaitForSeconds(middleTransitionDuration - cameraStartDelay - enemySpawnDelay);
+        yield return new WaitForSeconds(middleTransitionDuration - enemySpawnDelay);
         transitionEventChannel.Raise(TransitionPhase.MiddleTransitionEnd);
 
         CompleteTransition();

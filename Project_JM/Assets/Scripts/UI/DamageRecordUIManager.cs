@@ -3,7 +3,8 @@
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: DamageRecordUIManager.cs
 // Summary: Slides the damage record panel out from behind the gem board at the
-//          start of the reward transition, and hides it again once the next enemy appears.
+//          start of the reward transition, and hides it again once the middle
+//          transition ends.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections.Generic;
@@ -14,7 +15,6 @@ using UnityEngine;
 public class DamageRecordUIManager : MonoBehaviour
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
-    [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
     [SerializeField] protected DamageRecordManager damageRecordManager;
     [SerializeField] protected DamageRecordItem[] items;
 
@@ -50,13 +50,11 @@ public class DamageRecordUIManager : MonoBehaviour
     protected void OnEnable()
     {
         transitionEventChannel.OnRaised += OnTransitionEvent;
-        enemySpawnedEventChannel.OnRaised += OnEnemySpawned;
     }
 
     protected void OnDisable()
     {
         transitionEventChannel.OnRaised -= OnTransitionEvent;
-        enemySpawnedEventChannel.OnRaised -= OnEnemySpawned;
     }
 
     protected void OnTransitionEvent(TransitionPhase phase)
@@ -65,11 +63,10 @@ public class DamageRecordUIManager : MonoBehaviour
         {
             ShowRecords();
         }
-    }
-
-    protected void OnEnemySpawned(GameObject enemy)
-    {
-        HideRecords();
+        else if (phase == TransitionPhase.MiddleTransitionEnd)
+        {
+            HideRecords();
+        }
     }
 
     protected void ShowRecords()

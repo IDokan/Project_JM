@@ -141,6 +141,8 @@ MonoBehaviour:
   partyRoster: {fileID: 0}
   comboManager: {fileID: 4130428429056873238}
   offerCount: 3
+  hpBarVfx: {fileID: 0}
+  comboBarVfx: {fileID: 0}
 --- !u!1 &682670706797471294
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +502,7 @@ MonoBehaviour:
   transitionManager: {fileID: 5839353086084169784}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
+  rewardTransitionEndDelay: 2
 --- !u!1 &4459710661837427515
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,9 +748,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiddleTransitionManager
   transitionManager: {fileID: 5839353086084169784}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
-  cameraStartDelay: 1
-  enemySpawnDelay: 4
-  middleTransitionDuration: 6
+  enemySpawnDelay: 3
+  middleTransitionDuration: 4
 --- !u!1 &7733845625183951440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,7 +1121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7777251551276315339, guid: e693219f6d40d5f409ad9eb0ae7872d4, type: 3}
       propertyPath: m_labelHash
-      value: 2.903573e-17
+      value: 0.03435414
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

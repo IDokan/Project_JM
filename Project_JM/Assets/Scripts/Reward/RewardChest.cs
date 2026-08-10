@@ -101,7 +101,7 @@ public class RewardChest : MonoBehaviour
         return start;
     }
 
-    // Called by RewardChestManager when the middle transition starts; slides
+    // Called by RewardChestManager when the reward is given; slides
     // the chest off-screen and deactivates it once the slide finishes.
     public void Hide()
     {

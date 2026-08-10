@@ -12,7 +12,6 @@ public class CameraMover : MonoBehaviour
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    [SerializeField] protected float moveDelay = 1f;
     [SerializeField] protected float moveDistance = 9f;
     [SerializeField] protected float moveDuration = 3f;
 
@@ -71,7 +70,7 @@ public class CameraMover : MonoBehaviour
         }
         else if (phase == TransitionPhase.MiddleCameraMoveBegin)
         {
-            Move(moveDistance, moveDuration, moveDelay);
+            Move(moveDistance, moveDuration, 0);
         }
     }
 }

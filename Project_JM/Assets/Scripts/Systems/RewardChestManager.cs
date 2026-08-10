@@ -4,7 +4,7 @@
 // File: RewardChestManager.cs
 // Summary: Owns all transition-event handling for the reward chest prop:
 //          shows it at the reward transition's spawn position on
-//          RewardTransitionStarts, and hides it on MiddleTransitionStarts.
+//          RewardTransitionStarts, and hides it on RewardChosen.
 //          Stays active for the whole scene (unlike the chest itself) so it
 //          can always hear RewardTransitionStarts and bring the chest back,
 //          even between uses when the chest is inactive.
@@ -50,7 +50,7 @@ public class RewardChestManager : MonoBehaviour
             Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
             chest.Show(pos);
         }
-        else if (phase == TransitionPhase.MiddleTransitionStarts)
+        else if (phase == TransitionPhase.RewardChosen)
         {
             chest.Hide();
         }
