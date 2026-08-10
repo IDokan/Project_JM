@@ -15,7 +15,7 @@ public class BerserkedReward : RewardDefinition
 {
     [SerializeField] protected float attackPowerIncrease = 0.1f;
     [SerializeField] protected float currentHPDivisor = 4f;
-    [SerializeField] protected float stepDelay = 0.5f;
+    [SerializeField] protected float stepDelay = 0.25f;
 
     public override GemColor AssociatedColor => GemColor.None;
 
@@ -41,6 +41,7 @@ public class BerserkedReward : RewardDefinition
 
             party[i]?.PlayDamageFeedback(lostHP);
             FlashGlow(transforms[i]);
+            SpawnLevelUpVfx(transforms[i]);
 
             if (i < party.Length - 1)
             {

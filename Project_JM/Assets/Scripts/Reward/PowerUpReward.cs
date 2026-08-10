@@ -20,7 +20,9 @@ public class PowerUpReward : RewardDefinition
     public override IEnumerator Apply(RewardContext context)
     {
         context.DamageMultiplierManager.AddRewardAttackPowerBonus(targetColor, attackPowerIncrease);
-        FlashGlow(context.Roster.GetCharacterTransform(targetColor));
+        Transform target = context.Roster.GetCharacterTransform(targetColor);
+        FlashGlow(target);
+        SpawnLevelUpVfx(target);
         yield break;
     }
 }

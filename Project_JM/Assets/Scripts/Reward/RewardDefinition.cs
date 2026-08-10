@@ -63,6 +63,19 @@ public abstract class RewardDefinition : ScriptableObject
         target.GetComponentInParent<GemPowerGlowEffect>()?.PlayGlow();
     }
 
+    // Spawns the level-up VFX prefab owned by a reward's target character —
+    // see LevelUpVfxSpawner. Same GetComponentInParent lookup as FlashGlow,
+    // for rewards that warrant a more prominent burst than the glow alone.
+    protected static void SpawnLevelUpVfx(Transform target)
+    {
+        if (!target)
+        {
+            return;
+        }
+
+        target.GetComponentInParent<LevelUpVfxSpawner>()?.Spawn();
+    }
+
     // Plays a HUD-anchored landing VFX (HpBarVfx/ComboBarVfx) for colorless
     // rewards with no character target — the counterpart to FlashGlow above.
     // Cleared before replaying so a reward picked again before the previous
