@@ -135,7 +135,6 @@ public class GameProgressManager : MonoBehaviour
     protected void HandleEnemyDied(CharacterStatus stat)
     {
         ++_numEnemyDefeated;
-        partyStatus.Initialize(curvesSelector.ActiveCurves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
 
         TryUnlockEnemyDefeatAchievement(stat.CharacterId);
 
@@ -324,6 +323,10 @@ public class GameProgressManager : MonoBehaviour
         if (phase == TransitionPhase.IntroTransitionBegin)
         {
             Clear();
+        }
+        else if (phase == TransitionPhase.RewardGiven)
+        {
+            partyStatus.Initialize(curvesSelector.ActiveCurves.GetAllyDifficultyMultiplier(_numEnemyDefeated));
         }
     }
 

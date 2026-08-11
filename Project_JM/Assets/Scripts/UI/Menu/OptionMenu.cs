@@ -45,4 +45,10 @@ public class OptionMenu : Menu
         graphicsMenu.Hide();
         audioMenu.Show(audioSettingButton);
     }
+
+    public override Selectable GetFirstSelectable()
+    {
+        bool isPortrait = Screen.height > Screen.width;
+        return isPortrait ? audioSettingButton : graphicsSettingButton;
+    }
 }

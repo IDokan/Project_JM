@@ -562,6 +562,16 @@ public class AttackMotion : MonoBehaviour
             stateVisual?.OnVictoryEnd();
             StartWalk();
         }
+
+        // Insurance: MiddleTransitionStarts already clears this, but a
+        // character that wasn't around yet to hear it (e.g. respawned/
+        // re-enabled mid-transition) could otherwise carry VictoryBool into
+        // the next fight still true.
+        if (phase == TransitionPhase.MiddleTransitionEnd)
+        {
+            _animator.SetBool(VictoryBool, false);
+            stateVisual?.OnVictoryEnd();
+        }
     }
 
     protected void Clear()

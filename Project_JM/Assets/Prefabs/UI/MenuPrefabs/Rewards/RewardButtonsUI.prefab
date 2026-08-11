@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 8384387296708770498}
   - component: {fileID: 4397043960787461632}
   - component: {fileID: 7399508311914134771}
+  - component: {fileID: 1621565577291276497}
+  - component: {fileID: 3514161259858822039}
+  - component: {fileID: 1758855136855190169}
   m_Layer: 5
   m_Name: RewardButtonsUI
   m_TagString: Untagged
@@ -69,6 +72,7 @@ MonoBehaviour:
   rewardManager: {fileID: 0}
   chest: {fileID: 0}
   partyRoster: {fileID: 0}
+  playerInput: {fileID: 0}
   rewardButtons:
   - {fileID: 7485834094415906797}
   - {fileID: 2134287932614874018}
@@ -98,6 +102,50 @@ MonoBehaviour:
   - {fileID: 0}
   hpIconTarget: {fileID: 0}
   comboIconTarget: {fileID: 0}
+--- !u!114 &1621565577291276497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8664390695583371674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126bc64bdd8f28240bbea9635fd24f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
+  landscapeAnchoredPosition: {x: -535, y: 0}
+  portraitAnchoredPosition: {x: 0, y: 440}
+--- !u!114 &3514161259858822039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8664390695583371674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c8b62503195ef4a8bb002d13fd4cdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationAnchor
+  landscapeAnchorMin: {x: 0.5, y: 0.5}
+  landscapeAnchorMax: {x: 0.5, y: 0.5}
+  portraitAnchorMin: {x: 0.5, y: 0}
+  portraitAnchorMax: {x: 0.5, y: 0}
+--- !u!114 &1758855136855190169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8664390695583371674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8e268da705ac44098f92352c980734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIOrientationScaler
+  landscapeScale: {x: 1, y: 1, z: 1}
+  portraitScale: {x: 1.25, y: 1.25, z: 1}
 --- !u!1001 &1678365630453411877
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138,6 +186,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 7485834094415906797}
+    - target: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 6627121575708580541}
     - target: {fileID: 1406157515824180625, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -345,6 +405,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 2134287932614874018}
     - target: {fileID: 1406157515824180625, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -552,6 +620,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 2134287932614874018}
     - target: {fileID: 1406157515824180625, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

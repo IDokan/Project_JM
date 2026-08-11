@@ -22,16 +22,17 @@ using UnityEngine;
 public class RewardParticleMover : MonoBehaviour
 {
     [SerializeField] protected ParticleSystem controlledParticleSystem;
+    [SerializeField] protected ParticleSystemRenderer controlledRenderer;
 
-    [SerializeField] protected float delay = 0.1f;
+    [SerializeField] protected float delay = 1f;
 
     [Header("Travel (spring, tune these)")]
     [SerializeField] protected float travelTime = 0.8f;
     [SerializeField] protected float travelTimeScaleMin = 0.8f;
     [SerializeField] protected float travelTimeScaleMax = 1.2f;
-    [SerializeField] protected float stiffness = 12f;
-    [SerializeField] protected float damping = 9f;
-    [SerializeField] protected float bendScale = 3f;
+    [SerializeField] protected float stiffness = 60f;
+    [SerializeField] protected float damping = 12f;
+    [SerializeField] protected float bendScale = 1f;
 
     [Header("Fade (proximity to target)")]
     // Squared against distance to destination each frame, not sqrt'd — a
@@ -77,6 +78,10 @@ public class RewardParticleMover : MonoBehaviour
         {
             controlledParticleSystem = GetComponent<ParticleSystem>();
         }
+        if (!controlledRenderer)
+        {
+            controlledRenderer = GetComponent<ParticleSystemRenderer>();
+        }
 
         ParticleSystem.MainModule main = controlledParticleSystem.main;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
@@ -104,6 +109,8 @@ public class RewardParticleMover : MonoBehaviour
             StopCoroutine(_travelDelayRoutine);
         }
 
+        controlledRenderer.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+
         // Applied through the Main module (rather than an explicit Emit()
         // per particle, like RewardApplyParticleMover) since this mover
         // still relies on the ParticleSystem's own authored burst to spawn
@@ -119,6 +126,8 @@ public class RewardParticleMover : MonoBehaviour
     protected IEnumerator BeginTravelAfterDelay()
     {
         yield return new WaitForSeconds(delay);
+
+        controlledRenderer.maskInteraction = SpriteMaskInteraction.None;
 
         BeginTravel(controlledParticleSystem.transform.position);
         _isTraveling = true;

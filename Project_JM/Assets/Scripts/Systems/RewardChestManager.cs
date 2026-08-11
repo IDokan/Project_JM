@@ -3,13 +3,15 @@
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: RewardChestManager.cs
 // Summary: Owns all transition-event handling for the reward chest prop:
-//          shows it at the reward transition's spawn position on
-//          RewardTransitionStarts, and hides it on RewardChosen.
+//          shows it at the reward transition's spawn position after
+//          chestSpawnDelay past RewardTransitionStarts, and hides it on
+//          RewardChosen.
 //          Stays active for the whole scene (unlike the chest itself) so it
 //          can always hear RewardTransitionStarts and bring the chest back,
 //          even between uses when the chest is inactive.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using System.Collections;
 using UnityEngine;
 
 public class RewardChestManager : MonoBehaviour
@@ -21,7 +23,10 @@ public class RewardChestManager : MonoBehaviour
     [SerializeField] protected Vector3 landscapeSpawnPosition;
     [SerializeField] protected Vector3 portraitSpawnPosition;
 
+    [SerializeField] protected float chestSpawnDelay = 1f;
+
     protected Vector3 _spawnOffsetToCamera;
+    protected Coroutine _spawnRoutine;
 
     protected void Awake()
     {
@@ -47,12 +52,30 @@ public class RewardChestManager : MonoBehaviour
     {
         if (phase == TransitionPhase.RewardTransitionStarts)
         {
-            Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
-            chest.Show(pos);
+            if (_spawnRoutine != null)
+            {
+                StopCoroutine(_spawnRoutine);
+            }
+            _spawnRoutine = StartCoroutine(ShowAfterDelay());
         }
         else if (phase == TransitionPhase.RewardChosen)
         {
+            if (_spawnRoutine != null)
+            {
+                StopCoroutine(_spawnRoutine);
+                _spawnRoutine = null;
+            }
             chest.Hide();
         }
+    }
+
+    protected IEnumerator ShowAfterDelay()
+    {
+        yield return new WaitForSeconds(chestSpawnDelay);
+
+        Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
+        chest.Show(pos);
+
+        _spawnRoutine = null;
     }
 }

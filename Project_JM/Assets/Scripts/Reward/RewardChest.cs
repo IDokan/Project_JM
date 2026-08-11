@@ -26,6 +26,13 @@ public class RewardChest : MonoBehaviour
     protected static readonly int OpenTrig = Animator.StringToHash("OpenTrig");
     protected static readonly int CloseTrig = Animator.StringToHash("CloseTrig");
 
+    // Fires the instant the chest reaches its target position in
+    // EntryRoutine — before openDelay/OpenTrig — so listeners that need the
+    // chest's actual world position (e.g. RewardOfferUI seeding its particle
+    // swarm's start point) don't have to guess the arrival time via a
+    // separately-tuned delay of their own.
+    public event System.Action OnLanded;
+
     protected Coroutine _entryRoutine;
     protected Coroutine _exitRoutine;
 
@@ -79,6 +86,7 @@ public class RewardChest : MonoBehaviour
         }
 
         transform.position = target;
+        OnLanded?.Invoke();
 
         yield return new WaitForSeconds(openDelay);
 

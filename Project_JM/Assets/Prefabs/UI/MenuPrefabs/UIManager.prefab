@@ -1143,6 +1143,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7399508311914134771, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
+      propertyPath: pauseButton
+      value: 
+      objectReference: {fileID: 7414181194006262506}
+    - target: {fileID: 7399508311914134771, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
       propertyPath: hpIconTarget
       value: 
       objectReference: {fileID: 2442690368399721005}
@@ -1303,6 +1307,10 @@ PrefabInstance:
     - target: {fileID: 54642569093565329, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452142400851958000, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
+      propertyPath: m_SortingLayer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3956583180474474054, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1870,6 +1878,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ComboBar
       objectReference: {fileID: 0}
+    - target: {fileID: 6220158602374029185, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
+      propertyPath: m_SortingLayer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8384208501568923930, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -2270,6 +2282,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6833648572041643852, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
+      propertyPath: m_SortingLayer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7903258413540609282, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2464,7 +2480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4657344134500460225, guid: 80c243c762ea2824c9ef7e13060c12d1, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5580724592346678818, guid: 80c243c762ea2824c9ef7e13060c12d1, type: 3}
       propertyPath: m_Name
@@ -2824,7 +2840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4577247319158699192, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000038146973
+      value: 0.000022888184
       objectReference: {fileID: 0}
     - target: {fileID: 5024481684449728659, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Pivot.x
@@ -2944,7 +2960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8356715639187964050, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.92000014
       objectReference: {fileID: 0}
     - target: {fileID: 8356715639187964050, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Value

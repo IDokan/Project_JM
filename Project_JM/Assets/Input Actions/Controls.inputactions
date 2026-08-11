@@ -402,15 +402,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "RightClick",
-                    "type": "PassThrough",
-                    "id": "c9ed6a7a-c4cf-4ae6-97da-4a6498626fe3",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "MiddleClick",
                     "type": "PassThrough",
                     "id": "060445d9-90aa-49d5-a248-086c0dca9058",
@@ -707,6 +698,17 @@
                 },
                 {
                     "name": "",
+                    "id": "13eca155-379e-4768-9c09-09e22e3cd4c1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8c26faef-8b3f-4fed-827e-eb1079dff88e",
                     "path": "*/{Cancel}",
                     "interactions": "",
@@ -745,6 +747,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cbee0472-cc84-4668-b6e6-ad18e9b79cfd",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false

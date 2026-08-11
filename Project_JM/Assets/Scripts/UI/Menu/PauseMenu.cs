@@ -58,6 +58,11 @@ public class PauseMenu : Menu
 
     public bool IsPaused { get; private set; }
 
+    // Pause can be opened from raw board Gameplay or from another UI surface
+    // that's already on the UI map (e.g. RewardOfferUI) - Hide() must restore
+    // whichever one was active, not assume Gameplay every time.
+    private bool _returnToGameplayMap;
+
     protected void OnSteamOverlayActivated(bool isActive)
     {
         if (isActive && !IsPaused)
@@ -77,6 +82,7 @@ public class PauseMenu : Menu
     public override void Show(Selectable returnTo = null)
     {
         IsPaused = true;
+        _returnToGameplayMap = playerInput.currentActionMap.name == "Gameplay";
         playerInput.SwitchToUIMap();
         base.Show(returnTo);
         GlobalTimeManager.Instance.PauseTimeScale();
@@ -87,7 +93,14 @@ public class PauseMenu : Menu
     public override void Hide()
     {
         IsPaused = false;
-        playerInput.SwitchToGameplayMap();
+        if (_returnToGameplayMap)
+        {
+            playerInput.SwitchToGameplayMap();
+        }
+        else
+        {
+            playerInput.SwitchToUIMap();
+        }
         base.Hide();
         GlobalTimeManager.Instance.RestoreTimeScaleFromPause();
         AudioManager.Instance.ResumeScaledSFX();

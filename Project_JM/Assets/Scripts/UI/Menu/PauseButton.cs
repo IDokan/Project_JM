@@ -25,9 +25,17 @@ public class PauseButton : MonoBehaviour
     private void OnEnable() => _button.onClick.AddListener(Open);
     private void OnDisable() => _button.onClick.RemoveListener(Open);
 
+    // Parameterless overload is the Button.onClick listener target (UnityEvent
+    // has no arguments); callers wanting focus restored on close should use
+    // the Selectable overload instead - see RewardOfferUI.OnCancel.
     public void Open()
     {
+        Open(null);
+    }
+
+    public void Open(Selectable returnTo)
+    {
         AudioManager.Instance.PlayUISFX(pressSFX);
-        pauseMenu.Show();
+        pauseMenu.Show(returnTo);
     }
 }
