@@ -43,6 +43,8 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
     // rewardButtonsGroup.alpha is cut to 0.
     [SerializeField] protected float flashDuration = 0.1f;
 
+    [SerializeField] protected AudioCueSO rewardGivenSfx;
+
     [Header("Particles")]
     // One pre-placed mover per button slot, reused for every reward offer —
     // the chest itself is a single persistent scene object (see
@@ -365,6 +367,7 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
         // RewardDefinition.FlashGlow) — RewardOfferUI no longer reaches into
         // character VFX directly.
         rewardManager.ChooseReward(_pendingReward);
+        AudioManager.Instance.PlayActionSFX(rewardGivenSfx);
         transitionEventChannel.Raise(TransitionPhase.RewardGiven);
     }
 

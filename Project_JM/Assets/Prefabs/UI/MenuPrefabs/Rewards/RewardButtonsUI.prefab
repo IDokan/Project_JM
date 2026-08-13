@@ -73,6 +73,7 @@ MonoBehaviour:
   chest: {fileID: 0}
   partyRoster: {fileID: 0}
   playerInput: {fileID: 0}
+  pauseButton: {fileID: 0}
   rewardButtons:
   - {fileID: 7485834094415906797}
   - {fileID: 2134287932614874018}
@@ -87,11 +88,12 @@ MonoBehaviour:
   - {fileID: 8087610634112006343}
   - {fileID: 3916503722471764440}
   flashDuration: 0.1
+  rewardGivenSfx: {fileID: 11400000, guid: 3de23ae0aa619c34ea7afa0e3bda3286, type: 2}
   particleMovers:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  particleLaunchDelay: 1.2
+  postLandDelay: 0.6
   applyParticleMovers:
   - {fileID: 0}
   - {fileID: 0}

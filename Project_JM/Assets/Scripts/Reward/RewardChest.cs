@@ -14,6 +14,8 @@ using UnityEngine;
 public class RewardChest : MonoBehaviour
 {
     [SerializeField] protected Animator chestAnimator;
+    [SerializeField] protected AudioCueSO chestLandedSfx;
+    [SerializeField] protected AudioCueSO chestOpenSfx;
 
     [SerializeField] protected float entryDuration = 0.6f;
     [SerializeField] protected float entryArcHeight = 2f;
@@ -86,6 +88,7 @@ public class RewardChest : MonoBehaviour
         }
 
         transform.position = target;
+        AudioManager.Instance.PlayActionSFX(chestLandedSfx);
         OnLanded?.Invoke();
 
         yield return new WaitForSeconds(openDelay);
@@ -94,6 +97,7 @@ public class RewardChest : MonoBehaviour
         {
             chestAnimator.SetTrigger(OpenTrig);
         }
+        AudioManager.Instance.PlayActionSFX(chestOpenSfx);
 
         _entryRoutine = null;
     }

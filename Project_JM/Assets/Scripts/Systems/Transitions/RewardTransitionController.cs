@@ -21,6 +21,7 @@ public class RewardTransitionController : TransitionController
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
+    [SerializeField] protected AudioCueSO victorySfx;
 
     [SerializeField] protected float rewardTransitionEndDelay = 2f;
 
@@ -40,6 +41,7 @@ public class RewardTransitionController : TransitionController
     {
         if (stat.TryGetComponent<EnemyTag>(out _))
         {
+            AudioManager.Instance.PlayActionSFX(victorySfx);
             RequestTransitionStart(BeginRewardTransition);
         }
     }
