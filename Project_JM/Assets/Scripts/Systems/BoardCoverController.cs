@@ -58,7 +58,8 @@ public class BoardCoverController : MonoBehaviour
         Transform t = _instance.transform;
         _tween?.Kill();
         _tween = t.DOLocalMove(_shownLocation, slideDuration)
-                 .SetEase(Ease.OutCubic);
+                 .SetEase(Ease.OutCubic)
+                 .SetLink(_instance);
     }
 
     public void HideCover()
@@ -68,6 +69,7 @@ public class BoardCoverController : MonoBehaviour
         Transform t = _instance.transform;
         _tween?.Kill();
         _tween = t.DOLocalMove(_hiddenLocation, slideDuration)
-                 .SetEase(Ease.InCubic);
+                 .SetEase(Ease.InCubic)
+                 .SetLink(_instance);
     }
 }

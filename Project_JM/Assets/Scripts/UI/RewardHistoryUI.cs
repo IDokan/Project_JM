@@ -133,7 +133,8 @@ public class RewardHistoryUI : MonoBehaviour
     protected void ShowHistory()
     {
         _tween?.Kill();
-        _tween = _rectTransform.DOAnchorPosX(_shownX, slideDuration).SetEase(Ease.OutCubic);
+        _tween = _rectTransform.DOAnchorPosX(_shownX, slideDuration).SetEase(Ease.OutCubic)
+            .SetLink(gameObject);
 
         _canvasGroup.alpha = 1;
     }
@@ -142,6 +143,7 @@ public class RewardHistoryUI : MonoBehaviour
     {
         _tween?.Kill();
         _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic)
-            .OnComplete(() => _canvasGroup.alpha = 0);
+            .OnComplete(() => _canvasGroup.alpha = 0)
+            .SetLink(gameObject);
     }
 }
