@@ -26,6 +26,11 @@ public class RewardManager : MonoBehaviour
     protected RewardDefinition[] _currentOffer;
     public IReadOnlyList<RewardDefinition> CurrentOffer => _currentOffer;
 
+    // One mini-icon per reward chosen so far this run, in pick order; see
+    // RewardDefinition.MiniIcon and RewardHistoryUI.
+    protected readonly List<Sprite> _chosenIcons = new List<Sprite>();
+    public IReadOnlyList<Sprite> ChosenIcons => _chosenIcons;
+
     public RewardDefinition[] RollOffer()
     {
         _currentOffer = rewardBook.GetRandomRewards(offerCount);
@@ -34,6 +39,8 @@ public class RewardManager : MonoBehaviour
 
     public void ChooseReward(RewardDefinition reward)
     {
+        _chosenIcons.Add(reward.MiniIcon);
+
         StartCoroutine(reward.Apply(new RewardContext
         {
             DamageMultiplierManager = damageMultiplierManager,

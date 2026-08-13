@@ -20,9 +20,9 @@ public class BlessingsReward : RewardDefinition
 
     public override IEnumerator Apply(RewardContext context)
     {
+        PlayVfx(context.HpBarVfx);
         yield return HealToFullOverTime(context.PartyStatus, healDuration);
         context.PartyStatus.AddShield(shieldPercentage);
-        PlayVfx(context.HpBarVfx);
     }
 
     // Heals CurrentHP up to maxHP over healDuration seconds rather than in one

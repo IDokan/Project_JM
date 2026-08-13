@@ -40,12 +40,18 @@ public abstract class RewardDefinition : ScriptableObject
     // selectable UI button; see RewardIconGroup.
     [SerializeField] protected Sprite[] icons;
 
+    // A single icon representing this reward as a whole, distinct from
+    // icons above; see RewardHistoryUI.
+    [SerializeField] protected Sprite miniIcon;
+
     public RewardId Id => id;
 
     // Used later to tint the selectable UI; GemColor.None for rewards with no single color.
     public abstract GemColor AssociatedColor { get; }
 
     public IReadOnlyList<Sprite> Icons => icons;
+
+    public Sprite MiniIcon => miniIcon;
 
     public abstract IEnumerator Apply(RewardContext context);
 
