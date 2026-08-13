@@ -20,6 +20,7 @@ public class FocusReward : RewardDefinition
     {
         context.ComboManager.AddComboResetTimeBonus(comboResetTimeIncrease);
         PlayVfx(context.ComboBarVfx);
+        PlayVfx(context.ComboIconVfx);
         yield break;
     }
 }

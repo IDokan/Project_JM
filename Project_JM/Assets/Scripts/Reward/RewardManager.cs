@@ -19,9 +19,10 @@ public class RewardManager : MonoBehaviour
     [SerializeField] protected int offerCount = 3;
 
     // Landing VFX for colorless rewards with no character target — see
-    // RewardContext.HpBarVfx/ComboBarVfx and RewardDefinition.PlayVfx.
+    // RewardContext.HpBarVfx/ComboBarVfx/ComboIconVfx and RewardDefinition.PlayVfx.
     [SerializeField] protected ParticleSystem hpBarVfx;
     [SerializeField] protected ParticleSystem comboBarVfx;
+    [SerializeField] protected ParticleSystem comboIconVfx;
 
     protected RewardDefinition[] _currentOffer;
     public IReadOnlyList<RewardDefinition> CurrentOffer => _currentOffer;
@@ -48,7 +49,8 @@ public class RewardManager : MonoBehaviour
             Roster = partyRoster,
             ComboManager = comboManager,
             HpBarVfx = hpBarVfx,
-            ComboBarVfx = comboBarVfx
+            ComboBarVfx = comboBarVfx,
+            ComboIconVfx = comboIconVfx
         }));
     }
 }

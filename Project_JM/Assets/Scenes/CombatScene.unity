@@ -3836,6 +3836,10 @@ PrefabInstance:
       propertyPath: partyStatus
       value: 
       objectReference: {fileID: 1233718909}
+    - target: {fileID: 7858995295406063370, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
+      propertyPath: comboIconVfx
+      value: 
+      objectReference: {fileID: 6231230550165760676}
     - target: {fileID: 8115716145221142382, guid: b5be78a31955e084daf801f38f8cdb11, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -4876,6 +4880,10 @@ PrefabInstance:
       propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3842796267898620491, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -379.99997
+      objectReference: {fileID: 0}
     - target: {fileID: 3850497515801147923, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_Name
       value: UIManager
@@ -5698,7 +5706,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5094240340758896645, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 5126545085555074968, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7036,10 +7044,6 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9194187386882252664, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9201682368988007455, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
       propertyPath: boundEnemyAI
       value: 
@@ -7071,6 +7075,11 @@ PrefabInstance:
 --- !u!224 &6231230550165760675 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7278162365482035236, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
+  m_PrefabInstance: {fileID: 6231230550165760674}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6231230550165760676 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1769506064901626929, guid: 74d0aca7aa0d91844bc91bb8f8d30061, type: 3}
   m_PrefabInstance: {fileID: 6231230550165760674}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &6231230550165760679 stripped

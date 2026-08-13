@@ -27,9 +27,11 @@ public struct RewardContext
 
     // Landing VFX for colorless rewards that converge on a HUD element
     // rather than a character — Blessings/Fortify play HpBarVfx (HP bonus),
-    // Focus plays ComboBarVfx (combo bonus). See RewardDefinition.PlayVfx.
+    // Focus plays ComboBarVfx and ComboIconVfx together (combo bonus). See
+    // RewardDefinition.PlayVfx.
     public ParticleSystem HpBarVfx;
     public ParticleSystem ComboBarVfx;
+    public ParticleSystem ComboIconVfx;
 }
 
 public abstract class RewardDefinition : ScriptableObject
