@@ -11,6 +11,7 @@
 //          prop.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using System;
 using System.Collections;
 using GemEnums;
 using RewardEnums;
@@ -23,6 +24,7 @@ using UnityEngine.UI;
 public class RewardOfferUI : MonoBehaviour, ICancelHandler
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
+    [SerializeField] protected EnemyAlertEventChannel enemyAlertEventChannel;
     [SerializeField] protected TransitionManager transitionManager;
     [SerializeField] protected RewardManager rewardManager;
     [SerializeField] protected RewardChest chest;
@@ -33,6 +35,13 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
     [SerializeField] protected Button[] rewardButtons;
     [SerializeField] protected RewardIconGroup[] rewardIconGroups;
     [SerializeField] protected CanvasGroup rewardButtonsGroup;
+
+    // One pre-placed particle system per button slot, index-aligned with
+    // rewardButtons — enabled only for the slot(s) whose reward color
+    // matches the incoming enemy's color (see _peekedEnemyColors). Applied
+    // in RevealAfterDelay once the buttons actually become visible, not at
+    // BindOffer — see UpdateColorMatchParticles.
+    [SerializeField] protected ParticleSystem[] colorMatchParticles;
 
     // One pre-placed overlay Image per button slot, inactive until any
     // button is picked — see BindOffer (tinted, reset inactive) and
@@ -93,6 +102,14 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
     // effect lands in sync with the swarm reaching its target.
     protected RewardDefinition _pendingReward;
 
+    // Cached from enemyAlertEventChannel (see OnEnemyAlert) — an enemy can
+    // carry more than one color (dual-type, same as CharacterCombatant.Colors
+    // consumed by EnemyAlertUI), so matching is "reward color is one of
+    // these", not equality against a single color. Consumed once, in
+    // RevealAfterDelay (see UpdateColorMatchParticles), which always runs
+    // well after both BindOffer and OnEnemyAlert have fired for the round.
+    protected GemColor[] _peekedEnemyColors;
+
     protected void Awake()
     {
         SetButtonsVisible(false);
@@ -101,6 +118,7 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
     protected void OnEnable()
     {
         transitionEventChannel.OnRaised += OnTransitionEvent;
+        enemyAlertEventChannel.OnRaised += OnEnemyAlert;
         chest.OnLanded += OnChestLanded;
 
         // Bound once per enable, by index, against rewardButtons.Length
@@ -132,6 +150,7 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
     protected void OnDisable()
     {
         transitionEventChannel.OnRaised -= OnTransitionEvent;
+        enemyAlertEventChannel.OnRaised -= OnEnemyAlert;
         chest.OnLanded -= OnChestLanded;
 
         for (int i = 0; i < _buttonListeners.Length; i++)
@@ -222,6 +241,53 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
             flashImages[i].color = color.ConvertGemColorOrWhite();
             flashImages[i].gameObject.SetActive(false);
         }
+
+        // Particles are applied later, once the buttons actually become
+        // visible — see RevealAfterDelay — not here, so they don't need to
+        // race OnEnemyAlert for _peekedEnemyColors.
+    }
+
+    protected void UpdateColorMatchParticles()
+    {
+        int count = Mathf.Min(rewardButtons.Length, _currentOffer.Length);
+        for (int i = 0; i < count; i++)
+        {
+            SetColorMatchParticle(i, _currentOffer[i].AssociatedColor);
+        }
+    }
+
+    // A reward's color counts as matching only if it appears in the peeked
+    // enemy's color set — enemies can carry more than one color (dual-type,
+    // see _peekedEnemyColors), and GemColor.None (colorless rewards) never
+    // matches.
+    protected void SetColorMatchParticle(int index, GemColor color)
+    {
+        if (index >= colorMatchParticles.Length || colorMatchParticles[index] == null)
+        {
+            return;
+        }
+
+        bool matchesEnemyColor = color != GemColor.None
+            && _peekedEnemyColors != null
+            && Array.IndexOf(_peekedEnemyColors, color) >= 0;
+
+        if (matchesEnemyColor)
+        {
+            ParticleSystem.MainModule main = colorMatchParticles[index].main;
+            main.startColor = new ParticleSystem.MinMaxGradient(color.ConvertGemColorOrWhite());
+            colorMatchParticles[index].Play();
+        }
+        else
+        {
+            colorMatchParticles[index].Stop();
+        }
+    }
+
+    protected void OnEnemyAlert(GameObject enemyPrefab)
+    {
+        _peekedEnemyColors = enemyPrefab.TryGetComponent<CharacterCombatant>(out CharacterCombatant combatant)
+            ? combatant.Colors
+            : null;
     }
 
     // Fades rewardButtonsGroup.alpha in from 0, timed against the chest→
@@ -260,6 +326,7 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
         transitionManager.SetSkipHoldBlocked(true);
         playerInput.SwitchToUIMap();
         SetButtonsVisible(true);
+        UpdateColorMatchParticles();
 
         if (rewardButtons.Length > 0)
         {
@@ -287,6 +354,15 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
         {
             flashImages[i].gameObject.SetActive(true);
         }
+
+        for (int i = 0; i < colorMatchParticles.Length; i++)
+        {
+            if (colorMatchParticles[i] != null)
+            {
+                colorMatchParticles[i].Stop();
+            }
+        }
+
         rewardButtonsGroup.interactable = false;
         rewardButtonsGroup.blocksRaycasts = false;
 
@@ -368,6 +444,7 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
         // character VFX directly.
         rewardManager.ChooseReward(_pendingReward);
         AudioManager.Instance.PlayActionSFX(rewardGivenSfx);
+
         transitionEventChannel.Raise(TransitionPhase.RewardGiven);
     }
 

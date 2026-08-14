@@ -68,6 +68,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardOfferUI
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  enemyAlertEventChannel: {fileID: 11400000, guid: 294d89add3b4f1d459f082498b94dae8, type: 2}
+  characterDeathEventChannel: {fileID: 11400000, guid: 81f527caf3d1f2b4ab60d9d0088804a7, type: 2}
   transitionManager: {fileID: 0}
   rewardManager: {fileID: 0}
   chest: {fileID: 0}
@@ -83,6 +85,10 @@ MonoBehaviour:
   - {fileID: 693570836782594473}
   - {fileID: 5748510016822407350}
   rewardButtonsGroup: {fileID: 4397043960787461632}
+  colorMatchParticles:
+  - {fileID: 2724997763415427484}
+  - {fileID: 6894068629338250707}
+  - {fileID: 1858410510150046924}
   flashImages:
   - {fileID: 738998149878148232}
   - {fileID: 8087610634112006343}
@@ -356,6 +362,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!198 &6894068629338250707 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5252998450550189558, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+  m_PrefabInstance: {fileID: 1678365630453411877}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8087610634112006343 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7455207408685320418, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
@@ -544,6 +555,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+--- !u!198 &1858410510150046924 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5252998450550189558, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+  m_PrefabInstance: {fileID: 5849050845427022138}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3916503722471764440 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7455207408685320418, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
@@ -770,6 +786,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!198 &2724997763415427484 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5252998450550189558, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+  m_PrefabInstance: {fileID: 7869835038331036778}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7485834094415906797 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
