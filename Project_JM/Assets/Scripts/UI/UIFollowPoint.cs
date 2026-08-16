@@ -15,6 +15,7 @@ public class UIFollowPoint : MonoBehaviour
     [SerializeField] protected BasePlayerController playerController;
 
     [SerializeField] protected Vector2 offset;
+    [SerializeField] protected Vector2 padModeAnchoredPosition = Vector2.zero;
 
     protected virtual void Reset()
     {
@@ -43,7 +44,7 @@ public class UIFollowPoint : MonoBehaviour
     {
         if (playerController == null || playerController.IsPadMode)
         {
-            uiTransform.anchoredPosition = Vector2.zero;
+            uiTransform.anchoredPosition = padModeAnchoredPosition;
             return;
         }
 
