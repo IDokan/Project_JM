@@ -61,10 +61,17 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             return;
         }
 
-        bool isEnemyAttacker = attackContext.Attacker is MonoBehaviour mb && mb.TryGetComponent<EnemyTag>(out _);
+        MonoBehaviour attackerMb = attackContext.Attacker as MonoBehaviour;
+        bool isEnemyAttacker = attackerMb != null && attackerMb.TryGetComponent<EnemyTag>(out _);
         float damage = rawDamage * (isEnemyAttacker
             ? attackContext.DamageMultiplierManager.GetEnemyMultiplier  // excludes _damageBonus; enemy must not benefit from player skills such as Cleric buff
             : attackContext.DamageMultiplierManager.GetMultiplier);
+
+        // Enrage escalates with every attack made since enraging (1x, 1.2x, 1.4x, ...).
+        if (isEnemyAttacker && attackerMb.TryGetComponent<EnemyAttackBehaviour>(out EnemyAttackBehaviour enemyAttackBehaviour) && enemyAttackBehaviour.IsEnraged)
+        {
+            damage *= enemyAttackBehaviour.EnrageDamageMultiplier;
+        }
 
         bool isCritical = false;
         // Critical hit calculation

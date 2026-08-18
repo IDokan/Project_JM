@@ -34,6 +34,12 @@ public class EnemyAttackBehaviour : MonoBehaviour
     [SerializeField, Min(10f)] protected float enrageDelay = 30f;
     public float EnrageDelay => enrageDelay;
 
+    // Each attack made after enraging adds another step on top of the last: 1st
+    // enraged attack deals the base 1x, 2nd deals 1.2x, 3rd deals 1.4x, and so on.
+    [SerializeField, Min(0f)] protected float enrageDamageStepRatio = 0.2f;
+    protected int _enrageAttackCount = 0;
+    public float EnrageDamageMultiplier => 1f + enrageDamageStepRatio * Mathf.Max(0, _enrageAttackCount - 1);
+
     public event Action<float, float> OnEnrageTimeChanged;
 
     public event Action OnEnraged;
@@ -111,6 +117,12 @@ public class EnemyAttackBehaviour : MonoBehaviour
     protected void Attack()
     {
         _isAttacking = true;
+
+        if (_isEnraged)
+        {
+            _enrageAttackCount++;
+        }
+
         attackChannel.Raise();
     }
 
