@@ -252,26 +252,29 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
         int count = Mathf.Min(rewardButtons.Length, _currentOffer.Length);
         for (int i = 0; i < count; i++)
         {
-            SetColorMatchParticle(i, _currentOffer[i].AssociatedColor);
+            SetColorMatchParticle(i, _currentOffer[i]);
         }
     }
 
-    // A reward's color counts as matching only if it appears in the peeked
-    // enemy's color set — enemies can carry more than one color (dual-type,
+    // Plays a slot's HintParticle when either its reward's color matches the
+    // peeked enemy's color, or RewardManager.IsGameStateRecommended calls it
+    // out regardless of color (e.g. Blessings while HP is low, Berserked
+    // while still early) — enemies can carry more than one color (dual-type,
     // see _peekedEnemyColors), and GemColor.None (colorless rewards) never
-    // matches.
-    protected void SetColorMatchParticle(int index, GemColor color)
+    // matches on color alone, so the state-based hint colors those white.
+    protected void SetColorMatchParticle(int index, RewardDefinition reward)
     {
         if (index >= colorMatchParticles.Length || colorMatchParticles[index] == null)
         {
             return;
         }
 
+        GemColor color = reward.AssociatedColor;
         bool matchesEnemyColor = color != GemColor.None
             && _peekedEnemyColors != null
             && Array.IndexOf(_peekedEnemyColors, color) >= 0;
 
-        if (matchesEnemyColor)
+        if (matchesEnemyColor || rewardManager.IsGameStateRecommended(reward))
         {
             ParticleSystem.MainModule main = colorMatchParticles[index].main;
             main.startColor = new ParticleSystem.MinMaxGradient(color.ConvertGemColorOrWhite());

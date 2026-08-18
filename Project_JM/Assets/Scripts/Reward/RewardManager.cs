@@ -7,6 +7,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections.Generic;
+using RewardEnums;
 using UnityEngine;
 
 public class RewardManager : MonoBehaviour
@@ -16,7 +17,12 @@ public class RewardManager : MonoBehaviour
     [SerializeField] protected CharacterStatus partyStatus;
     [SerializeField] protected PartyRoster partyRoster;
     [SerializeField] protected ComboManager comboManager;
+    [SerializeField] protected GameProgressManager gameProgressManager;
     [SerializeField] protected int offerCount = 3;
+
+    [Header("Hint Conditions")]
+    [SerializeField, Range(0f, 1f)] protected float blessingsHintHPRatio = 0.4f;
+    [SerializeField] protected int berserkedHintMaxEnemyDefeated = 3;
 
     // Landing VFX for colorless rewards with no character target — see
     // RewardContext.HpBarVfx/ComboBarVfx/ComboIconVfx and RewardDefinition.PlayVfx.
@@ -36,6 +42,26 @@ public class RewardManager : MonoBehaviour
     {
         _currentOffer = rewardBook.GetRandomRewards(offerCount);
         return _currentOffer;
+    }
+
+    // Whether current run state (not the incoming enemy's color — see
+    // RewardOfferUI.SetColorMatchParticle for that check) makes this reward
+    // worth calling out: Blessings while the party is low on HP, Berserked
+    // while still early (few enemies defeated yet, so its temporary HP cost
+    // is safer to take).
+    public bool IsGameStateRecommended(RewardDefinition reward)
+    {
+        switch (reward.Id)
+        {
+            case RewardId.Blessings:
+                return partyStatus.CurrentHP <= partyStatus.maxHP * blessingsHintHPRatio;
+
+            case RewardId.Berserked:
+                return gameProgressManager.NumEnemyDefeated <= berserkedHintMaxEnemyDefeated;
+
+            default:
+                return false;
+        }
     }
 
     public void ChooseReward(RewardDefinition reward)

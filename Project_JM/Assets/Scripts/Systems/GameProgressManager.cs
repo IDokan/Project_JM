@@ -37,8 +37,10 @@ public class GameProgressManager : MonoBehaviour
     [SerializeField] protected DifficultyCurvesSelector curvesSelector;
     [SerializeField] protected CharacterStatus partyStatus;
     [SerializeField] protected DamageRecordManager damageRecordManager;
+    [SerializeField] protected DamageMultiplierManager damageMultiplierManager;
 
     protected int _numEnemyDefeated = 0;
+    public int NumEnemyDefeated => _numEnemyDefeated;
 
     private TutorialProgress _progressAtRunStart;
 
