@@ -22,6 +22,8 @@ using UnityEngine;
 
 public class SaveDataManager : MonoBehaviour
 {
+    [SerializeField] private LeaderboardIconContainer leaderboardIconContainer;
+
     private static SaveDataManager _instance;
 
     public static SaveDataManager Instance
@@ -51,6 +53,11 @@ public class SaveDataManager : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // Runs once per install, not once per session: guarded internally by
+        // PlayerPrefs.HasKey per slot, so re-entering this scene never re-rolls
+        // an icon the player (or a prior bootstrap) already assigned.
+        LeaderboardIconPrefs.EnsureRandomDefaultsAssigned(leaderboardIconContainer);
     }
 
     // Runs in Start(), not Awake(): Unity guarantees every active scene object's
