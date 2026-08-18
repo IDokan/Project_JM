@@ -112,11 +112,11 @@ RectTransform:
   - {fileID: 8461559449878973298}
   - {fileID: 6962451639583680489}
   - {fileID: 81694175677609877}
-  - {fileID: 192003171595215741}
   - {fileID: 5862706157185116792}
   - {fileID: 6051319746302128261}
   - {fileID: 3872880598262129707}
   - {fileID: 5528941947033133793}
+  - {fileID: 192003171595215741}
   - {fileID: 2063541093847516167}
   - {fileID: 9012152799390203073}
   m_Father: {fileID: 0}
@@ -2362,12 +2362,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6986552258497068042, guid: dd338cfa92b61bb4eb6259db47bc4a39, type: 3}
-      propertyPath: offset.x
-      value: 150
+      propertyPath: canvas
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6986552258497068042, guid: dd338cfa92b61bb4eb6259db47bc4a39, type: 3}
       propertyPath: offset.y
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986552258497068042, guid: dd338cfa92b61bb4eb6259db47bc4a39, type: 3}
+      propertyPath: uiCamera
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986552258497068042, guid: dd338cfa92b61bb4eb6259db47bc4a39, type: 3}
+      propertyPath: playerController
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7443967052799771024, guid: dd338cfa92b61bb4eb6259db47bc4a39, type: 3}
       propertyPath: m_Name
@@ -3220,7 +3228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4577247319158699192, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000011444092
+      value: 0.00002670288
       objectReference: {fileID: 0}
     - target: {fileID: 5024481684449728659, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Pivot.x
@@ -3340,7 +3348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8356715639187964050, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Size
-      value: 0.91999996
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8356715639187964050, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Value
