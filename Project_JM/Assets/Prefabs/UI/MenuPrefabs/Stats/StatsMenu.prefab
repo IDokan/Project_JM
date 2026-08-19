@@ -989,8 +989,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 692819978571793337}
+  m_Children: []
   m_Father: {fileID: 1753600194629089280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2238,7 +2237,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5233538650263636401}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -2263,6 +2262,35 @@ MonoBehaviour:
     milestoneSprite: {fileID: 5077413645974364987, guid: 66db0cebe46e10348ab7cdbec5ff830a, type: 3}
   - scoreThreshold: 30000
     milestoneSprite: {fileID: -349822926460829306, guid: 66db0cebe46e10348ab7cdbec5ff830a, type: 3}
+  rewardRecords:
+  - rewardId: 0
+    countText: {fileID: 2615453352154396619}
+  - rewardId: 1
+    countText: {fileID: 1684456721025012847}
+  - rewardId: 2
+    countText: {fileID: 7180563445331891150}
+  - rewardId: 3
+    countText: {fileID: 1025728977651804181}
+  - rewardId: 4
+    countText: {fileID: 1121101431159997751}
+  - rewardId: 5
+    countText: {fileID: 8574946982831804631}
+  - rewardId: 6
+    countText: {fileID: 4764417960077913071}
+  - rewardId: 7
+    countText: {fileID: 4272766511648914681}
+  - rewardId: 8
+    countText: {fileID: 8895909455579798427}
+  - rewardId: 9
+    countText: {fileID: 8149712650365950333}
+  - rewardId: 10
+    countText: {fileID: 6947067205408824357}
+  - rewardId: 11
+    countText: {fileID: 7736856804121072271}
+  rewardBook: {fileID: 11400000, guid: d7cbf9f85da5f7f418377c31b68a3748, type: 2}
+  rewardIconHolderPrefab: {fileID: 6380921819165857113, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
+  rewardHistoryGridLayoutGroup: {fileID: 6449115896931151736}
+  maxRow: 2
 --- !u!1 &5234098240562400571
 GameObject:
   m_ObjectHideFlags: 0
@@ -3898,7 +3926,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8381096397141176059}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -4843,6 +4871,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 2108070532917774671, guid: d65cd11483fac6143a43adc7cb86b732, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: PowerUpBowman
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4853,6 +4885,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
   m_PrefabInstance: {fileID: 930895722846774379}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1684456721025012847 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 930895722846774379}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &1021230972127268511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5108,11 +5151,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1753274576032803627, guid: 11ec0a4be43c4b6428891ac2da7231c8, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: SharpenAttackKnight
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+--- !u!114 &1121101431159997751 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 1442738489232209203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &1963511696188335954 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
@@ -5218,11 +5276,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -7066834265811184804, guid: fafcefb23dc658f4d845da29086469ca, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: PowerUpCleric
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+--- !u!114 &1025728977651804181 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 1564807214055806993}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &1913228992603392624 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
@@ -5378,108 +5451,6 @@ MonoBehaviour:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 784312096806508296, guid: 0cec61b8ef7394845b13f8a65620a34e, type: 3}
   m_PrefabInstance: {fileID: 1627306775960081392}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1665816173683830465
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 5566925510278115903}
-    m_Modifications:
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -9719.223
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6380921819165857113, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-      propertyPath: m_Name
-      value: RewardIconHolder
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
---- !u!224 &692819978571793337 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2198687777293774200, guid: b40ad26b166ec214a94a90659befb1d9, type: 3}
-  m_PrefabInstance: {fileID: 1665816173683830465}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2290190005347221219
 PrefabInstance:
@@ -5754,6 +5725,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 703188295911667596, guid: 259af02b9a56b0c4085f561ec7d42550, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: SharpenAttackCleric
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5764,6 +5739,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
   m_PrefabInstance: {fileID: 2360091048174537981}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4272766511648914681 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 2360091048174537981}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &2513164198474506703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7163,11 +7149,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 735282738862435024, guid: 03d46f4c369d67a4d8fb33027764329b, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: PowerUpKnight
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+--- !u!114 &2615453352154396619 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 4593852196160079823}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &3529357853500134830 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
@@ -8814,11 +8815,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -4428204790674458697, guid: 4f4cddfc92538864a887d3859daf86a5, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: SharpenAttackMage
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+--- !u!114 &4764417960077913071 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 6455290115306429419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &6246391904392923530 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
@@ -9057,6 +9073,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: Berserked
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9067,6 +9087,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
   m_PrefabInstance: {fileID: 6989531958269062047}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8895909455579798427 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 6989531958269062047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &7361073487575279958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9311,6 +9342,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 7686933410040867905, guid: fb462c03cdfba744c8fb3ecb890cad01, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: Blessings
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9321,6 +9356,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
   m_PrefabInstance: {fileID: 7679420995300534649}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8149712650365950333 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 7679420995300534649}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &7697872154009210651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9715,6 +9761,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -666578527398642760, guid: a40b85d679f327a4c9684f08d5009d13, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: SharpenAttackBowman
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9725,6 +9775,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
   m_PrefabInstance: {fileID: 7821349668456898771}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8574946982831804631 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 7821349668456898771}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &7882790600628836930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9971,11 +10032,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -6135415279319160015, guid: 70894efe9bba19040a37858008542233, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: Fortify
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+--- !u!114 &7736856804121072271 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 8130552626542682763}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &9218849704013164778 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
@@ -10610,11 +10686,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -2099260459596207022, guid: 2ae4dc1a96a77d248b1d274377cae16a, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: PowerUpMage
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+--- !u!114 &7180563445331891150 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 8659626741476156362}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &8581403322851897771 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
@@ -11036,11 +11127,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 4909315544999052603, guid: 8725a0ecd802a744d8e29fc960f5d951, type: 3}
+    - target: {fileID: 7475068497797430719, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+      propertyPath: m_Name
+      value: Focus
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+--- !u!114 &6947067205408824357 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1984768901162037252, guid: 83674e22ee18b304bb5b30345022e837, type: 3}
+  m_PrefabInstance: {fileID: 8927154929339591713}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &8419981306610368064 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097304354321945185, guid: 83674e22ee18b304bb5b30345022e837, type: 3}

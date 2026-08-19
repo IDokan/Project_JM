@@ -38,6 +38,12 @@ public class RewardManager : MonoBehaviour
     protected readonly List<Sprite> _chosenIcons = new List<Sprite>();
     public IReadOnlyList<Sprite> ChosenIcons => _chosenIcons;
 
+    // Parallel to _chosenIcons but by id rather than sprite, so a run's pick
+    // order can be persisted (see SaveDataManager.SetBestScoreRewardHistory)
+    // without storing Sprite references in PlayerPrefs.
+    protected readonly List<RewardId> _chosenRewardIds = new List<RewardId>();
+    public IReadOnlyList<RewardId> ChosenRewardIds => _chosenRewardIds;
+
     public RewardDefinition[] RollOffer()
     {
         _currentOffer = rewardBook.GetRandomRewards(offerCount);
@@ -67,6 +73,8 @@ public class RewardManager : MonoBehaviour
     public void ChooseReward(RewardDefinition reward)
     {
         _chosenIcons.Add(reward.MiniIcon);
+        _chosenRewardIds.Add(reward.Id);
+        SaveDataManager.Instance.IncrementRewardPickCount(reward.Id);
 
         StartCoroutine(reward.Apply(new RewardContext
         {

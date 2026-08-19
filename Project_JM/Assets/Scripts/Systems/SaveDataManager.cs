@@ -14,9 +14,12 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 using CharacterEnums;
 using GemEnums;
 using MatchEnums;
+using RewardEnums;
 using TutorialEnums;
 using UnityEngine;
 
@@ -329,19 +332,108 @@ public class SaveDataManager : MonoBehaviour
         }
     }
 
+    // ── Reward Pick Counts ────────────────────────────────────────────────────
+
+    private const string KeyRewardPickCountPrefix = "rewardPickCount_";
+
+    private static readonly string[] RewardPickCountKeys = BuildRewardPickCountKeys();
+
+    private static string[] BuildRewardPickCountKeys()
+    {
+        RewardId[] values = (RewardId[])Enum.GetValues(typeof(RewardId));
+        string[] keys = new string[values.Length];
+        for (int i = 0; i < values.Length; i++)
+        {
+            keys[(int)values[i]] = KeyRewardPickCountPrefix + values[i];
+        }
+        return keys;
+    }
+
+    public int GetRewardPickCount(RewardId rewardId)
+    {
+        return PlayerPrefs.GetInt(RewardPickCountKeys[(int)rewardId], 0);
+    }
+
+    public int IncrementRewardPickCount(RewardId rewardId)
+    {
+        int count = GetRewardPickCount(rewardId) + 1;
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)rewardId], count);
+        Commit();
+        return count;
+    }
+
     // ── Best Score ────────────────────────────────────────────────────────────
 
     private const string KeyBestScore = "bestScoreLifetime";
 
     public int GetBestScore() => PlayerPrefs.GetInt(KeyBestScore, 0);
 
-    public void TrySetBestScore(int score)
+    // Returns whether score was actually a new best - callers use this to decide
+    // whether to also persist that run's reward pick order via
+    // SetBestScoreRewardHistory (see DefeatedTransitionController).
+    public bool TrySetBestScore(int score)
     {
         if (score > GetBestScore())
         {
             PlayerPrefs.SetInt(KeyBestScore, score);
             Commit();
+            return true;
         }
+        return false;
+    }
+
+    // ── Best Score Reward History ────────────────────────────────────────────
+
+    // Which rewards were picked, in order, during the run that set the current
+    // best score - see ScoreStatsBinder's reward history grid. Stored as a
+    // comma-separated list of RewardId ordinals since PlayerPrefs has no
+    // native list/array support.
+    private const string KeyBestScoreRewardHistory = "bestScoreRewardHistory";
+
+    public RewardId[] GetBestScoreRewardHistory()
+    {
+        return ParseRewardHistoryCsv(PlayerPrefs.GetString(KeyBestScoreRewardHistory, string.Empty));
+    }
+
+    public void SetBestScoreRewardHistory(IReadOnlyList<RewardId> rewardHistory)
+    {
+        PlayerPrefs.SetString(KeyBestScoreRewardHistory, BuildRewardHistoryCsv(rewardHistory));
+        Commit();
+    }
+
+    private static string BuildRewardHistoryCsv(IReadOnlyList<RewardId> rewardHistory)
+    {
+        if (rewardHistory.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < rewardHistory.Count; i++)
+        {
+            if (i > 0)
+            {
+                builder.Append(',');
+            }
+            builder.Append((int)rewardHistory[i]);
+        }
+        return builder.ToString();
+    }
+
+    private static RewardId[] ParseRewardHistoryCsv(string csv)
+    {
+        if (string.IsNullOrEmpty(csv))
+        {
+            return Array.Empty<RewardId>();
+        }
+
+        string[] tokens = csv.Split(',');
+        RewardId[] rewardIds = new RewardId[tokens.Length];
+        for (int i = 0; i < tokens.Length; i++)
+        {
+            rewardIds[i] = (RewardId)int.Parse(tokens[i]);
+        }
+        return rewardIds;
     }
 
     // ── Steam Cloud Snapshot ──────────────────────────────────────────────────
@@ -394,6 +486,21 @@ public class SaveDataManager : MonoBehaviour
 
         public int maxCombo;
         public int bestScore;
+
+        public int rewardPickCountPowerUpRed;
+        public int rewardPickCountPowerUpGreen;
+        public int rewardPickCountPowerUpBlue;
+        public int rewardPickCountPowerUpYellow;
+        public int rewardPickCountSharpAttackRed;
+        public int rewardPickCountSharpAttackGreen;
+        public int rewardPickCountSharpAttackBlue;
+        public int rewardPickCountSharpAttackYellow;
+        public int rewardPickCountBerserked;
+        public int rewardPickCountBlessings;
+        public int rewardPickCountFocus;
+        public int rewardPickCountFortify;
+
+        public string bestScoreRewardHistory;
     }
 
     private string BuildSnapshotJson()
@@ -440,6 +547,21 @@ public class SaveDataManager : MonoBehaviour
 
             maxCombo  = GetMaxCombo(),
             bestScore = GetBestScore(),
+
+            rewardPickCountPowerUpRed      = GetRewardPickCount(RewardId.PowerUpRed),
+            rewardPickCountPowerUpGreen    = GetRewardPickCount(RewardId.PowerUpGreen),
+            rewardPickCountPowerUpBlue     = GetRewardPickCount(RewardId.PowerUpBlue),
+            rewardPickCountPowerUpYellow   = GetRewardPickCount(RewardId.PowerUpYellow),
+            rewardPickCountSharpAttackRed    = GetRewardPickCount(RewardId.SharpAttackRed),
+            rewardPickCountSharpAttackGreen  = GetRewardPickCount(RewardId.SharpAttackGreen),
+            rewardPickCountSharpAttackBlue   = GetRewardPickCount(RewardId.SharpAttackBlue),
+            rewardPickCountSharpAttackYellow = GetRewardPickCount(RewardId.SharpAttackYellow),
+            rewardPickCountBerserked = GetRewardPickCount(RewardId.Berserked),
+            rewardPickCountBlessings = GetRewardPickCount(RewardId.Blessings),
+            rewardPickCountFocus     = GetRewardPickCount(RewardId.Focus),
+            rewardPickCountFortify   = GetRewardPickCount(RewardId.Fortify),
+
+            bestScoreRewardHistory = PlayerPrefs.GetString(KeyBestScoreRewardHistory, string.Empty),
         };
 
         return JsonUtility.ToJson(snapshot);
@@ -511,6 +633,21 @@ public class SaveDataManager : MonoBehaviour
 
         PlayerPrefs.SetInt(KeyMaxCombo, snapshot.maxCombo);
         PlayerPrefs.SetInt(KeyBestScore, snapshot.bestScore);
+
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.PowerUpRed],      snapshot.rewardPickCountPowerUpRed);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.PowerUpGreen],    snapshot.rewardPickCountPowerUpGreen);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.PowerUpBlue],     snapshot.rewardPickCountPowerUpBlue);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.PowerUpYellow],   snapshot.rewardPickCountPowerUpYellow);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.SharpAttackRed],    snapshot.rewardPickCountSharpAttackRed);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.SharpAttackGreen],  snapshot.rewardPickCountSharpAttackGreen);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.SharpAttackBlue],   snapshot.rewardPickCountSharpAttackBlue);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.SharpAttackYellow], snapshot.rewardPickCountSharpAttackYellow);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.Berserked], snapshot.rewardPickCountBerserked);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.Blessings], snapshot.rewardPickCountBlessings);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.Focus],     snapshot.rewardPickCountFocus);
+        PlayerPrefs.SetInt(RewardPickCountKeys[(int)RewardId.Fortify],   snapshot.rewardPickCountFortify);
+
+        PlayerPrefs.SetString(KeyBestScoreRewardHistory, snapshot.bestScoreRewardHistory ?? string.Empty);
 
         return true;
     }

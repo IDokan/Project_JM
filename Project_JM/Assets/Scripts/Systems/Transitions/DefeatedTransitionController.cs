@@ -40,6 +40,9 @@ public class DefeatedTransitionController : TransitionController
     [SerializeField] private RetryMenu retryMenu;
     [SerializeField] private float retryShowDelay = 1f;
 
+    [Header("Reward")]
+    [SerializeField] private RewardManager rewardManager;
+
     [Header("Timing")]
     [SerializeField] protected float partyMoveDelay = 1f;
     [SerializeField] protected float partyMoveDuration = 1f;
@@ -145,7 +148,10 @@ public class DefeatedTransitionController : TransitionController
 
         if (ScoreManager.Instance != null)
         {
-            SaveDataManager.Instance.TrySetBestScore(ScoreManager.Instance.TotalScore);
+            if (SaveDataManager.Instance.TrySetBestScore(ScoreManager.Instance.TotalScore))
+            {
+                SaveDataManager.Instance.SetBestScoreRewardHistory(rewardManager.ChosenRewardIds);
+            }
             TryUnlockScoreAchievements(ScoreManager.Instance.TotalScore);
         }
 
