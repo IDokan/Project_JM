@@ -125,6 +125,7 @@ public class RetryMenu : Menu
         confirmationDialog.Show(mainMenuConfirmIcon, () =>
         {
             SubmitScore();
+            SaveDataManager.Instance.PushToSteamCloud();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, mainMenuButton);
     }

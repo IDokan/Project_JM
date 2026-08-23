@@ -14,25 +14,23 @@ using UnityEngine;
 public class MiddleTransitionController : TransitionController
 {
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
-    [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
 
-    [SerializeField] protected float cameraStartDelay = 1f;
     [SerializeField] protected float enemySpawnDelay = 3f;
     [SerializeField] protected float middleTransitionDuration = 5f;
 
     protected void OnEnable()
     {
-        characterDeathEventChannel.OnRaised += OnAnyoneDied;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
 
     protected void OnDisable()
     {
-        characterDeathEventChannel.OnRaised -= OnAnyoneDied;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
     }
 
-    protected void OnAnyoneDied(CharacterStatus stat)
+    protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (stat.TryGetComponent<EnemyTag>(out _))
+        if (phase == TransitionPhase.RewardTransitionEnd)
         {
             RequestTransitionStart(BeginMiddleTransition);
         }
@@ -46,14 +44,12 @@ public class MiddleTransitionController : TransitionController
     protected IEnumerator MiddleTransitionRoutine()
     {
         transitionEventChannel.Raise(TransitionPhase.MiddleTransitionStarts);
-
-        yield return new WaitForSeconds(cameraStartDelay);
         transitionEventChannel.Raise(TransitionPhase.MiddleCameraMoveBegin);
 
         yield return new WaitForSeconds(enemySpawnDelay);
         transitionEventChannel.Raise(TransitionPhase.MiddleEnemySpawnBegin);
 
-        yield return new WaitForSeconds(middleTransitionDuration - cameraStartDelay - enemySpawnDelay);
+        yield return new WaitForSeconds(middleTransitionDuration - enemySpawnDelay);
         transitionEventChannel.Raise(TransitionPhase.MiddleTransitionEnd);
 
         CompleteTransition();

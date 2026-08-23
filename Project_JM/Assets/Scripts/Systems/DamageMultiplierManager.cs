@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections.Generic;
+using GemEnums;
 using UnityEngine;
 
 public class DamageMultiplierManager : MonoBehaviour
@@ -18,6 +19,14 @@ public class DamageMultiplierManager : MonoBehaviour
     protected float _damageMultiplier = 1f;
     protected int _numEnemyDefeated = 0;
     protected float _damageBonus = 1f;
+
+    // Permanent per-color attack power bonus granted by rewards (e.g. PowerUp).
+    // Only ever consulted for ally attackers; see CharacterCombatant.TakeDamage.
+    protected readonly Dictionary<GemColor, float> _rewardAttackPowerBonus = new Dictionary<GemColor, float>();
+
+    // Permanent per-color critical damage bonus granted by rewards (e.g. SharpAttack).
+    // Only ever consulted for ally attackers; see CharacterCombatant.TakeDamage.
+    protected readonly Dictionary<GemColor, float> _rewardCriticalDamageBonus = new Dictionary<GemColor, float>();
 
     public float GetMultiplier => _damageMultiplier * _damageBonus;
 
@@ -55,6 +64,28 @@ public class DamageMultiplierManager : MonoBehaviour
         damageBonusChangedEventChannel.Raise(_damageBonus);
     }
 
+    public float GetRewardAttackPowerMultiplier(GemColor color)
+    {
+        return _rewardAttackPowerBonus.TryGetValue(color, out float bonus) ? 1f + bonus : 1f;
+    }
+
+    public void AddRewardAttackPowerBonus(GemColor color, float bonus)
+    {
+        _rewardAttackPowerBonus.TryGetValue(color, out float current);
+        _rewardAttackPowerBonus[color] = current + bonus;
+    }
+
+    public float GetRewardCriticalDamageMultiplier(GemColor color)
+    {
+        return _rewardCriticalDamageBonus.TryGetValue(color, out float bonus) ? 1f + bonus : 1f;
+    }
+
+    public void AddRewardCriticalDamageBonus(GemColor color, float bonus)
+    {
+        _rewardCriticalDamageBonus.TryGetValue(color, out float current);
+        _rewardCriticalDamageBonus[color] = current + bonus;
+    }
+
     public void OnCharacterDiedHandle(CharacterStatus status)
     {
         ClearTimedBonus();
@@ -71,6 +102,8 @@ public class DamageMultiplierManager : MonoBehaviour
         {
             ClearTimedBonus();
             OnEnemyKilled(0);
+            _rewardAttackPowerBonus.Clear();
+            _rewardCriticalDamageBonus.Clear();
         }
     }
 

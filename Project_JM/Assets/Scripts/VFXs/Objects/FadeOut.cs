@@ -6,6 +6,7 @@
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FadeOut : MonoBehaviour
@@ -21,7 +22,9 @@ public class FadeOut : MonoBehaviour
 
     void Awake()
     {
-        _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(includeInactive: true);
+        List<SpriteRenderer> renderers = new List<SpriteRenderer>();
+        CollectRenderers(transform, renderers);
+        _spriteRenderers = renderers.ToArray();
 
         _startAlphas = new float[_spriteRenderers.Length];
 
@@ -31,6 +34,27 @@ public class FadeOut : MonoBehaviour
         }
 
         UpdateOpacity(0f);
+    }
+
+    // Stops descending into a child subtree that has its own FadeOut, so a
+    // nested FadeOut owns its renderers independently instead of both this
+    // and the nested script writing color.a to the same SpriteRenderer.
+    private void CollectRenderers(Transform node, List<SpriteRenderer> renderers)
+    {
+        if (node != transform && node.GetComponent<FadeOut>() != null)
+        {
+            return;
+        }
+
+        if (node.TryGetComponent<SpriteRenderer>(out var sr))
+        {
+            renderers.Add(sr);
+        }
+
+        foreach (Transform child in node)
+        {
+            CollectRenderers(child, renderers);
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -61,10 +61,17 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             return;
         }
 
-        bool isEnemyAttacker = attackContext.Attacker is MonoBehaviour mb && mb.TryGetComponent<EnemyTag>(out _);
+        MonoBehaviour attackerMb = attackContext.Attacker as MonoBehaviour;
+        bool isEnemyAttacker = attackerMb != null && attackerMb.TryGetComponent<EnemyTag>(out _);
         float damage = rawDamage * (isEnemyAttacker
             ? attackContext.DamageMultiplierManager.GetEnemyMultiplier  // excludes _damageBonus; enemy must not benefit from player skills such as Cleric buff
             : attackContext.DamageMultiplierManager.GetMultiplier);
+
+        // Enrage escalates with every attack made since enraging (1x, 1.2x, 1.4x, ...).
+        if (isEnemyAttacker && attackerMb.TryGetComponent<EnemyAttackBehaviour>(out EnemyAttackBehaviour enemyAttackBehaviour) && enemyAttackBehaviour.IsEnraged)
+        {
+            damage *= enemyAttackBehaviour.EnrageDamageMultiplier;
+        }
 
         bool isCritical = false;
         // Critical hit calculation
@@ -74,7 +81,21 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
             if (isCritical)
             {
                 damage *= attackerObject.Status.CriticalDamage;
+
+                // Reward-granted critical damage only ever applies to ally attackers;
+                // GemColor is also used to type enemies, so this must not read for enemy attackers.
+                if (!isEnemyAttacker)
+                {
+                    damage *= attackContext.DamageMultiplierManager.GetRewardCriticalDamageMultiplier(attackContext.Attacker.Colors[0]);
+                }
             }
+        }
+
+        // Reward-granted attack power only ever applies to ally attackers; GemColor
+        // is also used to type enemies, so this must not read for enemy attackers.
+        if (!isEnemyAttacker)
+        {
+            damage *= attackContext.DamageMultiplierManager.GetRewardAttackPowerMultiplier(attackContext.Attacker.Colors[0]);
         }
 
         float colorDamageMultiplier = GemColorUtility.GetGemColorDamageMultiplier(attackContext.Attacker.Colors, attackContext.Target.Colors);
@@ -118,6 +139,42 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
         SpawnHitBurstParticle(attackContext);
         SpawnImpactAttachment(attackContext);
+    }
+
+    // Plays the same hit reaction TakeDamage would (flash, hurt SFX, damage popup,
+    // hurt animation) without touching HP. Used when HP was already changed
+    // elsewhere (e.g. a reward reducing the party's shared CharacterStatus once,
+    // then telling every color's CharacterCombatant to react to it). Ally-only:
+    // the hurt animation is normally triggered by AttackExecutor.RequestHurt on
+    // AttackMotion, which enemies don't have (they use EnemyAttackMotion instead),
+    // so GetComponent below simply finds nothing on an enemy and no-ops.
+    public void PlayDamageFeedback(int amount)
+    {
+        if (status.IsDead)
+        {
+            return;
+        }
+
+        var context = new AttackContext
+        {
+            Attacker = this,
+            Target = this,
+            HitTransform = transform
+        };
+
+        DamageUIManager.Instance.SpawnDamage(amount, context, false, false, 1f);
+
+        if (flashSprite != null)
+        {
+            flashSprite.Flash();
+        }
+
+        if (hurtSfx != null)
+        {
+            AudioManager.Instance.PlayActionSFX(hurtSfx);
+        }
+
+        GetComponent<AttackMotion>()?.RequestHurt(Vector3.zero);
     }
 
     public void AddBuffCritBonus(float value)

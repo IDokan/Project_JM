@@ -13,6 +13,8 @@ using UnityEngine;
 public class ComboManager : MonoBehaviour
 {
     [SerializeField] protected MatchEventChannel matchEvents;
+    [SerializeField] protected CharacterDeathEventChannel deathChannel;
+    [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterStatus partyStatus;
     [SerializeField] protected float comboResetTime = 3f;
 
@@ -26,20 +28,40 @@ public class ComboManager : MonoBehaviour
 
     public event Action<int, float> OnComboUpdated;
 
-    public float ComboResetTime => comboResetTime;
+    // Permanent bonus granted by rewards (e.g. Focus). 0 means no bonus.
+    protected float _rewardComboResetTimeBonus = 0f;
+    public float ComboResetTime => comboResetTime + _rewardComboResetTimeBonus;
 
     protected int _comboCount = 0;
     protected float _timer = 0f;
+    protected int _maxComboThisRun = 0;
 
 
     private void OnEnable()
     {
         matchEvents.OnRaised += OnMatch;
+        deathChannel.OnRaised += OnCharacterDied;
+        transitionEventChannel.OnRaised += OnTransitionEvent;
     }
 
     private void OnDisable()
     {
         matchEvents.OnRaised -= OnMatch;
+        deathChannel.OnRaised -= OnCharacterDied;
+        transitionEventChannel.OnRaised -= OnTransitionEvent;
+    }
+
+    protected void OnTransitionEvent(TransitionPhase phase)
+    {
+        if (phase == TransitionPhase.IntroTransitionBegin)
+        {
+            _rewardComboResetTimeBonus = 0f;
+        }
+    }
+
+    public void AddComboResetTimeBonus(float bonus)
+    {
+        _rewardComboResetTimeBonus += bonus;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -80,7 +102,8 @@ public class ComboManager : MonoBehaviour
 
         // On Match, increase combo for a duration.
         _comboCount += (int)matchEvent.Tier;
-        _timer = comboResetTime;
+        _maxComboThisRun = Mathf.Max(_maxComboThisRun, _comboCount);
+        _timer = ComboResetTime;
         OnComboUpdated.Invoke(_comboCount, _timer);
 
         if (Time.frameCount != _lastAudioFrame)
@@ -103,5 +126,10 @@ public class ComboManager : MonoBehaviour
         partyStatus.SetComboCritBonus(_comboCount);
         _timer = 0f;
         OnComboUpdated.Invoke(_comboCount, _timer);
+    }
+
+    protected void OnCharacterDied(CharacterStatus stat)
+    {
+        SaveDataManager.Instance.TrySetMaxCombo(_maxComboThisRun);
     }
 }

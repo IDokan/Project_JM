@@ -179,7 +179,7 @@ Four color-coded party members, each with a ScriptableObject-based `AttackLogic`
 Match tiers (3/4/5+ gems) scale attack power.
 
 ### Key Patterns
-- **Singletons** — only `GlobalRNG` and `GlobalTimeManager` are built on the singleton pattern; all other managers exist as a single unique instance in the scene by convention
+- **Singletons** — persistent, cross-scene service managers (`AudioManager`, `LeaderboardManager`, `SaveDataManager`, `SteamManager`) use the standard singleton pattern: `public static X Instance { get; private set; }`, set in `Awake()`, destroying the new instance and returning early if `Instance != null && Instance != this`, followed by `DontDestroyOnLoad(gameObject)`. `GlobalRNG` and `GlobalTimeManager` use their own singleton variants. Managers that don't need to persist across scenes or be globally reachable stay as a single unique instance in the scene by convention, without the `Instance` accessor
 - **`GlobalRNG`** — custom deterministic RNG singleton; use only for board gem-related logic (e.g. spawning new gems, determining which gem slot gets disabled)
 - **`GlobalTimeAnimatorBinder`** — synchronizes Animators to `GlobalTimeManager`'s time scale; attach to any animated game object that must pause with the game
 

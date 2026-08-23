@@ -18,8 +18,8 @@ public class TimeStopAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
-        ctx.Target?.TakeDamage(baseDamage, ctx);
         GlobalTimeManager.Instance.SetTimer(timeScaler, duration);
+        ctx.Target?.TakeDamage(baseDamage, ctx);
 
         yield break;
     }

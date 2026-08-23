@@ -14,7 +14,12 @@ public class UIFollowPoint : MonoBehaviour
     [SerializeField] protected Camera uiCamera;
     [SerializeField] protected BasePlayerController playerController;
 
+    // Landscape offset; also the default when no orientation-specific value applies.
     [SerializeField] protected Vector2 offset;
+    [SerializeField] protected Vector2 portraitOffset;
+    [SerializeField] protected Vector2 padModeAnchoredPosition = Vector2.zero;
+
+    protected Vector2 _activeOffset;
 
     protected virtual void Reset()
     {
@@ -36,6 +41,9 @@ public class UIFollowPoint : MonoBehaviour
         {
             uiCamera = canvas.worldCamera;
         }
+
+        bool isPortrait = Screen.height > Screen.width;
+        _activeOffset = isPortrait ? portraitOffset : offset;
     }
 
     // Update is called once per frame
@@ -43,12 +51,12 @@ public class UIFollowPoint : MonoBehaviour
     {
         if (playerController == null || playerController.IsPadMode)
         {
-            uiTransform.anchoredPosition = Vector2.zero;
+            uiTransform.anchoredPosition = padModeAnchoredPosition;
             return;
         }
 
         Vector2 screenPoint = playerController.GetCurrentFollowPoint();
-        MoveToScreenPoint(screenPoint + offset);
+        MoveToScreenPoint(screenPoint + _activeOffset);
     }
 
     protected void MoveToScreenPoint(Vector2 screenPoint)

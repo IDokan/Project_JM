@@ -10,11 +10,16 @@
 //                                          3. Fade out combat BGM.
 
 using System.Collections;
+using AchievementEnums;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class DefeatedTransitionController : TransitionController
 {
+    private const int BronzeCompetitorScore = 20000;
+    private const int SilverCompetitorScore = 25000;
+    private const int GoldCompetitorScore = 30000;
+
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
 
@@ -34,6 +39,9 @@ public class DefeatedTransitionController : TransitionController
     [Header("Retry Menu")]
     [SerializeField] private RetryMenu retryMenu;
     [SerializeField] private float retryShowDelay = 1f;
+
+    [Header("Reward")]
+    [SerializeField] private RewardManager rewardManager;
 
     [Header("Timing")]
     [SerializeField] protected float partyMoveDelay = 1f;
@@ -137,8 +145,41 @@ public class DefeatedTransitionController : TransitionController
     private IEnumerator ShowRetryMenuRoutine()
     {
         yield return new WaitForSeconds(retryShowDelay);
+
+        if (ScoreManager.Instance != null)
+        {
+            if (SaveDataManager.Instance.TrySetBestScore(ScoreManager.Instance.TotalScore))
+            {
+                SaveDataManager.Instance.SetBestScoreRewardHistory(rewardManager.ChosenRewardIds);
+            }
+            TryUnlockScoreAchievements(ScoreManager.Instance.TotalScore);
+        }
+
         retryMenu.Show();
         CompleteTransition();
+    }
+
+    private void TryUnlockScoreAchievements(int score)
+    {
+        if (SteamManager.Instance == null)
+        {
+            return;
+        }
+
+        if (score >= BronzeCompetitorScore)
+        {
+            SteamManager.Instance.UnlockAchievement(AchievementId.BronzeCompetitor);
+        }
+
+        if (score >= SilverCompetitorScore)
+        {
+            SteamManager.Instance.UnlockAchievement(AchievementId.SilverCompetitor);
+        }
+
+        if (score >= GoldCompetitorScore)
+        {
+            SteamManager.Instance.UnlockAchievement(AchievementId.GoldCompetitor);
+        }
     }
 
     protected void OnCharacterDied(CharacterStatus characterStat)

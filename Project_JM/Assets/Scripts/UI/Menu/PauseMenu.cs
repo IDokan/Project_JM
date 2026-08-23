@@ -41,6 +41,8 @@ public class PauseMenu : Menu
         optionButton.onClick.AddListener(OnOptionButtonPressed);
         homeButton.onClick.AddListener(OnHomeButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
+        SteamManager.OnOverlayActivated += OnSteamOverlayActivated;
+        playerInput.onDeviceLost += OnDeviceLost;
     }
 
     protected override void OnDisable()
@@ -50,13 +52,37 @@ public class PauseMenu : Menu
         optionButton.onClick.RemoveListener(OnOptionButtonPressed);
         homeButton.onClick.RemoveListener(OnHomeButtonPressed);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
+        SteamManager.OnOverlayActivated -= OnSteamOverlayActivated;
+        playerInput.onDeviceLost -= OnDeviceLost;
     }
 
     public bool IsPaused { get; private set; }
 
+    // Pause can be opened from raw board Gameplay or from another UI surface
+    // that's already on the UI map (e.g. RewardOfferUI) - Hide() must restore
+    // whichever one was active, not assume Gameplay every time.
+    private bool _returnToGameplayMap;
+
+    protected void OnSteamOverlayActivated(bool isActive)
+    {
+        if (isActive && !IsPaused)
+        {
+            Show();
+        }
+    }
+
+    protected void OnDeviceLost(PlayerInput player)
+    {
+        if (!IsPaused)
+        {
+            Show();
+        }
+    }
+
     public override void Show(Selectable returnTo = null)
     {
         IsPaused = true;
+        _returnToGameplayMap = playerInput.currentActionMap.name == "Gameplay";
         playerInput.SwitchToUIMap();
         base.Show(returnTo);
         GlobalTimeManager.Instance.PauseTimeScale();
@@ -67,7 +93,14 @@ public class PauseMenu : Menu
     public override void Hide()
     {
         IsPaused = false;
-        playerInput.SwitchToGameplayMap();
+        if (_returnToGameplayMap)
+        {
+            playerInput.SwitchToGameplayMap();
+        }
+        else
+        {
+            playerInput.SwitchToUIMap();
+        }
         base.Hide();
         GlobalTimeManager.Instance.RestoreTimeScaleFromPause();
         AudioManager.Instance.ResumeScaledSFX();
@@ -96,6 +129,7 @@ public class PauseMenu : Menu
         {
             Hide();
             GlobalTimeManager.Instance.RestoreTimeScaleExitCombatScene();
+            SaveDataManager.Instance.PushToSteamCloud();
             sceneTransition.FadeAndLoad(mainMenuSceneName);
         }, homeButton);
     }

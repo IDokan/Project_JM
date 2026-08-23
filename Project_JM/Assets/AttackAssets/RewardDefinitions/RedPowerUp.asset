@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1c74e098d42a04c9bdf55b131b2437, type: 3}
+  m_Name: RedPowerUp
+  m_EditorClassIdentifier: Assembly-CSharp::PowerUpReward
+  id: 0
+  icons:
+  - {fileID: 7836828698651418006, guid: 3723edbce8456f342a38db3b471cc41b, type: 3}
+  - {fileID: 4407844783131251380, guid: 2e3a9bd0115777845b59a6922f3ada55, type: 3}
+  - {fileID: 8535599687916759916, guid: 89db83274ab3b494a9cd32624edea506, type: 3}
+  miniIcon: {fileID: 735282738862435024, guid: 03d46f4c369d67a4d8fb33027764329b, type: 3}
+  targetColor: 1
+  attackPowerIncrease: 0.1

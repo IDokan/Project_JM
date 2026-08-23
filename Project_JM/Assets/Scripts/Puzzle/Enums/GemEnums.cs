@@ -43,6 +43,30 @@ namespace GemEnums
             }
         }
 
+        // Like ConvertGemColor, but reads GemColor.None as white instead of
+        // ConvertGemColor's own default (black) — used wherever "no color"
+        // should mean neutral/uncolored rather than literally black, e.g.
+        // reward particle tints.
+        public static Color ConvertGemColorOrWhite(this GemColor color)
+        {
+            return color == GemColor.None ? Color.white : color.ConvertGemColor();
+        }
+
+        // Pre-mixed pastel tints (each saturated channel softened toward
+        // white at a fixed 0xB4 floor); used where a color needs to read as
+        // a soft tint rather than a raw gem color, e.g. reward button icons.
+        public static Color GetSoftenedGemColor(this GemColor color)
+        {
+            switch (color)
+            {
+                case GemColor.Red: return new Color32(0xFF, 0xB4, 0xB4, 0xFF);
+                case GemColor.Green: return new Color32(0xB4, 0xFF, 0xB4, 0xFF);
+                case GemColor.Blue: return new Color32(0xB4, 0xB4, 0xFF, 0xFF);
+                case GemColor.Yellow: return new Color32(0xFF, 0xFF, 0xB4, 0xFF);
+                default: return Color.white;
+            }
+        }
+
         public static GemColor GetRandomGemColor(bool isUsingSystemRand = false)
         {
             return PlayableGemColor[RandomInt(PlayableGemColor.Length, isUsingSystemRand)];

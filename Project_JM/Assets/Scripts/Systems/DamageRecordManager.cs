@@ -53,7 +53,7 @@ public class DamageRecordManager : MonoBehaviour
     // EnemySpawnedEventChannel fires after the new enemy has registered with all
     // systems, so this only clears the previous enemy's totals once a fresh fight
     // has actually begun. Consumers that display "last enemy" results must read
-    // GetSortedDamage() before this fires (e.g. at MiddleTransitionStarts).
+    // GetSortedDamage() before this fires (e.g. at RewardTransitionStarts).
     protected void OnEnemySpawned(GameObject enemy)
     {
         ResetDamage();

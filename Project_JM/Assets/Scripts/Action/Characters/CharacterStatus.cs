@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CharacterEnums;
 using UnityEngine;
 
 public class TimedModifier
@@ -34,7 +35,7 @@ public class CharacterStatus : MonoBehaviour
     [SerializeField] protected CharacterDeathEventChannel deathEvent;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
 
-    public string CharacterName { get; }
+    public CharacterId CharacterId { get; private set; }
     public Sprite Icon => baseData.icon;
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
@@ -76,6 +77,11 @@ public class CharacterStatus : MonoBehaviour
     protected readonly List<TimedModifier> _critChanceTimedModifiers = new();
 
     protected float _buffCritDamageBonus = 0f;
+
+    // Permanent reward-granted HP bonus and the last-applied progress multiplier;
+    // see Initialize/AddRewardHPBonus.
+    protected float _rewardHPBonus = 0f;
+    protected float _hpMultiplier = 1f;
 
     protected void OnEnable()
     {
@@ -133,8 +139,24 @@ public class CharacterStatus : MonoBehaviour
 
     public void Initialize(StatusMultiplier multiplier)
     {
-        CurrentHP = CurrentHP / maxHP * baseData.baseHP * multiplier.HPMultiplier;
-        maxHP = baseData.baseHP * multiplier.HPMultiplier;
+        _hpMultiplier = multiplier.HPMultiplier;
+
+        float effectiveBaseHP = baseData.baseHP + _rewardHPBonus;
+        CurrentHP = CurrentHP / maxHP * effectiveBaseHP * _hpMultiplier;
+        maxHP = effectiveBaseHP * _hpMultiplier;
+        OnHPChanged?.Invoke(CurrentHP, maxHP);
+    }
+
+    // Permanent HP bonus granted by rewards (e.g. Fortify), added before the
+    // progress multiplier so it scales up along with the rest of maxHP.
+    public void AddRewardHPBonus(float amount)
+    {
+        _rewardHPBonus += amount;
+
+        float newMaxHP = maxHP + amount * _hpMultiplier;
+        CurrentHP = CurrentHP / maxHP * newMaxHP;
+        maxHP = newMaxHP;
+
         OnHPChanged?.Invoke(CurrentHP, maxHP);
     }
 
@@ -160,6 +182,24 @@ public class CharacterStatus : MonoBehaviour
 
         _shield += Mathf.Max(0f, maxHP * shieldPercentage);
         OnShieldChanged?.Invoke(_shield, maxHP);
+    }
+
+    // Cuts current HP down by a flat amount. Unlike TakeDamage, this is
+    // self-inflicted and bypasses shield.
+    public void ReduceCurrentHPByAmount(float amount)
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        CurrentHP = Mathf.Max(0f, CurrentHP - amount);
+        OnHPChanged?.Invoke(CurrentHP, maxHP);
+
+        if (IsDead)
+        {
+            Die();
+        }
     }
 
     public void TakeDamage(float damage)
@@ -267,6 +307,11 @@ public class CharacterStatus : MonoBehaviour
 
     protected void Clear()
     {
+        CharacterId = baseData.characterId;
+
+        _rewardHPBonus = 0f;
+        _hpMultiplier = 1f;
+
         CurrentHP = baseData.baseHP;
         maxHP = CurrentHP;
 

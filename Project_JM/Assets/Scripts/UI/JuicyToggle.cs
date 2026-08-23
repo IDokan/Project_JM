@@ -42,16 +42,19 @@ public class JuicyToggle : Toggle
 
     private void OnValueChanged(bool value)
     {
-        if (checkmark == null || style == null)
+        if (style == null)
             return;
-
-        checkmark.DOKill();
 
         if (background != null)
         {
             background.DOKill();
             background.DOColor(value ? style.onColor : style.offColor, style.colorDuration).SetUpdate(true).SetLink(gameObject);
         }
+
+        if (checkmark == null)
+            return;
+
+        checkmark.DOKill();
 
         if (value)
         {

@@ -5,6 +5,7 @@
 // Summary: A scriptable object for containing status data.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using CharacterEnums;
 using UnityEngine;
 
 public struct StatusMultiplier
@@ -15,7 +16,7 @@ public struct StatusMultiplier
 [CreateAssetMenu(fileName = "CharacterStatusData", menuName = "JM/Data/CharacterStatusData")]
 public class CharacterStatusData : ScriptableObject
 {
-    public string characterName;
+    public CharacterId characterId;
     public Sprite icon;
     public float baseHP = 100f;
     public float baseCriticalChance = 0f;           // [0, 100] -> 100 means 100% critical chance

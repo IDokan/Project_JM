@@ -39,6 +39,7 @@ public class AttackMotion : MonoBehaviour
     [SerializeField] protected CharacterDeathEventChannel characterDeathEventChannel;
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
+    [SerializeField] protected CharacterStateVisual stateVisual;
 
     protected Animator _animator;
     protected Transform _kockbackRoot;
@@ -54,6 +55,7 @@ public class AttackMotion : MonoBehaviour
     protected static readonly int ReturnTrig = Animator.StringToHash("ReturnTrig");
     protected static readonly int WalkBool = Animator.StringToHash("WalkBool");
     protected static readonly int DiedBool = Animator.StringToHash("DiedBool");
+    protected static readonly int VictoryBool = Animator.StringToHash("VictoryBool");
 
     protected static readonly int TierInt = Animator.StringToHash("TierInt");
 
@@ -290,11 +292,15 @@ public class AttackMotion : MonoBehaviour
 
         _hurtRequested = false;
 
+        stateVisual?.OnDamagedBegin();
+
         PlayKnockback();
 
         // Wait hurt end event (or another interrupt version bump)
         _hurtDone = false;
         yield return WaitFlagOrInterrupt(() => _hurtDone);
+
+        stateVisual?.OnDamagedEnd();
 
         _state = State.Idle;
         _currentTier = null;
@@ -490,7 +496,8 @@ public class AttackMotion : MonoBehaviour
         {
             ClearPendingAttacks();
 
-            StartWalk();
+            _animator.SetBool(VictoryBool, true);
+            stateVisual?.OnVictory();
         }
 
         if (characterStat.TryGetComponent<AllyTag>(out _))
@@ -536,6 +543,7 @@ public class AttackMotion : MonoBehaviour
 
         ResetCombatTriggers();
         _animator.SetBool(DiedBool, true);
+        stateVisual?.OnDied();
 
         _currentTier = null;
     }
@@ -546,6 +554,23 @@ public class AttackMotion : MonoBehaviour
         {
             Clear();
             StartWalk();
+        }
+
+        if (phase == TransitionPhase.MiddleTransitionStarts)
+        {
+            _animator.SetBool(VictoryBool, false);
+            stateVisual?.OnVictoryEnd();
+            StartWalk();
+        }
+
+        // Insurance: MiddleTransitionStarts already clears this, but a
+        // character that wasn't around yet to hear it (e.g. respawned/
+        // re-enabled mid-transition) could otherwise carry VictoryBool into
+        // the next fight still true.
+        if (phase == TransitionPhase.MiddleTransitionEnd)
+        {
+            _animator.SetBool(VictoryBool, false);
+            stateVisual?.OnVictoryEnd();
         }
     }
 
@@ -570,6 +595,9 @@ public class AttackMotion : MonoBehaviour
 
         _animator.SetBool(WalkBool, false);
         _animator.SetBool(DiedBool, false);
+        _animator.SetBool(VictoryBool, false);
+        stateVisual?.OnVictoryEnd();
+        stateVisual?.OnDamagedEnd();
 
         StopRunner();
     }

@@ -217,8 +217,15 @@ public class EnemyAttackMotion : MonoBehaviour
 
     private void OnStunBegin()
     {
+        bool wasAttacking = !_attackDone;
         _attackDone = true;
         _enragePlaying = false;
+
+        if (wasAttacking)
+        {
+            stateVisual?.OnAttackEnd();
+        }
+
         stateVisual?.OnStunBegin();
     }
 

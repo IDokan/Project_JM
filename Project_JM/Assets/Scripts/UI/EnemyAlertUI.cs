@@ -61,7 +61,7 @@ public class EnemyAlertUI : MonoBehaviour
 
     protected void OnTransitionEvent(TransitionPhase phase)
     {
-        if (phase == TransitionPhase.MiddleTransitionStarts)
+        if (phase == TransitionPhase.RewardTransitionStarts)
         {
             ShowAlert();
         }
@@ -74,13 +74,15 @@ public class EnemyAlertUI : MonoBehaviour
     protected void ShowAlert()
     {
         _tween?.Kill();
-        _tween = _rectTransform.DOAnchorPosX(_shownX, slideDuration).SetEase(Ease.OutCubic);
+        _tween = _rectTransform.DOAnchorPosX(_shownX, slideDuration).SetEase(Ease.OutCubic)
+            .SetLink(gameObject);
     }
 
     protected void HideAlert()
     {
         _tween?.Kill();
-        _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic);
+        _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic)
+            .SetLink(gameObject);
     }
 
     protected void OnEnemyAlert(GameObject enemyPrefab)

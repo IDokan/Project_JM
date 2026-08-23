@@ -28,6 +28,17 @@ public class PartyRoster : MonoBehaviour
         return null;
     }
 
+    public CharacterCombatant[] GetAll()
+    {
+        CharacterCombatant[] characters = new CharacterCombatant[slots.Length];
+        for (int i = 0; i < slots.Length; i++)
+        {
+            characters[i] = slots[i].Character;
+        }
+
+        return characters;
+    }
+
     public Transform GetCharacterTransform(GemColor color)
     {
         for (int i = 0; i < slots.Length; i++)
@@ -39,5 +50,31 @@ public class PartyRoster : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Transform[] GetAllCharacterTransforms()
+    {
+        Transform[] transforms = new Transform[slots.Length];
+        for (int i = 0; i < slots.Length; i++)
+        {
+            transforms[i] = slots[i].CharacterTransform;
+        }
+
+        return transforms;
+    }
+
+    // Index-aligned with GetAllCharacterTransforms — both iterate the same
+    // slots array in the same order, so callers can zip the two results
+    // together by index (e.g. tinting a particle by which character it's
+    // headed toward).
+    public GemColor[] GetAllCharacterColors()
+    {
+        GemColor[] colors = new GemColor[slots.Length];
+        for (int i = 0; i < slots.Length; i++)
+        {
+            colors[i] = slots[i].Color;
+        }
+
+        return colors;
     }
 }
