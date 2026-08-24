@@ -143,8 +143,6 @@ public class BoardManager : MonoBehaviour, IBoardInfo
     protected Gem[,] _gems;
     public Gem GemAt(int r, int c) => _gems[r, c];
 
-    protected const int MaxResolveIterations = 100;
-
     private int _numMovingGems = 0;
 
     public bool InputEnabled => !_busy && _gems != null && !_tutorialBoardLocked;
