@@ -20,6 +20,11 @@ public class TestAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (ctx.Attacker.IsDead)
+        {
+            yield break;
+        }
+
         if (impactPrefab)
         {
             ctx.ImpactAttachPrefab = impactPrefab;

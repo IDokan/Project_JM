@@ -26,6 +26,11 @@ public class MultiRangedAttack : AttackLogic
         Vector3[] offsets = executor.HitTransformOffset;
         for (int i = 0; i < offsets.Length; i++)
         {
+            if (ctx.Attacker.IsDead)
+            {
+                yield break;
+            }
+
             ctx.HitTransformOffset = offsets[i];
             ctx.Target?.TakeDamage(baseDamage, ctx);
 

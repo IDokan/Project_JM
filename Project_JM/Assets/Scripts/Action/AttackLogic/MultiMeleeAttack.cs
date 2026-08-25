@@ -31,6 +31,11 @@ public class MultiMeleeAttack : AttackLogic
 
         for (int i = 0; i < perHitTransforms.Length; i++)
         {
+            if (ctx.Attacker.IsDead)
+            {
+                yield break;
+            }
+
             ctx.HitTransform = perHitTransforms[i];
             ctx.Target?.TakeDamage(baseDamage, ctx);
 

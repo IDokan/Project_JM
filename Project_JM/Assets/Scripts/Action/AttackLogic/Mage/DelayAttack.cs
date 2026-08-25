@@ -17,6 +17,11 @@ public class DelayAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (ctx.Attacker.IsDead)
+        {
+            yield break;
+        }
+
         float wastedRatio = 0f;
         if (ctx.Target is MonoBehaviour targetMB &&
             targetMB.TryGetComponent<EnemyAttackBehaviour>(out var enemy))

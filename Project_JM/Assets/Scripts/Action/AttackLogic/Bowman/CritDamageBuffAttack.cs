@@ -17,6 +17,11 @@ public class CritDamageBuffAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (ctx.Attacker.IsDead)
+        {
+            yield break;
+        }
+
         ctx.ImpactAttachPrefab = impactPrefab;
 
         ctx.Attacker?.AddBuffCritDamage(buffAmount);

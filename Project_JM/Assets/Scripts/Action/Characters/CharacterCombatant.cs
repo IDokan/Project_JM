@@ -12,6 +12,7 @@ using UnityEngine;
 public interface ICombatant
 {
     GemColor[] Colors { get; }
+    bool IsDead { get; }
     void Heal(float healPercentage);
     void AddShield(float shieldPercentage);
     void TakeDamage(float damage, AttackContext attackContext);
@@ -34,6 +35,7 @@ public class CharacterCombatant : MonoBehaviour, ICombatant
 
     public CharacterStatus Status => status;
     public GemColor[] Colors => colors;
+    public bool IsDead => status.IsDead;
 
     void Awake()
     {

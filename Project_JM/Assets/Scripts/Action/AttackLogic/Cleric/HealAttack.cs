@@ -17,6 +17,11 @@ public class HealAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (ctx.Attacker.IsDead)
+        {
+            yield break;
+        }
+
         float overhealRatio = 0f;
         if (ctx.Attacker is CharacterCombatant attacker && attacker.Status.maxHP > 0f)
         {
