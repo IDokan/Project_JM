@@ -446,6 +446,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -739130286953346758, guid: 85082f6b93936cd4f855a5d2c79766ef, type: 3}
   m_PrefabInstance: {fileID: 220991386851540919}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1849315583247609081
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3621238678013305779}
+    m_Modifications:
+    - target: {fileID: 1919301275413473921, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_Name
+      value: DandelionToadEnragedParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+--- !u!198 &2404038525248892656 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4104691262446174729, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+  m_PrefabInstance: {fileID: 1849315583247609081}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7255187865915151017 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9008760927256428112, guid: 693ced112d7084a499c17590cc7941cd, type: 3}
+  m_PrefabInstance: {fileID: 1849315583247609081}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6565765721239461504
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -650,6 +717,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7592910946159918387, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1458823737534121577}
+    - targetCorrespondingSourceObject: {fileID: 7592910946159918387, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7255187865915151017}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6164301083414174608, guid: 768107016bd52ca409b307c8a5c1562a, type: 3}
       insertIndex: -1
@@ -678,6 +748,7 @@ MonoBehaviour:
   leftEyeSpriteResolver: {fileID: 3636839100755434033}
   rightEyeSpriteResolver: {fileID: 8622818329855953672}
   mouthSpriteResolver: {fileID: 4030956910588859898}
+  enrageParticle: {fileID: 2404038525248892656}
   leftEyeCategory: LeftEye
   rightEyeCategory: RightEye
   normalEyeLabel: Normal

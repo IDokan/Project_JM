@@ -2,7 +2,7 @@
 // Copyright (c) 30/05/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: DandelionFrogStateVisual.cs
-// Summary: DandelionFrog enemy visual — eye blink sequence on enrage/stun-end/win/attack, static eye on stun/death, mouth change during attack, no lunge motion.
+// Summary: DandelionFrog enemy visual — eye blink sequence on enrage/stun-end/win/attack, enrage particle on enrage (stopped on death or win), static eye on stun/death, mouth change during attack, no lunge motion.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using System.Collections;
@@ -15,6 +15,7 @@ public class DandelionFrogStateVisual : EnemyStateVisual
     [SerializeField] private SpriteResolver leftEyeSpriteResolver;
     [SerializeField] private SpriteResolver rightEyeSpriteResolver;
     [SerializeField] private SpriteResolver mouthSpriteResolver;
+    [SerializeField] private ParticleSystem enrageParticle;
 
     [Header("Eye Labels")]
     [SerializeField] private string leftEyeCategory;
@@ -38,6 +39,7 @@ public class DandelionFrogStateVisual : EnemyStateVisual
     public override void OnEnraged()
     {
         BlinkToNormal();
+        enrageParticle?.Play();
     }
 
     public override void OnStunBegin()
@@ -55,11 +57,13 @@ public class DandelionFrogStateVisual : EnemyStateVisual
     {
         StopBlink();
         SetEye(deadEyeLabel);
+        enrageParticle?.Stop();
     }
 
     public override void OnWin()
     {
         BlinkToNormal();
+        enrageParticle?.Stop();
     }
 
     public override Sequence BuildAttackSequence(Vector3 moveOffset)
