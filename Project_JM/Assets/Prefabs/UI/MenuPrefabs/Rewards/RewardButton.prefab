@@ -5393,6 +5393,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2227821279146756492}
+    - targetCorrespondingSourceObject: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1202557634851194712}
   m_SourcePrefab: {fileID: 100100000, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
 --- !u!224 &1406157515824180625 stripped
 RectTransform:
@@ -5420,3 +5423,23 @@ MonoBehaviour:
   - {fileID: 5072861772882722368}
   - {fileID: 2437274285094526910}
   - {fileID: 1632714730082381052}
+--- !u!114 &1202557634851194712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192807438451217523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c23b2e466a44d4baa061de3b95fd37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIWorldPositionSync
+  uiTransform: {fileID: 1406157515824180625}
+  canvas: {fileID: 0}
+  uiCamera: {fileID: 0}
+  worldTarget: {fileID: 0}
+  worldCamera: {fileID: 0}
+  screenOffset: {x: 0, y: 0}
+  transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
+  syncOnPhase: 3
