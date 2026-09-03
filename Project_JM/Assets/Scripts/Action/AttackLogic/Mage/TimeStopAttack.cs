@@ -18,6 +18,11 @@ public class TimeStopAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (ctx.Attacker.IsDead)
+        {
+            yield break;
+        }
+
         GlobalTimeManager.Instance.SetTimer(timeScaler, duration);
         ctx.Target?.TakeDamage(baseDamage, ctx);
 

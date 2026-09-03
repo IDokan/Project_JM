@@ -149,13 +149,16 @@ public class CharacterStatus : MonoBehaviour
 
     // Permanent HP bonus granted by rewards (e.g. Fortify), added before the
     // progress multiplier so it scales up along with the rest of maxHP.
+    // Added flat to both CurrentHP and maxHP (not proportionally rescaled),
+    // so the bonus also acts as an immediate heal rather than preserving the
+    // current HP percentage.
     public void AddRewardHPBonus(float amount)
     {
         _rewardHPBonus += amount;
 
-        float newMaxHP = maxHP + amount * _hpMultiplier;
-        CurrentHP = CurrentHP / maxHP * newMaxHP;
-        maxHP = newMaxHP;
+        float scaledAmount = amount * _hpMultiplier;
+        maxHP += scaledAmount;
+        CurrentHP += scaledAmount;
 
         OnHPChanged?.Invoke(CurrentHP, maxHP);
     }

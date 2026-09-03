@@ -2,7 +2,7 @@
 // Copyright (c) 28/04/2026 Sinil Kang. All Rights Reserved.
 // Project: Project JM - https://github.com/IDokan/Project_JM
 // File: SlimeKingStateVisual.cs
-// Summary: SlimeKing-specific visual responses — eye sprite changes, enrage particle, and attack motion.
+// Summary: SlimeKing-specific visual responses — eye sprite changes, enrage particle (stopped on death or win), and attack motion.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
 using DG.Tweening;
@@ -56,6 +56,11 @@ public class SlimeKingStateVisual : EnemyStateVisual
     public override void OnDied()
     {
         SetEye(deadEyeLabel);
+        enrageParticle?.Stop();
+    }
+
+    public override void OnWin()
+    {
         enrageParticle?.Stop();
     }
 

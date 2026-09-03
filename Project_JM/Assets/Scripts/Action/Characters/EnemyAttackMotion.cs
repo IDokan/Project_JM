@@ -187,6 +187,13 @@ public class EnemyAttackMotion : MonoBehaviour
         {
             Debug.LogWarning($"[EnemyAttackMotion] {gameObject.name}: AnimEvent_RaiseAttackBegin never fired. Add the animation event to the attack clip.", this);
         }
+
+        if (_autoAttackEndRoutine != null)
+        {
+            StopCoroutine(_autoAttackEndRoutine);
+            _autoAttackEndRoutine = null;
+        }
+
         _attackDone = true;
         stateVisual?.OnAttackEnd();
         enemyAttackBehaviour.NotifyAttackFinished();

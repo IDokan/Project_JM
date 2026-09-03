@@ -16,6 +16,11 @@ public class StunAttack : AttackLogic
 
     public override IEnumerator Execute(AttackContext ctx)
     {
+        if (ctx.Attacker.IsDead)
+        {
+            yield break;
+        }
+
         if (ctx.Target is MonoBehaviour targetMB &&
             targetMB.TryGetComponent<EnemyAttackBehaviour>(out var enemy))
         {
