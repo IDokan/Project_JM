@@ -198,6 +198,9 @@ Follow **Conventional Commits 1.0.0** strictly.
 - Issue number is **required** on every commit; look up the best-matching
   issue with `gh issue list` (closed issues may still be used when
   semantically appropriate)
+- Create a new issue when existing issues do not fit the work; no separate
+  user approval is needed. Use a specific title and reference that issue
+  in the related commits.
 - Types allowed: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
 - Max 72 characters
 - Lowercase only
