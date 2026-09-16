@@ -8,7 +8,7 @@ Project_JM is a 2D tactical puzzle-RPG built in **Unity 6 (v6000.2.9f1)** using 
 
 ## Design Goals
 
-**Text-less game** — one of the primary design goals is that the game contains no written language of any kind. No English, Japanese, Chinese, Korean, or any other natural language text should appear in the in-game UI, HUD, or gameplay elements. Numbers are acceptable (HP values, damage numbers, timers, etc.), but words and sentences are not. When implementing UI or gameplay features, always represent information through icons, symbols, color, animation, and numbers instead of text labels or descriptions.
+**Symbol-first game** — the game must remain fully understandable without written language. Represent gameplay information primarily through icons, symbols, color, animation, and numbers. Natural-language text is permitted only as optional contextual help that appears through deliberate pointer interaction, such as combat HUD tooltips. Do not make text necessary to understand or operate the game.
 
 ## Tech Stack
 
@@ -236,6 +236,8 @@ If you find yourself writing "and" in the subject, split it into two commits.
 ## Never
 
 - Never commit or track files under any `TestArtifacts/` directory.
+
+- Before changing a scene object, inspect its prefab ownership and implement the change at the deepest appropriate prefab level whenever possible. Prefer changes to inner reusable prefabs first, then parent or composition prefabs when the behavior depends on that composition. Modify scene instances only as a last resort when the change is genuinely scene-specific.
 
 - Never read or write large verbose files such as `.prefab` or `.scene` — ask the user first if you think you need to perform actions on these files
 - Never add underscore prefixes to `[SerializeField]` fields — they must be plain camelCase
