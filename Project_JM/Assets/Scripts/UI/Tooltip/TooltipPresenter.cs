@@ -54,12 +54,22 @@ public class TooltipPresenter : MonoBehaviour
         TooltipPlacement placement,
         Vector2 positionOffset)
     {
+        bool isContentRefresh = _activeTrigger == trigger;
         _activeTrigger = trigger;
         titleText.text = title;
         descriptionText.text = description;
 
-        Canvas.ForceUpdateCanvases();
+        /* Resolve the tooltip's size before positioning without forcing all canvases.
+         * Consider batching localized content updates if profiling warrants it (#58). */
+        titleText.ForceMeshUpdate();
+        descriptionText.ForceMeshUpdate();
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(panelRectTransform);
         Position(source, placement, positionOffset);
+
+        if (isContentRefresh)
+        {
+            return;
+        }
 
         if (_showRoutine != null)
         {
@@ -120,6 +130,26 @@ public class TooltipPresenter : MonoBehaviour
         Vector2 direction;
         switch (placement)
         {
+            case TooltipPlacement.Left:
+                localAnchor = new Vector2(sourceBounds.min.x, sourceBounds.center.y);
+                direction = Vector2.left;
+                panelRectTransform.pivot = new Vector2(1f, 0.5f);
+                break;
+            case TooltipPlacement.Right:
+                localAnchor = new Vector2(sourceBounds.max.x, sourceBounds.center.y);
+                direction = Vector2.right;
+                panelRectTransform.pivot = new Vector2(0f, 0.5f);
+                break;
+            case TooltipPlacement.Up:
+                localAnchor = new Vector2(sourceBounds.center.x, sourceBounds.max.y);
+                direction = Vector2.up;
+                panelRectTransform.pivot = new Vector2(0.5f, 0f);
+                break;
+            case TooltipPlacement.Down:
+                localAnchor = new Vector2(sourceBounds.center.x, sourceBounds.min.y);
+                direction = Vector2.down;
+                panelRectTransform.pivot = new Vector2(0.5f, 1f);
+                break;
             case TooltipPlacement.DownLeft:
                 localAnchor = new Vector2(sourceBounds.min.x, sourceBounds.min.y);
                 direction = new Vector2(-1f, -1f);

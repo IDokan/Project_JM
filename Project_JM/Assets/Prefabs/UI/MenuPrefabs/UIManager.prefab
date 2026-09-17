@@ -1031,6 +1031,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7265932490193576371, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8347095319768765801, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1051,17 +1055,14 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 6085049234010887241, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4821726216163003886, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1030488791870298386}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
 --- !u!114 &667268355314239506 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3575660421060745512, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
   m_PrefabInstance: {fileID: 4097661300109381946}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8806761925325561044}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ffcf24c4a4ba604c830a4623ff0412f, type: 3}
@@ -1072,28 +1073,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6359726838911743699, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
   m_PrefabInstance: {fileID: 4097661300109381946}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8806761925325561044 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4821726216163003886, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
-  m_PrefabInstance: {fileID: 4097661300109381946}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1030488791870298386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8806761925325561044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
-  title: Enemy Attack
-  description: Shows the time remaining before the enemy attacks.
-  placement: 3
-  positionOffset: {x: 0, y: 0}
-  mouseHoverDelay: 0.4
 --- !u!1001 &4098817422431426595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1536,6 +1515,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AllyHPBar
       objectReference: {fileID: 0}
+    - target: {fileID: 8260801775021741002, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8278185689481332862, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1555,38 +1538,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6096662346950180759, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2826107662189559536}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
 --- !u!224 &2442690368399721005 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1925463916140318197, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
   m_PrefabInstance: {fileID: 4278053269552205784}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8053844411448913999 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6096662346950180759, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
-  m_PrefabInstance: {fileID: 4278053269552205784}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2826107662189559536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8053844411448913999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
-  title: Party Health
-  description: Shows the remaining health of your party.
-  placement: 0
-  positionOffset: {x: 0, y: 0}
-  mouseHoverDelay: 0.4
 --- !u!224 &8461559449878973298 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5635073737422881962, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
@@ -2280,6 +2238,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8260801775021741002, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8384208501568923930, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -2288,38 +2250,13 @@ PrefabInstance:
     - {fileID: 1839440069194012749, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6096662346950180759, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6152322981969896325}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
 --- !u!224 &81694175677609877 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5635073737422881962, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
   m_PrefabInstance: {fileID: 5697600942929752895}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1984473097892580520 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6096662346950180759, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
-  m_PrefabInstance: {fileID: 5697600942929752895}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6152322981969896325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1984473097892580520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
-  title: Combo
-  description: Increases when matches are made consecutively.
-  placement: 2
-  positionOffset: {x: 0, y: 0}
-  mouseHoverDelay: 0.4
 --- !u!224 &3637841413306434551 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9038096231931834568, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
@@ -2728,6 +2665,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1042159848969981046, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1083943212046817817, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2879,44 +2820,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2903009439892594731, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6366534836114442259}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
 --- !u!114 &3504451297710446783 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6726259744417072484, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
   m_PrefabInstance: {fileID: 7924706395688885723}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5022562306214215152}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32217f00018b62a43a63a57cca609a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnrageBarBinder
---- !u!1 &5022562306214215152 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2903009439892594731, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
-  m_PrefabInstance: {fileID: 7924706395688885723}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6366534836114442259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5022562306214215152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
-  title: Enemy Health
-  description: Shows the remaining health of the enemy.
-  placement: 1
-  positionOffset: {x: 0, y: 0}
-  mouseHoverDelay: 0.4
 --- !u!224 &6853289381099570893 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3666475572007590678, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
@@ -2927,7 +2843,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 276819234069546936, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
   m_PrefabInstance: {fileID: 7924706395688885723}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5022562306214215152}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 127bda689904e1d4f92eeae30fb631bb, type: 3}
@@ -3431,7 +3347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4577247319158699192, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
+      value: 0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 5024481684449728659, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Pivot.x
@@ -3551,7 +3467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8356715639187964050, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Size
-      value: 0.9200001
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8356715639187964050, guid: d65f52695f5788c49a2afac1a161b895, type: 3}
       propertyPath: m_Value

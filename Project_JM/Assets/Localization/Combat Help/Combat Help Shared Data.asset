@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Combat Help Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Combat Help
+  m_TableCollectionNameGuidString: 40d56d81d8fa86345a7cac2ee20f221d
+  m_Entries:
+  - m_Id: 2056298496
+    m_Key: combat.party_health.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2261819392
+    m_Key: combat.party_health.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2261819393
+    m_Key: combat.enemy_health.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2261819394
+    m_Key: combat.enemy_health.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013696
+    m_Key: combat.enemy_attack.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013697
+    m_Key: combat.enemy_attack.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013698
+    m_Key: combat.combo.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013699
+    m_Key: combat.combo.description
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1101801185933787233
+  references:
+    version: 2
+    RefIds:
+    - rid: 1101801185933787233
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1789564856626

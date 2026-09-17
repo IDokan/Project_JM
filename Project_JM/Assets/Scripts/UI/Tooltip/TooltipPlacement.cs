@@ -10,5 +10,9 @@ public enum TooltipPlacement
     DownRight,
     DownLeft,
     UpRight,
-    UpLeft
+    UpLeft,
+    Left,
+    Right,
+    Up,
+    Down
 }

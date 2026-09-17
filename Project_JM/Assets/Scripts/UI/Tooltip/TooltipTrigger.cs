@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.Localization;
 
 [RequireComponent(typeof(RectTransform))]
 public class TooltipTrigger : MonoBehaviour,
@@ -17,8 +18,8 @@ public class TooltipTrigger : MonoBehaviour,
     IPointerUpHandler
 {
     [Header("Content")]
-    [SerializeField] private string title;
-    [SerializeField, TextArea(2, 4)] private string description;
+    [SerializeField] private LocalizedString localizedTitle = new LocalizedString();
+    [SerializeField] private LocalizedString localizedDescription = new LocalizedString();
 
     [Header("Presentation")]
     [SerializeField] private TooltipPlacement placement;
@@ -27,6 +28,11 @@ public class TooltipTrigger : MonoBehaviour,
     private RectTransform _rectTransform;
     private int _touchPointerId = int.MinValue;
     private TooltipPresenter _presenter;
+    private string _title;
+    private string _description;
+    private bool _showRequested;
+    private bool _titleReady;
+    private bool _descriptionReady;
 
     private void Awake()
     {
@@ -34,8 +40,19 @@ public class TooltipTrigger : MonoBehaviour,
         _presenter = FindFirstObjectByType<TooltipPresenter>(FindObjectsInactive.Include);
     }
 
+    private void OnEnable()
+    {
+        _titleReady = false;
+        _descriptionReady = false;
+        localizedTitle.StringChanged += HandleTitleChanged;
+        localizedDescription.StringChanged += HandleDescriptionChanged;
+    }
+
     private void OnDisable()
     {
+        localizedTitle.StringChanged -= HandleTitleChanged;
+        localizedDescription.StringChanged -= HandleDescriptionChanged;
+        _showRequested = false;
         _touchPointerId = int.MinValue;
         if (_presenter != null)
         {
@@ -92,6 +109,31 @@ public class TooltipTrigger : MonoBehaviour,
 
     private void Show()
     {
+        _showRequested = true;
+        RefreshContent();
+    }
+
+    private void HandleTitleChanged(string value)
+    {
+        _title = value;
+        _titleReady = true;
+        RefreshContent();
+    }
+
+    private void HandleDescriptionChanged(string value)
+    {
+        _description = value;
+        _descriptionReady = true;
+        RefreshContent();
+    }
+
+    private void RefreshContent()
+    {
+        if (!_showRequested || !_titleReady || !_descriptionReady)
+        {
+            return;
+        }
+
         if (_presenter == null)
         {
             _presenter = FindFirstObjectByType<TooltipPresenter>(FindObjectsInactive.Include);
@@ -99,12 +141,13 @@ public class TooltipTrigger : MonoBehaviour,
 
         if (_presenter != null)
         {
-            _presenter.Show(this, title, description, _rectTransform, placement, positionOffset);
+            _presenter.Show(this, _title, _description, _rectTransform, placement, positionOffset);
         }
     }
 
     private void Hide()
     {
+        _showRequested = false;
         if (_presenter != null)
         {
             _presenter.Hide(this);
