@@ -236,6 +236,13 @@ Follow **Conventional Commits 1.0.0** strictly.
 Each commit must represent exactly ONE logical change.
 If you find yourself writing "and" in the subject, split it into two commits.
 
+## Prefab-First Modular Work
+
+- Before implementing modular UI or GameObject work, first assess whether the module belongs in a reusable prefab.
+- If it does, create or update the reusable prefab first, then apply it to the existing relevant GameObjects. Creating the prefab alone does not complete the task.
+- Integrate reusable modules into the deepest appropriate existing source prefabs, so both current and future instances inherit them. Do not stop at additions inside a scene or composition prefab when the source UI prefab should own the module.
+- Preserve each existing object's content, references, placement, and other intentional settings during migration. Remove superseded components or duplicate instances, and verify that existing objects actually use the new prefab.
+
 ## Never
 
 - Never commit or track files under any `TestArtifacts/` directory.
