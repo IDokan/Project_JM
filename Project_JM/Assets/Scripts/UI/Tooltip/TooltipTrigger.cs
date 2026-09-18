@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 [RequireComponent(typeof(RectTransform))]
 public class TooltipTrigger : MonoBehaviour,
@@ -22,12 +23,12 @@ public class TooltipTrigger : MonoBehaviour,
     [SerializeField] private LocalizedString localizedDescription = new LocalizedString();
 
     [Header("Presentation")]
+    [SerializeField] private TooltipPresenter presenter;
     [SerializeField] private TooltipPlacement placement;
     [SerializeField] private Vector2 positionOffset;
 
     private RectTransform _rectTransform;
     private int _touchPointerId = int.MinValue;
-    private TooltipPresenter _presenter;
     private string _title;
     private string _description;
     private bool _showRequested;
@@ -37,27 +38,60 @@ public class TooltipTrigger : MonoBehaviour,
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-        _presenter = FindFirstObjectByType<TooltipPresenter>(FindObjectsInactive.Include);
+        if (presenter == null)
+        {
+            Debug.LogError(
+                $"[{nameof(TooltipTrigger)}] A {nameof(TooltipPresenter)} reference is required.",
+                this);
+        }
     }
 
     private void OnEnable()
     {
-        _titleReady = false;
-        _descriptionReady = false;
-        localizedTitle.StringChanged += HandleTitleChanged;
-        localizedDescription.StringChanged += HandleDescriptionChanged;
+        ResetContent();
+        LocalizationSettings.SelectedLocaleChanged += HandleSelectedLocaleChanged;
+        SubscribeToContent();
     }
 
     private void OnDisable()
     {
-        localizedTitle.StringChanged -= HandleTitleChanged;
-        localizedDescription.StringChanged -= HandleDescriptionChanged;
+        LocalizationSettings.SelectedLocaleChanged -= HandleSelectedLocaleChanged;
+        UnsubscribeFromContent();
         _showRequested = false;
         _touchPointerId = int.MinValue;
-        if (_presenter != null)
+        if (presenter != null)
         {
-            _presenter.Hide(this);
+            presenter.Hide(this);
         }
+    }
+
+    public void SetContent(LocalizedString title, LocalizedString description)
+    {
+        if (ReferenceEquals(localizedTitle, title) &&
+            ReferenceEquals(localizedDescription, description))
+        {
+            return;
+        }
+
+        if (isActiveAndEnabled)
+        {
+            UnsubscribeFromContent();
+        }
+
+        localizedTitle = title ?? new LocalizedString();
+        localizedDescription = description ?? new LocalizedString();
+        ResetContent();
+        Hide();
+
+        if (isActiveAndEnabled)
+        {
+            SubscribeToContent();
+        }
+    }
+
+    public void Dismiss()
+    {
+        Hide();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -120,6 +154,11 @@ public class TooltipTrigger : MonoBehaviour,
         RefreshContent();
     }
 
+    private void HandleSelectedLocaleChanged(Locale _)
+    {
+        ResetContent();
+    }
+
     private void HandleDescriptionChanged(string value)
     {
         _description = value;
@@ -134,24 +173,43 @@ public class TooltipTrigger : MonoBehaviour,
             return;
         }
 
-        if (_presenter == null)
+        if (presenter != null)
         {
-            _presenter = FindFirstObjectByType<TooltipPresenter>(FindObjectsInactive.Include);
-        }
-
-        if (_presenter != null)
-        {
-            _presenter.Show(this, _title, _description, _rectTransform, placement, positionOffset);
+            presenter.Show(
+                this,
+                _title,
+                _description,
+                _rectTransform,
+                placement,
+                positionOffset);
         }
     }
 
     private void Hide()
     {
         _showRequested = false;
-        if (_presenter != null)
+        if (presenter != null)
         {
-            _presenter.Hide(this);
+            presenter.Hide(this);
         }
+    }
+
+    private void ResetContent()
+    {
+        _titleReady = false;
+        _descriptionReady = false;
+    }
+
+    private void SubscribeToContent()
+    {
+        localizedTitle.StringChanged += HandleTitleChanged;
+        localizedDescription.StringChanged += HandleDescriptionChanged;
+    }
+
+    private void UnsubscribeFromContent()
+    {
+        localizedTitle.StringChanged -= HandleTitleChanged;
+        localizedDescription.StringChanged -= HandleDescriptionChanged;
     }
 
     private static bool IsMouse(PointerEventData eventData)

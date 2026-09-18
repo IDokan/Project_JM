@@ -15,6 +15,12 @@ The current entries use these prefixes, each with `.title` and `.description`:
 - `combat.enemy_health`
 - `combat.enemy_attack`
 - `combat.combo`
+- `reward.power_up_<color>`
+- `reward.sharp_attack_<color>`
+- `reward.berserked`
+- `reward.blessings`
+- `reward.focus`
+- `reward.fortify`
 
 TooltipTrigger holds LocalizedString references using the collection GUID and entry
 ID. Editing wording or renaming a key therefore does not require rewiring prefabs.
@@ -37,10 +43,16 @@ generated resolution options remain data, not translation entries.
 
 ## Runtime and build behavior
 
-TooltipTrigger subscribes while enabled, waits for both strings before showing,
-and refreshes a visible tooltip when localization changes. Dismissed tooltips stay
-dismissed. TooltipPresenter rebuilds its adaptive layout before positioning and
-does not restart the show animation for a content refresh.
+TooltipTrigger subscribes while enabled, waits for both strings from the selected
+locale before showing, and refreshes a visible tooltip when localization changes.
+Dismissed tooltips stay dismissed. Each trigger uses a serialized reference to the
+TooltipPresenter in its owning composition prefab. The presenter rebuilds its
+adaptive layout before positioning, and a content refresh does not restart the
+show animation.
+
+RewardDefinition assets own their localized tooltip references. RewardOfferUI
+passes the rolled definition's content to the matching reward-button trigger, so
+reusing a button slot does not require reward-specific UI conditionals.
 
 Combat Help is preloaded. Localization Settings and the generated Addressables
 configuration under `Assets/AddressableAssetsData` are required project assets;

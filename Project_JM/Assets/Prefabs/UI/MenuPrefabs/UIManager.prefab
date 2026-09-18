@@ -947,6 +947,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AttackTimerUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6282160986795171436, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
+      propertyPath: presenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     - target: {fileID: 6348511393943239869, guid: 466a88cbb54a40243afd845b4037d124, type: 3}
       propertyPath: m_SortingLayer
       value: 7
@@ -1157,6 +1161,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4575360552614292728, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
+      propertyPath: presenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
+    - target: {fileID: 4972950135952275639, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
+      propertyPath: presenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     - target: {fileID: 5892345827271750547, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -1357,6 +1369,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RewardButtons
       objectReference: {fileID: 0}
+    - target: {fileID: 8725779569114523111, guid: b127402fd7f038e4db123e2d2d227b62, type: 3}
+      propertyPath: presenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1511,6 +1527,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5665624289376255523, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
+      propertyPath: presenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     - target: {fileID: 6096662346950180759, guid: 9d34af6ee4fc8af44bdda9e5fdfe45e5, type: 3}
       propertyPath: m_Name
       value: AllyHPBar
@@ -1814,6 +1834,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35c84e452051451418c37b81b6d425ca, type: 3}
+--- !u!114 &1160190142196435435 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5787379395779700378, guid: 35c84e452051451418c37b81b6d425ca, type: 3}
+  m_PrefabInstance: {fileID: 4632291056792792945}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49aba2f0b48c98e459e666281a979c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipPresenter
 --- !u!224 &6107151854276871327 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1479927727180016622, guid: 35c84e452051451418c37b81b6d425ca, type: 3}
@@ -2114,6 +2145,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 832972762431168230, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
+      propertyPath: presenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     - target: {fileID: 999917761074454258, guid: 680eb3aa89be9594eb24d7f650e17145, type: 3}
       propertyPath: m_SortingLayer
       value: 7
@@ -2681,6 +2716,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyHPBar
       objectReference: {fileID: 0}
+    - target: {fileID: 3635085410851955103, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
+      propertyPath: presenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     - target: {fileID: 3666475572007590678, guid: ef6f4000a46ed1f47a9b477015b71d38, type: 3}
       propertyPath: m_Pivot.x
       value: 1

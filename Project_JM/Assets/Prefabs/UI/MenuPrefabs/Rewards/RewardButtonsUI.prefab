@@ -80,6 +80,10 @@ MonoBehaviour:
   - {fileID: 8348981992619879910}
   - {fileID: 693570836782594473}
   - {fileID: 5748510016822407350}
+  rewardTooltipTriggers:
+  - {fileID: 4972950135952275639}
+  - {fileID: 4575360552614292728}
+  - {fileID: 8725779569114523111}
   rewardButtonsGroup: {fileID: 4397043960787461632}
   colorMatchParticles:
   - {fileID: 2724997763415427484}
@@ -321,6 +325,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &4575360552614292728 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2896996021874629853, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+  m_PrefabInstance: {fileID: 1678365630453411877}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7555255731362096214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
 --- !u!198 &6894068629338250707 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5252998450550189558, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
@@ -602,6 +617,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &8725779569114523111 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2896996021874629853, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+  m_PrefabInstance: {fileID: 5849050845427022138}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3368526950209695049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
 --- !u!1001 &7869835038331036778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -821,6 +847,17 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5252998450550189558, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
   m_PrefabInstance: {fileID: 7869835038331036778}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4972950135952275639 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2896996021874629853, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
+  m_PrefabInstance: {fileID: 7869835038331036778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343247987661402137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
 --- !u!114 &7485834094415906797 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 780322539238843271, guid: 5a8df1b9362d85944b212a63ed65fbdf, type: 3}
