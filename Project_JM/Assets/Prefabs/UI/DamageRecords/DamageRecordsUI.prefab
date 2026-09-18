@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 2754008978438339460}
   - component: {fileID: 6243748280105701994}
   - component: {fileID: 6910433254096871892}
+  - component: {fileID: 870906301174009696}
   m_Layer: 0
   m_Name: DamageRecordsUI
   m_TagString: Untagged
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.5568628, g: 0.25882354, b: 0, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -175,11 +176,49 @@ MonoBehaviour:
   - {fileID: 8191318733562184196}
   - {fileID: 1291983620162446450}
   - {fileID: 7126134298437608597}
+  tooltipTrigger: {fileID: 870906301174009696}
+  tooltipPresenter: {fileID: 0}
   landscapeHiddenX: -5.9
   portraitHiddenX: -5.9
   landscapeShownX: -1.9
   portraitShownX: -1.9
   slideDuration: 0.5
+--- !u!114 &870906301174009696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5643350636443322194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: Combat Help
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: combat.damage_record.title
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: Combat Help
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: combat.damage_record.description
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  presenter: {fileID: 0}
+  placement: 5
+  positionOffset: {x: 0, y: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &3619842893920451954
 PrefabInstance:
   m_ObjectHideFlags: 0

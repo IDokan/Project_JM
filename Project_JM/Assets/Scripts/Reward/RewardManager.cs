@@ -33,16 +33,16 @@ public class RewardManager : MonoBehaviour
     protected RewardDefinition[] _currentOffer;
     public IReadOnlyList<RewardDefinition> CurrentOffer => _currentOffer;
 
-    // One mini-icon per reward chosen so far this run, in pick order; see
-    // RewardDefinition.MiniIcon and RewardHistoryUI.
-    protected readonly List<Sprite> _chosenIcons = new List<Sprite>();
-    public IReadOnlyList<Sprite> ChosenIcons => _chosenIcons;
-
-    // Parallel to _chosenIcons but by id rather than sprite, so a run's pick
-    // order can be persisted (see SaveDataManager.SetBestScoreRewardHistory)
-    // without storing Sprite references in PlayerPrefs.
+    // IDs are the single source of truth for the current run's pick order.
+    // They can be persisted directly and resolved through RewardBook when UI
+    // needs the corresponding definition, icon, or localized tooltip.
     protected readonly List<RewardId> _chosenRewardIds = new List<RewardId>();
     public IReadOnlyList<RewardId> ChosenRewardIds => _chosenRewardIds;
+
+    public RewardDefinition GetRewardDefinition(RewardId id)
+    {
+        return rewardBook.GetRewardDefinition(id);
+    }
 
     public RewardDefinition[] RollOffer()
     {
@@ -72,7 +72,6 @@ public class RewardManager : MonoBehaviour
 
     public void ChooseReward(RewardDefinition reward)
     {
-        _chosenIcons.Add(reward.MiniIcon);
         _chosenRewardIds.Add(reward.Id);
         SaveDataManager.Instance.IncrementRewardPickCount(reward.Id);
 

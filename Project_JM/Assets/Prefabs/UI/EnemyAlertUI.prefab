@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 2174272087045421457}
   - component: {fileID: 3365986187756035215}
   - component: {fileID: 7195085815412915266}
+  - component: {fileID: 1003722196552787248}
   m_Layer: 0
   m_Name: EnemyAlertUI
   m_TagString: Untagged
@@ -291,7 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.5568628, g: 0.25882354, b: 0, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -325,6 +326,8 @@ MonoBehaviour:
   advantageIconA: {fileID: 2358831093528972651}
   advantageIconB: {fileID: 4525648126843153032}
   gemColorIconData: {fileID: 11400000, guid: 792b56a9d3ff1a743b0e0ce5e2a8c9a9, type: 2}
+  tooltipTrigger: {fileID: 1003722196552787248}
+  tooltipPresenter: {fileID: 0}
   landscapeHiddenX: 460
   portraitHiddenX: 460
   landscapeShownX: 0
@@ -344,6 +347,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIOrientationPositioner
   landscapeAnchoredPosition: {x: 460, y: -375}
   portraitAnchoredPosition: {x: 460, y: -320}
+--- !u!114 &1003722196552787248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2957997588720268255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  presenter: {fileID: 0}
+  placement: 7
+  positionOffset: {x: 0, y: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4438353456147164400
 GameObject:
   m_ObjectHideFlags: 0

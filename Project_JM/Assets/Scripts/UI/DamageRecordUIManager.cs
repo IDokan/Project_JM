@@ -17,6 +17,8 @@ public class DamageRecordUIManager : MonoBehaviour
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
     [SerializeField] protected DamageRecordManager damageRecordManager;
     [SerializeField] protected DamageRecordItem[] items;
+    [SerializeField] protected TooltipTrigger tooltipTrigger;
+    [SerializeField] protected TooltipPresenter tooltipPresenter;
 
     [SerializeField] protected float landscapeHiddenX = -5.9f;
     [SerializeField] protected float portraitHiddenX = -5.9f;
@@ -35,6 +37,7 @@ public class DamageRecordUIManager : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
         _canvasGroup = GetComponent<CanvasGroup>();
+        tooltipTrigger.SetPresenter(tooltipPresenter);
 
         bool isPortrait = Screen.height > Screen.width;
         _hiddenX = isPortrait ? portraitHiddenX : landscapeHiddenX;
@@ -45,6 +48,7 @@ public class DamageRecordUIManager : MonoBehaviour
         _rectTransform.anchoredPosition = anchoredPosition;
 
         _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
     }
 
     protected void OnEnable()
@@ -84,13 +88,18 @@ public class DamageRecordUIManager : MonoBehaviour
             .SetLink(gameObject);
 
         _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     protected void HideRecords()
     {
         _tween?.Kill();
         _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic)
-            .OnComplete(() => _canvasGroup.alpha = 0)
+            .OnComplete(() =>
+            {
+                _canvasGroup.alpha = 0;
+                _canvasGroup.blocksRaycasts = false;
+            })
             .SetLink(gameObject);
     }
 }

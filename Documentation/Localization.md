@@ -15,12 +15,20 @@ The current entries use these prefixes, each with `.title` and `.description`:
 - `combat.enemy_health`
 - `combat.enemy_attack`
 - `combat.combo`
+- `combat.damage_record`
 - `reward.power_up_<color>`
 - `reward.sharp_attack_<color>`
 - `reward.berserked`
 - `reward.blessings`
 - `reward.focus`
 - `reward.fortify`
+- `enemy.slime_king`
+- `enemy.ant_gladiator`
+- `enemy.mushroom_bully`
+- `enemy.fox_thief`
+- `enemy.snail_wizard`
+- `enemy.dandelion_toad`
+- `enemy.flying_fish`
 
 TooltipTrigger holds LocalizedString references using the collection GUID and entry
 ID. Editing wording or renaming a key therefore does not require rewiring prefabs.
@@ -53,6 +61,11 @@ show animation.
 RewardDefinition assets own their localized tooltip references. RewardOfferUI
 passes the rolled definition's content to the matching reward-button trigger, so
 reusing a button slot does not require reward-specific UI conditionals.
+
+CharacterStatusData assets own each enemy's localized name and color-advantage
+description. EnemyAlertUI binds the incoming enemy's content to its tooltip.
+RewardHistoryUI binds each instantiated history icon to the chosen
+RewardDefinition's tooltip content.
 
 Combat Help is preloaded. Localization Settings and the generated Addressables
 configuration under `Assets/AddressableAssetsData` are required project assets;

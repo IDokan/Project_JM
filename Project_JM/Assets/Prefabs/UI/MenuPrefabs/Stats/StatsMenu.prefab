@@ -4730,6 +4730,84 @@ MonoBehaviour:
   style: {fileID: 11400000, guid: 62126d572e2733744941be9f33642fed, type: 2}
   showOnAwake: 0
   canvasGroup: {fileID: 0}
+  tooltipPresenterPrefab: {fileID: 100100000, guid: 35c84e452051451418c37b81b6d425ca, type: 3}
+  sectionTooltips:
+  - tab: {fileID: 553175303278809887}
+    title:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.total_gem_matches.title
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.total_gem_matches.description
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tab: {fileID: 8693480117102870338}
+    title:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.total_damage_dealt.title
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.total_damage_dealt.description
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tab: {fileID: 1702614642416978667}
+    title:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.enemy_defeated.title
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.enemy_defeated.description
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tab: {fileID: 8164302772481015697}
+    title:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.ranking_rewards.title
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: Combat Help
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: stats.ranking_rewards.description
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
 --- !u!114 &4290481300105382620
 MonoBehaviour:
   m_ObjectHideFlags: 0

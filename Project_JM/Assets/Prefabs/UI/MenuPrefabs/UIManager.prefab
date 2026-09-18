@@ -231,6 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3530514233146071387}
   - component: {fileID: 6748755493055527387}
+  - component: {fileID: 5814103823383886742}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -282,6 +283,23 @@ Canvas:
   m_SortingLayerID: -1599380349
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &5814103823383886742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4681807466811135876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &7212709416370958403
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +671,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyAlertUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3365986187756035215, guid: 8fbbdda92f858f848a15d30c5bdb97ed, type: 3}
+      propertyPath: tooltipPresenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     - target: {fileID: 8753139426267093052, guid: 8fbbdda92f858f848a15d30c5bdb97ed, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -1683,6 +1705,10 @@ PrefabInstance:
       value: 470
       objectReference: {fileID: 0}
     - target: {fileID: 6910433254096871892, guid: 376a519ee0b0ad647985678c63302ddb, type: 3}
+      propertyPath: tooltipPresenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
+    - target: {fileID: 6910433254096871892, guid: 376a519ee0b0ad647985678c63302ddb, type: 3}
       propertyPath: damageRecordManager
       value: 
       objectReference: {fileID: 0}
@@ -2573,6 +2599,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3322651666245809813, guid: e089c7ed136cdf74cb461ad4a1ce4b3f, type: 3}
+      propertyPath: tooltipPresenter
+      value: 
+      objectReference: {fileID: 1160190142196435435}
     - target: {fileID: 3323891888889409142, guid: e089c7ed136cdf74cb461ad4a1ce4b3f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0

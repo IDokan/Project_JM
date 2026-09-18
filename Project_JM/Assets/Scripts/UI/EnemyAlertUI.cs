@@ -21,6 +21,8 @@ public class EnemyAlertUI : MonoBehaviour
     [SerializeField] protected Image advantageIconB;
 
     [SerializeField] protected GemColorIconData gemColorIconData;
+    [SerializeField] protected TooltipTrigger tooltipTrigger;
+    [SerializeField] protected TooltipPresenter tooltipPresenter;
 
     [SerializeField] protected float landscapeHiddenX = 1400f;
     [SerializeField] protected float portraitHiddenX = 1000f;
@@ -37,6 +39,7 @@ public class EnemyAlertUI : MonoBehaviour
     protected void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+        tooltipTrigger.SetPresenter(tooltipPresenter);
 
         bool isPortrait = Screen.height > Screen.width;
         _hiddenX = isPortrait ? portraitHiddenX : landscapeHiddenX;
@@ -92,6 +95,7 @@ public class EnemyAlertUI : MonoBehaviour
             enemyIconImage.sprite = status.Icon;
             enemyIconImage.enabled = enemyIconImage.sprite != null;
             enemyIconImage.SetNativeSize();
+            tooltipTrigger.SetContent(status.TooltipTitle, status.TooltipDescription);
         }
 
         GemColor[] colors = enemyPrefab.TryGetComponent<CharacterCombatant>(out CharacterCombatant combatant)

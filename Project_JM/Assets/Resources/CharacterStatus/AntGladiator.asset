@@ -17,3 +17,24 @@ MonoBehaviour:
   baseHP: 325
   baseCriticalChance: 0
   baseCriticalDamage: 1
+  tooltipTitle:
+    m_TableReference:
+      m_TableCollectionName: Combat Help
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.ant_gladiator.title
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  tooltipDescription:
+    m_TableReference:
+      m_TableCollectionName: Combat Help
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.ant_gladiator.description
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

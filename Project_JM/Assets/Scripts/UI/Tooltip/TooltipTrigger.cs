@@ -38,6 +38,10 @@ public class TooltipTrigger : MonoBehaviour,
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+    }
+
+    private void Start()
+    {
         if (presenter == null)
         {
             Debug.LogError(
@@ -87,6 +91,22 @@ public class TooltipTrigger : MonoBehaviour,
         {
             SubscribeToContent();
         }
+    }
+
+    public void SetPresenter(TooltipPresenter value)
+    {
+        if (presenter == value)
+        {
+            return;
+        }
+
+        if (presenter != null)
+        {
+            presenter.Hide(this);
+        }
+
+        presenter = value;
+        RefreshContent();
     }
 
     public void Dismiss()

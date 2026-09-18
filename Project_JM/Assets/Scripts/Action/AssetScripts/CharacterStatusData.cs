@@ -7,6 +7,7 @@
 
 using CharacterEnums;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public struct StatusMultiplier
 {
@@ -21,4 +22,11 @@ public class CharacterStatusData : ScriptableObject
     public float baseHP = 100f;
     public float baseCriticalChance = 0f;           // [0, 100] -> 100 means 100% critical chance
     public float baseCriticalDamage = 1.5f;
+
+    [Header("Tooltip")]
+    [SerializeField] private LocalizedString tooltipTitle = new LocalizedString();
+    [SerializeField] private LocalizedString tooltipDescription = new LocalizedString();
+
+    public LocalizedString TooltipTitle => tooltipTitle;
+    public LocalizedString TooltipDescription => tooltipDescription;
 }
