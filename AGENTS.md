@@ -247,6 +247,8 @@ If you find yourself writing "and" in the subject, split it into two commits.
 
 - Never commit or track files under any `TestArtifacts/` directory.
 
+- Never use `FindFirstObjectByType` or `FindAnyObjectByType` for ordinary dependency discovery. Use explicit references, event channels, or lifecycle registration instead. The existing lazy lookup in `SaveDataManager.Instance` is a singleton-lifecycle exception. Obtain the user's permission before adding either API anywhere else.
+
 - Before changing a scene object, inspect its prefab ownership and implement the change at the deepest appropriate prefab level whenever possible. Prefer changes to inner reusable prefabs first, then parent or composition prefabs when the behavior depends on that composition. Modify scene instances only as a last resort when the change is genuinely scene-specific.
 
 - Never read or write large verbose files such as `.prefab` or `.scene` — ask the user first if you think you need to perform actions on these files
