@@ -4730,84 +4730,6 @@ MonoBehaviour:
   style: {fileID: 11400000, guid: 62126d572e2733744941be9f33642fed, type: 2}
   showOnAwake: 0
   canvasGroup: {fileID: 0}
-  tooltipPresenterPrefab: {fileID: 100100000, guid: 35c84e452051451418c37b81b6d425ca, type: 3}
-  sectionTooltips:
-  - tab: {fileID: 553175303278809887}
-    title:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.total_gem_matches.title
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    description:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.total_gem_matches.description
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - tab: {fileID: 8693480117102870338}
-    title:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.total_damage_dealt.title
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    description:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.total_damage_dealt.description
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - tab: {fileID: 1702614642416978667}
-    title:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.enemy_defeated.title
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    description:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.enemy_defeated.description
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - tab: {fileID: 8164302772481015697}
-    title:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.ranking_rewards.title
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-    description:
-      m_TableReference:
-        m_TableCollectionName: Combat Help
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: stats.ranking_rewards.description
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
 --- !u!114 &4290481300105382620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6163,6 +6085,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8164302772481015697}
+    - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7729608219518140078}
   m_SourcePrefab: {fileID: 100100000, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
 --- !u!224 &1351549138756709409 stripped
 RectTransform:
@@ -6189,6 +6114,42 @@ MonoBehaviour:
   toggle: {fileID: 4934489326067903742}
   panel: {fileID: 570026409971417842}
   tabGroup: {fileID: 663446233602645019}
+--- !u!114 &7729608219518140078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3109250001464017285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000007
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000008
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  presenter: {fileID: 0}
+  placement: 4
+  positionOffset: {x: 0, y: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4934489326067903742 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7538241364399660673, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
@@ -6415,6 +6376,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 553175303278809887}
+    - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2422793764122127310}
   m_SourcePrefab: {fileID: 100100000, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
 --- !u!224 &1084657789246385908 stripped
 RectTransform:
@@ -6441,6 +6405,42 @@ MonoBehaviour:
   toggle: {fileID: 6464358306147986987}
   panel: {fileID: 2290558774522952699}
   tabGroup: {fileID: 663446233602645019}
+--- !u!114 &2422793764122127310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3957140302918402896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000001
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000002
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  presenter: {fileID: 0}
+  placement: 4
+  positionOffset: {x: 0, y: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &6464358306147986987 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7538241364399660673, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
@@ -6647,6 +6647,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8693480117102870338}
+    - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6643158846231947604}
   m_SourcePrefab: {fileID: 100100000, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
 --- !u!224 &841898219240492556 stripped
 RectTransform:
@@ -6673,6 +6676,42 @@ MonoBehaviour:
   toggle: {fileID: 6707123022063652563}
   panel: {fileID: 3267792412481995970}
   tabGroup: {fileID: 663446233602645019}
+--- !u!114 &6643158846231947604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3623402467371017128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000003
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000004
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  presenter: {fileID: 0}
+  placement: 4
+  positionOffset: {x: 0, y: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &6707123022063652563 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7538241364399660673, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
@@ -7602,6 +7641,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1702614642416978667}
+    - targetCorrespondingSourceObject: {fileID: 558907144178250746, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7350310548771906295}
   m_SourcePrefab: {fileID: 100100000, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
 --- !u!114 &3366278776352768236 stripped
 MonoBehaviour:
@@ -7634,6 +7676,42 @@ MonoBehaviour:
   toggle: {fileID: 3366278776352768236}
   panel: {fileID: 8798251339882912534}
   tabGroup: {fileID: 663446233602645019}
+--- !u!114 &7350310548771906295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4750164237155773847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000005
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:40d56d81d8fa86345a7cac2ee20f221d
+    m_TableEntryReference:
+      m_KeyId: 620000000000006
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  presenter: {fileID: 0}
+  placement: 4
+  positionOffset: {x: 0, y: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &8650312710667255859 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4478354526463417950, guid: 53e4ccdb4f3b9c84f8278dafd6236df3, type: 3}
