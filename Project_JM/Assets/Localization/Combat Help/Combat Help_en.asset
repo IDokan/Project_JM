@@ -31,89 +31,89 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2261819394
-    m_Localized: Shows the remaining health of the enemy.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2266013696
-    m_Localized: Enemy Attack
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2266013697
     m_Localized: Shows the time remaining before the enemy attacks.
     m_Metadata:
       m_Items: []
+  - m_Id: 2266013696
+    m_Localized: Enemy Attack Timer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013697
+    m_Localized: Displays the time until the enemy attacks. Significantly reduced
+      when enraged.
+    m_Metadata:
+      m_Items: []
   - m_Id: 2266013698
-    m_Localized: Combo
+    m_Localized: Combo & Critical Chance
     m_Metadata:
       m_Items: []
   - m_Id: 2266013699
-    m_Localized: Increases when matches are made consecutively.
+    m_Localized: Increases with consecutive matches. Higher combos increase critical
+      hit chance.
     m_Metadata:
       m_Items: []
   - m_Id: 226840519155712
-    m_Localized: Red Power Up
+    m_Localized: Knight Power Up
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401920
-    m_Localized: Permanently increases attack power for the red ally by 10%.
+    m_Localized: Permanently increases attack power for the Knight by 10%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401921
-    m_Localized: Green Power Up
+    m_Localized: Bowman Power Up
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401922
-    m_Localized: Permanently increases attack power for the green ally by 10%.
+    m_Localized: Permanently increases attack power for the Bowman by 10%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401923
-    m_Localized: Blue Power Up
+    m_Localized: Mage Power Up
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401924
-    m_Localized: Permanently increases attack power for the blue ally by 10%.
+    m_Localized: Permanently increases attack power for the Mage by 10%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401925
-    m_Localized: Yellow Power Up
+    m_Localized: Cleric Power Up
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401926
-    m_Localized: Permanently increases attack power for the yellow ally by 10%.
+    m_Localized: Permanently increases attack power for the Cleric by 10%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401927
-    m_Localized: Red Sharp Attack
+    m_Localized: Knight Sharp Attack
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401928
-    m_Localized: Permanently increases critical-hit damage for the red ally by 15%.
+    m_Localized: Permanently increases critical-hit damage for the Knight by 15%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401929
-    m_Localized: Green Sharp Attack
+    m_Localized: Bowman Sharp Attack
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401930
-    m_Localized: Permanently increases critical-hit damage for the green ally by
-      15%.
+    m_Localized: Permanently increases critical-hit damage for the Bowman by 15%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401931
-    m_Localized: Blue Sharp Attack
+    m_Localized: Mage Sharp Attack
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401932
-    m_Localized: Permanently increases critical-hit damage for the blue ally by 15%.
+    m_Localized: Permanently increases critical-hit damage for the Mage by 15%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401933
-    m_Localized: Yellow Sharp Attack
+    m_Localized: Cleric Sharp Attack
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401934
-    m_Localized: Permanently increases critical-hit damage for the yellow ally by
-      15%.
+    m_Localized: Permanently increases critical-hit damage for the Cleric by 15%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401935
@@ -121,8 +121,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401936
-    m_Localized: Reduces current party health to 25%, then permanently increases
-      attack power for every ally by 10%.
+    m_Localized: Sacrifices 75% of current party health, then permanently increases
+      all allies' attack power by 10%.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401937
@@ -139,7 +139,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401940
-    m_Localized: Permanently adds 0.8 seconds before the combo resets.
+    m_Localized: Permanently extends the combo timer by 0.8 seconds.
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401941
@@ -147,8 +147,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 226840632401942
-    m_Localized: Permanently increases maximum party health and immediately restores
-      the added amount.
+    m_Localized: Permanently increases maximum party health and heals for the same
+      amount.
     m_Metadata:
       m_Items: []
   - m_Id: 592176972079104
@@ -156,7 +156,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177165017088
-    m_Localized: Blue and yellow attacks deal increased damage to Slime King.
+    m_Localized: Mage and Cleric attacks deal increased damage to Slime King.
     m_Metadata:
       m_Items: []
   - m_Id: 592177165017089
@@ -164,7 +164,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177165017090
-    m_Localized: Red and blue attacks deal increased damage to Ant Gladiator.
+    m_Localized: Knight and Mage attacks deal increased damage to Ant Gladiator.
     m_Metadata:
       m_Items: []
   - m_Id: 592177165017091
@@ -172,7 +172,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177165017092
-    m_Localized: Red and yellow attacks deal increased damage to Mushroom Bully.
+    m_Localized: Knight and Cleric attacks deal increased damage to Mushroom Bully.
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211392
@@ -180,7 +180,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211393
-    m_Localized: Red and green attacks deal increased damage to Fox Thief.
+    m_Localized: Knight and Bowman attacks deal increased damage to Fox Thief.
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211394
@@ -188,7 +188,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211395
-    m_Localized: Green and blue attacks deal increased damage to Snail Wizard.
+    m_Localized: Bowman and Mage attacks deal increased damage to Snail Wizard.
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211396
@@ -196,7 +196,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211397
-    m_Localized: Green and yellow attacks deal increased damage to Dandelion Frog.
+    m_Localized: Bowman and Cleric attacks deal increased damage to Dandelion Frog.
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211398
@@ -204,7 +204,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211399
-    m_Localized: Red and blue attacks deal increased damage to Flying Fish.
+    m_Localized: Knight and Mage attacks deal increased damage to Flying Fish.
     m_Metadata:
       m_Items: []
   - m_Id: 612594680373248
@@ -212,8 +212,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 612594873311232
-    m_Localized: Shows how much damage each color dealt to the defeated enemy, sorted
-      from highest to lowest.
+    m_Localized: Shows how much damage each color dealt to the defeated enemy.
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000001
@@ -221,7 +220,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000002
-    m_Localized: Shows lifetime gem matches by color and match size, plus the highest combo.
+    m_Localized: Shows lifetime gem matches by color and match size, plus the highest
+      combo.
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000003
@@ -237,7 +237,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000006
-    m_Localized: Shows each enemy's defeat count. Portraits are revealed after the first defeat.
+    m_Localized: Shows each enemy's defeat count.
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000007
@@ -245,7 +245,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000008
-    m_Localized: Shows the best score, its rank, its reward history, and lifetime reward choices.
+    m_Localized: Shows the best score, its reward history, and lifetime reward choices.
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000009
@@ -285,7 +285,43 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 620000000000018
-    m_Localized: Chooses how the game is displayed on the screen.
+    m_Localized: Toggle between fullscreen and windowed modes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358047587901440
+    m_Localized: Knight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358119813816320
+    m_Localized: Red Gem Hero. Grants a shield on a 4-gem match, and stuns enemies
+      for [n] seconds on a 5-gem match.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358152973983744
+    m_Localized: Bowman
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358200407367680
+    m_Localized: Green Gem Hero. Increases Critical Hit Chance for [n] seconds on
+      a 4-gem match, and increases Critical Damage on a 5-gem match.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358348835397632
+    m_Localized: Mage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358388689674240
+    m_Localized: Blue Gem Hero. Delays the enemy's attack timer on a 4-gem match,
+      and slows down time on a 5-gem match.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358784036380672
+    m_Localized: Cleric
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358814461861888
+    m_Localized: Yellow Gem Hero. Restores party HP on a 4-gem match, and increases
+      party attack power on a 5-gem match.
     m_Metadata:
       m_Items: []
   references:
