@@ -27,7 +27,7 @@ public class TooltipPresenter : MonoBehaviour
 
     private CanvasGroup _canvasGroup;
     private Coroutine _showRoutine;
-    private TooltipTrigger _activeTrigger;
+    private MonoBehaviour _activeTrigger;
     private RectTransform _placementRectTransform;
 
     private void Awake()
@@ -79,7 +79,39 @@ public class TooltipPresenter : MonoBehaviour
         _showRoutine = StartCoroutine(ShowRoutine());
     }
 
-    public void Hide(TooltipTrigger trigger)
+    public void Show(
+        WorldTooltipTrigger trigger,
+        string title,
+        string description,
+        Bounds sourceBounds,
+        Camera sourceCamera,
+        TooltipPlacement placement,
+        Vector2 positionOffset)
+    {
+        bool isContentRefresh = _activeTrigger == trigger;
+        _activeTrigger = trigger;
+        titleText.text = title;
+        descriptionText.text = description;
+
+        titleText.ForceMeshUpdate();
+        descriptionText.ForceMeshUpdate();
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(panelRectTransform);
+        Position(sourceBounds, sourceCamera, placement, positionOffset);
+
+        if (isContentRefresh)
+        {
+            return;
+        }
+
+        if (_showRoutine != null)
+        {
+            StopCoroutine(_showRoutine);
+        }
+
+        _showRoutine = StartCoroutine(ShowRoutine());
+    }
+
+    public void Hide(MonoBehaviour trigger)
     {
         if (_activeTrigger != trigger)
         {
@@ -126,6 +158,39 @@ public class TooltipPresenter : MonoBehaviour
         Bounds sourceBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(
             _placementRectTransform,
             source);
+        Position(sourceBounds, placement, positionOffset);
+    }
+
+    private void Position(
+        Bounds sourceBounds,
+        Camera sourceCamera,
+        TooltipPlacement placement,
+        Vector2 positionOffset)
+    {
+        Vector3 screenMin = sourceCamera.WorldToScreenPoint(sourceBounds.min);
+        Vector3 screenMax = sourceCamera.WorldToScreenPoint(sourceBounds.max);
+        Camera canvasCamera = GetCanvasCamera();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _placementRectTransform,
+            screenMin,
+            canvasCamera,
+            out Vector2 localMin);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _placementRectTransform,
+            screenMax,
+            canvasCamera,
+            out Vector2 localMax);
+        Bounds localBounds = new Bounds(
+            (localMin + localMax) * 0.5f,
+            new Vector3(
+                Mathf.Abs(localMax.x - localMin.x),
+                Mathf.Abs(localMax.y - localMin.y),
+                0f));
+        Position(localBounds, placement, positionOffset);
+    }
+
+    private void Position(Bounds sourceBounds, TooltipPlacement placement, Vector2 positionOffset)
+    {
         Vector2 localAnchor;
         Vector2 direction;
         switch (placement)
@@ -175,6 +240,12 @@ public class TooltipPresenter : MonoBehaviour
         panelRectTransform.anchoredPosition = localAnchor +
             direction * sourceSpacing + positionOffset;
         ClampToCanvas();
+    }
+
+    private Camera GetCanvasCamera()
+    {
+        Canvas canvas = _placementRectTransform.GetComponentInParent<Canvas>();
+        return canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
     }
 
     private void ClampToCanvas()

@@ -21,6 +21,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] protected EnemySpawnedEventChannel enemySpawnedEventChannel;
     [SerializeField] protected EnemyAlertEventChannel enemyAlertEventChannel;
     [SerializeField] protected TransitionEventChannel transitionEventChannel;
+    [SerializeField] private TooltipPresenter tooltipPresenter;
 
     [SerializeField] protected DifficultyCurvesSelector curvesSelector;
 
@@ -82,8 +83,15 @@ public class EnemySpawner : MonoBehaviour
         GameObject prefab = _enemyBook.GetNextEnemy();
 
         Vector3 pos = _spawnOffsetToCamera + Camera.main.transform.position;
-        var spawnedEnemy = Instantiate(prefab, pos, Quaternion.identity);
-        var characterStatus = spawnedEnemy.GetComponent<CharacterStatus>();
+        GameObject spawnedEnemy = Instantiate(prefab, pos, Quaternion.identity);
+        WorldTooltipTrigger worldTooltipTrigger =
+            spawnedEnemy.GetComponentInChildren<WorldTooltipTrigger>(true);
+        if (worldTooltipTrigger != null)
+        {
+            worldTooltipTrigger.SetPresenter(tooltipPresenter);
+        }
+
+        CharacterStatus characterStatus = spawnedEnemy.GetComponent<CharacterStatus>();
         characterStatus.Initialize(curvesSelector.ActiveCurves.GetDifficultyMultiplier(_numSpanwed));
         _spawnTime = Time.time;
         _spawnedEnemyId = characterStatus.CharacterId;
