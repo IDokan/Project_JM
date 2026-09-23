@@ -192,11 +192,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211396
-    m_Localized: Dandelion Frog
+    m_Localized: Dandelion Toad
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211397
-    m_Localized: Bowman and Cleric attacks deal increased damage to Dandelion Frog.
+    m_Localized: Bowman and Cleric attacks deal increased damage to Dandelion Toad.
     m_Metadata:
       m_Items: []
   - m_Id: 592177169211398
@@ -294,7 +294,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1358119813816320
     m_Localized: Red Gem Hero. Grants a shield on a 4-gem match, and stuns enemies
-      for [n] seconds on a 5-gem match.
+      for 5 seconds on a 5-gem match.
     m_Metadata:
       m_Items: []
   - m_Id: 1358152973983744
@@ -302,8 +302,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1358200407367680
-    m_Localized: Green Gem Hero. Increases Critical Hit Chance for [n] seconds on
-      a 4-gem match, and increases Critical Damage on a 5-gem match.
+    m_Localized: Green Gem Hero. Increases Critical Hit Chance for 5 seconds on a
+      4-gem match, and increases Critical Damage against the current enemy until
+      it is defeated on a 5-gem match.
     m_Metadata:
       m_Items: []
   - m_Id: 1358348835397632
@@ -311,8 +312,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1358388689674240
-    m_Localized: Blue Gem Hero. Delays the enemy's attack timer on a 4-gem match,
-      and slows down time on a 5-gem match.
+    m_Localized: Blue Gem Hero. Delays the enemy's attack timer by 2 seconds on a
+      4-gem match, and slows down time for 8 seconds on a 5-gem match.
     m_Metadata:
       m_Items: []
   - m_Id: 1358784036380672
