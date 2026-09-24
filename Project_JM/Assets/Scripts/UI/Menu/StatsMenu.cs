@@ -6,6 +6,18 @@
 //          TabButton/TabGroup within the panel.
 // Unauthorized copying, distribution, or modification of this file is strictly prohibited.
 
+using UnityEngine.UI;
+
 public class StatsMenu : Menu
 {
+    public override void Show(Selectable returnTo)
+    {
+        Selectable firstSelectable = GetFirstSelectable();
+        if (firstSelectable is Toggle firstToggle)
+        {
+            firstToggle.isOn = true;
+        }
+
+        base.Show(returnTo);
+    }
 }

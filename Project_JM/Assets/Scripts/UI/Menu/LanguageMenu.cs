@@ -15,8 +15,6 @@ using UnityEngine.UI;
 
 public class LanguageMenu : Menu
 {
-    private const string SelectedLocalePref = "selected-locale";
-
     [SerializeField] private TMP_Dropdown languageDropdown;
 
     private readonly List<Locale> _locales = new List<Locale>();
@@ -74,8 +72,6 @@ public class LanguageMenu : Menu
 
         Locale locale = _locales[index];
         LocalizationSettings.SelectedLocale = locale;
-        PlayerPrefs.SetString(SelectedLocalePref, locale.Identifier.Code);
-        PlayerPrefs.Save();
     }
 
     private void SyncSelection()
