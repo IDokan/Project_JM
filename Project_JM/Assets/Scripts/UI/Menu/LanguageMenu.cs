@@ -11,13 +11,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class LanguageMenu : Menu
 {
-    [SerializeField] private TMP_Dropdown languageDropdown;
+    [SerializeField] private LanguageJuicyDropdown languageDropdown;
 
     private readonly List<Locale> _locales = new List<Locale>();
+    private readonly List<TMP_FontAsset> _fonts = new List<TMP_FontAsset>();
     private bool _isInitialized;
 
     protected override void OnEnable()
@@ -50,15 +52,25 @@ public class LanguageMenu : Menu
 
         _locales.Clear();
         _locales.AddRange(LocalizationSettings.AvailableLocales.Locales);
+        _fonts.Clear();
 
         List<string> options = new List<string>(_locales.Count);
         for (int i = 0; i < _locales.Count; ++i)
         {
             options.Add(_locales[i].LocaleName);
+
+            AsyncOperationHandle<TMP_FontAsset> fontOperation =
+                LocalizationSettings.AssetDatabase.GetLocalizedAssetAsync<TMP_FontAsset>(
+                    "Fonts", "UI", _locales[i]);
+            yield return fontOperation;
+            _fonts.Add(fontOperation.Status == AsyncOperationStatus.Succeeded
+                ? fontOperation.Result
+                : null);
         }
 
         languageDropdown.ClearOptions();
         languageDropdown.AddOptions(options);
+        languageDropdown.SetOptionFonts(_fonts);
         _isInitialized = true;
         SyncSelection();
     }
@@ -71,6 +83,7 @@ public class LanguageMenu : Menu
         }
 
         Locale locale = _locales[index];
+        languageDropdown.ApplySelectedOptionFont(index);
         LocalizationSettings.SelectedLocale = locale;
     }
 
@@ -85,5 +98,6 @@ public class LanguageMenu : Menu
 
         languageDropdown.SetValueWithoutNotify(index);
         languageDropdown.RefreshShownValue();
+        languageDropdown.ApplySelectedOptionFont(index);
     }
 }
