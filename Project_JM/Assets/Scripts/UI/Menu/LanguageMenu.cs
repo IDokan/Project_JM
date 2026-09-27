@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -20,27 +21,80 @@ public class LanguageMenu : Menu
 
     private readonly List<Locale> _locales = new List<Locale>();
     private readonly List<TMP_FontAsset> _fonts = new List<TMP_FontAsset>();
+    private readonly List<AsyncOperationHandle<TMP_FontAsset>> _fontHandles =
+        new List<AsyncOperationHandle<TMP_FontAsset>>();
+    private Coroutine _initializationRoutine;
+    private TMP_FontAsset _defaultCaptionFont;
     private bool _isInitialized;
 
     protected override void OnEnable()
     {
         base.OnEnable();
         languageDropdown.onValueChanged.AddListener(OnLanguageValueChanged);
-        StartCoroutine(InitializeDropdown());
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
         languageDropdown.onValueChanged.RemoveListener(OnLanguageValueChanged);
+        if (_initializationRoutine != null)
+        {
+            StopCoroutine(_initializationRoutine);
+            _initializationRoutine = null;
+        }
+
+        if (_fontHandles.Count > 0 || _isInitialized)
+        {
+            // TMP's OnDisable destroys any open option list immediately; Hide
+            // would leave its font references alive throughout the fade-out.
+            bool dropdownWasEnabled = languageDropdown.enabled;
+            languageDropdown.enabled = false;
+            languageDropdown.ClearOptions();
+            languageDropdown.SetOptionFonts(null);
+            if (languageDropdown.captionText != null)
+            {
+                languageDropdown.captionText.font = _defaultCaptionFont;
+            }
+            languageDropdown.interactable = false;
+            languageDropdown.enabled = dropdownWasEnabled;
+        }
+
+        for (int i = 0; i < _fontHandles.Count; ++i)
+        {
+            AsyncOperationHandle<TMP_FontAsset> handle = _fontHandles[i];
+            Locale locale = _locales[i];
+            if (handle.IsDone)
+            {
+                ReleaseFont(handle, locale);
+            }
+            else
+            {
+                // Stopping a coroutine does not cancel Addressables. Finish cleanup
+                // without accessing this menu when an outstanding request completes.
+                handle.Completed += completed => ReleaseFont(completed, locale);
+            }
+        }
+
+        _fontHandles.Clear();
+        _fonts.Clear();
+        _locales.Clear();
+        _isInitialized = false;
     }
 
     public override void Show(Selectable returnTo)
     {
+        languageDropdown.interactable = _isInitialized;
         base.Show(returnTo);
         if (_isInitialized)
         {
             SyncSelection();
+        }
+        else if (_initializationRoutine == null && isActiveAndEnabled)
+        {
+            _defaultCaptionFont = languageDropdown.captionText != null
+                ? languageDropdown.captionText.font
+                : null;
+            _initializationRoutine = StartCoroutine(InitializeDropdown());
         }
     }
 
@@ -62,6 +116,10 @@ public class LanguageMenu : Menu
             AsyncOperationHandle<TMP_FontAsset> fontOperation =
                 LocalizationSettings.AssetDatabase.GetLocalizedAssetAsync<TMP_FontAsset>(
                     "Fonts", "UI", _locales[i]);
+            // The Localization request auto-releases; retain our own reference
+            // until OnDisable, including across selected-locale cache resets.
+            Addressables.ResourceManager.Acquire(fontOperation);
+            _fontHandles.Add(fontOperation);
             yield return fontOperation;
             _fonts.Add(fontOperation.Status == AsyncOperationStatus.Succeeded
                 ? fontOperation.Result
@@ -72,7 +130,21 @@ public class LanguageMenu : Menu
         languageDropdown.AddOptions(options);
         languageDropdown.SetOptionFonts(_fonts);
         _isInitialized = true;
+        _initializationRoutine = null;
+        languageDropdown.interactable = true;
         SyncSelection();
+    }
+
+    private static void ReleaseFont(AsyncOperationHandle<TMP_FontAsset> handle, Locale locale)
+    {
+        // Keep the active locale's shared cache available to other UI. Other
+        // consumers with acquired handles remain protected when caches release.
+        if (locale != LocalizationSettings.SelectedLocale)
+        {
+            LocalizationSettings.AssetDatabase.ReleaseTable("Fonts", locale);
+        }
+
+        Addressables.Release(handle);
     }
 
     private void OnLanguageValueChanged(int index)
