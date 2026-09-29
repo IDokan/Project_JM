@@ -15,7 +15,9 @@ using UnityEngine.Localization.Settings;
 [RequireComponent(typeof(Collider2D))]
 public class WorldTooltipTrigger : MonoBehaviour,
     IPointerEnterHandler,
-    IPointerExitHandler
+    IPointerExitHandler,
+    IPointerDownHandler,
+    IPointerUpHandler
 {
     [Header("Content")]
     [SerializeField] private LocalizedString localizedTitle = new LocalizedString();
@@ -31,6 +33,7 @@ public class WorldTooltipTrigger : MonoBehaviour,
     private string _title;
     private string _description;
     private bool _isHovered;
+    private int _touchPointerId = int.MinValue;
     private bool _titleReady;
     private bool _descriptionReady;
 
@@ -61,6 +64,7 @@ public class WorldTooltipTrigger : MonoBehaviour,
         LocalizationSettings.SelectedLocaleChanged -= HandleSelectedLocaleChanged;
         UnsubscribeFromContent();
         _isHovered = false;
+        _touchPointerId = int.MinValue;
         _sourceCamera = null;
         if (presenter != null)
         {
@@ -75,7 +79,7 @@ public class WorldTooltipTrigger : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!IsMouse(eventData))
+        if (!IsMouse(eventData) && eventData.pointerId != _touchPointerId)
         {
             return;
         }
@@ -87,16 +91,39 @@ public class WorldTooltipTrigger : MonoBehaviour,
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!IsMouse(eventData))
+        if (!IsMouse(eventData) && eventData.pointerId != _touchPointerId)
         {
             return;
         }
 
         _isHovered = false;
+        _touchPointerId = int.MinValue;
         _sourceCamera = null;
         if (presenter != null)
         {
             presenter.Hide(this);
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData is not ExtendedPointerEventData extendedEventData ||
+            extendedEventData.pointerType != UIPointerType.Touch)
+        {
+            return;
+        }
+
+        _touchPointerId = eventData.pointerId;
+        _sourceCamera = eventData.enterEventCamera;
+        _isHovered = _sourceCamera != null;
+        RefreshContent();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (eventData.pointerId == _touchPointerId)
+        {
+            OnPointerExit(eventData);
         }
     }
 
