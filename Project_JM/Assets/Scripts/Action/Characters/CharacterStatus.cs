@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CharacterEnums;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class TimedModifier
 {
@@ -37,6 +38,8 @@ public class CharacterStatus : MonoBehaviour
 
     public CharacterId CharacterId { get; private set; }
     public Sprite Icon => baseData.icon;
+    public LocalizedString TooltipTitle => baseData.TooltipTitle;
+    public LocalizedString TooltipDescription => baseData.TooltipDescription;
     public float CurrentHP { get; private set; }
     public float maxHP { get; private set; }
     // 0 means 0%, 1 means 100%

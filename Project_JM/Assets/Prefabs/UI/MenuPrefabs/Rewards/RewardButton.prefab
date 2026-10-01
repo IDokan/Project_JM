@@ -5396,6 +5396,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1202557634851194712}
+    - targetCorrespondingSourceObject: {fileID: 2611952146494348520, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2896996021874629853}
   m_SourcePrefab: {fileID: 100100000, guid: 1a901d61ffb4b284f9e84ade8b68967d, type: 3}
 --- !u!224 &1406157515824180625 stripped
 RectTransform:
@@ -5443,3 +5446,39 @@ MonoBehaviour:
   screenOffset: {x: 0, y: 0}
   transitionEventChannel: {fileID: 11400000, guid: 667a84223c0782441ac430cc035f9763, type: 2}
   syncOnPhase: 3
+--- !u!114 &2896996021874629853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192807438451217523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a5f6148596dfd40910595f0d79da4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  presenter: {fileID: 0}
+  placement: 6
+  positionOffset: {x: 0, y: 0}
+  references:
+    version: 2
+    RefIds: []

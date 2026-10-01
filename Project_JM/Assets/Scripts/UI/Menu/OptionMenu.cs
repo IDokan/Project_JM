@@ -13,10 +13,12 @@ public class OptionMenu : Menu
     [Header("Buttons")]
     [SerializeField] protected Button graphicsSettingButton;
     [SerializeField] protected Button audioSettingButton;
+    [SerializeField] protected Button languageSettingButton;
 
     [Header("Logic related refs")]
     [SerializeField] protected GraphicsMenu graphicsMenu;
     [SerializeField] protected AudioMenu audioMenu;
+    [SerializeField] protected LanguageMenu languageMenu;
 
     protected override void OnEnable()
     {
@@ -24,6 +26,7 @@ public class OptionMenu : Menu
 
         graphicsSettingButton.onClick.AddListener(OnGraphicsButtonClicked);
         audioSettingButton.onClick.AddListener(OnAudioButtonClicked);
+        languageSettingButton.onClick.AddListener(OnLanguageButtonClicked);
     }
 
     protected override void OnDisable()
@@ -32,23 +35,28 @@ public class OptionMenu : Menu
 
         graphicsSettingButton.onClick.RemoveListener(OnGraphicsButtonClicked);
         audioSettingButton.onClick.RemoveListener(OnAudioButtonClicked);
+        languageSettingButton.onClick.RemoveListener(OnLanguageButtonClicked);
     }
 
     protected void OnGraphicsButtonClicked()
     {
         audioMenu.Hide();
+        languageMenu.Hide();
         graphicsMenu.Show(graphicsSettingButton);
     }
 
     protected void OnAudioButtonClicked()
     {
         graphicsMenu.Hide();
+        languageMenu.Hide();
         audioMenu.Show(audioSettingButton);
     }
 
-    public override Selectable GetFirstSelectable()
+    protected void OnLanguageButtonClicked()
     {
-        bool isPortrait = Screen.height > Screen.width;
-        return isPortrait ? audioSettingButton : graphicsSettingButton;
+        graphicsMenu.Hide();
+        audioMenu.Hide();
+        languageMenu.Show(languageSettingButton);
     }
+
 }

@@ -34,6 +34,7 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
 
     [SerializeField] protected Button[] rewardButtons;
     [SerializeField] protected RewardIconGroup[] rewardIconGroups;
+    [SerializeField] protected TooltipTrigger[] rewardTooltipTriggers;
     [SerializeField] protected CanvasGroup rewardButtonsGroup;
 
     // One pre-placed particle system per button slot, index-aligned with
@@ -232,6 +233,9 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
 
             rewardButtons[i].targetGraphic.color = softened;
             rewardIconGroups[i].SetIcons(_currentOffer[i].Icons);
+            rewardTooltipTriggers[i].SetContent(
+                _currentOffer[i].TooltipTitle,
+                _currentOffer[i].TooltipDescription);
 
             ColorBlock colors = rewardButtons[i].colors;
             colors.normalColor = softened;
@@ -352,6 +356,7 @@ public class RewardOfferUI : MonoBehaviour, ICancelHandler
     protected void OnRewardButtonPressed(int index)
     {
         transitionManager.SetSkipHoldBlocked(false);
+        rewardTooltipTriggers[index].Dismiss();
 
         for (int i = 0; i < flashImages.Length; i++)
         {

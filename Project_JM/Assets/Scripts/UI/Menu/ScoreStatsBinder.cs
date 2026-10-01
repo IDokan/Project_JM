@@ -25,7 +25,7 @@ public class ScoreStatsBinder : MonoBehaviour
     [SerializeField] protected Image milestoneImage;
 
     // Redeclared here rather than reusing DefeatedTransitionController's
-    // Bronze/Silver/Gold constants — those are Steam-achievement-domain names,
+    // Bronze/Silver/Gold constants - those are Steam-achievement-domain names,
     // this is a separate UI-display concern. Ordered ascending; add entries
     // (e.g. 35000/40000) here to introduce new tiers without touching logic.
     [SerializeField] protected ScoreMilestone[] milestonesAscending;
@@ -47,6 +47,7 @@ public class ScoreStatsBinder : MonoBehaviour
     [SerializeField] protected RewardBook rewardBook;
     [SerializeField] protected GameObject rewardIconHolderPrefab;
     [SerializeField] protected GridLayoutGroup rewardHistoryGridLayoutGroup;
+    [SerializeField] protected TooltipPresenter tooltipPresenter;
 
     // How many full rows/columns of the grid the reward history is allowed to
     // fill before extra picks are dropped - see PopulateRewardHistory.
@@ -110,6 +111,14 @@ public class ScoreStatsBinder : MonoBehaviour
             Image iconImage = instance.GetComponentInChildren<Image>();
             iconImage.sprite = reward.MiniIcon;
             iconImage.SetNativeSize();
+
+            if (instance.TryGetComponent<TooltipTrigger>(out TooltipTrigger tooltipTrigger))
+            {
+                tooltipTrigger.SetPresenter(tooltipPresenter);
+                tooltipTrigger.SetContent(
+                    reward.TooltipTitle,
+                    reward.TooltipDescription);
+            }
         }
     }
 }

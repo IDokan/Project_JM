@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using DG.Tweening;
+using RewardEnums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,7 @@ public class RewardHistoryUI : MonoBehaviour
     [SerializeField] protected GameObject iconPrefab;
     [SerializeField] protected Transform content;
     [SerializeField] protected GridLayoutGroup gridLayoutGroup;
+    [SerializeField] protected TooltipPresenter tooltipPresenter;
 
     // innerBackground hugs the grid via its own ContentSizeFitter (fitting
     // around content); outerBackground adds a fixed backgroundPadding margin
@@ -66,6 +68,7 @@ public class RewardHistoryUI : MonoBehaviour
         _rectTransform.anchoredPosition = anchoredPosition;
 
         _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
     }
 
     protected void OnEnable()
@@ -84,14 +87,14 @@ public class RewardHistoryUI : MonoBehaviour
         {
             SyncIcons();
 
-            if (rewardManager.ChosenIcons.Count > 0)
+            if (rewardManager.ChosenRewardIds.Count > 0)
             {
                 ShowHistory();
             }
         }
         else if (phase == TransitionPhase.RewardChosen)
         {
-            if (rewardManager.ChosenIcons.Count > 0)
+            if (rewardManager.ChosenRewardIds.Count > 0)
             {
                 HideHistory();
             }
@@ -104,16 +107,23 @@ public class RewardHistoryUI : MonoBehaviour
     // is about to show, not the instant they're picked.
     protected void SyncIcons()
     {
-        IReadOnlyList<Sprite> chosenIcons = rewardManager.ChosenIcons;
-        for (int i = content.childCount; i < chosenIcons.Count; i++)
+        IReadOnlyList<RewardId> chosenRewardIds = rewardManager.ChosenRewardIds;
+        for (int i = content.childCount; i < chosenRewardIds.Count; i++)
         {
+            RewardDefinition reward = rewardManager.GetRewardDefinition(chosenRewardIds[i]);
             GameObject instance = Instantiate(iconPrefab, content);
             Image iconImage = instance.GetComponentInChildren<Image>();
-            iconImage.sprite = chosenIcons[i];
+            iconImage.sprite = reward.MiniIcon;
             iconImage.SetNativeSize();
+
+            TooltipTrigger iconTooltipTrigger = instance.GetComponent<TooltipTrigger>();
+            iconTooltipTrigger.SetPresenter(tooltipPresenter);
+            iconTooltipTrigger.SetContent(
+                reward.TooltipTitle,
+                reward.TooltipDescription);
         }
 
-        UpdateLayout(chosenIcons.Count);
+        UpdateLayout(chosenRewardIds.Count);
     }
 
     protected void UpdateLayout(int count)
@@ -137,13 +147,18 @@ public class RewardHistoryUI : MonoBehaviour
             .SetLink(gameObject);
 
         _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     protected void HideHistory()
     {
         _tween?.Kill();
         _tween = _rectTransform.DOAnchorPosX(_hiddenX, slideDuration).SetEase(Ease.InCubic)
-            .OnComplete(() => _canvasGroup.alpha = 0)
+            .OnComplete(() =>
+            {
+                _canvasGroup.alpha = 0;
+                _canvasGroup.blocksRaycasts = false;
+            })
             .SetLink(gameObject);
     }
 }

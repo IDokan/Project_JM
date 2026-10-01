@@ -13,6 +13,28 @@ MonoBehaviour:
   m_Name: FlyingFish
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatusData
   characterId: 8
+  icon: {fileID: 0}
   baseHP: 325
   baseCriticalChance: 0
   baseCriticalDamage: 1
+  tooltipTitle:
+    m_TableReference:
+      m_TableCollectionName: Combat Help
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.flying_fish.title
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  tooltipDescription:
+    m_TableReference:
+      m_TableCollectionName: Combat Help
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.flying_fish.description
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

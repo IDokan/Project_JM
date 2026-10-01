@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using GemEnums;
 using RewardEnums;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public struct RewardContext
 {
@@ -46,6 +47,10 @@ public abstract class RewardDefinition : ScriptableObject
     // icons above; see RewardHistoryUI.
     [SerializeField] protected Sprite miniIcon;
 
+    [Header("Tooltip")]
+    [SerializeField] protected LocalizedString tooltipTitle = new LocalizedString();
+    [SerializeField] protected LocalizedString tooltipDescription = new LocalizedString();
+
     public RewardId Id => id;
 
     // Used later to tint the selectable UI; GemColor.None for rewards with no single color.
@@ -54,6 +59,10 @@ public abstract class RewardDefinition : ScriptableObject
     public IReadOnlyList<Sprite> Icons => icons;
 
     public Sprite MiniIcon => miniIcon;
+
+    public LocalizedString TooltipTitle => tooltipTitle;
+
+    public LocalizedString TooltipDescription => tooltipDescription;
 
     public abstract IEnumerator Apply(RewardContext context);
 

@@ -1,0 +1,330 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Combat Help_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 40d56d81d8fa86345a7cac2ee20f221d, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 2056298496
+    m_Localized: Party Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2261819392
+    m_Localized: Shows the remaining health of your party.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2261819393
+    m_Localized: Enemy Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2261819394
+    m_Localized: Shows the remaining health of the enemy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013696
+    m_Localized: Enemy Attack Timer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013697
+    m_Localized: Displays the time until the enemy attacks. Significantly reduced
+      when enraged.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013698
+    m_Localized: Combo & Critical Chance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2266013699
+    m_Localized: Increases with consecutive matches. Higher combos increase critical
+      hit chance.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840519155712
+    m_Localized: Knight Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401920
+    m_Localized: Permanently increases attack power for the Knight by 10%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401921
+    m_Localized: Bowman Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401922
+    m_Localized: Permanently increases attack power for the Bowman by 10%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401923
+    m_Localized: Mage Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401924
+    m_Localized: Permanently increases attack power for the Mage by 10%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401925
+    m_Localized: Cleric Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401926
+    m_Localized: Permanently increases attack power for the Cleric by 10%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401927
+    m_Localized: Knight Sharp Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401928
+    m_Localized: Permanently increases critical-hit damage for the Knight by 15%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401929
+    m_Localized: Bowman Sharp Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401930
+    m_Localized: Permanently increases critical-hit damage for the Bowman by 15%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401931
+    m_Localized: Mage Sharp Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401932
+    m_Localized: Permanently increases critical-hit damage for the Mage by 15%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401933
+    m_Localized: Cleric Sharp Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401934
+    m_Localized: Permanently increases critical-hit damage for the Cleric by 15%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401935
+    m_Localized: Berserked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401936
+    m_Localized: Sacrifices 75% of current party health, then permanently increases
+      all allies' attack power by 10%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401937
+    m_Localized: Blessings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401938
+    m_Localized: Fully restores party health and grants a shield equal to 20% of
+      maximum health.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401939
+    m_Localized: Focus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401940
+    m_Localized: Permanently extends the combo timer by 0.8 seconds.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401941
+    m_Localized: Fortify
+    m_Metadata:
+      m_Items: []
+  - m_Id: 226840632401942
+    m_Localized: Permanently increases maximum party health and heals for the same
+      amount.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592176972079104
+    m_Localized: Slime King
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177165017088
+    m_Localized: Mage and Cleric attacks deal increased damage to Slime King.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177165017089
+    m_Localized: Ant Gladiator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177165017090
+    m_Localized: Knight and Mage attacks deal increased damage to Ant Gladiator.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177165017091
+    m_Localized: Mushroom Bully
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177165017092
+    m_Localized: Knight and Cleric attacks deal increased damage to Mushroom Bully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211392
+    m_Localized: Fox Thief
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211393
+    m_Localized: Knight and Bowman attacks deal increased damage to Fox Thief.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211394
+    m_Localized: Snail Wizard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211395
+    m_Localized: Bowman and Mage attacks deal increased damage to Snail Wizard.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211396
+    m_Localized: Dandelion Toad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211397
+    m_Localized: Bowman and Cleric attacks deal increased damage to Dandelion Toad.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211398
+    m_Localized: Flying Fish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 592177169211399
+    m_Localized: Knight and Mage attacks deal increased damage to Flying Fish.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 612594680373248
+    m_Localized: Damage Record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 612594873311232
+    m_Localized: Shows how much damage each color dealt to the defeated enemy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000001
+    m_Localized: Total Gem Matches
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000002
+    m_Localized: Shows lifetime gem matches by color and match size, plus the highest
+      combo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000003
+    m_Localized: Total Damage Dealt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000004
+    m_Localized: Shows the lifetime damage dealt by each party member.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000005
+    m_Localized: Enemies Defeated
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000006
+    m_Localized: Shows each enemy's defeat count.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000007
+    m_Localized: Ranking and Rewards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000008
+    m_Localized: Shows the best score, its reward history, and lifetime reward choices.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000009
+    m_Localized: Master Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000010
+    m_Localized: Adjusts the volume of all game audio.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000011
+    m_Localized: Sound Effects Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000012
+    m_Localized: Adjusts the volume of sound effects.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000013
+    m_Localized: Music Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000014
+    m_Localized: Adjusts the volume of background music.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000015
+    m_Localized: Screen Resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000016
+    m_Localized: Changes the display resolution.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000017
+    m_Localized: Fullscreen Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000018
+    m_Localized: Toggle between fullscreen and windowed modes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358047587901440
+    m_Localized: Knight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358119813816320
+    m_Localized: Red Gem Hero. Grants a shield on a 4-gem match, and stuns enemies
+      for 5 seconds on a 5-gem match.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358152973983744
+    m_Localized: Bowman
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358200407367680
+    m_Localized: Green Gem Hero. Increases Critical Hit Chance for 5 seconds on a
+      4-gem match, and increases Critical Damage against the current enemy until
+      it is defeated on a 5-gem match.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358348835397632
+    m_Localized: Mage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358388689674240
+    m_Localized: Blue Gem Hero. Delays the enemy's attack timer by 2 seconds on a
+      4-gem match, and slows down time for 8 seconds on a 5-gem match.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358784036380672
+    m_Localized: Cleric
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1358814461861888
+    m_Localized: Yellow Gem Hero. Restores party HP on a 4-gem match, and increases
+      party attack power on a 5-gem match.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
